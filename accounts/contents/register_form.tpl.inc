@@ -11,7 +11,7 @@
  * @var bool   $_no_flag_check
  */
 
-use wcms_base\module;
+use hng2_base\module;
 ?>
 
 <h1 class="clearfix">

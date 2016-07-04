@@ -1,5 +1,5 @@
 <?php
-namespace wcms_cache;
+namespace hng2_cache;
 
 class disk_cache
 {

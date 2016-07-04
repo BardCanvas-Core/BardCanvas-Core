@@ -12,7 +12,7 @@
  *
  * @param string $class_name
  */
-function wcms_class_autoloader($class_name)
+function hng2_class_autoloader($class_name)
 {
     # Class path: /classes
     # Class name: class_file
@@ -37,8 +37,8 @@ function wcms_class_autoloader($class_name)
     }
     
     # Class path: /<module_name>/classes
-    # Class name: \wcms_modules\<module_name>\class_file
-    $namespace_parts = explode("\\", str_replace("wcms_modules\\", "", $class_name));
+    # Class name: \hng2_modules\<module_name>\class_file
+    $namespace_parts = explode("\\", str_replace("hng2_modules\\", "", $class_name));
     $this_class      = array_pop($namespace_parts);
     $module_name     = array_shift($namespace_parts);
     $class_path      = implode("/", $namespace_parts) . "/$this_class";
@@ -51,4 +51,4 @@ function wcms_class_autoloader($class_name)
     }
 }
 
-spl_autoload_register('wcms_class_autoloader');
+spl_autoload_register('hng2_class_autoloader');

@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-use wcms_base\account;
+use hng2_base\account;
 
 $_ROOT_URL = "..";
 include "{$_ROOT_URL}/config.php";

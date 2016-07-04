@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-namespace wcms_base\repository;
+namespace hng2_base\repository;
 
 abstract class abstract_repository
 {

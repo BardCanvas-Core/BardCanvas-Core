@@ -7,13 +7,13 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-use wcms_base\account;
-use wcms_base\config;
-use wcms_base\db\db_controller;
-use wcms_base\module;
-use wcms_base\settings;
-use wcms_base\template;
-use wcms_cache\mem_cache;
+use hng2_base\account;
+use hng2_base\config;
+use hng2_base\db\db_controller;
+use hng2_base\module;
+use hng2_base\settings;
+use hng2_base\template;
+use hng2_cache\mem_cache;
 
 include dirname(__FILE__) . "/class_autoloader.inc";
 include dirname(__FILE__) . "/crypt_functions.inc";

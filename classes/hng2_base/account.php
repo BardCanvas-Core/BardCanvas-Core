@@ -7,9 +7,9 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-namespace wcms_base;
+namespace hng2_base;
 
-use wcms_cache\disk_cache;
+use hng2_cache\disk_cache;
 
 class account
 {

@@ -10,8 +10,8 @@
  * @var module[] $modules
  */
 
-use wcms_base\module;
-use wcms_cache\disk_cache;
+use hng2_base\module;
+use hng2_cache\disk_cache;
 
 $build_modules_cache = true;
 $modules_cache_enabled = $settings->get("modules:modules_manager.disable_cache") != "true";

@@ -23,8 +23,8 @@
  *   Tab-separated fields: result, user name, device message, admin dashboard url or redir_url
  */
 
-use wcms_base\account;
-use wcms_base\device;
+use hng2_base\account;
+use hng2_base\device;
 
 $_ROOT_URL = "../..";
 include "{$_ROOT_URL}/config.php";

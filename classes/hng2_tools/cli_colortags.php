@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-namespace wcms_tools;
+namespace hng2_tools;
 
 class cli_colortags extends cli
 {

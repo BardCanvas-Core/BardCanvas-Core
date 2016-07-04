@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-namespace wcms_base;
+namespace hng2_base;
 
 class device
 {

@@ -7,8 +7,8 @@
 * @author     Alejandro Caballero<lava.caballero@gmail.com>
 */
 
-use wcms_base\module;
-use wcms_cache\disk_cache;
+use hng2_base\module;
+use hng2_cache\disk_cache;
 
 $_ROOT_URL = "..";
 include "{$_ROOT_URL}/config.php";

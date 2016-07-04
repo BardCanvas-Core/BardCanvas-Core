@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-namespace wcms_base\db;
+namespace hng2_base\db;
 
 class tracked_query
 {

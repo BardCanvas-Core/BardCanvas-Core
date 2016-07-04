@@ -11,7 +11,7 @@
  * @var bool   $_include_account_id
  */
 
-use wcms_base\module;
+use hng2_base\module;
 ?>
 
 <h1 class="clearfix">

@@ -6,7 +6,7 @@
  * @var string $_ROOT_URL
  */
 
-use wcms_base\module;
+use hng2_base\module;
 
 # Module re-scanning, including uninstalled ones
 $_all_modules        = array();

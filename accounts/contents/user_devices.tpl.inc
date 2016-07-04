@@ -3,7 +3,7 @@
  * @var int $order
  */
 
-use wcms_base\device;
+use hng2_base\device;
 ?>
 
 <style type="text/css">

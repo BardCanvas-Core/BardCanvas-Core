@@ -6,9 +6,9 @@
  * @var string $_ROOT_URL
  */
 
-use wcms_base\account;
-use wcms_base\module;
-use wcms_tools\record_browser;
+use hng2_base\account;
+use hng2_base\module;
+use hng2_tools\record_browser;
 
 $browser = new record_browser("{$config->website_key}_{$current_module->name}");
 
