@@ -9,6 +9,8 @@
 
 namespace wcms_base;
 
+use wcms_cache\disk_cache;
+
 class template
 {
     public $name;
@@ -120,6 +122,7 @@ class template
         {
             $this->render_database_details();
             $this->render_mem_cache_details();
+            $this->render_disk_cache_details();
         }
     }
     
@@ -233,6 +236,57 @@ class template
                             <thead>
                             <tr>
                                 <th>Call #</th>
+                                <th>Type</th>
+                                <th>Timestamp</th>
+                                <th>Key</th>
+                                {$backtrace_th}
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {$output}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        ";
+    }
+    
+    protected function render_disk_cache_details()
+    {
+        $backtrace    = "";
+        $output       = "";
+        $seq          = 1;
+        foreach(disk_cache::get_hits() as $hit)
+        {
+            if( ENABLE_QUERY_BACKTRACE )
+                $backtrace = "<td><pre style='margin: 0'>" . implode("\n", $hit->backtrace) . "</pre></td>";
+            
+            $output .= "
+                <tr>
+                    <td align='right'>{$seq}</td>
+                    <td>{$hit->file}</td>
+                    <td>{$hit->type}</td>
+                    <td align='right'>{$hit->timestamp}</td>
+                    <td>{$hit->key}</td>
+                    {$backtrace}
+                </tr>
+            ";
+            $seq++;
+        }
+        
+        $backtrace_th  = ENABLE_QUERY_BACKTRACE ? "<th>Backtrace</th>" : "";
+        
+        echo "
+            <div class='internals'>
+                <section>
+                    <h2>Disk cache hits</h2>
+                    <div class='framed_content table_wrapper'>
+                        <table class='nav_table'>
+                            <thead>
+                            <tr>
+                                <th>Call #</th>
+                                <th>File</th>
                                 <th>Type</th>
                                 <th>Timestamp</th>
                                 <th>Key</th>

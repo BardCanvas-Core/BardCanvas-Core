@@ -2,7 +2,7 @@
 /**
  * Settings module admin index
  *
- * @package    BadCanvas
+ * @package    HNG2
  * @subpackage Modules::included::settings
  * @author     Alejandro Caballero<lava.caballero@gmail.com>
  */

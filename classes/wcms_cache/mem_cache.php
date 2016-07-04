@@ -41,14 +41,13 @@ class mem_cache
         
         $this->server->set($key, $value, $flag, $expiration);
         $this->data[$key] = $value;
-    
+        
         $backtrace = "N/A";
         if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
         }
-        
         $this->cache_hits[] = (object) array(
             "type"      => "set",
             "key"       => $key,
@@ -101,7 +100,6 @@ class mem_cache
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
         }
-        
         $this->cache_hits[] = (object) array(
             "type"      => "delete",
             "key"       => $key,

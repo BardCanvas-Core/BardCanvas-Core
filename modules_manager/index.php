@@ -2,12 +2,13 @@
 /**
 * Modules manager admin index
 * 
-* @package    BadCanvas
+* @package    HNG2
 * @subpackage Modules::included::modules_manager
 * @author     Alejandro Caballero<lava.caballero@gmail.com>
 */
 
 use wcms_base\module;
+use wcms_cache\disk_cache;
 
 $_ROOT_URL = "..";
 include "{$_ROOT_URL}/config.php";
@@ -33,181 +34,166 @@ if( count($errors) > 0 )
     exit;
 }
 
+$update_cache = false;
 switch( $module_install_action )
 {
-    #==============
     case "install":
-    #==============
-    {
-        $this_module = new module(ABSPATH . "/$do_module_name/module_info.xml");
-        if( $this_module->installed )
+        
+        # Precheck
+        if( $settings->get("modules:$do_module_name.installed") == "true" )
         {
             $errors[] = $current_module->language->task_messages->already_installed;
+            
+            break;
         }
-        else
+        
+        # Install
+        if( file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
         {
-            if( ! file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
+            include ABSPATH . "/$do_module_name/module_install.inc";
+            if( count($errors) > 0 )
             {
-                $messages[] = $current_module->language->task_messages->installed_ok;
-                $settings->set("modules:$do_module_name.installed", "true");
-                $settings->set("modules:$do_module_name.enabled", "true");
-                $messages[] = $current_module->language->task_messages->enabled_ok;
-                $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
-            }
-            else
-            {
-                include ABSPATH . "/$do_module_name/module_install.inc";
-                if( count($errors) > 0 )
-                {
-                    $errors[] = $current_module->language->task_messages->installed_ko;
-                }
-                else
-                {
-                    $settings->set("modules:$do_module_name.installed", "true");
-                    $messages[] = $current_module->language->task_messages->installed_ok;
-                    
-                    $module_install_action = "enable";
-                    include ABSPATH . "/$do_module_name/module_install.inc";
-                    if( count($errors) > 0 )
-                    {
-                        $errors[] = $current_module->language->task_messages->enabled_ko;
-                    }
-                    else
-                    {
-                        $settings->set("modules:$do_module_name.enabled", "true");
-                        $messages[] = $current_module->language->task_messages->enabled_ok;
-                        $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
-                    }
-                }
+                $errors[] = $current_module->language->task_messages->installed_ko;
+        
+                break;
             }
         }
+        $settings->set("modules:$do_module_name.installed", "true");
+        $update_cache = true;
+        $messages[] = $current_module->language->task_messages->installed_ok;
+        
+        # Enable
+        $module_install_action = "enable";
+        if( file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
+        {
+            include ABSPATH . "/$do_module_name/module_install.inc";
+            if( count($errors) > 0 )
+            {
+                $errors[] = $current_module->language->task_messages->enabled_ko;
+                
+                break;
+            }
+        }
+        $settings->set("modules:$do_module_name.enabled", "true");
+        $messages[] = $current_module->language->task_messages->enabled_ok;
+        $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
         break;
-    }
-    #=============
+        
     case "enable":
-    #=============
-    {
-        $this_module = new module(ABSPATH . "/$do_module_name/module_info.xml");
-        if( ! $this_module->installed )
+        
+        # Prechecks
+        if( $settings->get("modules:$do_module_name.installed") != "true" )
         {
             $errors[] = $current_module->language->task_messages->not_installed;
+            
+            break;
         }
-        elseif( $this_module->enabled )
+        if( $settings->get("modules:$do_module_name.enabled") == "true" )
         {
             $errors[] = $current_module->language->task_messages->already_enabled;
+            
+            break;
         }
-        else
+        
+        # Enable
+        if( file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
         {
-            if( ! file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
+            include ABSPATH . "/$do_module_name/module_install.inc";
+            if( count($errors) > 0 )
             {
-                $settings->set("modules:$do_module_name.enabled", "true");
-                $messages[] = $current_module->language->task_messages->enabled_ok;
-                $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
-            }
-            else
-            {
-                include ABSPATH . "/$do_module_name/module_install.inc";
-                if( count($errors) > 0 )
-                {
-                    $errors[] = $current_module->language->task_messages->enabled_ko;
-                }
-                else
-                {
-                    $settings->set("modules:$do_module_name.enabled", "true");
-                    $messages[] = $current_module->language->task_messages->enabled_ok;
-                    $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
-                }
+                $errors[] = $current_module->language->task_messages->enabled_ko;
+                
+                break;
             }
         }
+        $settings->set("modules:$do_module_name.enabled", "true");
+        $update_cache = true;
+        $messages[] = $current_module->language->task_messages->enabled_ok;
+        $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
         break;
-    }
-    #==============
+    
     case "disable":
-    #==============
-    {
-        $this_module = new module(ABSPATH . "/$do_module_name/module_info.xml");
-        if( ! $this_module->installed )
+        
+        # Prechecks
+        if( $settings->get("modules:$do_module_name.installed") != "true" )
         {
             $errors[] = $current_module->language->task_messages->not_installed;
+            
+            break;
         }
-        elseif( ! $this_module->enabled )
+        if( $settings->get("modules:$do_module_name.enabled") != "true" )
         {
             $errors[] = $current_module->language->task_messages->not_enabled;
+            
+            break;
         }
-        else
+        
+        # Disable
+        if( file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
         {
-            if( ! file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
+            include ABSPATH . "/$do_module_name/module_install.inc";
+            if( count($errors) > 0 )
             {
-                $settings->set("modules:$do_module_name.enabled", "false");
-                $messages[] = $current_module->language->task_messages->disabled_ok;
-                $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
-            }
-            else
-            {
-                include ABSPATH . "/$do_module_name/module_install.inc";
-                if( count($errors) > 0 )
-                {
-                    $errors[] = $current_module->language->task_messages->disabled_ko;
-                }
-                else
-                {
-                    $settings->set("modules:$do_module_name.enabled", "false");
-                    $messages[] = $current_module->language->task_messages->disabled_ok;
-                    $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
-                }
+                $errors[] = $current_module->language->task_messages->disabled_ko;
+                
+                break;
             }
         }
+        $settings->set("modules:$do_module_name.enabled", "false");
+        $update_cache = true;
+        $messages[] = $current_module->language->task_messages->disabled_ok;
+        $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
         break;
-    }
-    #================
+    
     case "uninstall":
-    #================
-    {
-        $this_module = new module(ABSPATH . "/$do_module_name/module_info.xml");
-        if( ! $this_module->installed )
+        
+        # Prechecks
+        if( $settings->get("modules:$do_module_name.installed") != "true" )
         {
             $errors[] = $current_module->language->task_messages->not_installed;
+            
+            break;
         }
-        else
+        
+        # Disable
+        $module_install_action = "disable";
+        if( file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
         {
-            if( ! file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
+            include ABSPATH . "/$do_module_name/module_install.inc";
+            if( count($errors) > 0 )
             {
-                $settings->set("modules:$do_module_name.enabled", "false");
-                $messages[] = $current_module->language->task_messages->disabled_ok;
-                $settings->set("modules:$do_module_name.installed", "false");
-                $messages[] = $current_module->language->task_messages->uninstalled_ok;
-                $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
-            }
-            else
-            {
-                $module_install_action = "disable";
-                include ABSPATH . "/$do_module_name/module_install.inc";
-                if( count($errors) > 0 )
-                {
-                    $errors[] = $current_module->language->task_messages->disabled_ko;
-                }
-                else
-                {
-                    $settings->set("modules:$do_module_name.enabled", "false");
-                    $messages[] = $current_module->language->task_messages->disabled_ok;
-                    
-                    $module_install_action = "uninstall";
-                    include ABSPATH . "/$do_module_name/module_install.inc";
-                    if( count($errors) > 0 )
-                    {
-                        $errors[] = $current_module->language->task_messages->uninstalled_ko;
-                    }
-                    else
-                    {
-                        $settings->set("modules:$do_module_name.installed", "false");
-                        $messages[] = $current_module->language->task_messages->uninstalled_ok;
-                        $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
-                    }
-                }
+                $errors[] = $current_module->language->task_messages->disabled_ko;
+                
+                break;
             }
         }
+        $settings->set("modules:$do_module_name.enabled", "false");
+        $update_cache = true;
+        $messages[] = $current_module->language->task_messages->disabled_ok;
+        
+        # Uninstall
+        $module_install_action = "uninstall";
+        if( file_exists(ABSPATH . "/$do_module_name/module_install.inc") )
+        {
+            include ABSPATH . "/$do_module_name/module_install.inc";
+            if( count($errors) > 0 )
+            {
+                $errors[] = $current_module->language->task_messages->uninstalled_ko;
+                
+                break;
+            }
+        }
+        $settings->set("modules:$do_module_name.installed", "false");
+        $messages[] = $current_module->language->task_messages->uninstalled_ok;
+        $messages[] = replace_escaped_vars($current_module->language->task_messages->all_ops_ok, '{$self_link}', "javascript:reload_self()");
         break;
-    }
+}
+
+if( $update_cache )
+{
+    $modules_cache = new disk_cache("{$config->datafiles_location}/cache/modules.dat");
+    $module = new module(ABSPATH . "/{$do_module_name}/module_info.xml");
+    $modules_cache->set($do_module_name, $module->serialize());
 }
 
 $template->page_contents_include = "index.nav.inc";

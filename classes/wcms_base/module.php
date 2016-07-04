@@ -72,7 +72,6 @@ class module
     function __construct($module_info_file)
     {
         global $config, $language, $settings;
-        session_start();
         
         if( ! file_exists($module_info_file) ) return;
         
@@ -87,6 +86,11 @@ class module
         foreach($module_info_contents as $key => $val)
             $this->{$key} = $val;
         # echo "<pre>post \$this := " . print_r($this, true) . "</pre>";
+        
+        # Sanitization
+        $this->version    = trim($this->version);
+        $this->group      = trim($this->group);
+        $this->admin_only = trim($this->admin_only);
         
         # Language var loading
         $language_cookie_name = "{$config->website_key}_UL";
@@ -123,8 +127,8 @@ class module
      */
     public function load_extensions($hook_area, $hook_marker)
     {
-        global /** @noinspection PhpUnusedLocalVariableInspection */
-        $modules, $_ROOT_URL, $current_module;
+        /** @noinspection PhpUnusedLocalVariableInspection */
+        global $modules, $current_module;
         
         /**
          * @var module[] $modules
@@ -142,7 +146,31 @@ class module
     
             /** @noinspection PhpUnusedLocalVariableInspection */
             $this_module = $modules[$module_name];
-            include "$_ROOT_URL/$module_name/".trim($sections[$hook_area]->{$hook_marker});
+            include ABSPATH . "/$module_name/".trim($sections[$hook_area]->{$hook_marker});
         }
+    }
+    
+    /**
+     * @return module
+     */
+    public function serialize()
+    {
+        $self = clone $this;
+        $self->php_includes      = empty($self->php_includes)      ? "" : $self->php_includes->asXML();
+        $self->template_includes = empty($self->template_includes) ? "" : $self->template_includes->asXML();
+        $self->language          = empty($self->language)          ? "" : $self->language->asXML();
+        $self->menu_items        = empty($self->menu_items)        ? "" : $self->menu_items->asXML();
+        $self->working_flags     = empty($self->working_flags)     ? "" : $self->working_flags->asXML();
+        
+        return $self;
+    }
+    
+    public function unserialize()
+    {
+        $this->php_includes      = simplexml_load_string($this->php_includes);
+        $this->template_includes = simplexml_load_string($this->template_includes);
+        $this->language          = simplexml_load_string($this->language);
+        $this->menu_items        = simplexml_load_string($this->menu_items);
+        $this->working_flags     = simplexml_load_string($this->working_flags);
     }
 }

@@ -10,8 +10,12 @@ class disk_cache
     
     public $loaded = false;
     
-    public function __construct($target_file_path)
+    private static $cache_hits = array();
+    
+    public function __construct($target_file_path = "")
     {
+        if( empty($target_file_path) ) return;
+        
         $this->disk_cache_dir  = dirname($target_file_path);
         $this->disk_cache_file = $target_file_path;
         
@@ -50,8 +54,27 @@ class disk_cache
     public function get($key)
     {
         if( ! isset($this->data[$key]) ) return null;
+    
+        $backtrace = "N/A";
+        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        {
+            $backtrace = debug_backtrace();
+            foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        }
+        self::$cache_hits[] = (object) array(
+            "file"      => basename($this->disk_cache_file),
+            "type"      => "get",
+            "key"       => $key,
+            "timestamp" => microtime(true),
+            "backtrace" => $backtrace,
+        );
         
         return $this->data[$key];
+    }
+    
+    public function exists($key)
+    {
+        return isset($this->data[$key]);
     }
     
     /**
@@ -64,10 +87,23 @@ class disk_cache
     
     public function set($key, $value)
     {
-        if( empty($value) ) unset( $this->data[$key] );
-        else                $this->data[$key] = $value;
+        $this->data[$key] = $value;
         
         $this->save();
+    
+        $backtrace = "N/A";
+        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        {
+            $backtrace = debug_backtrace();
+            foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        }
+        self::$cache_hits[] = (object) array(
+            "file"      => basename($this->disk_cache_file),
+            "type"      => "set",
+            "key"       => $key,
+            "timestamp" => microtime(true),
+            "backtrace" => $backtrace,
+        );
     }
     
     private function save()
@@ -78,5 +114,10 @@ class disk_cache
             throw new \RuntimeException("Can't write cache file {$this->disk_cache_file}");
         
         @chmod($this->disk_cache_file, 0777);
+    }
+    
+    public static function get_hits()
+    {
+        return self::$cache_hits;
     }
 }

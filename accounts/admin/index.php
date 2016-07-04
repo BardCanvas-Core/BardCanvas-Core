@@ -2,7 +2,7 @@
 /**
  * Accounts module admin index - db navigator
  *
- * @package    BadCanvas
+ * @package    HNG2
  * @subpackage Modules::included::accounts
  * @author     Alejandro Caballero<lava.caballero@gmail.com>
  */

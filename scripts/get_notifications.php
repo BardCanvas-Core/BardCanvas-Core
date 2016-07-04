@@ -2,7 +2,7 @@
 /**
  * Notifications deliverer
  *
- * @package    BadCanvas
+ * @package    HNG2
  * @subpackage Core::public_html
  * @author     Alejandro Caballero<lava.caballero@gmail.com>
  */

@@ -43,7 +43,7 @@ foreach($_all_modules as $key => $this_module)
 ?>
 
 <style type="text/css">
-    h2 { margin-top: 0; margin-right: 210px; }
+    .module_data_container h3 { margin-top: 0; margin-right: 210px; }
     
     .module_data_container table { border-spacing: 0; border-collapse: separate; border: 0; width: 100%; }
     .module_data_container table th ,
@@ -67,7 +67,47 @@ foreach($_all_modules as $key => $this_module)
     
     function reload_self()
     {
-        location.href  = '<?=$_SERVER["PHP_SELF"]?>?tab=' + active_tab + '&wasuuup=' + (Math.random() * 1000000000000000);
+        location.href = '<?=$_SERVER["PHP_SELF"]?>?tab=' + active_tab + '&wasuuup=' + (Math.random() * 1000000000000000);
+    }
+    
+    function purge_modules_cache()
+    {
+        var url = $_ROOT_URL + '/modules_manager/purge_cache.php?wasuuup=' + parseInt(Math.random() * 1000000000000000);
+        $.blockUI(blockUI_default_params);
+        $.get(url, function(response)
+        {
+            if( response != 'OK' )
+            {
+                $.unblockUI();
+                alert( response );
+                
+                return;
+            }
+            
+            reload_self();
+        });
+    }
+    
+    function change_caching_status(new_status)
+    {
+        var url = $_ROOT_URL + '/modules_manager/change_caching_status.php';
+        var params = {
+            'new_status': new_status,
+            'wasuuup':    parseInt(Math.random() * 1000000000000000)
+        };
+        $.blockUI(blockUI_default_params);
+        $.get(url, params, function(response)
+        {
+            if( response != 'OK' )
+            {
+                $.unblockUI();
+                alert( response );
+            
+                return;
+            }
+            
+            reload_self();
+        });
     }
     
     $(document).ready(function()
@@ -79,7 +119,24 @@ foreach($_all_modules as $key => $this_module)
     });
 </script>
 
-<h1><?= $current_module->language->page_title ?></h1>
+<h1>
+    <?= $current_module->language->page_title ?>
+    <? if( $settings->get("modules:modules_manager.disable_cache") == "true" ): ?>
+        <button onclick="change_caching_status('enabled')">
+            <span class="fa fa-toggle-on"></span>
+            <?= $current_module->language->buttons->toggle_cache->enable ?>
+        </button>
+    <? else: ?>
+        <button onclick="change_caching_status('disabled')">
+            <span class="fa fa-toggle-off"></span>
+            <?= $current_module->language->buttons->toggle_cache->disable ?>
+        </button>
+        <button onclick="purge_modules_cache()" title="<?= $current_module->language->buttons->purge_cache->title ?>">
+            <span class="fa fa-refresh"></span>
+            <?= $current_module->language->buttons->purge_cache->caption ?>
+        </button>
+    <? endif; ?>
+</h1>
 
 <? if( count(array_merge($errors, $messages)) > 0 ): ?>
     <div class="framed_content state_ok">
@@ -145,7 +202,7 @@ foreach($_all_modules as $key => $this_module)
                         <? endif; ?>
                     </div>
                     
-                    <h2 style="margin-top: 0;"><?= ucwords(str_replace("_", " ", $module_name)) ?></h2>
+                    <h3 style="margin-top: 0;"><?= ucwords(str_replace("_", " ", $module_name)) ?></h3>
                     
                     <p><i><?= $this_module->language->description ?></i></p>
                     

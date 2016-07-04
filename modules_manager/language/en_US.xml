@@ -15,6 +15,17 @@
         </menu_items>
     </admin>
     
+    <buttons>
+        <purge_cache>
+            <caption>Purge cache</caption>
+            <title>Remove the cached modules collection and force regeneration</title>
+        </purge_cache>
+        <toggle_cache>
+            <enable>Enable cache</enable>
+            <disable>Disable cache</disable>
+        </toggle_cache>
+    </buttons>
+    
     <page_title>Modules manager</page_title>
     
     <per_module_fields>
@@ -100,6 +111,7 @@
         <all_ops_ok><![CDATA[
             Please <a href="{$self_link}">click here</a> to reload this page and have the admin bar updated
         ]]></all_ops_ok>
+        <invalid_mode_specified>Invalid mode specified</invalid_mode_specified>
     </task_messages>
     
 </language>

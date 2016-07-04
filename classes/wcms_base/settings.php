@@ -54,12 +54,14 @@ class settings
             $default_value = "";
         }
         
-        if( $this->cache->get($name) != "" && ! $forced ) return $this->cache->get($name);
+        if( $this->cache->exists($name) && ! $forced ) return $this->cache->get($name);
         
         $res = $database->query("select value from settings where name = '$name'");
         
         if( $database->num_rows($res) == 0 && empty($default_value) )
         {
+            $this->cache->set($name, "");
+            
             return "";
         }
         elseif( $database->num_rows($res) == 0 && ! empty($default_value) )

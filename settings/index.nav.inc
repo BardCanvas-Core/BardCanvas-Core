@@ -86,23 +86,25 @@ while($row = $database->fetch_object($res))
     
     <? foreach($var_groups as $group_name => $group_data): ?>
         
-        <div id="g<?= md5($group_name) ?>" class="settings_group">
+        <div id="g<?= md5($group_name) ?>">
             
-            <form name="" method="post" action="<?= $_SERVER["PHP_SELF"] ?>?wasuuup=<?=md5(mt_rand(1,65535))?>" onsubmit="$(this).find('input[name=tab]').val( active_tab )">
+            <form method="post" action="<?= $_SERVER["PHP_SELF"] ?>?wasuuup=<?=md5(mt_rand(1,65535))?>" onsubmit="$(this).find('input[name=tab]').val( active_tab )">
                 
                 <input type="hidden" name="mode" value="save_group">
                 <input type="hidden" name="tab" value="<?= empty($_REQUEST["tab"]) ? "0" : $_REQUEST["tab"] ?>">
                 
-                <? foreach($group_data as $key => $data): ?>
-                    
-                    <section class="setting_item">
-                        <h3><?= ucwords(str_replace("_", " ", $key)) ?></h3>
-                        <div class="framed_content">
-                            <textarea class="expandible_textarea" name="names[<?=$data->name?>]"><?= htmlspecialchars($data->value) ?></textarea>
-                        </div>
-                    </section>
-                    
-                <? endforeach; ?>
+                <div class="settings_group">
+                    <? foreach($group_data as $key => $data): ?>
+                        
+                        <section class="setting_item">
+                            <h3><?= ucwords(str_replace("_", " ", $key)) ?></h3>
+                            <div class="framed_content">
+                                <textarea class="expandible_textarea" name="names[<?=$data->name?>]"><?= htmlspecialchars($data->value) ?></textarea>
+                            </div>
+                        </section>
+                        
+                    <? endforeach; ?>
+                </div>
                 
                 <div align="center">
                     <button type="submit" style="padding-top: 5px; padding-bottom: 5px;">
