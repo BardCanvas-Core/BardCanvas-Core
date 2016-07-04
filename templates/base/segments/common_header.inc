@@ -39,7 +39,6 @@
 <link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/lib/jquery-ui-themes-1.10.4/<?= $settings->get("engine.ui_theme", "blitzer") ?>/jquery-ui.css">
 <script type="text/javascript"          src="<?= $_ROOT_URL ?>/lib/jquery.ui.touch-punch.min.js"></script>
 
-<!-- FontAwesome -->
-<link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/lib/font-awesome-4.5.0/css/font-awesome.css">
+<!-- UI Additions -->
+<link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/lib/font-awesome-4.6.3/css/font-awesome.css">
 <script src="//twemoji.maxcdn.com/2/twemoji.min.js"></script>
-    

@@ -9,6 +9,8 @@
  * @var string $_ROOT_URL
  */
 
+use hng2_tools\internals;
+
 if( ! isset($_ROOT_URL) ) $_ROOT_URL = ".";
 
 foreach($modules as $this_module)
@@ -158,7 +160,7 @@ foreach($modules as $this_module)
     if( ! empty($this_module->template_includes->pre_eof) )
         include "{$this_module->abspath}/contents/{$this_module->template_includes->pre_eof}";
 
-$template->render_internals()
+internals::render();
 ?>
 
 </body>

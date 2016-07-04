@@ -25,7 +25,7 @@
 /* Mobile devices triggering menu */
 
 #admin_menu_trigger      { line-height: 30px; padding: 0 10px; float: right; cursor: pointer; }
-#admin_menu_trigger.open { color: #CE0909; background-color: #f6f8f9; }
+#admin_menu_trigger.open { color: #990d0d; background-color: #f6f8f9; }
 
 #admin_menu_trigger { display: none; }
 #admin_menu .item   { display: inline-block; }
@@ -43,9 +43,9 @@
 
 body.admin h1, body.admin h2, body.admin h3 { padding: 5px 10px; border-radius: 5px; }
 
-body.admin h1, body.admin section > h1 { color: white;   background-color: #CE0909; border: 2px solid #830606; }
-body.admin h2, body.admin section > h2 { color: white;   background-color: #ce6562; border: 2px solid #CE0909; }
-body.admin h3, body.admin section > h3 { color: #830606; background-color: #ceaea7; border: 2px solid #ce6562; }
+body.admin h1 { color: white;   background-color: #990d0d; border: 2px solid #710707; }
+body.admin h2 { color: white;   background-color: #ce6562; border: 2px solid #990d0d; }
+body.admin h3 { color: #830606; background-color: #ceaea7; border: 2px solid #ce6562; }
 
 body.admin section > h1, body.admin section > h2, body.admin section > h3 {
     padding: 5px 10px;

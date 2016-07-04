@@ -530,7 +530,7 @@ class account
             $database->exec("
                 delete from account_engine_prefs where
                     id_account = '".addslashes($this->id_account)."' and
-                    `keyname`  = '$key'
+                    `name`  = '$key'
             ");
         }
         else
@@ -541,7 +541,7 @@ class account
             $database->exec("
                 insert into account_engine_prefs set
                     id_account = '".addslashes($this->id_account)."',
-                    `keyname`  = '$key',
+                    `name`     = '$key',
                     `value`    = '".json_encode($value)."'
                 on duplicate key update
                     `value`    = '".json_encode($value)."'
