@@ -248,7 +248,7 @@ $res = $database->query($query);
 <? endif;  ?>
 
 <div class="table_wrapper">
-    <table class="nav_table" style="margin-top: 0;">
+    <table class="nav_table evened">
         
         <thead>
         <tr>
@@ -273,9 +273,7 @@ $res = $database->query($query);
         </thead>
         
         <tbody>
-        <? $even = "even"; ?>
         <? while( $row = $database->fetch_object($res) ): ?>
-            <? $even = $even == "even" ? "odd" : "even"; ?>
             <?
             $res2 = $database->query("
                 select
@@ -294,7 +292,7 @@ $res = $database->query($query);
             ");
             ?>
             
-            <tr class="<? if( $row->id_account == $account->id_account ) echo "self"; else echo $row->state; ?> <?= $even ?>"
+            <tr class="<? if( $row->id_account == $account->id_account ) echo "self"; else echo $row->state; ?>"
                 id_account="<?= $row->id_account ?>">
                 
                 <td width="20">
@@ -474,3 +472,5 @@ function render_user_devices_info($row, $res2)
     </table>
     <?
 }
+?>
+

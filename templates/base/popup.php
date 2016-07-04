@@ -9,6 +9,8 @@
  * @var string $_ROOT_URL
  */
 
+use hng2_tools\internals;
+
 if( ! isset($_ROOT_URL) ) $_ROOT_URL = ".";
 
 foreach($modules as $this_module)
@@ -37,6 +39,8 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     </div><!-- /#content -->
     
 </div><!-- /#body_wrapper -->
+
+<? internals::render(); ?>
 
 </body>
 </html>

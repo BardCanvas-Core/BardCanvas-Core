@@ -158,18 +158,21 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .nav_table th { padding: 4px;     border-top:    1px solid #c2daea; border-bottom: 1px solid #c2daea; color: rgb(58, 101, 129); font-weight: normal; background-color: #e3eff7; }
 .nav_table td { padding: 2px 4px; border-bottom: 1px solid #c2daea; }
 
-.nav_table tbody tr:hover       td { color: black; background-color: greenyellow; }
-.nav_table tbody tr.highlighted td { color: black; background-color: greenyellow; }
+.nav_table.evened tbody tr:nth-child(even) ,
+.nav_table tr.even                         { background-color: #e3eff7; }
 
-.nav_table tr.clicked                     td { background-color: #ffecc6; }
-.nav_table tr.clicked:hover               td { background-color: #7dbf27; }
-.nav_table tr.clicked.highlighted:hover   td { background-color: #7dbf27; }
+.nav_table tbody tr:hover       { color: black; background-color: greenyellow; }
+.nav_table tbody tr.highlighted { color: black; background-color: greenyellow; }
 
-.nav_table.no_highlight tbody tr:hover       td { color: inherit; background-color: transparent; }
-.nav_table.no_highlight tbody tr.highlighted td { color: inherit; background-color: transparent; }
+.nav_table.evened tbody tr:nth-child(even):hover ,
+.nav_table tr.even:hover                         { color: black; background-color: greenyellow; }
 
-.nav_table.evened tbody tr:nth-child(even) td ,
-.nav_table tr.even td                         { background-color: #e3eff7; }
+.nav_table tr.clicked                     { background-color: #ffecc6; }
+.nav_table tr.clicked:hover               { background-color: #7dbf27; }
+.nav_table tr.clicked.highlighted:hover   { background-color: #7dbf27; }
+
+.nav_table.no_highlight tbody tr:hover       { color: inherit; background-color: transparent; }
+.nav_table.no_highlight tbody tr.highlighted { color: inherit; background-color: transparent; }
 
 .nav_table .left_bordered  { border-left:  1px solid #c2daea; }
 .nav_table .right_bordered { border-right: 1px solid #c2daea; }
