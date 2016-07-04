@@ -140,7 +140,21 @@ abstract class abstract_repository
      *
      * @return int
      */
+    abstract public function insert($record);
+    
+    /**
+     * @param abstract_record $record
+     *
+     * @return int
+     */
     abstract public function save($record);
+    
+    /**
+     * @param abstract_record $record
+     *
+     * @throws \Exception
+     */
+    abstract public function validate_record($record);
     
     /**
      * @param $key

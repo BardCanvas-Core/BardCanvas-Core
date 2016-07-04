@@ -54,6 +54,7 @@ foreach($_all_modules as $key => $this_module)
     .module_data_container .action_buttons button             { width: 150px; padding-top: 5px; padding-bottom: 5px; }
     .module_data_container .action_buttons button:first-child { margin-bottom: 10px; }
 </style>
+
 <script type="text/javascript">
     var active_tab = parseInt('<?= empty($_REQUEST["tab"]) ? "0" : $_REQUEST["tab"] ?>');
     
@@ -120,7 +121,13 @@ foreach($_all_modules as $key => $this_module)
 </script>
 
 <h1>
+    <button class="pull-right" onclick="reload_self()">
+        <span class="fa fa-refresh fa-fw"></span>
+        <?=  $language->reload ?>
+    </button>
+    
     <?= $current_module->language->page_title ?>
+    
     <? if( $settings->get("modules:modules_manager.disable_cache") == "true" ): ?>
         <button onclick="change_caching_status('enabled')">
             <span class="fa fa-toggle-on"></span>
