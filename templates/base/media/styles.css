@@ -1,0 +1,22 @@
+/**
+ * Base template - Base styles
+ *
+ * @package    HNG2
+ * @subpackage core
+ * @author     Alejandro Caballero - lava.caballero@gmail.com
+ */
+
+@import 'https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Prompt:400,400i,700,700i|Roboto+Condensed:400,400i,700,700i|Roboto:400,400i,700,700i|Ubuntu+Mono:400,400i,700,700i&subset=latin-ext';
+
+body     { font-family: 'Prompt', sans-serif; font-size: 12pt; }
+th       { font-family: 'Roboto', sans-serif; font-size: 11pt; }
+td       { font-family: 'Roboto Condensed', 'Arial Narrow', sans-serif; font-size: 11pt; }
+#header  { font-family: 'Roboto', sans-serif; font-size: 12pt; }
+#footer  { font-family: 'Roboto Condensed', 'Arial Narrow', sans-serif; font-size: 11pt; }
+#content { line-height: 1em; }
+
+textarea, pre, .fixed_font, code { font-family: 'Ubuntu Mono', 'Lucida Console', 'Courier new', 'Courier', monospace; font-size: 10pt; }
+
+h1 { font-family: 'Lora', sans-serif; font-size: 18pt; line-height: 1em; }
+h2 { font-family: 'Lora', sans-serif; font-size: 16pt; line-height: 1em; }
+h3 { font-family: 'Lora', sans-serif; font-size: 14pt; line-height: 1em; }

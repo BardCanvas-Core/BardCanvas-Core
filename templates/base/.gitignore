@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+/Desktop.ini
+/*.ico
+Thumbs*.db
+.idea/
+*.bak
+.DS_Store
+error_log

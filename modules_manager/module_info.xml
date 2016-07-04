@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+    
+    <version>1.0</version>
+    <group>System</group>
+    <admin_only>true</admin_only>
+    
+    <working_flags>
+        <install>false</install>
+        <uninstall>false</uninstall>
+        <enable>false</enable>
+        <disable>false</disable>
+    </working_flags>
+    
+    <menu_items>
+        <item>
+            <caption_language_var>admin_menu_caption</caption_language_var>
+            <url></url>
+        </item>
+    </menu_items>
+    
+</module>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+    
+    <version>1.0</version>
+    <group>System</group>
+    <admin_only>false</admin_only>
+    
+    <working_flags>
+        <install>false</install>
+        <uninstall>false</uninstall>
+        <enable>false</enable>
+        <disable>false</disable>
+    </working_flags>
+    
+    <menu_items>
+        <item>
+            <caption_language_var>admin_menu_caption</caption_language_var>
+            <url>admin/</url>
+        </item>
+    </menu_items>
+    
+    <template_includes>
+        <html_head>head_scripts_preload.tpl.inc</html_head>
+        <header_menu>header_menu.tpl.inc</header_menu>
+        <post_footer>dialog_defs.tpl.inc</post_footer>
+    </template_includes>
+    
+</module>

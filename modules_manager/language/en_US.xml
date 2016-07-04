@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+    
+    <!-- #################################### -->
+    <!-- Modules manager language definitions -->
+    <!-- #################################### -->
+    
+    <description>
+        Administrative modules manager, used to install, uninstall, enable or disable modules.
+    </description>
+    
+    <admin>
+        <menu_items>
+            <admin_menu_caption>Modules</admin_menu_caption>
+        </menu_items>
+    </admin>
+    
+    <page_title>Modules manager</page_title>
+    
+    <per_module_fields>
+        <action_buttons>
+            <install>Install</install>
+            <uninstall>Uninstall</uninstall>
+            <enable>Enable</enable>
+            <disable>Disable</disable>
+        </action_buttons>
+        <name>Name/key:</name>
+        <version>Version:</version>
+        <uploaded>(last update: {$time})</uploaded>
+        <group>Group:</group>
+        <admin_only>
+            <caption>Functionality:</caption>
+            <generic>Generic / accessible to everyone</generic>
+            <only_admins>Administrative / only admins can access it</only_admins>
+        </admin_only>
+        <working_flags>
+            <caption>Work flags:</caption>
+            <install>
+                <true>Can be installed</true>
+                <false>System-embedded</false>
+            </install>
+            <uninstall>
+                <true>Can be uninstalled</true>
+                <false>Cannot be uninstalled</false>
+            </uninstall>
+            <enable>
+                <true>Can be enabled</true>
+                <false>Cannot be enabled</false>
+            </enable>
+            <disable>
+                <true>Can be disabled</true>
+                <false>Cannot be disabled</false>
+            </disable>
+        </working_flags>
+        <menu_items>
+            <caption>Entries in Admin menu:</caption>
+            <no_items>None</no_items>
+        </menu_items>
+        <php_includes>
+            <caption>System extensions:</caption>
+            <no_items>None</no_items>
+            <bootstrap>Bootstrap</bootstrap>
+        </php_includes>
+        <template_includes>
+            <caption>Template extensions:</caption>
+            <no_items>None</no_items>
+            <html_head><![CDATA[HTML &lt;head&gt;]]></html_head>
+            <pre_header>Previous to content header</pre_header>
+            <header>Additions to content header</header>
+            <content_top>Above page contents</content_top>
+            <content_bottom>Below page contents</content_bottom>
+            <footer_top>Above footer</footer_top>
+            <footer_bottom>Below footer</footer_bottom>
+            <post_footer>At the end of the document (outside the footer)</post_footer>
+        </template_includes>
+        <extends_to>
+            <caption>Modules it extends:</caption>
+            <no_data>None</no_data>
+        </extends_to>
+        <extension_areas_info>
+            <caption>Can be extended on the next areas:</caption>
+            <no_data>None</no_data>
+        </extension_areas_info>
+    </per_module_fields>
+    
+    <task_messages>
+        <module_not_found>The specified module hasn't been found.</module_not_found>
+        <already_installed>The specified module is already installed.</already_installed>
+        <installed_ok>Module has been successfully installed.</installed_ok>
+        <installed_ko>Module wasn't installed.</installed_ko>
+        <already_enabled>The specified module is already enabled.</already_enabled>
+        <enabled_ok>Module has been successfully enabled.</enabled_ok>
+        <enabled_ko>Module wasn't enabled.</enabled_ko>
+        <not_installed>The specified module isn't installed.</not_installed>
+        <disabled_ko>Module wasn't disabled.</disabled_ko>
+        <disabled_ok>Module has been successfully disabled.</disabled_ok>
+        <uninstalled_ko>Module wasn't completely uninstalled.</uninstalled_ko>
+        <uninstalled_ok>Module has been sucessfully uninstalled.</uninstalled_ok>
+        <not_enabled>The specified module is not enabled.</not_enabled>
+        <all_ops_ok><![CDATA[
+            Please <a href="{$self_link}">click here</a> to reload this page and have the admin bar updated
+        ]]></all_ops_ok>
+    </task_messages>
+    
+</language>

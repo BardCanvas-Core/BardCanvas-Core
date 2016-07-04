@@ -1,0 +1,39 @@
+/**
+ * Account styles
+ *
+ * @package    HNG2
+ * @subpackage modules::accounts
+ * @author     Alejandro Caballero - lava.caballero@gmail.com
+ */
+
+#login_module_header .login input[name="user_name"] { width: 100px; }
+#login_module_header .login input[name="password"]  { width: 100px; }
+
+#loggedin_username { font-weight: bold; }
+
+#login_form                 { display: inline-block; line-height: 40px; }
+#login_form .field          { display: inline-block; margin: 0 10px; }
+#login_form .field .caption { display: inline-block; }
+
+.userdata_form       { text-align: center; margin-left: auto; margin-right: auto; }
+.userdata_form .cell { text-align: left; padding: 20px; vertical-align: top; }
+@media all and (max-width: 5000px) and (min-width: 851px)
+{
+    .userdata_form .cell                 { width: 46%; display: inline-block; }
+    .userdata_form .cell:nth-child(odd)  { border-right: 2px solid #F0F0F0; }
+}
+@media all and (max-width: 850px) and (min-width: 100px)
+{
+    .userdata_form .cell                 { display: block; }
+}
+
+.userdata_form .field_caption         { margin-bottom: 5px; }
+.userdata_form .field_input           { margin-left: 24px; }
+.userdata_form select                 ,
+.userdata_form input[type="text"]     ,
+.userdata_form input[type="password"] { width: 99%; font-size: 12pt; }
+
+.userdata_form button[type="reset"]  ,
+.userdata_form button[type="submit"] { padding-top: 10px; padding-bottom: 10px; }
+
+.framed_content.state_ko ul { margin-top: 5px; margin-bottom: 5px; padding-left: 18px; }

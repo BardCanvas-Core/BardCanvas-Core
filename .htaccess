@@ -1,0 +1,11 @@
+<FilesMatch "\.inc$|\.xml$">
+deny from all
+</FilesMatch>
+
+Options -Indexes
+
+ReWriteEngine On
+# ReWriteBase /
+
+ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
+ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]

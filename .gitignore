@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+/Desktop.ini
+/*.ico
+/.idea
+Thumbs*.db
+*.bak
+.DS_Store
+error_log
+/config.php

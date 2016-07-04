@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+    
+    <bootstrap>
+        <errors>
+            <language_file_dont_exist>Language file for "{$language}" in module "{$module_name}" doesn't exist!</language_file_dont_exist>
+        </errors>
+    </bootstrap>
+    
+    <admin>
+        <bar_title>Engine Version:</bar_title>
+    </admin>
+    
+    <record_nav>
+        <page>Page</page>
+        <of>of</of>
+        <records>entries</records>
+        <entries>entries</entries>
+        <search>Search:</search>
+        <filter>Filter:</filter>
+        <show>Show:</show>
+        <recs_per_page>Recs/page</recs_per_page>
+        <show_all>All</show_all>
+        <actions>Actions</actions>
+        <buttons>
+            <first>First</first>
+            <previous>Previous</previous>
+            <next>Next</next>
+            <last>Last</last>
+            <apply>Apply</apply>
+            <reset>Reset</reset>
+        </buttons>
+        <no_records_found>There are no records matching the specified search pattern</no_records_found>
+        <empty_table_add_records>Table is empty. Please add a record.</empty_table_add_records>
+    </record_nav>
+    
+    <errors>
+        <page_requires_login>Error: this page requires you to have an opened session. Please login.</page_requires_login>
+        <account_is_locked>Error: your account is currently locked. Please contact us for further information.</account_is_locked>
+        <access_denied>Access denied</access_denied>
+    </errors>
+    
+    <click_here_to_continue>Click here to continue...</click_here_to_continue>
+    
+    <toggle_info>Show/hide info</toggle_info>
+    
+    <wait>Please wait...</wait>
+    
+    <ok>OK</ok>
+    <save>Save</save>
+    <submit>Submit</submit>
+    <done>Done</done>
+    <cancel>Cancel</cancel>
+    <close>Close</close>
+    
+    <failed_to_create_cron_job><![CDATA[
+        The background processing job couldn't be created because of the next error:<br>
+        {$error}<br>
+        Please contact the tech support staff.
+    ]]></failed_to_create_cron_job>
+    
+    <time>
+        <ago>ago</ago>
+    </time>
+    
+    <lookup>Lookup</lookup>
+    <return>Return</return>
+    <refresh>Refresh</refresh>
+    <reload>Reload</reload>
+    <reload_page>Reload page</reload_page>
+    
+    <notification_deletion_errors>
+        <missing_id>You're calling this script incorrectly.</missing_id>
+        <belongs_to_other>The notification you try to access doesn't belong to you.</belongs_to_other>
+        <cant_be_deleted>The notification can't be deleted! Please contact our Tech Support Staff.</cant_be_deleted>
+    </notification_deletion_errors>
+    
+    <zip>
+        <zip_support_disabled><![CDATA[
+            Zip support is not present in current PHP installation.<br>
+            <b>Uploading zip files will cause an error.</b><br>
+            Please avoid uploading zip files and contact the tech support staff and let them know this message.
+        ]]></zip_support_disabled>
+        <zip_file_cannot_be_opened>The zip file you've uploaded cannot be opened. Please make sure you're uploading a non-corrupt, unprotected zip file. Error reported by the unzip function: {$error}</zip_file_cannot_be_opened>
+        <zip_file_cannot_be_extracted>The file/s inside the zip you've uploaded cannot be extracted. Please make sure you're uploading a non-corrupt, unprotected zip file. If the file was corrupted, please try uploading it again. Error reported by the unzip function: {$error}</zip_file_cannot_be_extracted>
+    </zip>
+    
+    <show_log>Show log</show_log>
+    <show_contents>Show contents</show_contents>
+    
+    <home_title>Home</home_title>
+    
+    <install_messages>
+        <table_created_ok>Table {$table_name} successfully created.</table_created_ok>
+        <table_created_ko>Table {$table_name} can't be created! Error: {$error}</table_created_ko>
+        <table_deleted_ok>Table {$table_name} successfully deleted.</table_deleted_ok>
+        <table_deleted_ko>Table {$table_name} can't be deleted! Error: {$error}</table_deleted_ko>
+    </install_messages>
+    
+</language>
