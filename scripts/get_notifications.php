@@ -4,7 +4,7 @@
  *
  * @package    HNG2
  * @subpackage Core::public_html
- * @author     Alejandro Caballero<lava.caballero@gmail.com>
+ * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
 use hng2_base\module;

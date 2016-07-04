@@ -3,8 +3,8 @@
  * Accounts module admin index - db navigator
  *
  * @package    HNG2
- * @subpackage Modules::included::accounts
- * @author     Alejandro Caballero<lava.caballero@gmail.com>
+ * @subpackage accounts
+ * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
 use hng2_base\account;

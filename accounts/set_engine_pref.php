@@ -3,7 +3,7 @@
  * Account engine pref saver
  *
  * @package    HNG2
- * @subpackage modules::accounts
+ * @subpackage accounts
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  *
  * @param string "key"

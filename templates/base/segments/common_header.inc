@@ -41,4 +41,3 @@
 
 <!-- UI Additions -->
 <link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/lib/font-awesome-4.6.3/css/font-awesome.css">
-<script src="//twemoji.maxcdn.com/2/twemoji.min.js"></script>

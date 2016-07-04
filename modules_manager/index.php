@@ -3,8 +3,8 @@
 * Modules manager admin index
 * 
 * @package    HNG2
-* @subpackage Modules::included::modules_manager
-* @author     Alejandro Caballero<lava.caballero@gmail.com>
+* @subpackage modules_manager
+* @author     Alejandro Caballero - lava.caballero@gmail.com
 */
 
 use hng2_base\module;

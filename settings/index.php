@@ -3,8 +3,8 @@
  * Settings module admin index
  *
  * @package    HNG2
- * @subpackage Modules::included::settings
- * @author     Alejandro Caballero<lava.caballero@gmail.com>
+ * @subpackage settings
+ * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
 $_ROOT_URL = "..";

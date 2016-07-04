@@ -8,6 +8,7 @@
  * @var {string} $_ROOT_URL
  */
 
+//noinspection JSUnusedGlobalSymbols
 /**
  * Get a document and show a dialog from it
  * 
@@ -150,6 +151,25 @@ function check_wrapped_tables()
     });
 }
 
+function refresh_record_browser($target)
+{
+    var target_id = '#' + $target.attr('id');
+    $target.find('form').ajaxForm({
+        target:       target_id,
+        beforeSubmit: function()
+                      {
+                          $target.block(blockUI_medium_params);
+                      },
+        success:      function()
+                      {
+                          $target.unblock();
+                          refresh_record_browser($target);
+                      }
+    });
+    
+    check_wrapped_tables();
+}
+
 $(document).ready(function()
 {
     set_body_metas();
@@ -167,5 +187,20 @@ $(document).ready(function()
     $(window).click(function()
     {
         hide_dropdown_menus();
-    })
+    });
+    
+    var $ajax_record_browsers = $('.ajax_record_browser');
+    if( $ajax_record_browsers.length > 0 )
+    {
+        $ajax_record_browsers.each(function()
+        {
+            if( $(this).attr('data-no-autoload') ) return;
+            
+            var url = $(this).attr('data-src');
+            $(this).load(url, function()
+            {
+                refresh_record_browser( $(this) );
+            });
+        });
+    }
 });
