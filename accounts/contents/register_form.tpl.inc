@@ -25,6 +25,15 @@ use hng2_base\module;
     <?= empty($_form_title) ? $current_module->language->register_form->form_title : $_form_title ?>
 </h1>
 
+<? if( $settings->get("engine.recaptcha_private_key") == "" || $settings->get("engine.recaptcha_public_key") == "" ): ?>
+    
+    <div class="framed_content state_ko">
+        <span class="fa fa-warning"></span>
+        <?= $current_module->language->errors->registration->recaptcha_not_configured ?>
+    </div>
+    
+    <? return; ?>
+<? endif; ?>
 
 <? if( ! $_no_flag_check ): ?>
     <? if( $settings->get("modules:accounts.register_enabled") != "true" ): ?>

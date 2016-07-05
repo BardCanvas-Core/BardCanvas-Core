@@ -180,6 +180,12 @@
         
         <!-- Registration related -->
         <registration>
+            <recaptcha_not_configured><![CDATA[
+                <b>Reaptcha keys aren't set!</b><br><br>
+                If you already have recaptcha keys, login as admin and enter them on the Settings module.<br>
+                If not, Go to <a href="https://www.google.com/recaptcha/admin" target="_blank">Google Recaptcha</a>,
+                register and get a private/public key pair and then enter them on the Settings module.
+            ]]></recaptcha_not_configured>
             <errors_found_in_form>
                 <pre>Errors found while validating the form!</pre>
                 <post>Please fix them, re-type the passwords and submit the form again.</post>
