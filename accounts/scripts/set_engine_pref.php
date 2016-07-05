@@ -12,7 +12,7 @@
  * @return string "OK" on success | error message
  */
 
-$_ROOT_URL = "..";
+$_ROOT_URL = "../..";
 include "{$_ROOT_URL}/config.php";
 include "{$_ROOT_URL}/includes/bootstrap.inc";
 

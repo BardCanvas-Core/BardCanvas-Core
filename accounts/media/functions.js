@@ -175,7 +175,7 @@ function process_reset_result(responseText, statusText, xhr, $form)
 
 function set_engine_pref(key, value)
 {
-    var url = $_ROOT_URL + '/accounts/set_engine_pref.php';
+    var url = $_ROOT_URL + '/accounts/scripts/set_engine_pref.php';
     var params = {'key': key, 'value': value};
     $.get(url, params, function(response)
     {
