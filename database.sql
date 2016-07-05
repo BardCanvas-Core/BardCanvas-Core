@@ -27,6 +27,7 @@ insert into settings set name='engine.user_online_cookie'    , value='_HNG2OC';
 insert into settings set name='engine.mail_sender_name'      , value='HNG2 Notifications';
 insert into settings set name='engine.mail_sender_email'     , value='nobody@localhost';
 
+insert into settings set name='modules:accounts.user_levels'                  , value='0 - Unregistered\n1 - Unconfirmed\n50 - Newcomer\n100 - Author\n150 - VIP\n200 - Moderator\n240 - Coadmin\n255 - Admin';
 insert into settings set name='modules:accounts.installed'                    , value='true';
 insert into settings set name='modules:accounts.enabled'                      , value='true';
 insert into settings set name='modules:accounts.register_enabled'             , value='true';

@@ -19,4 +19,4 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     <? include "{$current_module->abspath}/{$template->page_contents_include}"; ?>
 </div>
 
-<? internals::render(); ?>
+<? internals::render(__FILE__); ?>

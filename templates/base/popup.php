@@ -40,7 +40,7 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     
 </div><!-- /#body_wrapper -->
 
-<? internals::render(); ?>
+<? internals::render(__FILE__); ?>
 
 </body>
 </html>

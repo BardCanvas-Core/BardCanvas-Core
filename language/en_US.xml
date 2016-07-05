@@ -52,6 +52,7 @@
     <done>Done</done>
     <cancel>Cancel</cancel>
     <close>Close</close>
+    <none>None</none>
     
     <failed_to_create_cron_job><![CDATA[
         The background processing job couldn't be created because of the next error:<br>

@@ -10,6 +10,7 @@
 define("ABSPATH",        dirname(__FILE__));
 define("ENCRYPTION_KEY", "BIG_RANDOM_SRING_HERE");
 define("WEBSITE_ID",     "hng2site");
+define("COOKIES_DOMAIN", "");
 
 $DATABASES = array(
     array(

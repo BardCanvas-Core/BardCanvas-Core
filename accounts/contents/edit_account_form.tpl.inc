@@ -126,19 +126,20 @@ use hng2_base\module;
     
     <div align="center">
         <? if( ! empty($_cancelation_redirect) ): ?>
-            <button type="reset" onclick="location.href='<?= $_cancelation_redirect ?>'; return false;">
+            <button type="reset" class="big_form_submit_button"
+                    onclick="location.href='<?= $_cancelation_redirect ?>'; return false;">
                 <span class="fa fa-ban"></span>
                 <?= $language->cancel ?>
             </button>
         <? endif; ?>
         
         <? if( ! empty($_submit_button_caption) ): ?>
-            <button type="submit">
+            <button type="submit" class="big_form_submit_button">
                 <span class="fa fa-check"></span>
                 <?= $_submit_button_caption ?>
             </button>
         <? else: ?>
-            <button type="submit">
+            <button type="submit" class="big_form_submit_button">
                 <?= $current_module->language->user_account_form->submit ?>
                 <span class="fa fa-play"></span>
             </button>

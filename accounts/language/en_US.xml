@@ -19,7 +19,7 @@
             <admin_menu_caption>Accounts</admin_menu_caption>
         </menu_items>
         <record_nav>
-            <page_title>Account maintenance</page_title>
+            <page_title>User accounts</page_title>
             <disable_register>Disable registration</disable_register>
             <enable_register>Enable registration</enable_register>
             <create>Create...</create>
@@ -38,18 +38,16 @@
                     <layout xalign="center" xnowrap="true" />
                     <caption>Id</caption>
                 </id>
-                <user_name>
-                    <layout xalign="left" xwidth="20%" />
-                    <caption>User name</caption>
-                    <order_asc  id="1">Order by user name ascending</order_asc>
-                    <order_desc id="2">Order by user name descending</order_desc>
-                </user_name>
                 <full_name>
-                    <layout xalign="left" xwidth="40%" />
-                    <caption>Full name and email(s)</caption>
+                    <layout xnowrap="true" />
+                    <caption>Display Name</caption>
                     <order_asc  id="3">Order by display name ascending</order_asc>
                     <order_desc id="4">Order by display name descending</order_desc>
                 </full_name>
+                <details>
+                    <layout xalign="left" xwidth="60%" />
+                    <caption>and details</caption>
+                </details>
                 <country>
                     <layout xalign="left" xwidth="20%" />
                     <caption>Country</caption>

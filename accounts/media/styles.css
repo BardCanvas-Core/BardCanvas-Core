@@ -33,7 +33,4 @@
 .userdata_form input[type="text"]     ,
 .userdata_form input[type="password"] { width: 99%; font-size: 12pt; }
 
-.userdata_form button[type="reset"]  ,
-.userdata_form button[type="submit"] { padding-top: 10px; padding-bottom: 10px; }
-
 .framed_content.state_ko ul { margin-top: 5px; margin-bottom: 5px; padding-left: 18px; }

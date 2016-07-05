@@ -22,6 +22,9 @@ class config
     public $datafiles_location;
     public $logfiles_location;
     
+    public $user_levels_by_level = array();
+    public $user_levels_by_name  = array();
+    
     public function __construct()
     {
         $this->encryption_key     = ENCRYPTION_KEY;
@@ -46,5 +49,27 @@ class config
             $this->scripts_version = trim(file_get_contents(ABSPATH . "/scripts_version.dat"));
         else
             $this->scripts_version = "1.0";
+    }
+    
+    /**
+     * Fills user levels. Must be loaded once the settings are loaded.
+     */
+    public function fill_user_levels()
+    {
+        global $settings;
+        
+        $levels = $settings->get("engine.user_levels");
+        if( empty($levels) ) return;
+        
+        $lines = explode("\n", $levels);
+        foreach($lines as $line)
+        {
+            list($level, $name) = explode(" - ", $line);
+            $level = trim($level);
+            $name  = trim($name);
+            
+            $this->user_levels_by_level[$level] = $name;
+            $this->user_levels_by_name[$name] = $level;
+        }
     }
 }

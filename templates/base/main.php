@@ -160,7 +160,7 @@ foreach($modules as $this_module)
     if( ! empty($this_module->template_includes->pre_eof) )
         include "{$this_module->abspath}/contents/{$this_module->template_includes->pre_eof}";
 
-internals::render();
+internals::render(__FILE__);
 ?>
 
 </body>

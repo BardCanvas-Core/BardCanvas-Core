@@ -126,7 +126,7 @@ $res = $database->query($query);
 <h1 style="margin-top: 0;" class="clearfix">
     <button class="pull-right" onclick="$('#filter_form').submit()">
         <span class="fa fa-refresh"></span>
-        <?= $language->refresh ?>
+        <?= $language->reload ?>
     </button>
     
     <?= $current_module->language->admin->record_nav->page_title ?>
@@ -268,7 +268,6 @@ $res = $database->query($query);
                         onclick=\"document.filter_form.order.value='{$this_cell->sort_desc->order}'; document.filter_form.submit();\">";
                     ?></th>
             <? endforeach; ?>
-            <th nowrap align="center"><?= $language->record_nav->actions ?></th>
         </tr>
         </thead>
         
@@ -308,18 +307,81 @@ $res = $database->query($query);
                 
                 <td nowrap align="center"><?= $row->id_account ?></td>
                 
-                <td width="20%"><?= $row->user_name ?></td>
-                
-                <td width="40%">
+                <td width="60%" colspan="2">
                     <b style="font-size: 12pt;"><?= $row->display_name ?></b><br>
-                    <?= $current_module->language->admin->record_nav->row_extras->email ?>
-                    <?= $row->email ?><br>
+                    
+                    <span style="display: inline-block;"><?= $row->user_name ?></span>
+                    <span class="fa pseudo_link fa-fw fa-envelope-o"
+                          title="<?= $row->email ?>"
+                          onclick="prompt('<?= $current_module->language->admin->record_nav->row_extras->email ?>', '<?= $row->email ?>')"></span>
                     <? if( ! empty($row->alt_email) ): ?>
-                        <?= $current_module->language->admin->record_nav->row_extras->alt_email ?>
-                        <?= $row->alt_email ?><br>
+                        <span class="fa pseudo_link fa-fw fa-envelope-o"
+                              title="<?= $row->alt_email ?>"
+                              onclick="prompt('<?= $current_module->language->admin->record_nav->row_extras->alt_email ?>', '<?= $row->alt_email ?>')"></span>
                     <? endif; ?>
-                    <?= $current_module->language->admin->record_nav->row_extras->creation_host ?> <?= $row->creation_host ?>
                     <br>
+                    
+                    <div class="actions">
+                        
+                        <? if( $database->num_rows($res2) > 0 ): ?>
+                            <span class="action pseudo_link" onclick="show_discardable_dialog('#df_<?= $row->id_account ?>', true)">
+                            <span class="fa fa-search"></span>
+                                <?= $current_module->language->admin->record_nav->actions->show_devices ?>
+                            </span>
+                            <div id="df_<?= $row->id_account ?>" title="<?= $current_module->language->admin->record_nav->devices_and_login_infos ?>" style="display: none;">
+                                <? render_user_devices_info($row, $res2) ?>
+                            </div>
+                        <? endif; ?>
+                        
+                        <? if($row->id_account != $account->id_account): ?>
+                            <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=edit&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
+                                <span class="fa fa-pencil"></span>
+                                <?= $current_module->language->admin->record_nav->actions->edit ?>
+                            </a>
+                        <? endif ?>
+                        
+                        <? if($row->state == "new"): ?>
+        
+                            <? if($row->id_account != $account->id_account): ?>
+                                <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=enable&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
+                                    <span class="fa fa-unlock"></span>
+                                    <?= $current_module->language->admin->record_nav->actions->enable ?>
+                                </a>
+                            <? endif; ?>
+                            
+                        <? elseif($row->state == "enabled"): ?>
+        
+                            <? $tmp_account = new account($row); ?>
+                            <? if( $tmp_account->id_account != $account->id_account && ! $tmp_account->_is_admin ): ?>
+                                <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=promote_admin&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
+                                    <span class="fa fa-level-up"></span>
+                                    <?= $current_module->language->admin->record_nav->actions->promote_admin ?>
+                                </a>
+                            <? elseif( $tmp_account->id_account != $account->id_account && $tmp_account->_is_admin ): ?>
+                                <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=demote_admin&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
+                                    <span class="fa fa-level-down"></span>
+                                    <?= $current_module->language->admin->record_nav->actions->demote_admin ?>
+                                </a>
+                            <? endif; ?>
+                            
+                            <? if($row->id_account != $account->id_account): ?>
+                                <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=disable&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
+                                    <span class="fa fa-lock"></span>
+                                    <?= $current_module->language->admin->record_nav->actions->disable ?>
+                                </a>
+                            <? endif; ?>
+                            
+                        <? elseif($row->state == "disabled"): ?>
+                            
+                            <? if($row->id_account != $account->id_account): ?>
+                                <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=enable&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
+                                    <span class="fa fa-unlock"></span>
+                                    <?= $current_module->language->admin->record_nav->actions->enable ?>
+                                </a>
+                            <? endif; ?>
+                            
+                        <? endif; ?>
+                    </div>
                 </td>
                 
                 <td width="20%"><?= $row->country_name ?></td>
@@ -334,69 +396,12 @@ $res = $database->query($query);
                     <?= time_elapsed_string($row->last_activity) ?>
                 </td>
                 
-                <td nowrap align="center"><?= time_elapsed_string($row->creation_date) ?></td>
-                <td nowrap align="center"><?= time_elapsed_string($row->last_update) ?></td>
-                
-                <td nowrap align="left" class="actions">
-                    <? if( $database->num_rows($res2) > 0 ): ?>
-                        <span class="action pseudo_link" onclick="show_discardable_dialog('#df_<?= $row->id_account ?>', true)">
-                            <span class="fa fa-search"></span>
-                            <?= $current_module->language->admin->record_nav->actions->show_devices ?>
-                        </span><br>
-                        <div id="df_<?= $row->id_account ?>" title="<?= $current_module->language->admin->record_nav->devices_and_login_infos ?>" style="display: none;">
-                            <? render_user_devices_info($row, $res2) ?>
-                        </div>
-                    <? endif; ?>
-                    
-                    <? if($row->id_account != $account->id_account): ?>
-                        <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=edit&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
-                            <span class="fa fa-pencil"></span>
-                            <?= $current_module->language->admin->record_nav->actions->edit ?>
-                        </a><br>
-                    <? endif ?>
-                    
-                    <? if($row->state == "new"): ?>
-                        
-                        <? if($row->id_account != $account->id_account): ?>
-                            <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=enable&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
-                                <span class="fa fa-unlock"></span>
-                                <?= $current_module->language->admin->record_nav->actions->enable ?>
-                            </a><br>
-                        <? endif; ?>
-                        
-                    <? elseif($row->state == "enabled"): ?>
-                        
-                        <? $tmp_account = new account($row); ?>
-                        <? if( $tmp_account->id_account != $account->id_account && ! $tmp_account->_is_admin ): ?>
-                            <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=promote_admin&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
-                                <span class="fa fa-level-up"></span>
-                                <?= $current_module->language->admin->record_nav->actions->promote_admin ?>
-                            </a><br>
-                        <? elseif( $tmp_account->id_account != $account->id_account && $tmp_account->_is_admin ): ?>
-                            <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=demote_admin&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
-                                <span class="fa fa-level-down"></span>
-                                <?= $current_module->language->admin->record_nav->actions->demote_admin ?>
-                            </a><br>
-                        <? endif; ?>
-                        
-                        <? if($row->id_account != $account->id_account): ?>
-                            <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=disable&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
-                                <span class="fa fa-lock"></span>
-                                <?= $current_module->language->admin->record_nav->actions->disable ?>
-                            </a><br>
-                        <? endif; ?>
-                        
-                    <? elseif($row->state == "disabled"): ?>
-                        
-                        <? if($row->id_account != $account->id_account): ?>
-                            <a class="action" href="<?= $_SERVER["PHP_SELF"] ?>?mode=enable&id_account=<?= $row->id_account ?>&wasuuup=<?= md5(mt_rand(1, 65535)) ?>">
-                                <span class="fa fa-unlock"></span>
-                                <?= $current_module->language->admin->record_nav->actions->enable ?>
-                            </a><br>
-                        <? endif; ?>
-                        
-                    <? endif; ?>
+                <td nowrap align="center">
+                    <?= time_elapsed_string($row->creation_date) ?>
+                    <span class="fa pseudo_link fa-globe fa-fw" title="<?= $row->creation_host ?>"
+                          onclick="alert('<?= $current_module->language->admin->record_nav->row_extras->creation_host ?>\n<?= str_replace("; ", "\\n", $row->creation_host) ?>')"></span>
                 </td>
+                <td nowrap align="center"><?= time_elapsed_string($row->last_update) ?></td>
             </tr>
         <? endwhile; ?>
         </tbody>

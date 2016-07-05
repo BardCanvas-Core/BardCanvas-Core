@@ -170,6 +170,52 @@ function refresh_record_browser($target)
     check_wrapped_tables();
 }
 
+function toggle_info_section(handler, handler_is_prefix)
+{
+    var $targets;
+    if( handler_is_prefix ) $targets = $('*[id^="' + handler + '"]');
+    else                    $targets = $('#' + handler);
+    
+    var visible = null;
+    $targets.each(function()
+    {
+        var $target = $(this);
+        
+        if( visible == null ) visible = $target.is(':visible');
+        
+        if( visible )
+            $target.toggle('fast');
+        else
+            $target.toggle('fast')
+                .addClass(    'highlighted',  50 ).delay(10)
+                .removeClass( 'highlighted',  50 ).delay(10)
+                .addClass(    'highlighted',  50 ).delay(10)
+                .removeClass( 'highlighted',  50 ).delay(10)
+                .addClass(    'highlighted',  50 ).delay(10)
+                .removeClass( 'highlighted', 200 )
+            ;
+    });
+    
+    visible = ! visible;
+    if( visible ) set_engine_pref(handler, '');
+    else          set_engine_pref(handler, 'hidden');
+}
+
+function prepare_buttonized_radios()
+{
+    $('.buttonized_radios label')
+        .hover(
+            function() { $(this).toggleClass('state_hover', true)  },
+            function() { $(this).toggleClass('state_hover', false) }
+        )
+        .click(function()
+        {
+            $(this).closest('.buttonized_radios').find('label').toggleClass('state_active', false);
+            $(this).toggleClass('state_active', true)
+        })
+    ;
+}
+
 $(document).ready(function()
 {
     set_body_metas();
@@ -188,6 +234,8 @@ $(document).ready(function()
     {
         hide_dropdown_menus();
     });
+    
+    prepare_buttonized_radios();
     
     var $ajax_record_browsers = $('.ajax_record_browser');
     if( $ajax_record_browsers.length > 0 )

@@ -13,41 +13,42 @@ use hng2_cache\disk_cache;
 
 class internals
 {
-    public static function render()
+    public static function render($referer)
     {
         global $database, $global_start_time;
-    
-        echo "<div class='internals framed_content' align='center'>";
-    
-        if( defined("ENABLE_QUERY_TRACKING") && ENABLE_QUERY_TRACKING )
-            echo "
-                <span class='framed_content'>
-                    DB queries: " . number_format($database->get_tracked_queries_count()) . "
-                </span>
-                •
-            ";
-    
-        echo "
-            <span class='framed_content'>
-                Time consumption: " . number_format(microtime(true) - $global_start_time, 3) . "s
-            </span>
-            •
-        ";
-    
-        echo "
-            <span class='framed_content'>
-                RAM used: " . number_format(memory_get_usage(true) / 1024 / 1024, 1) . "MiB
-            </span>
-        ";
-    
+        
+        echo "<div class='internals framed_content state_active' style='margin-left: 0; margin-right: 0;'>";
+        
+            echo "<div class='internals framed_content' align='center'>";
+                echo "
+                    <span class='framed_content state_highlight'>
+                        Results for: <b>" . basename($referer) . "</b>
+                    </span>
+                ";
+                if( defined("ENABLE_QUERY_TRACKING") && ENABLE_QUERY_TRACKING )
+                    echo "
+                        <span class='framed_content'>
+                            DB queries: " . number_format($database->get_tracked_queries_count()) . "
+                        </span>
+                    ";
+                echo "
+                    <span class='framed_content'>
+                        Time consumption: " . number_format(microtime(true) - $global_start_time, 3) . "s
+                    </span>
+                    <span class='framed_content'>
+                        RAM used: " . number_format(memory_get_usage(true) / 1024 / 1024, 1) . "MiB
+                    </span>
+                ";
+            echo "</div>";
+            
+            if( defined("DISPLAY_PERFORMANCE_DETAILS") && DISPLAY_PERFORMANCE_DETAILS )
+            {
+                self::render_database_details();
+                self::render_mem_cache_details();
+                self::render_disk_cache_details();
+            }
+            
         echo "</div>";
-    
-        if( defined("DISPLAY_PERFORMANCE_DETAILS") && DISPLAY_PERFORMANCE_DETAILS )
-        {
-            self::render_database_details();
-            self::render_mem_cache_details();
-            self::render_disk_cache_details();
-        }
     }
     
     private static function render_database_details()
@@ -96,6 +97,7 @@ class internals
         $expand_style   = $account->engine_prefs["internals_db_stats_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_db_stats_hidden"] == "true" ? "display: none" : "";
         
+        $seq--;
         echo "
             <div class='internals'>
                 <section>
@@ -105,6 +107,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
                         Database statistics
+                        ({$seq})
                     </h2>
                     <div class='framed_content hideable table_wrapper' style='{$table_style}'>
                         <table class='nav_table'>
@@ -166,6 +169,7 @@ class internals
         $expand_style   = $account->engine_prefs["internals_memcache_stats_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_memcache_stats_hidden"] == "true" ? "display: none" : "";
         
+        $seq--;
         echo "
             <div class='internals'>
                 <section>
@@ -175,6 +179,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
                         Memory cache hits
+                        ({$seq})
                     </h2>
                     <div class='framed_content hideable table_wrapper' style='{$table_style}'>
                         <table class='nav_table'>
@@ -228,6 +233,7 @@ class internals
         $expand_style   = $account->engine_prefs["internals_diskcache_stats_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_diskcache_stats_hidden"] == "true" ? "display: none" : "";
         
+        $seq--;
         echo "
             <div class='internals'>
                 <section>
@@ -237,6 +243,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
                         Disk cache hits
+                        ({$seq})
                     </h2>
                     <div class='framed_content hideable table_wrapper' style='{$table_style}'>
                         <table class='nav_table'>

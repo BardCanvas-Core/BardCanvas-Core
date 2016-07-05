@@ -25,6 +25,7 @@ include dirname(__FILE__) . "/web_helper_functions.inc";
 $config   = new config();
 $database = new db_controller();
 $settings = new settings();
+$config->fill_user_levels();
 
 # Engine Language loader
 $language_cookie_name = "{$config->website_key}_UL";
