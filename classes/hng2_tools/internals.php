@@ -16,9 +16,12 @@ class internals
     public static function render($referer)
     {
         global $database, $global_start_time;
+    
+        if( ! defined("DISPLAY_PERFORMANCE_DETAILS") ) return;
+        if( ! DISPLAY_PERFORMANCE_DETAILS ) return;
         
         echo "<div class='internals framed_content state_active' style='margin-left: 0; margin-right: 0;'>";
-        
+            
             echo "<div class='internals framed_content' align='center'>";
                 echo "
                     <span class='framed_content state_highlight'>
@@ -41,12 +44,9 @@ class internals
                 ";
             echo "</div>";
             
-            if( defined("DISPLAY_PERFORMANCE_DETAILS") && DISPLAY_PERFORMANCE_DETAILS )
-            {
-                self::render_database_details();
-                self::render_mem_cache_details();
-                self::render_disk_cache_details();
-            }
+            self::render_database_details();
+            self::render_mem_cache_details();
+            self::render_disk_cache_details();
             
         echo "</div>";
     }
