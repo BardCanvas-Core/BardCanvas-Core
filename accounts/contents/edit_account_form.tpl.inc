@@ -56,21 +56,21 @@ use hng2_base\module;
     
     <div class="cell">
         <div class="field_caption">
-            <?= $current_module->language->user_account_form->display_name ?>
+            <?= $current_module->language->user_account_form->user_name ?>
         </div>
         <div class="field_input">
-            <input type="text" name="display_name" maxlength="255"
-                   value="<?= htmlspecialchars($xaccount->display_name) ?>">
+            <input type="text" name="user_name" readonly
+                   value="<?= htmlspecialchars($xaccount->user_name) ?>">
         </div>
     </div>
     
     <div class="cell">
         <div class="field_caption">
-            <?= $current_module->language->user_account_form->user_name ?>
+            <?= $current_module->language->user_account_form->display_name ?>
         </div>
         <div class="field_input">
-            <input type="text" name="user_name" maxlength="64" readonly
-                   value="<?= htmlspecialchars($xaccount->user_name) ?>">
+            <input type="text" name="display_name" maxlength="255"
+                   value="<?= htmlspecialchars($xaccount->display_name) ?>">
         </div>
     </div>
     

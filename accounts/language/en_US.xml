@@ -10,6 +10,7 @@
     </description>
     
     <page_titles>
+        <registration_form>Account registration</registration_form>
         <edit_account>My account</edit_account>
         <user_devices>My devices</user_devices>
     </page_titles>
