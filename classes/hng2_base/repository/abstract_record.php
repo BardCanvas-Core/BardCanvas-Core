@@ -28,6 +28,8 @@ abstract class abstract_record
         foreach( $_POST as $key => $val ) $this->{$key} = stripslashes($val);
     }
     
+    abstract public function set_new_id();
+    
     /**
      * @return array
      */

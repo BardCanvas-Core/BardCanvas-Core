@@ -183,7 +183,7 @@ $res = $database->query($query);
     </script>
 <? endif; ?>
 
-<div id="navcontrols" class="filtering clearfix">
+<div class="filtering clearfix">
     <script type="text/javascript">
         function paginate(value)
         {
@@ -308,7 +308,7 @@ $res = $database->query($query);
                 <td nowrap align="center"><?= $row->id_account ?></td>
                 
                 <td width="60%" colspan="2">
-                    <b style="font-size: 12pt;"><?= $row->display_name ?></b><br>
+                    <div class="principal_data"><?= $row->display_name ?></div>
                     
                     <span style="display: inline-block;"><?= $row->user_name ?></span>
                     <span class="fa pseudo_link fa-fw fa-envelope-o"

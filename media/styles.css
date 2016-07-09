@@ -179,7 +179,8 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .nav_table .left_bordered  { border-left:  1px solid #c2daea; }
 .nav_table .right_bordered { border-right: 1px solid #c2daea; }
 
-.nav_table .actions .action            { margin: 5px; }
+.nav_table div.actions      { margin-top: 5px; }
+.nav_table .actions .action { margin: 5px; }
 
 .nav_table tr.master td { padding-top:    12px; border-bottom: none; }
 .nav_table tr.child  td { padding-bottom: 12px; }
@@ -208,6 +209,10 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .details_table tr:first-child td { border-top: 1px solid #c2daea; }
 
 .details_table th, .details_table td { font-size: 11pt; }
+
+/* This one is used to highlight the most important data in a nav_table,
+   E.G. the user name on the accounts browser and the category title on the categories browser. */
+.principal_data { font-size: 12pt; font-weight: bold; }
 
 .filtering         { text-align: left; margin-bottom: 10px; line-height: 28px; }
 .pagination        { text-align: right; margin-top: 10px; }
@@ -247,9 +252,13 @@ table.tablesorter thead tr .headerSortDown { background-image: url('desc.gif'); 
 
 label, button, input[type="button"], input[type="submit"], input[type="reset"] { cursor: pointer; }
 
+label[disabled], button[disabled], input[type="button"][disabled],
+input[type="submit"][disabled], input[type="reset"][disabled] { cursor: default; }
+
 form .field                           { margin-bottom: 15px; }
 form .field .input                    { margin: 5px 0 5px 25px; }
 form .field .input input[type="text"] { width: 100%; }
+form .field .input select             { width: 100%; }
 
 form .field .input.info_handler { font-style: italic; color: dimgrey;
                                   padding-left: 10px; border-left: 5px solid silver; }
@@ -258,6 +267,7 @@ form .field .input.info_handler { font-style: italic; color: dimgrey;
 
 form .field .input input    { font-size: 12pt; }
 form .field .input textarea { font-size: 12pt; }
+form .field .input select   { font-size: 12pt; }
 
 .buttonized_radios label input[type="radio"] { display: none; }
 

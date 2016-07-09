@@ -11,10 +11,10 @@ namespace hng2_base\repository;
 
 abstract class abstract_repository
 {
-    protected $row_class;                // OVERRIDE THIS
-    protected $table_name;               // OVERRIDE THIS
-    protected $key_column_name;          // OVERRIDE THIS
-    protected $additional_select_fields; // OVERRIDE IF NEEDED
+    protected $row_class                = "";                // OVERRIDE THIS
+    protected $table_name               = "";               // OVERRIDE THIS
+    protected $key_column_name          = "";          // OVERRIDE THIS
+    protected $additional_select_fields = array(); // OVERRIDE IF NEEDED
     
     /**
      * @param $id
@@ -134,13 +134,6 @@ abstract class abstract_repository
         
         return $row->total_rows;
     }
-    
-    /**
-     * @param abstract_record $record
-     *
-     * @return int
-     */
-    abstract public function insert($record);
     
     /**
      * @param abstract_record $record
