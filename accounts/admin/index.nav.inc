@@ -393,7 +393,7 @@ $res = $database->query($query);
                 <td width="20" align="center">
                     <? $online_flag = $row->last_activity >= date("Y-m-d H:i:s", strtotime("now - 1 minute")) ? "online" : "offline"; ?>
                     <img src="<?= $_ROOT_URL ?>/media/icons/user-<?= $online_flag ?>.png" border="0" width="16" height="16"><br>
-                    <?= time_elapsed_string($row->last_activity) ?>
+                    <?= time_elapsed_string_alternate($row->last_activity) ?>
                 </td>
                 
                 <td nowrap align="center">
