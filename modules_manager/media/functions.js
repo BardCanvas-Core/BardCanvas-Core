@@ -1,7 +1,7 @@
 
 function do_module(action, module_name)
 {
-    location.href = $_FULL_ROOT_PATH + '?install_action=' + action
+    location.href = $_PHP_SELF + '?install_action=' + action
         + '&do_module_name=' + module_name
         + '&tab=' + active_tab
         + '&wasuuup=' + parseInt(Math.random() * 1000000000000000);
@@ -9,7 +9,7 @@ function do_module(action, module_name)
 
 function reload_self()
 {
-    location.href = $_FULL_ROOT_PATH + '?tab=' + active_tab + '&wasuuup=' + (Math.random() * 1000000000000000);
+    location.href = $_PHP_SELF + '?tab=' + active_tab + '&wasuuup=' + (Math.random() * 1000000000000000);
 }
 
 function purge_modules_cache()
