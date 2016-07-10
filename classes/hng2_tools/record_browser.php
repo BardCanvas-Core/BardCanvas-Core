@@ -26,6 +26,21 @@ class record_browser
      */
     public function build_vars($default_limit = 20, $default_order = 1)
     {
+        global $account;
+        if( $account->_exists ) return $this->build_vars_in_account_prefs($default_limit, $default_order);
+        else                    return $this->build_vars_in_cookies($default_limit, $default_order);
+    }
+    
+    /**
+     * @param int $default_limit
+     * @param int $default_order
+     *
+     * @return array
+     */
+    private function build_vars_in_cookies($default_limit, $default_order)
+    {
+        global $config;
+        
         $return = array();
         
         if( $_REQUEST["mode"] == "set_filter" )
@@ -34,16 +49,42 @@ class record_browser
             {
                 if(stristr($key, "search_") !== false)
                 {
-                    if(is_array($val)) $_SESSION["{$this->data_vars_prefix}_nav_filter_".$key] = implode(",", $val);
-                    else               $_SESSION["{$this->data_vars_prefix}_nav_filter_".$key] = $val;
+                    if( is_array($val) )
+                        setcookie(
+                            "{$this->data_vars_prefix}_nav_filter_" . $key,
+                            implode(",", $val),
+                            86400 * 30,
+                            $config->full_root_path,
+                            $config->cookies_domain
+                        );
+                    else
+                        setcookie(
+                            "{$this->data_vars_prefix}_nav_filter_" . $key,
+                            $val,
+                            86400 * 30,
+                            $config->full_root_path,
+                            $config->cookies_domain
+                        );
                 }
             }
             if( ! is_numeric($_REQUEST["limit"]) ) $_REQUEST["limit"] = $default_limit;
-            $_SESSION["{$this->data_vars_prefix}_nav_limit"] = $_REQUEST["limit"];
-            $_SESSION["{$this->data_vars_prefix}_nav_order"] = $_REQUEST["order"];
+            setcookie(
+                "{$this->data_vars_prefix}_nav_limit",
+                $_REQUEST["limit"],
+                86400 * 30,
+                $config->full_root_path,
+                $config->cookies_domain
+            );
+            setcookie(
+                "{$this->data_vars_prefix}_nav_order",
+                $_REQUEST["order"],
+                86400 * 30,
+                $config->full_root_path,
+                $config->cookies_domain
+            );
         }
         
-        foreach($_SESSION as $key => $val)
+        foreach($_COOKIE as $key => $val)
         {
             if(stristr($key, "{$this->data_vars_prefix}_nav_filter_") !== false)
             {
@@ -52,9 +93,58 @@ class record_browser
             }
         }
         
-        $return["offset"] = empty($_REQUEST["offset"])                              ? 0  : $_REQUEST["offset"];
-        $return["limit"]  = empty($_SESSION["{$this->data_vars_prefix}_nav_limit"]) ? $default_limit : $_SESSION["{$this->data_vars_prefix}_nav_limit"];
-        $return["order"]  = empty($_SESSION["{$this->data_vars_prefix}_nav_order"]) ? $default_order : $_SESSION["{$this->data_vars_prefix}_nav_order"];
+        $saved_limit = $_COOKIE["{$this->data_vars_prefix}_nav_limit"];
+        $saved_order = $_COOKIE["{$this->data_vars_prefix}_nav_order"];
+        
+        $return["offset"] = empty($_REQUEST["offset"]) ? 0 : $_REQUEST["offset"];
+        $return["limit"]  = empty($saved_limit) ? $default_limit : $saved_limit;
+        $return["order"]  = empty($saved_order) ? $default_order : $saved_order;
+        
+        return $return;
+    }
+    
+    /**
+     * @param int $default_limit
+     * @param int $default_order
+     *
+     * @return array
+     */
+    private function build_vars_in_account_prefs($default_limit, $default_order)
+    {
+        global $account;
+        
+        $return = array();
+        
+        if( $_REQUEST["mode"] == "set_filter" )
+        {
+            foreach($_REQUEST as $key => $val)
+            {
+                if(stristr($key, "search_") !== false)
+                {
+                    if(is_array($val)) $account->set_engine_pref( "{$this->data_vars_prefix}_nav_filter_".$key, implode(",", $val) );
+                    else               $account->set_engine_pref( "{$this->data_vars_prefix}_nav_filter_".$key, $val );
+                }
+            }
+            if( ! is_numeric($_REQUEST["limit"]) ) $_REQUEST["limit"] = $default_limit;
+            $account->set_engine_pref( "{$this->data_vars_prefix}_nav_limit", $_REQUEST["limit"] );
+            $account->set_engine_pref( "{$this->data_vars_prefix}_nav_order", $_REQUEST["order"] );
+        }
+        
+        foreach($account->engine_prefs as $key => $val)
+        {
+            if(stristr($key, "{$this->data_vars_prefix}_nav_filter_") !== false)
+            {
+                $substracted_key = str_replace("{$this->data_vars_prefix}_nav_filter_", "", $key);
+                $return[$substracted_key] = $val;
+            }
+        }
+        
+        $saved_limit = $account->engine_prefs["{$this->data_vars_prefix}_nav_limit"];
+        $saved_order = $account->engine_prefs["{$this->data_vars_prefix}_nav_order"];
+        
+        $return["offset"] = empty($_REQUEST["offset"]) ? 0 : $_REQUEST["offset"];
+        $return["limit"]  = empty($saved_limit) ? $default_limit : $saved_limit;
+        $return["order"]  = empty($saved_order) ? $default_order : $saved_order;
         
         return $return;
     }
