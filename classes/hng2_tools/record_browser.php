@@ -284,4 +284,37 @@ class record_browser
             </button>
         ";
     }
+    
+    public function get_pagination_button($which_button, $pagination_function_name, array $pagination_vars)
+    {
+        $backward_disabled = $pagination_vars["this_page_number"] == 1 ? "disabled" : "";
+        $next_disabled     = $pagination_vars["this_page_number"] >= $pagination_vars["total_pages"] ? "disabled" : "";
+        $last_disabled     = $pagination_vars["total_pages"] == 1 || $pagination_vars["this_page_number"] == $pagination_vars["total_pages"] ? "disabled" : "";
+        
+        if( $which_button == "first" ) return "
+            <button {$backward_disabled} onclick='{$pagination_function_name}(0);'>
+                <span class='fa fa-fw fa-step-backward'></span>
+            </button>
+        ";
+        
+        if( $which_button == "previous" ) return "
+            <button {$backward_disabled} onclick='{$pagination_function_name}({$pagination_vars["previous_page"]});'>
+                <span class='fa fa-fw fa-caret-left'></span>
+            </button>
+        ";
+        
+        if( $which_button == "next" ) return "
+            <button {$next_disabled} onclick='{$pagination_function_name}({$pagination_vars["next_page"]});'>
+                <span class='fa fa-fw fa-caret-right'></span>
+            </button>
+        ";
+        
+        if( $which_button == "last" ) return "
+            <button {$last_disabled} onclick='{$pagination_function_name}({$pagination_vars["last_page"]});'>
+                <span class='fa fa-fw fa-step-forward'></span>
+            </button>
+        ";
+        
+        throw new \Exception("Invalid pagination button invoked");
+    }
 }
