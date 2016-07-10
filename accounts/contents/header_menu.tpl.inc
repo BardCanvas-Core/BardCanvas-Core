@@ -5,8 +5,6 @@
  * @package    HNG2
  * @subpackage accounts
  * @author     Alejandro Caballero - lava.caballero@gmail.com
- * 
- * @var string $_ROOT_URL;
  */
 ?>
 
@@ -16,14 +14,14 @@
     
     <? if( $settings->get("modules:accounts.register_enabled") != "false" ): ?>
         <a class="main_menu_item always_visible pull-right"
-           href="<?=$_ROOT_URL?>/accounts/register.php">
+           href="<?=$config->full_root_path?>/accounts/register.php">
            <span class="fa fa-pencil"></span>
            <?= $this_module->language->register ?>
         </a>
     <? endif; ?>
     
     <a class="main_menu_item always_visible pull-right"
-       href="<?=$_ROOT_URL?>/accounts/scripts/login.php" onclick="return show_login_form()">
+       href="<?=$config->full_root_path?>/accounts/scripts/login.php" onclick="return show_login_form()">
        <span class="fa fa-sign-in"></span>
        <?= $this_module->language->login ?>
     </a>

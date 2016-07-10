@@ -5,8 +5,6 @@
  * @package    HNG2
  * @subpackage core
  * @author     Alejandro Caballero - lava.caballero@gmail.com
- *
- * @var string $_ROOT_URL
  */
 ?>
 
@@ -58,7 +56,7 @@
             {
                 $item_url    = trim($this_menu_item->url);
                 $added_class = ($module_name == $current_module->name && stristr($_SERVER["PHP_SELF"], "/$module_name/$item_url") !== false) ? "current" : "";
-                $url         = "$_ROOT_URL/$module_name/$item_url";
+                $url         = "{$config->full_root_path}/$module_name/$item_url";
                 $caption     = $this_module->language->admin->menu_items->{$this_menu_item->caption_language_var};
                 $menu       .= "<a class='item $added_class' href='$url'>$caption</a>";
             }

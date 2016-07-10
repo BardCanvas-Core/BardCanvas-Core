@@ -10,9 +10,8 @@
 use hng2_base\module;
 use hng2_cache\disk_cache;
 
-$_ROOT_URL = "..";
-include "{$_ROOT_URL}/config.php";
-include "{$_ROOT_URL}/includes/bootstrap.inc";
+include "../config.php";
+include "../includes/bootstrap.inc";
 
 if( ! $account->_is_admin ) throw_fake_404();
 

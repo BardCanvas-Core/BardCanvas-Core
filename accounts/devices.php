@@ -9,9 +9,8 @@
 
 use hng2_base\device;
 
-$_ROOT_URL = "..";
-include "{$_ROOT_URL}/config.php";
-include "{$_ROOT_URL}/includes/bootstrap.inc";
+include "../config.php";
+include "../includes/bootstrap.inc";
 
 if( ! $account->_exists ) throw_fake_401();
 

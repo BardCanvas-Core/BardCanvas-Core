@@ -11,11 +11,10 @@
  * @param number "height"
  */
 
-$_ROOT_URL = "../..";
-include "{$_ROOT_URL}/config.php";
-include "{$_ROOT_URL}/includes/bootstrap.inc";
-include "{$_ROOT_URL}/lib/phplot-6.1.0/rgb.inc.php";
-include "{$_ROOT_URL}/lib/phplot-6.1.0/phplot.php";
+include "../../config.php";
+include "../../includes/bootstrap.inc";
+include "../../lib/phplot-6.1.0/rgb.inc.php";
+include "../../lib/phplot-6.1.0/phplot.php";
 
 $data  = array();
 $query = "select date(creation_date) as creation_date, count(id_account) as total 

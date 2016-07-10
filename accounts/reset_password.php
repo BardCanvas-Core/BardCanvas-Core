@@ -9,9 +9,8 @@
 
 use hng2_base\account;
 
-$_ROOT_URL = "..";
-include "{$_ROOT_URL}/config.php";
-include "{$_ROOT_URL}/includes/bootstrap.inc";
+include "../config.php";
+include "../includes/bootstrap.inc";
 
 if( ! empty($_POST["email"]) )
 {

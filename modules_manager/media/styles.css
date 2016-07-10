@@ -1,0 +1,10 @@
+.module_data_container h3 { margin-top: 0; margin-right: 210px; }
+
+.module_data_container table { border-spacing: 0; border-collapse: separate; border: 0; width: 100%; }
+.module_data_container table th ,
+.module_data_container table td { padding: 5px; text-align: left; vertical-align: top; }
+.module_data_container table td ul { margin-top: 0; margin-bottom: 0; padding-left: 18px; }
+
+.module_data_container .action_buttons { float: right; margin-top: 0; margin-left: 10px; margin-right: 10px; }
+.module_data_container .action_buttons button             { width: 150px; padding-top: 5px; padding-bottom: 5px; }
+.module_data_container .action_buttons button:first-child { margin-bottom: 10px; }

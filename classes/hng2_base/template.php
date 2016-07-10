@@ -29,7 +29,7 @@ class template
     
     public function __construct()
     {
-        global $_ROOT_URL, $settings;
+        global $config, $settings;
         
         $this->name = $settings->get("engine.template");
         if( empty($this->name) ) $this->name = "base";
@@ -39,7 +39,7 @@ class template
         if( ! is_dir($this->abspath) )
             throw new \RuntimeException("Template {$this->name} not found");
         
-        $this->url = $_ROOT_URL . "/templates/{$this->name}";
+        $this->url = "{$config->full_root_path}/templates/{$this->name}";
     }
     
     public function add_menu_item($title, $html, $priority = 0)

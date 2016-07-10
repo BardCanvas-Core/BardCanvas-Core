@@ -12,9 +12,8 @@
  * @return string "OK" on success | error message
  */
 
-$_ROOT_URL = "../..";
-include "{$_ROOT_URL}/config.php";
-include "{$_ROOT_URL}/includes/bootstrap.inc";
+include "../../config.php";
+include "../../includes/bootstrap.inc";
 
 $_current_page_requires_login = true;
 if( ! $account->_exists ) die( $language->errors->page_requires_login );

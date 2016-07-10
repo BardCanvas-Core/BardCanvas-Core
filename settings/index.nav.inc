@@ -2,7 +2,6 @@
 /**
  * @var array  $errors
  * @var array  $messages
- * @var string $_ROOT_URL
  */
 
 # Grouping
@@ -43,7 +42,7 @@ while($row = $database->fetch_object($res))
 </style>
 
 <!-- Expandible Text Area -->
-<script type="text/javascript" src="<?=$_ROOT_URL?>/lib/jquery.exptextarea.js"></script>
+<script type="text/javascript" src="<?=$config->full_root_path?>/lib/jquery.exptextarea.js"></script>
 <script type="text/javascript"> $(document).ready(function() { $('.expandible_textarea').expandingTextArea(); }); </script>
 
 <script type="text/javascript">

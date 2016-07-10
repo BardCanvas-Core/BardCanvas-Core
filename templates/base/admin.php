@@ -5,13 +5,9 @@
  * @package    HNG2
  * @subpackage core
  * @author     Alejandro Caballero - lava.caballero@gmail.com
- *
- * @var string $_ROOT_URL
  */
 
 use hng2_tools\internals;
-
-if( ! isset($_ROOT_URL) ) $_ROOT_URL = ".";
 
 foreach($modules as $this_module)
     if( ! empty($this_module->template_includes->pre_rendering) )
@@ -24,23 +20,23 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     <? include __DIR__ . "/segments/common_header.inc"; ?>
     
     <!-- Others -->
-    <script type="text/javascript" src="<?= $_ROOT_URL ?>/lib/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="<?= $_ROOT_URL ?>/lib/jquery.form.min.js"></script>
+    <script type="text/javascript" src="<?= $config->full_root_path ?>/lib/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="<?= $config->full_root_path ?>/lib/jquery.form.min.js"></script>
     
-    <!-- These must be loaded after setting $_ROOT_URL and other defaults -->
-    <link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/lib/jquery-lightbox/jquery.lightbox.css">
-    <script type="text/javascript"          src="<?= $_ROOT_URL ?>/lib/jquery-lightbox/jquery.lightbox.js"></script>
+    <!-- These must be loaded after setting $_FULL_ROOT_PATH and other JS defaults -->
+    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/jquery-lightbox/jquery.lightbox.css">
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery-lightbox/jquery.lightbox.js"></script>
     
     <!-- Noty -->
-    <script type="text/javascript" src="<?= $_ROOT_URL ?>/lib/noty-2.3.7/js/noty/packaged/jquery.noty.packaged.min.js"></script>
-    <script type="text/javascript" src="<?= $_ROOT_URL ?>/lib/noty-2.3.7/js/noty/themes/default.js"></script>
-    <script type="text/javascript" src="<?= $_ROOT_URL ?>/media/noty_defaults~v<?=$config->scripts_version?>.js"></script>
+    <script type="text/javascript" src="<?= $config->full_root_path ?>/lib/noty-2.3.7/js/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script type="text/javascript" src="<?= $config->full_root_path ?>/lib/noty-2.3.7/js/noty/themes/default.js"></script>
+    <script type="text/javascript" src="<?= $config->full_root_path ?>/media/noty_defaults~v<?=$config->scripts_version?>.js"></script>
     
     <!-- Core functions and styles -->
-    <link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/media/styles~v<?=$config->scripts_version?>.css">
-    <? if($account->_is_admin): ?><link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/media/admin~v<?=$config->scripts_version?>.css"><? endif; ?>
-    <script type="text/javascript"          src="<?= $_ROOT_URL ?>/media/functions~v<?=$config->scripts_version?>.js"></script>
-    <script type="text/javascript"          src="<?= $_ROOT_URL ?>/media/notification_functions~v<?=$config->scripts_version?>.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->scripts_version?>.css">
+    <? if($account->_is_admin): ?><link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->scripts_version?>.css"><? endif; ?>
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->scripts_version?>.js"></script>
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/notification_functions~v<?=$config->scripts_version?>.js"></script>
     
     <!-- This template -->
     <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/styles~v<?=$config->scripts_version?>.css">
@@ -80,7 +76,7 @@ header("Content-Type: text/html; charset=utf-8"); ?>
                 <span class="fa fa-bars fa-fw"></span>
             </span>
             
-            <a class="main_menu_item pull-left" href="<?= $_ROOT_URL ?>">
+            <a class="main_menu_item pull-left" href="<?= $config->full_root_path ?>">
                 <span class="fa fa-home fa-fw"></span>
             </a>
             

@@ -6,7 +6,7 @@
  * @subpackage core
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  *
- * @var {string} $_ROOT_URL
+ * @var {string} $_FULL_ROOT_PATH
  */
 
 $.noty.defaults = {

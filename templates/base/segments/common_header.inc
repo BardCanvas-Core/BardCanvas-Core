@@ -5,8 +5,6 @@
  * @package    HNG2
  * @subpackage core
  * @author     Alejandro Caballero - lava.caballero@gmail.com
- *
- * @var string $_ROOT_URL
  */
 ?>
 
@@ -23,21 +21,21 @@
 
 <!-- Defaults -->
 <script type="text/javascript">
-    var $_ROOT_URL              = '<?= $_ROOT_URL ?>';
+    var $_FULL_ROOT_PATH        = '<?= $config->full_root_path ?>';
     var $_PHP_SELF              = '<?= $_SERVER["PHP_SELF"] ?>';
     var CURRENT_USER_ID_ACCOUNT = '<?= $account->id_account ?>';
 </script>
-<script type="text/javascript" src="<?= $_ROOT_URL ?>/media/defaults~v<?=$config->scripts_version?>.js"></script>
+<script type="text/javascript" src="<?= $config->full_root_path ?>/media/defaults~v<?=$config->scripts_version?>.js"></script>
 
 <!-- jQuery -->
-<script type="text/javascript" src="<?= $_ROOT_URL ?>/lib/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="<?= $_ROOT_URL ?>/lib/jquery-migrate-1.2.1.js"></script>
-<script type="text/javascript" src="<?= $_ROOT_URL ?>/lib/jquery.cookie.js"></script>
+<script type="text/javascript" src="<?= $config->full_root_path ?>/lib/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="<?= $config->full_root_path ?>/lib/jquery-migrate-1.2.1.js"></script>
+<script type="text/javascript" src="<?= $config->full_root_path ?>/lib/jquery.cookie.js"></script>
 
 <!-- jQuery UI -->
-<script type="text/javascript"          src="<?= $_ROOT_URL ?>/lib/jquery-ui-1.10.4.custom.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/lib/jquery-ui-themes-1.10.4/<?= $settings->get("engine.ui_theme", "blitzer") ?>/jquery-ui.css">
-<script type="text/javascript"          src="<?= $_ROOT_URL ?>/lib/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery-ui-1.10.4.custom.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/jquery-ui-themes-1.10.4/<?= $settings->get("engine.ui_theme", "blitzer") ?>/jquery-ui.css">
+<script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery.ui.touch-punch.min.js"></script>
 
 <!-- UI Additions -->
-<link rel="stylesheet" type="text/css" href="<?= $_ROOT_URL ?>/lib/font-awesome-4.6.3/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/font-awesome-4.6.3/css/font-awesome.css">

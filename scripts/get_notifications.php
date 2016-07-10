@@ -9,9 +9,8 @@
 
 use hng2_base\module;
 
-$_ROOT_URL = "..";
-include "{$_ROOT_URL}/config.php";
-include "{$_ROOT_URL}/includes/bootstrap.inc";
+include "../config.php";
+include "../includes/bootstrap.inc";
 
 if( ! $account->_exists ) throw_fake_401();
 
@@ -37,7 +36,7 @@ foreach($modules as $module)
     foreach($module->extends_to->_base_system_->notifications_getter->return_additions as $addition)
     {
         $this_module = $module;
-        $include = "{$_ROOT_URL}/{$module->name}/$addition";
+        $include = ABSPATH . "/{$module->name}/$addition";
         
         if( ! file_exists($include) ) continue;
         

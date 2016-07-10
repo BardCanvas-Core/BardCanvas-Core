@@ -29,7 +29,7 @@ if( $modules_cache_enabled )
 
 if( $build_modules_cache )
 {
-    $module_dirs_pattern = "{$config->document_root_path}/*";
+    $module_dirs_pattern = ABSPATH . "/*";
     $available_modules   = glob($module_dirs_pattern, GLOB_ONLYDIR);
     
     # Part 1: loading per-se

@@ -3,7 +3,6 @@
  * @var array  $errors
  * @var array  $messages
  * @var module $this_module
- * @var string $_ROOT_URL
  */
 
 use hng2_base\module;
@@ -42,83 +41,9 @@ foreach($_all_modules as $key => $this_module)
 }
 ?>
 
-<style type="text/css">
-    .module_data_container h3 { margin-top: 0; margin-right: 210px; }
-    
-    .module_data_container table { border-spacing: 0; border-collapse: separate; border: 0; width: 100%; }
-    .module_data_container table th ,
-    .module_data_container table td { padding: 5px; text-align: left; vertical-align: top; }
-    .module_data_container table td ul { margin-top: 0; margin-bottom: 0; padding-left: 18px; }
-    
-    .module_data_container .action_buttons { float: right; margin-top: 0; margin-left: 10px; margin-right: 10px; }
-    .module_data_container .action_buttons button             { width: 150px; padding-top: 5px; padding-bottom: 5px; }
-    .module_data_container .action_buttons button:first-child { margin-bottom: 10px; }
-</style>
-
-<script type="text/javascript">
-    var active_tab = parseInt('<?= empty($_REQUEST["tab"]) ? "0" : $_REQUEST["tab"] ?>');
-    
-    function do_module(action, module_name)
-    {
-        location.href = '<?=$_SERVER["PHP_SELF"]?>?install_action=' + action
-                      + '&do_module_name=' + module_name
-                      + '&tab=' + active_tab
-                      + '&wasuuup=' + parseInt(Math.random() * 1000000000000000);
-    }
-    
-    function reload_self()
-    {
-        location.href = '<?=$_SERVER["PHP_SELF"]?>?tab=' + active_tab + '&wasuuup=' + (Math.random() * 1000000000000000);
-    }
-    
-    function purge_modules_cache()
-    {
-        var url = $_ROOT_URL + '/modules_manager/purge_cache.php?wasuuup=' + parseInt(Math.random() * 1000000000000000);
-        $.blockUI(blockUI_default_params);
-        $.get(url, function(response)
-        {
-            if( response != 'OK' )
-            {
-                $.unblockUI();
-                alert( response );
-                
-                return;
-            }
-            
-            reload_self();
-        });
-    }
-    
-    function change_caching_status(new_status)
-    {
-        var url = $_ROOT_URL + '/modules_manager/change_caching_status.php';
-        var params = {
-            'new_status': new_status,
-            'wasuuup':    parseInt(Math.random() * 1000000000000000)
-        };
-        $.blockUI(blockUI_default_params);
-        $.get(url, params, function(response)
-        {
-            if( response != 'OK' )
-            {
-                $.unblockUI();
-                alert( response );
-            
-                return;
-            }
-            
-            reload_self();
-        });
-    }
-    
-    $(document).ready(function()
-    {
-        $('#tabs').tabs({
-            active:   active_tab,
-            activate: function(event, ui) { active_tab = ui.newTab.index(); console.log(active_tab); }
-        });
-    });
-</script>
+<link rel="stylesheet" type="text/css" href="media/styles~v<?=$config->scripts_version?>.css">
+<script type="text/javascript"          src="media/functions~v<?=$config->scripts_version?>.js"></script>
+<script type="text/javascript">var active_tab = parseInt('<?= empty($_REQUEST["tab"]) ? "0" : $_REQUEST["tab"] ?>');</script>
 
 <h1>
     <button class="pull-right" onclick="reload_self()">

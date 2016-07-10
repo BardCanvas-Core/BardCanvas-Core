@@ -9,9 +9,8 @@
  * @param "new_status" enabled|disabled
  */
 
-$_ROOT_URL = "..";
-include "{$_ROOT_URL}/config.php";
-include "{$_ROOT_URL}/includes/bootstrap.inc";
+include "../config.php";
+include "../includes/bootstrap.inc";
 header("Content-Type: text/plain; charset=utf-8");
 
 if( ! $account->_is_admin ) throw_fake_404();

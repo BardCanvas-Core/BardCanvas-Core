@@ -18,24 +18,38 @@ class config
     public $engine_version;
     public $scripts_version;
     
-    public $document_root_path;
     public $datafiles_location;
     public $logfiles_location;
     
+    // These two are loaded from the settings table
     public $user_levels_by_level = array();
     public $user_levels_by_name  = array();
+    
+    /**
+     * Full URL of the website, for links in emails, etc.
+     * 
+     * @var string
+     */
+    public $full_root_url;
+    
+    /**
+     * Full path to website root. Usually "/"
+     * 
+     * @var string
+     */
+    public $full_root_path;
     
     public function __construct()
     {
         $this->encryption_key     = ENCRYPTION_KEY;
         $this->website_key        = WEBSITE_ID;
-        $this->cookies_domain     = COOKIES_DOMAIN;
+        $this->cookies_domain     = "." . trim(str_replace("www", "", $_SERVER["HTTP_HOST"]), ".");
         
-        $this->document_root_path = ABSPATH;
         $this->datafiles_location = ABSPATH . "/data";
         $this->logfiles_location  = ABSPATH . "/logs";
         
         $this->set_versions();
+        $this->set_paths();
     }
     
     private function set_versions()
@@ -49,6 +63,35 @@ class config
             $this->scripts_version = trim(file_get_contents(ABSPATH . "/scripts_version.dat"));
         else
             $this->scripts_version = "1.0";
+    }
+    
+    private function set_paths()
+    {
+        if( defined("FULL_ROOT_PATH") )
+        {
+            $this->full_root_path = FULL_ROOT_PATH;
+        }
+        else
+        {
+            # ABSPATH = /home/user/public_html/some_folder/some_subfolder
+            # DOCROOT = /home/user/public_html
+            # then.....                       /some_folder/some_subfolder
+            
+            $docroot = empty($_SERVER["DOCUMENT_ROOT"]) ? ABSPATH : $_SERVER["DOCUMENT_ROOT"];
+            $this->full_root_path = preg_replace("#{$docroot}#i", "", ABSPATH);
+            $this->full_root_path = "/" . trim($this->full_root_path, "/");
+        }
+        
+        if( defined("FULL_ROOT_URL") )
+        {
+            $this->full_root_url = FULL_ROOT_URL;
+        }
+        else
+        {
+            $this->full_root_url  = empty($_SERVER["HTTPS"]) ? "http://" : "https://";
+            $this->full_root_url .= $_SERVER["HTTP_HOST"];
+            $this->full_root_url .= $this->full_root_path;
+        }
     }
     
     /**

@@ -5,7 +5,7 @@
  * @subpackage core
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  *
- * @var {string} $_ROOT_URL
+ * @var {string} $_FULL_ROOT_PATH
  */
 
 var notification_getter_heartbeat = 3000;
@@ -50,7 +50,7 @@ function get_notifications()
     
     getting_notifications = true;
     
-    var url = $_ROOT_URL + '/scripts/get_notifications.php';
+    var url = $_FULL_ROOT_PATH + '/scripts/get_notifications.php';
     var params = {
         'wasuuup': parseInt(Math.random() * 1000000000000000)
     };
@@ -88,7 +88,7 @@ function notification_clicked( $noty_object )
 {
     var message_archive = $noty_object.$message.find('span[data-message-archive]').attr('data-message-archive');
     
-    var url = $_ROOT_URL
+    var url = $_FULL_ROOT_PATH
             + '/scripts/delete_notification.php'
             + '?identifier=' + encodeURI(message_archive)
             + '&wasuuup='    + parseInt(Math.random() * 1000000000000000)

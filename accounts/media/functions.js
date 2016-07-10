@@ -84,7 +84,7 @@ function process_login_result()
         }
         
         if( parts[3] != '' )
-            location.href = $_ROOT_URL + parts[3];
+            location.href = $_FULL_ROOT_PATH + parts[3];
         return;
     }
     
@@ -97,7 +97,7 @@ function change_device_label(id_device, current_label)
     var label = prompt(message, current_label);
     if( label == null || label == current_label ) return;
     
-    var url = $_ROOT_URL + '/accounts/devices.php';
+    var url = $_FULL_ROOT_PATH + '/accounts/devices.php';
     var params = {
         'mode':         'set_label',
         'id_device':    id_device,
@@ -123,7 +123,7 @@ function change_device_state(state, id_device)
         if( ! confirm(message) ) return;
     } // end if
     
-    var url = $_ROOT_URL + '/accounts/devices.php';
+    var url = $_FULL_ROOT_PATH + '/accounts/devices.php';
     var params = {
         'mode':         'set_state',
         'id_device':    id_device,
@@ -175,7 +175,7 @@ function process_reset_result(responseText, statusText, xhr, $form)
 
 function set_engine_pref(key, value)
 {
-    var url = $_ROOT_URL + '/accounts/scripts/set_engine_pref.php';
+    var url = $_FULL_ROOT_PATH + '/accounts/scripts/set_engine_pref.php';
     var params = {'key': key, 'value': value};
     $.get(url, params, function(response)
     {

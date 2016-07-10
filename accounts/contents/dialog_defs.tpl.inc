@@ -1,15 +1,10 @@
-<?
-/**
- * @var string $_ROOT_URL
- */
-?>
 <!-- accounts :: basic :: dialog defs -->
 
 <? if( ! $account->_exists ): ?>
     
     <div id="login_dialog" style="display: none;" title="<?= $this_module->language->login ?>">
         <div id="login_targetarea" style="display: none;"></div>
-        <form name="login_form" id="login_form" method="post" action="<?=$_ROOT_URL?>/accounts/scripts/login.php">
+        <form name="login_form" id="login_form" method="post" action="<?=$config->full_root_path?>/accounts/scripts/login.php">
             <span class="field">
                 <span class="caption"><?= $this_module->language->user_name ?></span>
                 <input type="text" name="user_name">
@@ -36,7 +31,7 @@
         
         <div id="reset_targetarea" style="display: none;"></div>
         
-        <form name="reset_form" id="reset_form" method="post" action="<?=$_ROOT_URL?>/accounts/reset_password.php">
+        <form name="reset_form" id="reset_form" method="post" action="<?=$config->full_root_path?>/accounts/reset_password.php">
             
             <div class="framed_content state_highlight" style="margin-top: 0;">
                 <span class="fa fa-info-circle"></span>
@@ -62,19 +57,19 @@
 <div id="user_menu_items" class="dropdown_menu" style="display: none;">
     
     <a class="main_menu_item <?= $current_module->name == $this_module->name && basename($_SERVER["PHP_SELF"]) == "edit_account.php" ? "current" : ""  ?>"
-       href="<?= "$_ROOT_URL/$this_module->name/edit_account.php" ?>">
+       href="<?= "$config->full_root_path/$this_module->name/edit_account.php" ?>">
         <span class="fa fa-edit fa-fw"></span>
         <?= $this_module->language->edit_account ?>
     </a>
     
     <a class="main_menu_item <?= $current_module->name == $this_module->name && basename($_SERVER["PHP_SELF"]) == "devices.php" ? "current" : "" ?>"
-       href="<?= "$_ROOT_URL/$this_module->name/devices.php" ?>">
+       href="<?= "$config->full_root_path/$this_module->name/devices.php" ?>">
         <span class="fa fa-mobile fa-fw"></span>
         <?= $this_module->language->edit_devices ?>
     </a>
     
-    <a class="main_menu_item" href="<?=$_ROOT_URL?>/"
-       onclick="top.location.href='<?=$_ROOT_URL?>/accounts/scripts/logout.php'; return false;">
+    <a class="main_menu_item" href="<?=$config->full_root_path?>/"
+       onclick="top.location.href='<?=$config->full_root_path?>/accounts/scripts/logout.php'; return false;">
         <span class="fa fa-sign-out fa-fw"></span>
         <?= $this_module->language->logout ?>
     </a>

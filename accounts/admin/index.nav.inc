@@ -3,7 +3,6 @@
  * @var module $current_module
  * @var array  $errors
  * @var array  $messages
- * @var string $_ROOT_URL
  */
 
 use hng2_base\account;
@@ -171,7 +170,7 @@ $res = $database->query($query);
     <script type="text/javascript">
         function show_chart()
         {
-            var src = '<?= $_ROOT_URL ?>/accounts/scripts/registrations_chart.php?show=true&width=' + $(window).width() + '&height=200&wasuuup=' + parseInt(Math.random() * 1000000000000000);
+            var src = '<?= $config->full_root_path ?>/accounts/scripts/registrations_chart.php?show=true&width=' + $(window).width() + '&height=200&wasuuup=' + parseInt(Math.random() * 1000000000000000);
             $('#chart').html('<img src="' + src + '" style="width: 100%; height: 200px; border: 1px solid black;">');
         }
         
@@ -256,13 +255,13 @@ $res = $database->query($query);
                 <th align="<?= $this_cell->xalign ?>" <? if( $this_cell->xnowrap == true ) echo "nowrap "; ?>
                     <? if( ! empty($this_cell->xwidth) ) echo "width='$this_cell->xwidth' "; ?> class="<?= $this_cell->xclass ?>"><?
                     if( $this_cell->sort_asc->enabled == true ) echo "<img
-                        src='{$_ROOT_URL}/media/icons/order_asc" . ($order == $this_cell->sort_asc->order ? "_this" : "") . ".gif' 
+                        src='{$config->full_root_path}/media/icons/order_asc" . ($order == $this_cell->sort_asc->order ? "_this" : "") . ".gif' 
                         align='absmiddle' width='7' height='7'  style='cursor: pointer;'
                         alt='{$this_cell->sort_asc->alt}' title='{$this_cell->sort_asc->alt}'
                         onclick=\"document.filter_form.order.value='{$this_cell->sort_asc->order}'; document.filter_form.submit();\">&nbsp;";
                     ?><?= $this_cell->content ?><?
                     if( $this_cell->sort_desc->enabled == true ) echo "&nbsp;<img
-                        src='{$_ROOT_URL}/media/icons/order_desc" . ($order == $this_cell->sort_desc->order ? "_this" : "") . ".gif' 
+                        src='{$config->full_root_path}/media/icons/order_desc" . ($order == $this_cell->sort_desc->order ? "_this" : "") . ".gif' 
                         align='absmiddle' width='7' height='7'  style='cursor: pointer;'
                         alt='{$this_cell->sort_desc->alt}' title='{$this_cell->sort_desc->alt}'
                         onclick=\"document.filter_form.order.value='{$this_cell->sort_desc->order}'; document.filter_form.submit();\">";
@@ -392,7 +391,7 @@ $res = $database->query($query);
                 
                 <td width="20" align="center">
                     <? $online_flag = $row->last_activity >= date("Y-m-d H:i:s", strtotime("now - 1 minute")) ? "online" : "offline"; ?>
-                    <img src="<?= $_ROOT_URL ?>/media/icons/user-<?= $online_flag ?>.png" border="0" width="16" height="16"><br>
+                    <img src="<?= $config->full_root_path ?>/media/icons/user-<?= $online_flag ?>.png" border="0" width="16" height="16"><br>
                     <?= time_elapsed_string_alternate($row->last_activity) ?>
                 </td>
                 
