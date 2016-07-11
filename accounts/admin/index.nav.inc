@@ -208,9 +208,11 @@ $res = $database->query($query);
         <input type="hidden" name="offset" value="0">
         
         <span style="float: right;">
+            <?= $browser->get_pagination_button("previous", "paginate", $pagination) ?>
             <?= $language->record_nav->page ?>
             <?= $pagination["this_page_number"]; ?>/<?= $pagination["total_pages"]; ?>
             (<?= $pagination["total_records"]; ?> <?= $language->record_nav->entries ?>)
+            <?= $browser->get_pagination_button("next", "paginate", $pagination) ?>
         </span>
         
         <?= $language->record_nav->search ?>
