@@ -45,7 +45,7 @@ function prepare_notifications_hooks()
 
 function get_notifications()
 {
-    if( CURRENT_USER_ID_ACCOUNT == '' ) return;
+    if( $_CURRENT_USER_ID_ACCOUNT == '' ) return;
     if( getting_notifications ) return;
     
     getting_notifications = true;
@@ -103,7 +103,7 @@ function notification_clicked( $noty_object )
 var notification_getter_interval = null;
 function start_notifications_getter()
 {
-    if( CURRENT_USER_ID_ACCOUNT == '' ) { stop_notifications_getter(); return; }
+    if( $_CURRENT_USER_ID_ACCOUNT == '' ) { stop_notifications_getter(); return; }
     if( notification_getter_interval ) stop_notifications_getter();
     notification_getter_interval = setInterval('get_notifications()', notification_getter_heartbeat);
 }
