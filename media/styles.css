@@ -18,6 +18,7 @@ td       { font-size:  9pt; }
 #footer  { font-size: 11pt; }
 
 textarea, pre, .fixed_font, code { font-family: 'Lucida Console', 'Courier new', 'Courier', monospace; font-size: 8pt; }
+textarea.no_fw_font              { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; }
 
 h1 { font-size: 18pt; color: #990d0d; margin-top: 0; }
 h2 { font-size: 16pt; color: #ce6562; }
@@ -258,8 +259,8 @@ input[type="submit"][disabled], input[type="reset"][disabled] { cursor: default;
 
 form .field                           { margin-bottom: 15px; }
 form .field .input                    { margin: 5px 0 5px 25px; }
-form .field .input input[type="text"] { width: 100%; }
-form .field .input select             { width: 100%; }
+form .field        input[type="text"] { width: 100%; }
+form .field        select             { width: 100%; }
 
 form .field .input.info_handler { font-style: italic; color: dimgrey;
                                   padding-left: 10px; border-left: 5px solid silver; }
