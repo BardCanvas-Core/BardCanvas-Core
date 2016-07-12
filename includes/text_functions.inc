@@ -846,13 +846,15 @@ function reset_mbstring_encoding()
     mbstring_binary_safe_encoding(true);
 }
 
-function make_excerpt_of($string, $length = 30)
+function make_excerpt_of($string, $length = 30, $with_ellipsis = true)
 {
     if( strlen($string) <= $length ) return $string;
     
-    $excerpt = trim(substr($string, 0, $length - 1));
+    $excerpt = preg_replace('/\s+/', " ", $string);
+    $excerpt = trim(substr($excerpt, 0, $length - 1));
     $excerpt = substr($excerpt, 0, strrpos($excerpt, " "));
-    $excerpt .= "…";
+    $excerpt = rtrim($excerpt, "-_.:,;");
+    if( $with_ellipsis) $excerpt .= "…";
     
     return $excerpt;
 }

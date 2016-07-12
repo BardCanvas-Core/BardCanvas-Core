@@ -92,7 +92,7 @@ class db_controller
     public function exec($query)
     {
         $return = 0;
-    
+        
         $backtrace = "N/A";
         if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
         {
@@ -105,7 +105,8 @@ class db_controller
             if( is_null($db->handler) ) $db->connect();
             
             $query_start = $this->tracking_enabled ? microtime(true) : 0;
-            
+    
+            $error_info = array();
             $return = $db->exec($query);
             $error_info = $db->handler->errorInfo();
             

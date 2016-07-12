@@ -15,7 +15,12 @@ class module
     var $name;
     var $version;
     var $abspath;
+    
+    /**
+     * @var \SimpleXMLElement
+     */
     var $working_flags;
+    
     var $group;
     
     # Functionality flags

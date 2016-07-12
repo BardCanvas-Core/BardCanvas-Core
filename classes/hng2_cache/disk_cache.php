@@ -90,7 +90,7 @@ class disk_cache
         $this->data[$key] = $value;
         
         $this->save();
-    
+        
         $backtrace = "N/A";
         if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
         {
@@ -100,6 +100,26 @@ class disk_cache
         self::$cache_hits[] = (object) array(
             "file"      => basename($this->disk_cache_file),
             "type"      => "set",
+            "key"       => $key,
+            "timestamp" => microtime(true),
+            "backtrace" => $backtrace,
+        );
+    }
+    
+    public function delete($key)
+    {
+        unset( $this->data[$key] );
+        $this->save();
+    
+        $backtrace = "N/A";
+        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        {
+            $backtrace = debug_backtrace();
+            foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        }
+        self::$cache_hits[] = (object) array(
+            "file"      => basename($this->disk_cache_file),
+            "type"      => "delete",
             "key"       => $key,
             "timestamp" => microtime(true),
             "backtrace" => $backtrace,

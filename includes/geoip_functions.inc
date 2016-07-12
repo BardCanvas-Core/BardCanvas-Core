@@ -12,7 +12,7 @@
  *
  * @param string $ip
  *
- * @returns string
+ * @returns string city; region; country; isp
  */
 function forge_geoip_location($ip)
 {
@@ -58,9 +58,9 @@ function get_geoip_location_data($ip, $what = "country_code")
     
     if( $what == "country_code" ) return utf8_encode($country_code);
     if( $what == "country_name" ) return utf8_encode($country_name);
-    if( $what == "region_name" ) return utf8_encode($region_name);
-    if( $what == "city" ) return utf8_encode($city);
-    if( $what == "isp" ) return utf8_encode($isp);
+    if( $what == "region_name" )  return utf8_encode($region_name);
+    if( $what == "city" )         return utf8_encode($city);
+    if( $what == "isp" )          return utf8_encode($isp);
     
     return "";
 }

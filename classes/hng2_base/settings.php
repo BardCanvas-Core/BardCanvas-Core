@@ -31,10 +31,10 @@ class settings
     }
     
     /**
-     * @param             $name
-     * @param bool|string $forced If true, cache is skipped.
-     *                            If false, nothing is returned if not found.
-     *                            If string, the string is returned if not found.
+     * @param            $name
+     * @param bool|mixed $forced If true, cache is skipped.
+     *                           If false, nothing is returned if not found.
+     *                           Else, the string is returned if not found.
      *
      * @return string
      * 
@@ -44,14 +44,14 @@ class settings
     {
         global $database;
         
-        if( is_string($forced) )
+        if( is_bool($forced) )
         {
-            $default_value = $forced;
-            $forced = false;
+            $default_value = "";
         }
         else
         {
-            $default_value = "";
+            $default_value = $forced;
+            $forced = false;
         }
         
         if( $this->cache->exists($name) && ! $forced ) return $this->cache->get($name);
@@ -107,5 +107,13 @@ class settings
             on duplicate key update
                 value = '$value'
         ");
+    }
+    
+    public function delete($name)
+    {
+        global $database;
+        
+        $this->cache->delete($name);
+        $database->exec("delete from settings where name = '$name'");
     }
 }

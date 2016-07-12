@@ -11,9 +11,9 @@ namespace hng2_base\repository;
 
 abstract class abstract_repository
 {
-    protected $row_class                = "";                // OVERRIDE THIS
-    protected $table_name               = "";               // OVERRIDE THIS
-    protected $key_column_name          = "";          // OVERRIDE THIS
+    protected $row_class                = "";      // OVERRIDE THIS
+    protected $table_name               = "";      // OVERRIDE THIS
+    protected $key_column_name          = "";      // OVERRIDE THIS
     protected $additional_select_fields = array(); // OVERRIDE IF NEEDED
     
     /**

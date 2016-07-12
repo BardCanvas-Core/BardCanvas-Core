@@ -57,16 +57,39 @@ function get_remote_address()
 {
     # header("X-Remote-Address: {$_SERVER['REMOTE_ADDR']}");
     $remoteIP = $_SERVER['REMOTE_ADDR'];
-    if( strstr($remoteIP, ', ') ) $remoteIP = current(explode(', ', $remoteIP));
+    if( strstr($remoteIP, ",") ) $remoteIP = trim(end(explode(",", $remoteIP)));
     
     if( ! function_exists("getallheaders") ) return $remoteIP;
     
     $headers  = getallheaders();
-    $remoteIP = isset($headers["X-Forwarded-For"]) ? $headers["X-Forwarded-For"] : $_SERVER['REMOTE_ADDR'];
     
-    if( strstr($remoteIP, ', ') ) $remoteIP = current(explode(', ', $remoteIP));
+    if( $headers["CF-Connecting-IP"] )
+    {
+        $remoteIP = $headers["CF-Connecting-IP"];
+        if( strstr($remoteIP, ",") ) $remoteIP = trim(end(explode(",", $remoteIP)));
+        
+        return $remoteIP;
+    }
+    
+    if( $headers["X-Forwarded-For"] )
+    {
+        $remoteIP = $headers["X-Forwarded-For"];
+        if( strstr($remoteIP, ",") ) $remoteIP = trim(end(explode(",", $remoteIP)));
+        
+        return $remoteIP;
+    }
     
     return $remoteIP;
+}
+
+/**
+ * Alias of get_remote_address()
+ * 
+ * @return string
+ */
+function get_user_ip()
+{
+    return get_remote_address();
 }
 
 /**
