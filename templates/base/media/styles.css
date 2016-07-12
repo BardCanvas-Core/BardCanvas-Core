@@ -24,3 +24,18 @@ h3 { font-family: 'Lora', sans-serif; font-size: 14pt; line-height: 1em; }
 
 #post_form textarea[name="title"]   { font-family: 'Lora', sans-serif;   font-size: 18pt; min-height: 34px; height: 34px; }
 #post_form textarea[name="excerpt"] { font-family: 'Prompt', sans-serif; font-size: 12pt; min-height: 30px; height: 30px; }
+
+/* Emojione adjustments */
+
+body     .emojione { height: 12pt; }
+th       .emojione { height: 11pt; }
+td       .emojione { height: 11pt; }
+#header  .emojione { height: 12pt; }
+#footer  .emojione { height: 11pt; }
+
+.fixed_font   .emojione ,
+code          .emojione { height: 10pt; }
+
+h1 .emojione { height: 18pt; }
+h2 .emojione { height: 16pt; }
+h3 .emojione { height: 14pt; }

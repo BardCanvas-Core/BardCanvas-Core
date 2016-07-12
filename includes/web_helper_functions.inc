@@ -153,3 +153,19 @@ function get_notifications($id_account)
     
     return $return;
 }
+
+function convert_emojis($input)
+{
+    global $emojione, $config;
+    
+    if( empty($emojione) )
+    {
+        require_once ABSPATH . "/lib/emojione-2.2.5/lib/php/autoload.php";
+        $emojione = new Emojione\Client(new Emojione\Ruleset());
+        $emojione->imageType    = "svg";
+        $emojione->imagePathPNG = "{$config->full_root_url}/lib/emojione-2.2.5/assets/png/";
+        $emojione->imagePathSVG = "{$config->full_root_url}/lib/emojione-2.2.5/assets/svg/";
+    }
+    
+    return $emojione->unicodeToImage($input);
+}

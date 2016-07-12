@@ -274,3 +274,29 @@ form .field .input select   { font-size: 12pt; }
 .buttonized_radios label input[type="radio"] { display: none; }
 
 form .big_form_submit_button { font-size: 12pt; padding: 5px 10px; }
+
+/* EmojiOne overrides */
+
+.emojione { vertical-align: bottom; }
+
+body     .emojione { height: 12pt; }
+th       .emojione { height:  9pt; }
+td       .emojione { height:  9pt; }
+#header  .emojione { height: 11pt; }
+#footer  .emojione { height: 11pt; }
+
+pre .emojione                 ,
+.fixed_font .emojione         ,
+code .emojione                { height: 8pt; }
+
+h1 .emojione { height: 18pt; }
+h2 .emojione { height: 16pt; }
+h3 .emojione { height: 14pt; }
+
+.details_table th .emojione            ,
+.details_table td .emojione            { height: 11pt; }
+
+.principal_data   .emojione            { height: 12pt; }
+.noty_text        .emojione            { height: 10pt; }
+
+form .big_form_submit_button .emojione { height: 12pt; }

@@ -53,3 +53,6 @@ body.admin section > h1, body.admin section > h2, body.admin section > h3 {
     border-bottom-right-radius: 0;
     margin-bottom: 0;
 }
+
+#admin_menu .emojione                  { height: 10pt; }
+#admin_menu .admin_bar_title .emojione { height: 10pt; }
