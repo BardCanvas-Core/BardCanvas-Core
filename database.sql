@@ -20,7 +20,6 @@ insert into settings set name='engine.website_name'          , value='Default HN
 insert into settings set name='engine.enabled'               , value='true';
 insert into settings set name='engine.default_language'      , value='en_US';
 insert into settings set name='engine.template'              , value='base';
-insert into settings set name='engine.ui_theme'              , value='blitzer';
 insert into settings set name='engine.admins'                , value='00000000000000';
 insert into settings set name='engine.user_session_cookie'   , value='_HNG2SC';
 insert into settings set name='engine.user_online_cookie'    , value='_HNG2OC';
