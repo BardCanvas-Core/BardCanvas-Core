@@ -18,5 +18,31 @@
             <url></url>
         </item>
     </menu_items>
+
+    <!--
+    <php_includes>
+        <bootstrap></bootstrap>
+    </php_includes>
+    -->
+    
+    <!--
+    <template_includes>
+        <pre_rendering></pre_rendering>
+        <html_head></html_head>
+        <pre_header></pre_header>
+        <header_top></header_top>
+        <header_menu></header_menu>
+        <header_bottom></header_bottom>
+        <content_top></content_top>
+        <home_content></home_content>
+        <content_bottom></content_bottom>
+        <pre_footer></pre_footer>
+        <footer_top></footer_top>
+        <footer_bottom></footer_bottom>
+        <post_footer></post_footer>
+        <pre_eof></pre_eof>
+        <post_rendering></post_rendering>
+    </template_includes>
+    -->
     
 </module>
