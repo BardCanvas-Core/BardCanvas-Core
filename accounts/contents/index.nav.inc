@@ -309,9 +309,11 @@ $res = $database->query($query);
                 <td nowrap align="center"><?= $row->id_account ?></td>
                 
                 <td width="60%" colspan="2">
+                    
                     <div class="principal_data"><?= $row->display_name ?></div>
                     
-                    <span style="display: inline-block;"><?= $row->user_name ?></span>
+                    <code><?= $row->user_name ?></code>
+                    
                     <span class="fa pseudo_link fa-fw fa-envelope-o"
                           title="<?= $row->email ?>"
                           onclick="prompt('<?= $current_module->language->admin->record_nav->row_extras->email ?>', '<?= $row->email ?>')"></span>
@@ -383,6 +385,7 @@ $res = $database->query($query);
                             
                         <? endif; ?>
                     </div>
+                    
                 </td>
                 
                 <td width="20%"><?= $row->country_name ?></td>

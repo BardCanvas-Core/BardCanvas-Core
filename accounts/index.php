@@ -9,9 +9,11 @@
 
 use hng2_base\account;
 
-include "../../config.php";
-include "../../includes/bootstrap.inc";
+include "../config.php";
+include "../includes/bootstrap.inc";
 if( ! $account->_is_admin ) throw_fake_404();
+
+$template->page_contents_include = "contents/index.nav.inc";
 
 $messages = $errors = array();
 switch( $_REQUEST["mode"] )
@@ -21,7 +23,6 @@ switch( $_REQUEST["mode"] )
         $settings->set("modules:accounts.register_enabled", "true");
         $messages[] = $current_module->language->admin->record_nav->action_messages->registering_enabled;
         
-        $template->page_contents_include = "admin/index.nav.inc";
         $template->set_page_title($current_module->language->admin->record_nav->page_title);
         include "{$template->abspath}/admin.php";
         break;
@@ -31,7 +32,6 @@ switch( $_REQUEST["mode"] )
         $settings->set("modules:accounts.register_enabled", "false");
         $messages[] = $current_module->language->admin->record_nav->action_messages->registering_disabled;
     
-        $template->page_contents_include = "admin/index.nav.inc";
         $template->set_page_title($current_module->language->admin->record_nav->page_title);
         include "{$template->abspath}/admin.php";
         break;
@@ -60,7 +60,6 @@ switch( $_REQUEST["mode"] )
             $messages[] = $current_module->language->admin->record_nav->action_messages->promoted_ok;
         }
     
-        $template->page_contents_include = "admin/index.nav.inc";
         $template->set_page_title($current_module->language->admin->record_nav->page_title);
         include "{$template->abspath}/admin.php";
         break;
@@ -89,7 +88,6 @@ switch( $_REQUEST["mode"] )
             $messages[] = $current_module->language->admin->record_nav->action_messages->demoted_ok;
         }
     
-        $template->page_contents_include = "admin/index.nav.inc";
         $template->set_page_title($current_module->language->admin->record_nav->page_title);
         include "{$template->abspath}/admin.php";
         break;
@@ -112,7 +110,6 @@ switch( $_REQUEST["mode"] )
             $messages[] = $current_module->language->admin->record_nav->action_messages->enabled_ok;
         }
     
-        $template->page_contents_include = "admin/index.nav.inc";
         $template->set_page_title($current_module->language->admin->record_nav->page_title);
         include "{$template->abspath}/admin.php";
         break;
@@ -134,8 +131,7 @@ switch( $_REQUEST["mode"] )
             $user_account->disable();
             $messages[] = $current_module->language->admin->record_nav->action_messages->enabled_ok;
         }
-    
-        $template->page_contents_include = "admin/index.nav.inc";
+        
         $template->set_page_title($current_module->language->admin->record_nav->page_title);
         include "{$template->abspath}/admin.php";
         break;
@@ -148,7 +144,6 @@ switch( $_REQUEST["mode"] )
         if( ! $xaccount->_exists )
         {
             $errors[] = $current_module->language->admin->record_nav->action_messages->target_not_exists;
-            $template->page_contents_include = "admin/index.nav.inc";
             $template->set_page_title($current_module->language->admin->record_nav->page_title);
         }
         else
@@ -178,7 +173,6 @@ switch( $_REQUEST["mode"] )
         if( empty($_POST["id_account"]) )
         {
             $errors[] = $current_module->language->edit_account_form->no_account_id_specified;
-            $template->page_contents_include = "admin/index.nav.inc";
             $template->set_page_title($current_module->language->admin->record_nav->page_title);
             include "{$template->abspath}/admin.php";
             break;
@@ -188,7 +182,6 @@ switch( $_REQUEST["mode"] )
         if( ! $xaccount->_exists )
         {
             $errors[] = $current_module->language->edit_account_form->account_not_found;
-            $template->page_contents_include = "admin/index.nav.inc";
             $template->set_page_title($current_module->language->admin->record_nav->page_title);
             include "{$template->abspath}/admin.php";
             break;
@@ -260,7 +253,6 @@ switch( $_REQUEST["mode"] )
             $xaccount->save();
             $messages[] = $current_module->language->edit_account_form->saved_ok;
             
-            $template->page_contents_include = "admin/index.nav.inc";
             $template->set_page_title($current_module->language->admin->record_nav->page_title);
             include "{$template->abspath}/admin.php";
             break;
@@ -391,7 +383,6 @@ switch( $_REQUEST["mode"] )
             $xaccount->enable();
             $messages[] = $current_module->language->register_form->account_manually_created;
             
-            $template->page_contents_include = "admin/index.nav.inc";
             $template->set_page_title($current_module->language->admin->record_nav->page_title);
             include "{$template->abspath}/admin.php";
             break;
@@ -427,7 +418,6 @@ switch( $_REQUEST["mode"] )
     
     default:
     
-        $template->page_contents_include = "admin/index.nav.inc";
         $template->set_page_title($current_module->language->admin->record_nav->page_title);
         include "{$template->abspath}/admin.php";
         break;

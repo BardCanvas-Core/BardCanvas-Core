@@ -15,7 +15,7 @@
     <menu_items>
         <item>
             <caption_language_var>admin_menu_caption</caption_language_var>
-            <url>admin/</url>
+            <url></url>
         </item>
     </menu_items>
     

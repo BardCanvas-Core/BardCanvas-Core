@@ -20,6 +20,8 @@ td       { font-size:  9pt; }
 textarea, pre, .fixed_font, code { font-family: 'Lucida Console', 'Courier new', 'Courier', monospace; font-size: 8pt; }
 textarea.no_fw_font              { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; }
 
+code { color: black; background-color: silver; padding-left: 2px; padding-right: 2px; }
+
 h1 { font-size: 18pt; color: #990d0d; margin-top: 0; }
 h2 { font-size: 16pt; color: #ce6562; }
 h3 { font-size: 14pt; color: #ceaea7; }
