@@ -848,10 +848,13 @@ function reset_mbstring_encoding()
 
 function make_excerpt_of($string, $length = 30, $with_ellipsis = true)
 {
-    if( strlen($string) <= $length ) return $string;
+    $excerpt = strip_tags($string);
+    $excerpt = preg_replace('/\s+/', " ", $excerpt);
+    $excerpt = trim($excerpt);
     
-    $excerpt = preg_replace('/\s+/', " ", $string);
-    $excerpt = trim(substr($excerpt, 0, $length - 1));
+    if( strlen($excerpt) <= $length ) return $excerpt;
+    
+    $excerpt = substr($excerpt, 0, $length - 1);
     $excerpt = substr($excerpt, 0, strrpos($excerpt, " "));
     $excerpt = rtrim($excerpt, "-_.:,;");
     if( $with_ellipsis) $excerpt .= "…";

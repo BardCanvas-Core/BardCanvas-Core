@@ -1,0 +1,24 @@
+
+#content       { width: calc(77% - 150px) }
+#right_sidebar { font-family: 'Roboto Condensed', 'Arial Narrow', sans-serif;
+                 font-size: 11pt; line-height: normal;
+                 width: 23%; float: right; padding-top: 20px; padding-right: 10px; }
+
+#right_sidebar .item_container { margin-bottom: 20px; }
+
+#right_sidebar .item_container h3       { margin: 0 0 5px 0; padding: 0 0 5px 0; border-bottom: 1px solid #ceaea7; }
+#right_sidebar .item_container .content { padding: 5px; }
+
+@media all and (min-width: 100px) and (max-width: 720px)
+{
+    /* Hidden for small displays (below 1024px) */
+    #content       { width: calc(100% - 150px) }
+    #right_sidebar { width: 100%; float: none; padding-left: 10px; }
+}
+
+@media all and (min-width: 100px) and (max-width: 480px)
+{
+    /* Left sidebar is hidden here. Right sidebar goes below. 
+       We must adjust the content width. */
+    #content { width: 100%; }
+}

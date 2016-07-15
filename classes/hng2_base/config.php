@@ -39,6 +39,15 @@ class config
      */
     public $full_root_path;
     
+    const UNREGISTERED_USER_LEVEL =   0;
+    const UNCONFIRMED_USER_LEVEL  =   1;
+    const NEWCOMER_USER_LEVEL     =  50;
+    const AUTHOR_USER_LEVEL       = 100;
+    const VIP_USER_LEVEL          = 150;
+    const MODERATOR_USER_LEVEL    = 200;
+    const COADMIN_USER_LEVEL      = 240;
+    const ADMIN_USER_LEVEL        = 255;
+    
     public function __construct()
     {
         $this->encryption_key     = ENCRYPTION_KEY;

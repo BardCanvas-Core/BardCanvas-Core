@@ -9,6 +9,8 @@
 
 use hng2_tools\internals;
 
+$template->init(__FILE__);
+
 foreach($modules as $this_module)
     if( ! empty($this_module->template_includes->pre_rendering) )
         include "{$this_module->abspath}/contents/{$this_module->template_includes->pre_rendering}";
@@ -40,6 +42,18 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     
     <!-- This template -->
     <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/styles~v<?=$config->scripts_version?>.css">
+    <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/post_styles~v<?=$config->scripts_version?>.css">
+    
+    <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+        <!-- Left sidebar -->
+        <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/left_sidebar_addon~v<?=$config->scripts_version?>.css">
+        <script type="text/javascript"          src="<?= $template->url ?>/media/left_sidebar_addon~v<?=$config->scripts_version?>.js"></script>
+    <? endif; ?>
+    
+    <? # if( $template->count_right_sidebar_items() > 0 ): ?>
+        <!-- Right sidebar -->
+        <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/right_sidebar_addon~v<?=$config->scripts_version?>.css">
+    <? # endif; ?>
     
     <!-- Per module loads -->
     <?
@@ -71,9 +85,16 @@ header("Content-Type: text/html; charset=utf-8"); ?>
         </div>
         
         <div class="menu clearfix">
-    
+            
+            <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+                <span id="left_sidebar_trigger" class="main_menu_item" style="display: none;"
+                      onclick="toggle_left_sidebar_items()">
+                    <span class="fa fa-ellipsis-v fa-fw"></span>
+                </span>
+            <? endif; ?>
+            
             <span id="main_menu_trigger" class="main_menu_item" onclick="toggle_main_menu_items()">
-                <span class="fa fa-bars"></span>
+                <span class="fa fa-bars fa-fw"></span>
             </span>
             
             <a class="main_menu_item pull-left" href="<?= $config->full_root_path ?>">
@@ -100,38 +121,56 @@ header("Content-Type: text/html; charset=utf-8"); ?>
         
     </div><!-- /#header -->
     
-    <div id="content">
-        <?
-        foreach($modules as $this_module)
-            if( ! empty($this_module->template_includes->content_top) )
-                include "{$this_module->abspath}/contents/{$this_module->template_includes->content_top}";
-    
-        foreach($modules as $this_module)
-            if( ! empty($this_module->template_includes->home_content) )
-                include "{$this_module->abspath}/contents/{$this_module->template_includes->home_content}";
+    <div id="content_wrapper" class="clearfix">
         
-        foreach($modules as $this_module)
-            if( ! empty($this_module->template_includes->content_bottom) )
-                include "{$this_module->abspath}/contents/{$this_module->template_includes->content_bottom}";
-        ?>
+        <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+            <div id="left_sidebar">
+                <? echo $template->build_left_sidebar_groups(); ?>
+            </div>
+        <? endif; ?>
         
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sed odio sodales, luctus ex et, vulputate neque. Cras cursus consequat sem, a ultrices justo iaculis et. Ut elementum lacus augue, nec laoreet mi scelerisque vel. Sed in eros velit. Quisque feugiat enim sit amet vestibulum laoreet. Praesent semper pretium erat. Fusce non varius libero, at laoreet urna. Fusce neque neque, vulputate scelerisque nisi eu, laoreet bibendum massa. Praesent neque quam, aliquet eu massa ut, tristique faucibus justo.
-        </p>
-        <p>
-            Suspendisse vulputate congue tellus, eu tempor diam. Quisque id lorem egestas orci volutpat dapibus non id ipsum. Duis eget justo posuere, elementum urna nec, consectetur lacus. Donec non quam at lacus venenatis dictum. Aliquam vel magna scelerisque erat suscipit pulvinar. Sed tempor nisl quis tellus porta consectetur. Suspendisse potenti. Praesent dui arcu, blandit nec placerat a, fringilla in orci. Etiam sed dui id sapien mollis laoreet at eu dui. Curabitur in orci eu nisi iaculis dictum. Pellentesque non dignissim erat, et hendrerit orci.
-        </p>
-        <p>
-            In eleifend eros quis ultrices ullamcorper. Suspendisse eu elementum risus. Praesent quis mollis quam. Aenean mattis laoreet erat finibus congue. Nulla tristique sollicitudin tincidunt. Quisque fermentum pellentesque viverra. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer sodales rhoncus justo, in egestas ligula maximus at. Sed facilisis tortor vel dui ultrices facilisis. Proin cursus nulla vel risus feugiat dictum. Donec pellentesque mauris urna. Integer quis laoreet nunc. Duis ultricies lorem non ipsum lobortis, et ultrices eros vestibulum. Vivamus dictum sem sit amet tristique feugiat.
-        </p>
-        <p>
-            Fusce lacus lorem, ornare hendrerit feugiat ac, cursus a odio. Vivamus faucibus ante at sollicitudin maximus. Nulla eget nisi convallis, laoreet tellus ut, aliquet ante. Donec eleifend arcu magna, non gravida magna congue sed. Sed facilisis et leo in luctus. Nullam interdum urna non orci egestas lobortis. Ut diam lacus, molestie varius libero in, posuere blandit dolor. Vestibulum leo erat, condimentum non lobortis sit amet, semper a justo. Integer sit amet imperdiet erat, eu tristique ante. Proin vestibulum purus id ex scelerisque lobortis. Sed egestas, lorem vitae imperdiet feugiat, risus ante condimentum sem, ut dictum ante odio varius eros.
-        </p>
-        <p>
-            Suspendisse potenti. Sed dapibus ut enim sit amet imperdiet. Donec tempus molestie ligula ac tincidunt. Ut erat magna, efficitur eu arcu in, faucibus euismod est. Etiam accumsan dictum leo quis tristique. Suspendisse quis porttitor diam. Morbi quam neque, ornare quis tortor vitae, suscipit placerat nulla. Curabitur sit amet tempus ipsum. In non nibh eu quam tempor rutrum. Morbi venenatis metus orci. Integer vel mi a purus fringilla pharetra vitae tempus mauris. Pellentesque ut urna scelerisque, ullamcorper nunc eu, sagittis neque.
-        </p>
-    </div><!-- /#content -->
-    
+        <div id="content">
+            <?
+            foreach($modules as $this_module)
+                if( ! empty($this_module->template_includes->content_top) )
+                    include "{$this_module->abspath}/contents/{$this_module->template_includes->content_top}";
+        
+            foreach($modules as $this_module)
+                if( ! empty($this_module->template_includes->home_content) )
+                    include "{$this_module->abspath}/contents/{$this_module->template_includes->home_content}";
+            
+            foreach($modules as $this_module)
+                if( ! empty($this_module->template_includes->content_bottom) )
+                    include "{$this_module->abspath}/contents/{$this_module->template_includes->content_bottom}";
+            ?>
+        </div><!-- /#content -->
+        
+        <? # if( $template->count_right_sidebar_items() > 0 ): ?>
+            <div id="right_sidebar">
+                <? # echo $template->build_right_sidebar_items(); ?>
+                <div class="item_container">
+                    <h3>Title</h3>
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maximus blandit eros, sit amet lobortis neque convallis nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat enim ut tortor hendrerit sodales.
+                    </div>
+                </div>
+                <div class="item_container">
+                    <h3>Title</h3>
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maximus blandit eros, sit amet lobortis neque convallis nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat enim ut tortor hendrerit sodales.
+                    </div>
+                </div>
+                <div class="item_container">
+                    <h3>Title</h3>
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maximus blandit eros, sit amet lobortis neque convallis nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat enim ut tortor hendrerit sodales.
+                    </div>
+                </div>
+            </div>
+        <? # endif; ?>
+        
+    </div>
+        
     <?
     foreach($modules as $this_module)
         if( ! empty($this_module->template_includes->pre_footer) )

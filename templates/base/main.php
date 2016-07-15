@@ -9,6 +9,8 @@
 
 use hng2_tools\internals;
 
+$template->init(__FILE__);
+
 foreach($modules as $this_module)
     if( ! empty($this_module->template_includes->pre_rendering) )
         include "{$this_module->abspath}/contents/{$this_module->template_includes->pre_rendering}";
@@ -40,6 +42,18 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     
     <!-- This template -->
     <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/styles~v<?=$config->scripts_version?>.css">
+    <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/post_styles~v<?=$config->scripts_version?>.css">
+    
+    <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+        <!-- Left sidebar -->
+        <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/left_sidebar_addon~v<?=$config->scripts_version?>.css">
+        <script type="text/javascript"          src="<?= $template->url ?>/media/left_sidebar_addon~v<?=$config->scripts_version?>.js"></script>
+    <? endif; ?>
+    
+    <? # if( $template->count_right_sidebar_items() > 0 ): ?>
+        <!-- Right sidebar -->
+        <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/right_sidebar_addon~v<?=$config->scripts_version?>.css">
+    <? # endif; ?>
     
     <!-- Per module loads -->
     <?
@@ -71,6 +85,13 @@ header("Content-Type: text/html; charset=utf-8"); ?>
         </div>
         
         <div class="menu clearfix">
+    
+            <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+                <span id="left_sidebar_trigger" class="main_menu_item" style="display: none;"
+                      onclick="toggle_left_sidebar_items()">
+                    <span class="fa fa-ellipsis-v fa-fw"></span>
+                </span>
+            <? endif; ?>
             
             <span id="main_menu_trigger" class="main_menu_item" onclick="toggle_main_menu_items()">
                 <span class="fa fa-bars fa-fw"></span>
@@ -100,25 +121,59 @@ header("Content-Type: text/html; charset=utf-8"); ?>
         
     </div><!-- /#header -->
     
-    <div id="content">
+    <div id="content_wrapper" class="clearfix">
+    
+        <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+            <div id="left_sidebar">
+                <? echo $template->build_left_sidebar_groups(); ?>
+            </div>
+        <? endif; ?>
+        
+        <div id="content">
+            <?
+            foreach($modules as $this_module)
+                if( ! empty($this_module->template_includes->content_top) )
+                    include "{$this_module->abspath}/contents/{$this_module->template_includes->content_top}";
+            
+            include "{$current_module->abspath}/contents/{$template->page_contents_include}";
+            
+            foreach($modules as $this_module)
+                if( ! empty($this_module->template_includes->content_bottom) )
+                    include "{$this_module->abspath}/contents/{$this_module->template_includes->content_bottom}";
+            ?>
+        </div><!-- /#content -->
+    
+        <? # if( $template->count_right_sidebar_items() > 0 ): ?>
+            <div id="right_sidebar">
+                <? # echo $template->build_right_sidebar_items(); ?>
+                <div class="item_container">
+                    <h3>Title</h3>
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maximus blandit eros, sit amet lobortis neque convallis nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat enim ut tortor hendrerit sodales.
+                    </div>
+                </div>
+                <div class="item_container">
+                    <h3>Title</h3>
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maximus blandit eros, sit amet lobortis neque convallis nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat enim ut tortor hendrerit sodales.
+                    </div>
+                </div>
+                <div class="item_container">
+                    <h3>Title</h3>
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maximus blandit eros, sit amet lobortis neque convallis nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat enim ut tortor hendrerit sodales.
+                    </div>
+                </div>
+            </div>
+        <? # endif; ?>
+        
         <?
         foreach($modules as $this_module)
-            if( ! empty($this_module->template_includes->content_top) )
-                include "{$this_module->abspath}/contents/{$this_module->template_includes->content_top}";
-        
-        include "{$current_module->abspath}/contents/{$template->page_contents_include}";
-        
-        foreach($modules as $this_module)
-            if( ! empty($this_module->template_includes->content_bottom) )
-                include "{$this_module->abspath}/contents/{$this_module->template_includes->content_bottom}";
+            if( ! empty($this_module->template_includes->pre_footer) )
+                include "{$this_module->abspath}/contents/{$this_module->template_includes->pre_footer}";
         ?>
-    </div><!-- /#content -->
-    
-    <?
-    foreach($modules as $this_module)
-        if( ! empty($this_module->template_includes->pre_footer) )
-            include "{$this_module->abspath}/contents/{$this_module->template_includes->pre_footer}";
-    ?>
+        
+    </div>
     
     <div id="footer">
         <?

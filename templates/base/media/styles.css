@@ -8,7 +8,7 @@
 
 @import 'https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Prompt:400,400i,700,700i|Roboto+Condensed:400,400i,700,700i|Roboto:400,400i,700,700i|Ubuntu+Mono:400,400i,700,700i&subset=latin-ext';
 
-body     { font-family: 'Prompt', sans-serif; font-size: 12pt; }
+body     { font-family: 'Prompt', sans-serif; font-size: 12pt; background-color: #E5E5E5; }
 th       { font-family: 'Roboto', sans-serif; font-size: 11pt; }
 td       { font-family: 'Roboto Condensed', 'Arial Narrow', sans-serif; font-size: 11pt; }
 #header  { font-family: 'Roboto', sans-serif; font-size: 12pt; }
@@ -24,6 +24,8 @@ h3 { font-family: 'Lora', sans-serif; font-size: 14pt; line-height: 1em; }
 
 #post_form textarea[name="title"]   { font-family: 'Lora', sans-serif;   font-size: 18pt; min-height: 34px; height: 34px; }
 #post_form textarea[name="excerpt"] { font-family: 'Prompt', sans-serif; font-size: 12pt; min-height: 30px; height: 30px; }
+
+body.mce-content-body { background-color: white; }
 
 /* Emojione adjustments */
 

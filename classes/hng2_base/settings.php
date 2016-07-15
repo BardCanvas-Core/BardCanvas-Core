@@ -54,7 +54,7 @@ class settings
             $forced = false;
         }
         
-        if( $this->cache->exists($name) && ! $forced ) return $this->cache->get($name);
+        if( $this->cache->exists($name) && $forced === false ) return $this->cache->get($name);
         
         $res = $database->query("select value from settings where name = '$name'");
         

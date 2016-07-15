@@ -558,4 +558,19 @@ class account
                 "{$config->datafiles_location}/cache/account_prefs_{$this->user_name}.dat"
             );
     }
+    
+    public function get_processed_display_name()
+    {
+        $contents = $this->display_name;
+        $contents = convert_emojis($contents);
+        
+        return $contents;
+    }
+    
+    public function get_role()
+    {
+        global $config;
+        
+        return $config->user_levels_by_level[$this->level];
+    }
 }

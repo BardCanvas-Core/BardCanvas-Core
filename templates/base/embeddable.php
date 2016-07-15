@@ -9,6 +9,8 @@
 
 use hng2_tools\internals;
 
+$template->init(__FILE__);
+
 header("Content-Type: text/html; charset=utf-8"); ?>
 
 <div id="embedded_content">

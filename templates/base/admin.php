@@ -9,6 +9,8 @@
 
 use hng2_tools\internals;
 
+$template->init(__FILE__);
+
 foreach($modules as $this_module)
     if( ! empty($this_module->template_includes->pre_rendering) )
         include "{$this_module->abspath}/contents/{$this_module->template_includes->pre_rendering}";
@@ -40,6 +42,13 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     
     <!-- This template -->
     <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/styles~v<?=$config->scripts_version?>.css">
+    <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/post_styles~v<?=$config->scripts_version?>.css">
+    
+    <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+        <!-- Left sidebar -->
+        <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/left_sidebar_addon~v<?=$config->scripts_version?>.css">
+        <script type="text/javascript"          src="<?= $template->url ?>/media/left_sidebar_addon~v<?=$config->scripts_version?>.js"></script>
+    <? endif; ?>
     
     <!-- Per module loads -->
     <?
@@ -71,6 +80,13 @@ header("Content-Type: text/html; charset=utf-8"); ?>
         </div>
         
         <div class="menu clearfix">
+    
+            <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+                <span id="left_sidebar_trigger" class="main_menu_item" style="display: none;"
+                      onclick="toggle_left_sidebar_items()">
+                    <span class="fa fa-ellipsis-v fa-fw"></span>
+                </span>
+            <? endif; ?>
             
             <span id="main_menu_trigger" class="main_menu_item" onclick="toggle_main_menu_items()">
                 <span class="fa fa-bars fa-fw"></span>
@@ -87,7 +103,7 @@ header("Content-Type: text/html; charset=utf-8"); ?>
             
             echo $template->build_menu_items("priority");
             ?>
-        
+            
         </div>
         
         <div class="header_bottom">
@@ -100,10 +116,20 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     
     </div><!-- /#header -->
     
-    <div id="content">
-        <? include "{$current_module->abspath}/{$template->page_contents_include}"; ?>
-    </div><!-- /#content -->
-    
+    <div id="content_wrapper" class="clearfix">
+        
+        <? if( $template->count_left_sidebar_groups() > 0 ): ?>
+            <div id="left_sidebar">
+                <? echo $template->build_left_sidebar_groups(); ?>
+            </div>
+        <? endif; ?>
+        
+        <div id="content">
+            <? include "{$current_module->abspath}/{$template->page_contents_include}"; ?>
+        </div><!-- /#content -->
+        
+    </div>
+        
     <?
     foreach($modules as $this_module)
         if( ! empty($this_module->template_includes->post_footer) )

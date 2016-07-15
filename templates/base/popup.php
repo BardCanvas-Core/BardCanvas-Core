@@ -9,6 +9,8 @@
 
 use hng2_tools\internals;
 
+$template->init(__FILE__);
+
 foreach($modules as $this_module)
     if( ! empty($this_module->template_includes->pre_rendering) )
         include "{$this_module->abspath}/contents/{$this_module->template_includes->pre_rendering}";
@@ -25,6 +27,7 @@ header("Content-Type: text/html; charset=utf-8"); ?>
     
     <!-- This template -->
     <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/styles~v<?=$config->scripts_version?>.css">
+    <link rel="stylesheet" type="text/css" href="<?= $template->url ?>/media/post_styles~v<?=$config->scripts_version?>.css">
 </head>
 <body data-orientation="landscape" data-viewport-class="0" class="popup">
 

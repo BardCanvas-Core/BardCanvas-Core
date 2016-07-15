@@ -23,10 +23,15 @@ class record_browser
      * @param int $default_order
      *
      * @return array
+     * 
+     * @throws \Exception
      */
     public function build_vars($default_limit = 20, $default_order = 1)
     {
         global $account;
+        
+        if( empty($this->data_vars_prefix) ) throw new \Exception("Data vars empty. Can't build navigation vars.");
+        
         if( $account->_exists ) return $this->build_vars_in_account_prefs($default_limit, $default_order);
         else                    return $this->build_vars_in_cookies($default_limit, $default_order);
     }
@@ -230,11 +235,11 @@ class record_browser
             "this_page_number"   => $this_page_number,
             "total_pages"        => $total_pages,
             "total_records"      => $total_records,
-            "previous_page"      => $pagina_anterior,
+            "previous_page"      => $pagina_anterior > 0 ? $pagina_anterior : 0,
             "start_offset"       => $start_offset,
             "end_offset"         => $end_offset,
             "offset_start_point" => $offset_start_point,
-            "next_page"          => $pagina_siguiente,
+            "next_page"          => $total_pages > 1 ? $pagina_siguiente : 0,
             "last_page"          => $ultima_pagina,
             "limit"              => $limit,
         );
@@ -282,6 +287,51 @@ class record_browser
             <button {$last_disabled} onclick='{$pagination_function_name}({$pagination_vars["last_page"]});'>
                 <span class='fa fa-fw fa-step-forward'></span>
             </button>
+        ";
+    }
+    
+    public function render_pagination_links($url_prefix, array $pagination_vars)
+    {
+        $backward_disabled = $pagination_vars["this_page_number"] == 1 ? "disabled" : "";
+        $next_disabled     = $pagination_vars["this_page_number"] >= $pagination_vars["total_pages"] ? "disabled" : "";
+        $last_disabled     = $pagination_vars["total_pages"] == 1 || $pagination_vars["this_page_number"] == $pagination_vars["total_pages"] ? "disabled" : "";
+        
+        if($pagination_vars["total_pages"] < 1)
+        {
+            $middle_buttons = "<a disabled href='{$url_prefix}?offset=0'>1</a>";
+        }
+        else
+        {
+            $middle_buttons = "";
+            $offset_start_point = $pagination_vars["offset_start_point"];
+            for( $cpage = $pagination_vars["start_offset"]; $cpage <= $pagination_vars["end_offset"]; $cpage++ )
+            {
+                $disabled = $cpage == $pagination_vars["this_page_number"] ? "disabled" : "";
+                $middle_buttons .= "
+                    <a {$disabled} href='{$url_prefix}?offset={$offset_start_point}'>{$cpage}</a>
+                ";
+                $offset_start_point += $pagination_vars["limit"];
+            }
+        }
+        
+        echo "
+            <a {$backward_disabled} href='{$url_prefix}?offset=0'>
+                <span class='fa fa-fw fa-step-backward'></span>
+            </a>
+            
+            <a {$backward_disabled} href='{$url_prefix}?offset={$pagination_vars["previous_page"]}'>
+                <span class='fa fa-fw fa-caret-left'></span>
+            </a>
+            
+            {$middle_buttons}
+            
+            <a {$next_disabled} href='{$url_prefix}?offset={$pagination_vars["next_page"]}'>
+                <span class='fa fa-fw fa-caret-right'></span>
+            </a>
+            
+            <a {$last_disabled} href='{$url_prefix}?offset={$pagination_vars["last_page"]}'>
+                <span class='fa fa-fw fa-step-forward'></span>
+            </a>
         ";
     }
     

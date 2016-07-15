@@ -33,7 +33,7 @@
           style="cursor: pointer;" data-submenu="#user_menu_items">
         <span id="loggedin_icon" class="fa fa-border <? if(! $account->_is_locked) echo "fa-user"; else echo "fa-lock"; ?>"></span>
         <span id="loggedin_icon_locked" class="fa fa-border fa-lock" style="display: none;"></span>
-        <?= $account->display_name ?>
+        <?= $account->get_processed_display_name() ?>
         <span class="menu_toggle">
             <span class="fa fa-caret-down"></span>
             <span class="fa fa-caret-up" style="display: none;"></span>

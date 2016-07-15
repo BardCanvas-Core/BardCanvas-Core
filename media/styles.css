@@ -279,7 +279,7 @@ form .big_form_submit_button { font-size: 12pt; padding: 5px 10px; }
 
 /* EmojiOne overrides */
 
-.emojione { vertical-align: bottom; }
+.emojione { vertical-align: sub; }
 
 body     .emojione { height: 12pt; }
 th       .emojione { height:  9pt; }
