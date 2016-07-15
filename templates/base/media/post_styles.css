@@ -81,9 +81,6 @@ article .post_contents blockquote {
 /* INDEXES */
 /* ======= */
 
-.posts_index article                        { background-color: #efefef; }
-.posts_index article .post_thumbnail img    { width: 100%; }
-
 /* Featured posts, only on the home */
 
 .featured_post                { background-color: white; margin-bottom: 10px;
@@ -101,79 +98,44 @@ article .post_contents blockquote {
 
 /* Responsiveness */
 
+#home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper {
+    float: left;
+}
+
+#home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column {
+    display: block;
+    float: right;
+    padding-left: 10px;
+}
+
 @media all and (min-width: 1367px) and (max-width: 99999px)
 {
-    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper {
-        width: 80%;
-        float: left;
-    }
-
-    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column {
-        display: block;
-        float: right;
-        width: 20%;
-        padding-left: 10px;
-    }
+    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper   { width: 80%; }
+    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column { width: 20%; }
 }
 
 @media all and (min-width: 1281px) and (max-width: 1366px)
 {
-    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper {
-        width: 75%;
-        float: left;
-    }
-    
-    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column {
-        display: block;
-        float: right;
-        width: 25%;
-        padding-left: 10px;
-    }
+    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper   { width: 75%; }
+    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column { width: 25%; }
 }
 
 @media all and (min-width: 1025px) and (max-width: 1280px)
 {
-    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper {
-        width: 76%;
-        float: left;
-    }
-
-    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column {
-        display: block;
-        float: right;
-        width: 24%;
-        padding-left: 10px;
-    }
+    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper   { width: 76%; }
+    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column { width: 24%; }
 }
 
 @media all and (min-width: 721px) and (max-width: 1024px)
 {
-    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper {
-        width: 68%;
-        float: left;
-    }
-
-    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column {
-        display: block;
-        float: right;
-        width: 32%;
-        padding-left: 10px;
-    }
+    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper   { width: 68%; }
+    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column { width: 32%; }
 }
 
 @media all and (min-width: 481px) and (max-width: 720px)
 {
-    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper {
-        width: 66%;
-        float: left;
-    }
-
-    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column {
-        display: block;
-        float: right;
-        width: 34%;
-        padding-left: 10px;
-    }
+    #home_index_wrapper[data-with-featured-posts="true"] #posts_index_wrapper   { width: 66%; }
+    #home_index_wrapper[data-with-featured-posts="true"] #featured_posts_column { width: 34%; }
 }
 
 @media all and (min-width: 100px) and (max-width: 480px)
