@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
-    
-    <version>1.0</version>
+
+    <version>0.1 beta</version>
     <group>System</group>
     <admin_only>true</admin_only>
     
