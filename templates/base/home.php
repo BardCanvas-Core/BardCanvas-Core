@@ -9,6 +9,7 @@
 
 use hng2_tools\internals;
 
+include __DIR__ . "/functions.inc";
 $template->init(__FILE__);
 
 foreach($modules as $this_module)
@@ -76,7 +77,8 @@ header("Content-Type: text/html; charset=utf-8"); ?>
         
         <div class="header_top">
             <?
-            if($account->_is_admin) include "{$template->abspath}/segments/admin_menu.inc";
+            if($account->_is_admin && $settings->get("engine.show_admin_menu_in_header_menu") != "true")
+                include "{$template->abspath}/segments/admin_menu.inc";
             
             foreach($modules as $this_module)
                 if( ! empty($this_module->template_includes->header_top) )
@@ -102,6 +104,9 @@ header("Content-Type: text/html; charset=utf-8"); ?>
             </a>
             
             <?
+            if( $settings->get("engine.show_admin_menu_in_header_menu") == "true" )
+                add_admin_menu_items_to_header_menu();
+            
             foreach($modules as $this_module)
                 if( ! empty($this_module->template_includes->header_menu) )
                     include "{$this_module->abspath}/contents/{$this_module->template_includes->header_menu}";

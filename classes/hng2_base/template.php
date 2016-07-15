@@ -52,7 +52,7 @@ class template
         $this->layout = $layout;
     }
     
-    public function add_menu_item($title, $html, $priority = 0)
+    public function add_menu_item($title, $html, $priority = 100)
     {
         $this->main_menu_items[] = (object) array(
             "title"    => $title,
@@ -61,7 +61,7 @@ class template
         );
     }
     
-    public function add_left_sidebar_group($title, $html, $priority = 0)
+    public function add_left_sidebar_group($title, $html, $priority = 100)
     {
         $this->left_sidebar_groups[] = (object) array(
             "title"    => $title,
@@ -70,7 +70,7 @@ class template
         );
     }
     
-    public function add_right_sidebar_item($title, $html, $priority = 0)
+    public function add_right_sidebar_item($title, $html, $priority = 100)
     {
         $this->right_sidebar_items[] = (object) array(
             "title"    => $title,

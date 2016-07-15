@@ -11,7 +11,7 @@
     
     <admin>
         <menu_items>
-            <admin_menu_caption>Modules</admin_menu_caption>
+            <admin_menu_caption icon="fa-puzzle-piece">Modules</admin_menu_caption>
         </menu_items>
     </admin>
     

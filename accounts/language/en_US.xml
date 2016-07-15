@@ -17,7 +17,7 @@
     
     <admin>
         <menu_items>
-            <admin_menu_caption>Accounts</admin_menu_caption>
+            <admin_menu_caption icon="fa-users">Accounts</admin_menu_caption>
         </menu_items>
         <record_nav>
             <page_title>User accounts</page_title>
