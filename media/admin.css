@@ -56,3 +56,26 @@ body.admin section > h1, body.admin section > h2, body.admin section > h3 {
 
 #admin_menu .emojione                  { height: 10pt; }
 #admin_menu .admin_bar_title .emojione { height: 10pt; }
+
+/* Modules manager */
+
+#modules_listing                  { border-spacing: 0 20px; }
+#modules_listing td               { padding-top: 10px; padding-bottom: 10px; border: 1px solid #008000; }
+
+#modules_listing ul               { margin-top: 0; }
+#modules_listing .principal_data  { font-size: 1.3em; line-height: 1.4em; color: white; background-color: #008000;
+                                    padding: 5px; position: relative; top: -10px;
+                                    margin-left: -5px; margin-bottom: -10px; }
+#modules_listing td:first-child   { border-left: 5px solid #008000; }
+#modules_listing td *:first-child { margin-top: 0; }
+#modules_listing td *:last-child  { margin-bottom: 0; }
+
+#modules_listing tr { background-color: white; }
+
+#modules_listing tr.new      td              { border-color: maroon; }
+#modules_listing tr.new      .principal_data { background-color: maroon; }
+#modules_listing tr.disabled td              { border-color: #585858; }
+#modules_listing tr.disabled .principal_data { background-color: #585858; }
+
+#modules_listing tr td:first-child { border-right: none; }
+#modules_listing tr td:last-child  { border-left: none; }
