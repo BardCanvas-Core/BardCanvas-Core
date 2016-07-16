@@ -53,6 +53,10 @@
     <cancel>Cancel</cancel>
     <close>Close</close>
     <none>None</none>
+    <yes>Yes</yes>
+    <no>No</no>
+    <off>Off</off>
+    <on>On</on>
     
     <failed_to_create_cron_job><![CDATA[
         The background processing job couldn't be created because of the next error:<br>
@@ -97,5 +101,117 @@
         <table_deleted_ok>Table {$table_name} successfully deleted.</table_deleted_ok>
         <table_deleted_ko>Table {$table_name} can't be deleted! Error: {$error}</table_deleted_ko>
     </install_messages>
+    
+    <settings_data>
+        <title>Engine behavior, presentation and defaults</title>
+        <specs key="default_language">
+            <title>Default language</title>
+            <description><![CDATA[
+                Default display language.<br>
+                <span class="fa fa-warning"></span>
+                <b>Important:</b> The engine and the core modules support listed languages, but
+                it is possible that not all the installed modules do. In such case, the fallback
+                language will always be <code>English/United States</code>.
+            ]]></description>
+            <type>list</type>
+            <options>
+                <option value="en_US">English/United States</option>
+            </options>
+        </specs>
+        <specs key="enabled">
+            <title>Engine enabled</title>
+            <description><![CDATA[
+                Emergency switch to issue an all systems halt. Only administrative functions will work.
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        <specs key="mail_sender_name">
+            <title>Email sender name</title>
+            <description><![CDATA[
+                Name of the sender for delivery of email notifications and messages. 
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_email">
+            <title>Email sender address</title>
+            <description><![CDATA[
+                Email address used to deliver notificacions and messages
+            ]]></description>
+            <type>email</type>
+        </specs>
+        <specs key="recaptcha_private_key">
+            <title>reCAPTCHA secret key</title>
+            <description><![CDATA[
+                Secret key provided by Google Recaptcha. Used to protect the engine from automated accounts
+                creation among other things.<br>
+                Visit <a href="https://www.google.com/recaptcha" target="_blank">Google reCAPTCHA</a> to get your secret/site keypair
+                or leave blank to disable reCAPTCHA functionality.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="recaptcha_public_key">
+            <title>reCAPTCHA site key</title>
+            <description><![CDATA[
+                Public key provided by Google Recaptcha. Used in conjunction with the private key.<br>
+                Leave blank to disable reCAPTCHA functionality.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="show_admin_menu_in_header_menu">
+            <title>Alternate admin menu layout</title>
+            <description><![CDATA[
+                By default, the admin menu is shown on a bar above the standard menu bar.<br>
+                If this option is enabled, admin menu entries will be moved into the menu bar (yet they'll remain visible for admins only).
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        <specs key="template">
+            <title>Active template</title>
+            <description><![CDATA[
+                Template to use for all output.
+            ]]></description>
+            <type>template_selector</type>
+        </specs>
+        <specs key="user_levels">
+            <title>User levels</title>
+            <description><![CDATA[
+                List of all user levels in the system.<br>
+                User levels go from <code>0</code> to <code>255</code>. You can add as many levels as needed to identify your user types
+                using the next syntax: <code>level - name</code>, E.G. <code>100 - Author</code>.<br>
+                <span class="fa fa-warning"></span> <b>Warning:</b>
+                There are <b>8</b> roles tied to specific levels:
+                <span class="framed_content inlined">0 - Unregistered</span>, <span class="framed_content inlined">1 - Unconfirmed</span>,
+                <span class="framed_content inlined">50 - Newcomer</span>,    <span class="framed_content inlined">100 - Author</span>,
+                <span class="framed_content inlined">150 - VIP</span>,        <span class="framed_content inlined">200 - Moderator</span>,
+                <span class="framed_content inlined">240 - Coadmin</span> and <span class="framed_content inlined">255 - Admin</span>.<br>
+                You must <b>keep these levels</b> in the list and just change their names as needed. Plus,
+                add any levels <b>between</b> them.
+            ]]></description>
+            <type>textarea</type>
+        </specs>
+        <specs key="user_online_cookie">
+            <title>User online cookie</title>
+            <description><![CDATA[
+                Name of the cookie to store the session account id on the user's browser.<br>
+                Change it to force users <u>with an open session</u> to re-authenticate. 
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="user_session_cookie">
+            <title>User session cookie</title>
+            <description><![CDATA[
+                Name of the cookie to store the account id on the user's browser so the user doesn't need to login every time.<br>
+                Change it to <u>force all users</u> (online/offline) to re-authenticate.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="website_name">
+            <title>Website name</title>
+            <description><![CDATA[
+                Name of this website
+            ]]></description>
+            <type>text</type>
+        </specs>
+    </settings_data>
     
 </language>
