@@ -155,8 +155,8 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 
 /* Record browsers */
 
-.table_wrapper           { overflow-x: auto; overflow-y: hidden; }
-.table_wrapper.scrolling { border-left: 2px dotted #bc4c40; border-right: 2px dotted #bc4c40; }
+.table_wrapper.scrolling { overflow-x: auto; overflow-y: hidden;
+                           border-left: 2px dotted #bc4c40; border-right: 2px dotted #bc4c40; }
 
 .nav_table    { width: 100%; border-spacing: 0; border-collapse: separate; }
 .nav_table tr { text-align: left; vertical-align: top; }
@@ -276,6 +276,10 @@ form .field .input select   { font-size: 12pt; }
 .buttonized_radios label input[type="radio"] { display: none; }
 
 form .big_form_submit_button { font-size: 12pt; padding: 5px 10px; }
+
+.fa-pseudo-switch { font-size: 14pt; position: relative; top: 2px; cursor: pointer; }
+.fa-pseudo-switch .toggle-on  { color: green; } 
+.fa-pseudo-switch .toggle-off { color: dimgrey; } 
 
 /* EmojiOne overrides */
 
