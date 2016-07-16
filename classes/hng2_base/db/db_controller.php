@@ -105,7 +105,7 @@ class db_controller
             if( is_null($db->handler) ) $db->connect();
             
             $query_start = $this->tracking_enabled ? microtime(true) : 0;
-    
+            
             $error_info = array();
             $return = $db->exec($query);
             $error_info = $db->handler->errorInfo();
