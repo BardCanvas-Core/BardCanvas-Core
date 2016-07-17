@@ -31,6 +31,8 @@ class template
     
     public $layout;
     
+    protected $vars = array();
+    
     public function __construct()
     {
         global $config, $settings;
@@ -162,5 +164,15 @@ class template
             . $settings->get("engine.website_name")
             . " - "
             . "v" . $config->engine_version;
+    }
+    
+    public function set($var_name, $value)
+    {
+        $this->vars[$var_name] = $value;
+    }
+    
+    public function get($var_name)
+    {
+        return $this->vars[$var_name];
     }
 }
