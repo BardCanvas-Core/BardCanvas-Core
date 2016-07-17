@@ -5,7 +5,22 @@ deny from all
 Options -Indexes
 
 ReWriteEngine On
-# ReWriteBase /
 
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
+
+# Posts by category
+ReWriteRule ^category/(.*)/$ posts/by_category.php?slug=$1 [QSA,L]
+ReWriteRule ^category/(.*)$  posts/by_category.php?slug=$1 [QSA,L]
+
+# Posts archive
+ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/$ posts/by_date.php?date=$1 [QSA,L]
+ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})$  posts/by_date.php?date=$1 [QSA,L]
+ReWriteRule ^date/([0-9]{4}/[0-9]{2})/$          posts/by_date.php?date=$1 [QSA,L]
+ReWriteRule ^date/([0-9]{4}/[0-9]{2})$           posts/by_date.php?date=$1 [QSA,L]
+ReWriteRule ^date/([0-9]{4})/$                   posts/by_date.php?date=$1 [QSA,L]
+ReWriteRule ^date/([0-9]{4})$                    posts/by_date.php?date=$1 [QSA,L]
+
+# Author archive
+ReWriteRule ^author/(.*)/posts$   posts/by_author.php?slug=$1 [QSA,L]
+ReWriteRule ^author/(.*)/posts/$  posts/by_author.php?slug=$1 [QSA,L]
