@@ -33,6 +33,8 @@ class db_controller
      */
     private $tracked_queries = array();
     
+    private $last_query = "";
+    
     public function __construct()
     {
         global $DATABASES;
@@ -92,6 +94,7 @@ class db_controller
     public function exec($query)
     {
         $return = 0;
+        $this->last_query = $query;
         
         $backtrace = "N/A";
         if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
@@ -105,9 +108,11 @@ class db_controller
             if( is_null($db->handler) ) $db->connect();
             
             $query_start = $this->tracking_enabled ? microtime(true) : 0;
-            
+    
+            /** @noinspection PhpUnusedLocalVariableInspection */
             $error_info = array();
-            $return = $db->exec($query);
+            
+            $return     = $db->exec($query);
             $error_info = $db->handler->errorInfo();
             
             if( ! empty($error_info[2]) ) throw new \Exception(
@@ -140,6 +145,7 @@ class db_controller
      */
     public function query($query)
     {
+        $this->last_query = $query;
         $this->set_current_read_db();
     
         $backtrace = "N/A";
@@ -235,5 +241,10 @@ class db_controller
     public function get_tracked_queries_count()
     {
         return count($this->tracked_queries);
+    }
+    
+    public function get_last_query()
+    {
+        return $this->last_query;
     }
 }

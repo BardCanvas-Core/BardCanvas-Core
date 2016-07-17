@@ -165,4 +165,11 @@ abstract class abstract_repository
         
         return $database->exec($query);
     }
+    
+    public function get_last_query()
+    {
+        global $database;
+        
+        return $database->get_last_query();
+    }
 }
