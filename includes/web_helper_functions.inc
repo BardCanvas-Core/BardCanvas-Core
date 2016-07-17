@@ -84,7 +84,7 @@ function get_remote_address()
 
 /**
  * Alias of get_remote_address()
- * 
+ *
  * @return string
  */
 function get_user_ip()
@@ -162,9 +162,10 @@ function convert_emojis($input)
     {
         require_once ABSPATH . "/lib/emojione-2.2.5/lib/php/autoload.php";
         $emojione = new Emojione\Client(new Emojione\Ruleset());
-        $emojione->imageType    = "svg";
-        $emojione->imagePathPNG = "{$config->full_root_url}/lib/emojione-2.2.5/assets/png/";
-        $emojione->imagePathSVG = "{$config->full_root_url}/lib/emojione-2.2.5/assets/svg/";
+        
+        $emojione->imageType    = "png";
+        $emojione->imagePathPNG = "{$config->full_root_url}/lib/emojione-2.2.5/png/";
+        $emojione->imagePathSVG = "{$config->full_root_url}/lib/emojione-2.2.5/svg/";
     }
     
     return $emojione->unicodeToImage($input);

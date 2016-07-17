@@ -89,6 +89,8 @@ class config
             $docroot = empty($_SERVER["DOCUMENT_ROOT"]) ? ABSPATH : $_SERVER["DOCUMENT_ROOT"];
             $this->full_root_path = preg_replace("#{$docroot}#i", "", ABSPATH);
             $this->full_root_path = "/" . trim($this->full_root_path, "/");
+            
+            if( $this->full_root_path == "/" ) $this->full_root_path = "";
         }
         
         if( defined("FULL_ROOT_URL") )
@@ -99,6 +101,7 @@ class config
         {
             $this->full_root_url  = empty($_SERVER["HTTPS"]) ? "http://" : "https://";
             $this->full_root_url .= $_SERVER["HTTP_HOST"];
+            
             $this->full_root_url .= $this->full_root_path;
         }
     }

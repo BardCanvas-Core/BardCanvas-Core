@@ -208,7 +208,7 @@ class db_controller
         {
             if( ! is_null($db->handler) )
             {
-                $this->read_dbs = $db;
+                $this->current_read_db = $db;
                 
                 return;
             }
