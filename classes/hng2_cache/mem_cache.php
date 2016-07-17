@@ -30,6 +30,8 @@ class mem_cache
     
     public function set($key, $value, $flag = 0, $expiration = 0)
     {
+        global $config;
+        
         $key = $this->var_prefix . $key;
         
         if( empty($value) )
@@ -43,7 +45,7 @@ class mem_cache
         $this->data[$key] = $value;
         
         $backtrace = "N/A";
-        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        if( $config->query_backtrace_enabled )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
@@ -63,6 +65,8 @@ class mem_cache
      */
     public function get($key)
     {
+        global $config;
+        
         $key = $this->var_prefix . $key;
         
         if( isset($this->data[$key]) ) return $this->data[$key];
@@ -72,7 +76,7 @@ class mem_cache
         $this->data[$key] = $value;
         
         $backtrace = "N/A";
-        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        if( $config->query_backtrace_enabled )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
@@ -90,12 +94,14 @@ class mem_cache
     
     public function delete($key)
     {
+        global $config;
+        
         $key = $this->var_prefix . $key;
         unset( $this->data[$key] );
         $this->server->delete($key);
     
         $backtrace = "N/A";
-        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        if( $config->query_backtrace_enabled )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];

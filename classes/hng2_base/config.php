@@ -48,6 +48,10 @@ class config
     const COADMIN_USER_LEVEL      = 240;
     const ADMIN_USER_LEVEL        = 255;
     
+    public $display_performance_details = false;
+    public $query_tracking_enabled      = false;
+    public $query_backtrace_enabled     = false;
+    
     public function __construct()
     {
         $this->encryption_key     = ENCRYPTION_KEY;
@@ -113,6 +117,9 @@ class config
     {
         global $settings;
         
+        if( ! is_object($settings) )
+            throw new \Exception(sprintf("%s method must be called after loading the settings.", __METHOD__));
+        
         $levels = $settings->get("engine.user_levels");
         if( empty($levels) ) return;
         
@@ -125,6 +132,72 @@ class config
             
             $this->user_levels_by_level[$level] = $name;
             $this->user_levels_by_name[$name] = $level;
+        }
+    }
+    
+    /**
+     * Sets metering toggles. Must be loaded once the settings are loaded.
+     */
+    public function set_metering_toggles()
+    {
+        global $settings;
+    
+        if( ! is_object($settings) )
+            throw new \Exception(sprintf("%s method must be called after loading the settings.", __METHOD__));
+        
+        $this->display_performance_details = $settings->get("engine.display_performance_details") == "true";
+        $this->query_tracking_enabled      = $settings->get("engine.query_tracking_enabled")      == "true";
+        $this->query_backtrace_enabled     = $settings->get("engine.query_backtrace_enabled")     == "true";
+    }
+    
+    public function toggle_display_performance($value)
+    {
+        $target = "{$this->datafiles_location}/display_performance.enabled";
+        if( $value == "true" )
+        {
+            if( ! @touch($target) )
+                throw new \Exception("Impossible to enable performance displaying - can't write '$target' file.");
+            
+            @chmod($target, 0777);
+        }
+        else
+        {
+            if( ! @unlink($target) )
+                throw new \Exception("Impossible to disable performance displaying - can't delete '$target' file.");
+        }
+    }
+    
+    public function toggle_query_tracking($value)
+    {
+        $target = "{$this->datafiles_location}/query_tracking.enabled";
+        if( $value == "true" )
+        {
+            if( ! @touch($target) )
+                throw new \Exception("Impossible to enable query tracking - can't write '$target' file.");
+        
+            @chmod($target, 0777);
+        }
+        else
+        {
+            if( ! @unlink($target) )
+                throw new \Exception("Impossible to disable query tracking - can't delete '$target' file.");
+        }
+    }
+    
+    public function toggle_query_backtrace($value)
+    {
+        $target = "{$this->datafiles_location}/query_backtrace.enabled";
+        if( $value == "true" )
+        {
+            if( ! @touch($target) )
+                throw new \Exception("Impossible to enable query backtrace - can't write '$target' file.");
+        
+            @chmod($target, 0777);
+        }
+        else
+        {
+            if( ! @unlink($target) )
+                throw new \Exception("Impossible to disable query backtrace - can't delete '$target' file.");
         }
     }
 }

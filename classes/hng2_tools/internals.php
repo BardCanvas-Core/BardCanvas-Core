@@ -15,10 +15,9 @@ class internals
 {
     public static function render($referer)
     {
-        global $database, $global_start_time;
+        global $database, $global_start_time, $config;
     
-        if( ! defined("DISPLAY_PERFORMANCE_DETAILS") ) return;
-        if( ! DISPLAY_PERFORMANCE_DETAILS ) return;
+        if( ! $config->display_performance_details ) return;
         
         echo "<div class='internals framed_content state_active' style='margin-left: 0; margin-right: 0;'>";
             
@@ -28,7 +27,7 @@ class internals
                         Results for: <b>" . basename($referer) . "</b>
                     </span>
                 ";
-                if( defined("ENABLE_QUERY_TRACKING") && ENABLE_QUERY_TRACKING )
+                if( $config->query_tracking_enabled )
                     echo "
                         <span class='framed_content'>
                             DB queries: " . number_format($database->get_tracked_queries_count()) . "
@@ -53,7 +52,7 @@ class internals
     
     private static function render_database_details()
     {
-        global $database, $account;
+        global $database, $account, $config;
         
         $backtrace    = "";
         $output       = "";
@@ -65,7 +64,7 @@ class internals
             $execution_time = number_format($query->execution_time * 1000, 3);
             if( $execution_time < 1 ) $execution_time = "&lt;1";
             
-            if( ENABLE_QUERY_BACKTRACE )
+            if( $config->query_backtrace_enabled )
                 $backtrace = "<td><pre style='margin: 0'>" . implode("\n", $query->backtrace) . "</pre></td>";
             
             $output .= "
@@ -84,8 +83,8 @@ class internals
             $seq++;
         }
         
-        $backtrace_th  = ENABLE_QUERY_BACKTRACE ? "<th>Backtrace</th>" : "";
-        $backtrace_tf  = ENABLE_QUERY_BACKTRACE ? "<td>&nbsp;</td>"    : "";
+        $backtrace_th  = $config->query_backtrace_enabled ? "<th>Backtrace</th>" : "";
+        $backtrace_tf  = $config->query_backtrace_enabled ? "<td>&nbsp;</td>"    : "";
         
         if( $total_time < 0.001 )
             $time_consumed = "&lt;1ms";
@@ -141,14 +140,14 @@ class internals
     
     private static function render_mem_cache_details()
     {
-        global $mem_cache, $account;
+        global $mem_cache, $account, $config;
         
         $backtrace    = "";
         $output       = "";
         $seq          = 1;
         foreach($mem_cache->get_hits() as $hit)
         {
-            if( ENABLE_QUERY_BACKTRACE )
+            if( $config->query_backtrace_enabled )
                 $backtrace = "<td><pre style='margin: 0'>" . implode("\n", $hit->backtrace) . "</pre></td>";
             
             $output .= "
@@ -163,7 +162,7 @@ class internals
             $seq++;
         }
         
-        $backtrace_th   = ENABLE_QUERY_BACKTRACE ? "<th>Backtrace</th>" : "";
+        $backtrace_th   = $config->query_backtrace_enabled ? "<th>Backtrace</th>" : "";
         $table_style    = $account->engine_prefs["internals_memcache_stats_hidden"] == "true" ? "display: none;" : "";
         $new_state      = $account->engine_prefs["internals_memcache_stats_hidden"] == "true" ? "" : "true";
         $expand_style   = $account->engine_prefs["internals_memcache_stats_hidden"] == "true" ? "" : "display: none";
@@ -204,15 +203,15 @@ class internals
     
     private static function render_disk_cache_details()
     {
-        global $account;
+        global $account, $config;
         
         $backtrace    = "";
         $output       = "";
         $seq          = 1;
         foreach(disk_cache::get_hits() as $hit)
         {
-            if( ENABLE_QUERY_BACKTRACE )
-                $backtrace = "<td><pre style='margin: 0'>" . implode("\n", $hit->backtrace) . "</pre></td>";
+            if( $config->query_backtrace_enabled )
+                $backtrace = "<td><pre style='margin: 0'>" . implode("\n", (array) $hit->backtrace) . "</pre></td>";
             
             $output .= "
                 <tr>
@@ -227,7 +226,7 @@ class internals
             $seq++;
         }
         
-        $backtrace_th   = ENABLE_QUERY_BACKTRACE ? "<th>Backtrace</th>" : "";
+        $backtrace_th   = $config->query_backtrace_enabled ? "<th>Backtrace</th>" : "";
         $table_style    = $account->engine_prefs["internals_diskcache_stats_hidden"] == "true" ? "display: none;" : "";
         $new_state      = $account->engine_prefs["internals_diskcache_stats_hidden"] == "true" ? "" : "true";
         $expand_style   = $account->engine_prefs["internals_diskcache_stats_hidden"] == "true" ? "" : "display: none";

@@ -26,8 +26,6 @@ class db_controller
      */
     private $current_read_db = null;
     
-    private $tracking_enabled = false;
-    
     /**
      * @var tracked_query[]
      */
@@ -37,7 +35,7 @@ class db_controller
     
     public function __construct()
     {
-        global $DATABASES;
+        global $DATABASES, $config;
         
         if( count($DATABASES) == 1 )
         {
@@ -75,10 +73,6 @@ class db_controller
         
         if( empty($this->read_dbs)  ) throw new \RuntimeException("No READING databases have been found in the config file.");
         if( empty($this->write_dbs) ) throw new \RuntimeException("No WRITING databases have been found in the config file.");
-        
-        if( defined("ENABLE_QUERY_TRACKING") )
-            if( ENABLE_QUERY_TRACKING == true )
-                $this->tracking_enabled = true;
     }
     
     /**
@@ -93,11 +87,13 @@ class db_controller
      */
     public function exec($query)
     {
+        global $config;
+        
         $return = 0;
         $this->last_query = $query;
         
         $backtrace = "N/A";
-        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        if( $config->query_backtrace_enabled )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
@@ -107,7 +103,7 @@ class db_controller
         {
             if( is_null($db->handler) ) $db->connect();
             
-            $query_start = $this->tracking_enabled ? microtime(true) : 0;
+            $query_start = $config->query_tracking_enabled ? microtime(true) : 0;
     
             /** @noinspection PhpUnusedLocalVariableInspection */
             $error_info = array();
@@ -121,7 +117,7 @@ class db_controller
                 "Query:\n" . $query
             );
             
-            if( $this->tracking_enabled )
+            if( $config->query_tracking_enabled )
                 $this->tracked_queries[] = new tracked_query(
                     "{$db->host}.{$db->database}",
                     $query,
@@ -145,17 +141,19 @@ class db_controller
      */
     public function query($query)
     {
+        global $config;
+        
         $this->last_query = $query;
         $this->set_current_read_db();
-    
+        
         $backtrace = "N/A";
-        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        if( $config->query_backtrace_enabled )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
         }
         
-        $query_start = $this->tracking_enabled ? microtime(true) : 0;
+        $query_start = $config->query_tracking_enabled ? microtime(true) : 0;
         
         $res = $this->current_read_db->query($query);
         $error_info = $this->current_read_db->handler->errorInfo();
@@ -166,7 +164,7 @@ class db_controller
             "Query:\n" . $query
         );
         
-        if( $this->tracking_enabled )
+        if( $config->query_tracking_enabled )
             $this->tracked_queries[] = new tracked_query(
                 "{$this->current_read_db->host}.{$this->current_read_db->database}",
                 $query,
@@ -220,14 +218,6 @@ class db_controller
         }
         
         throw new \RuntimeException("Can't connect to any READING database.");
-    }
-    
-    /**
-     * @param boolean $tracking_enabled
-     */
-    public function enable_tracking($tracking_enabled)
-    {
-        $this->tracking_enabled = $tracking_enabled;
     }
     
     /**

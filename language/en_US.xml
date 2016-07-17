@@ -212,6 +212,46 @@
             ]]></description>
             <type>text</type>
         </specs>
+        
+        <specs key="display_performance_details" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Debugging</span>
+                Display performance details
+            ]]></title>
+            <description><![CDATA[
+                Display page load times and resource consumption at the footer of every page.<br>
+                <span class="fa fa-warning"></span>
+                <b>Warning:</b> all users will be able to see these details!
+            ]]></description>
+            <type>boolean</type>
+            <config_callback>toggle_display_performance</config_callback>
+        </specs>
+        <specs key="query_tracking_enabled" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Debugging</span>
+                Query tracking
+            ]]></title>
+            <description><![CDATA[
+                Allows the engine to track database queries and show a table at the end of every page, below the footer.<br>
+                <span class="fa fa-warning"></span>
+                <b>Warning:</b> all users will be able to see these details!
+            ]]></description>
+            <type>boolean</type>
+            <config_callback>toggle_query_tracking</config_callback>
+        </specs>
+        <specs key="query_backtrace_enabled" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Debugging</span>
+                Query backtrace
+            ]]></title>
+            <description><![CDATA[
+                When query tracking is enabled, add a column showing the PHP scripts doing the calls.<br>
+                <span class="fa fa-warning"></span>
+                <b>Warning:</b> all users will be able to see these details!
+            ]]></description>
+            <type>boolean</type>
+            <config_callback>toggle_query_backtrace</config_callback>
+        </specs>
     </settings_data>
     
 </language>

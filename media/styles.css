@@ -190,6 +190,7 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 
 .nav_table tr.self      td { color: purple;  }
 .nav_table tr.new       td { color: maroon;  }
+.nav_table tr.sensitive td { color: maroon;  }
 .nav_table tr.enabled   td { color: #008000; }
 .nav_table tr.disabled  td { color: #585858; }
 

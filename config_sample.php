@@ -34,10 +34,6 @@ $MEMCACHE_SERVERS = array(
     ),
 );
 
-define("ENABLE_QUERY_BACKTRACE",      true);
-define("ENABLE_QUERY_TRACKING",       true);
-define("DISPLAY_PERFORMANCE_DETAILS", true);
-
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 
 ini_set("register_globals",              "Off");

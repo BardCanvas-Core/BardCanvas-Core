@@ -53,10 +53,12 @@ class disk_cache
      */
     public function get($key)
     {
+        global $config;
+        
         if( ! isset($this->data[$key]) ) return null;
     
         $backtrace = "N/A";
-        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        if( $config->query_backtrace_enabled )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
@@ -87,12 +89,14 @@ class disk_cache
     
     public function set($key, $value)
     {
+        global $config;
+        
         $this->data[$key] = $value;
         
         $this->save();
         
         $backtrace = "N/A";
-        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        if( $config->query_backtrace_enabled )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
@@ -108,11 +112,13 @@ class disk_cache
     
     public function delete($key)
     {
+        global $config;
+        
         unset( $this->data[$key] );
         $this->save();
     
         $backtrace = "N/A";
-        if( defined("ENABLE_QUERY_BACKTRACE") && ENABLE_QUERY_BACKTRACE )
+        if( $config->query_backtrace_enabled )
         {
             $backtrace = debug_backtrace();
             foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
