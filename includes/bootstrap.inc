@@ -39,6 +39,10 @@ if( empty($_COOKIE[$language_cookie_name]) )
 }
 $language = simplexml_load_file( ABSPATH . "/language/".$_COOKIE[$language_cookie_name].".xml" );
 
+# Localization
+if( file_exists(ABSPATH . "/language/".$_COOKIE[$language_cookie_name].".inc") )
+    include ABSPATH . "/language/".$_COOKIE[$language_cookie_name].".inc";
+    
 /** @var module $this_module */
 $this_module    = null;
 
