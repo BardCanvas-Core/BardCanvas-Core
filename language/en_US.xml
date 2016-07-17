@@ -157,6 +157,21 @@
             ]]></description>
             <type>text</type>
         </specs>
+        <specs key="template">
+            <title>Active template</title>
+            <description><![CDATA[
+                Template to use for all output.
+            ]]></description>
+            <type>template_selector</type>
+        </specs>
+        <specs key="hide_left_sidebar_on_admin_pages">
+            <title>Hide left sidebar on admin pages</title>
+            <description><![CDATA[
+                If the template has left sidebar support (usually used to display frontend-related links),
+                hide it on those pages that use the admin layout.
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
         <specs key="show_admin_menu_in_header_menu">
             <title>Alternate admin menu layout</title>
             <description><![CDATA[
@@ -164,13 +179,6 @@
                 If this option is enabled, admin menu entries will be moved into the menu bar (yet they'll remain visible for admins only).
             ]]></description>
             <type>boolean</type>
-        </specs>
-        <specs key="template">
-            <title>Active template</title>
-            <description><![CDATA[
-                Template to use for all output.
-            ]]></description>
-            <type>template_selector</type>
         </specs>
         <specs key="user_levels">
             <title>User levels</title>
