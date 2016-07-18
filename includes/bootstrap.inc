@@ -27,6 +27,7 @@ $database = new db_controller();
 $settings = new settings();
 $config->fill_user_levels();
 $config->set_metering_toggles();
+$config->fill_upload_types();
 
 # Engine Language loader
 $language_cookie_name = "{$config->website_key}_UL";

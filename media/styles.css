@@ -198,6 +198,17 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .nav_table.vertical tr:first-child td { border-top: 1px solid #c2daea; }
 .nav_table.vertical tr:first-child th { border-top: 1px solid #c2daea; }
 
+.nav_table .thumbnail {
+    border: 1px solid black; background-color: white;
+    display: inline-block; position: relative; width: 230px; height: 110px; overflow: hidden;
+}
+.nav_table .thumbnail img {
+    position: absolute; left: 50%; top: 50%; max-width: 100%; height: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform:     translate(-50%,-50%);
+    transform:         translate(-50%,-50%);
+}
+
 .nav_table_inner    { width: 100%; border-spacing: 0; border-collapse: separate; }
 .nav_table_inner    { border-left:  1px solid #c2daea; }
 .nav_table_inner tr { text-align: left; vertical-align: top; }

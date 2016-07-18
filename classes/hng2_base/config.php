@@ -52,6 +52,18 @@ class config
     public $query_tracking_enabled      = false;
     public $query_backtrace_enabled     = false;
     
+    public $upload_file_types = array(
+        "png"  => "system",
+        "gif"  => "system",
+        "jpg"  => "system",
+        "jpeg" => "system",
+        
+        "mp4" => "system",
+        "3gp" => "system",
+        "mov" => "system",
+        "avi" => "system",
+    );
+    
     public function __construct()
     {
         $this->encryption_key     = ENCRYPTION_KEY;
@@ -141,7 +153,7 @@ class config
     public function set_metering_toggles()
     {
         global $settings;
-    
+        
         if( ! is_object($settings) )
             throw new \Exception(sprintf("%s method must be called after loading the settings.", __METHOD__));
         
@@ -198,6 +210,28 @@ class config
         {
             if( ! @unlink($target) )
                 throw new \Exception("Impossible to disable query backtrace - can't delete '$target' file.");
+        }
+    }
+    
+    public function fill_upload_types()
+    {
+        global $settings;
+    
+        if( ! is_object($settings) )
+            throw new \Exception(sprintf("%s method must be called after loading the settings.", __METHOD__));
+        
+        $res = $settings->get("engine.upload_file_types");
+        if( empty($res) ) return;
+        
+        $lines = explode("\n", $res);
+        $this->upload_file_types = array();
+        foreach($lines as $line)
+        {
+            $line = trim($line);
+            if( empty($line) ) continue;
+            
+            list($type, $manager) = preg_split('/\s*\-\s*/', $line);
+            $this->upload_file_types[$type] = $manager;
         }
     }
 }

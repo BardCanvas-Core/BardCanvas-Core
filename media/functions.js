@@ -167,6 +167,7 @@ function refresh_record_browser($target)
                       }
     });
     
+    $target.find('.lightbox').lightbox();
     check_wrapped_tables();
 }
 
