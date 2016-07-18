@@ -57,27 +57,27 @@ class template
     public function add_menu_item($title, $html, $priority = 100)
     {
         $this->main_menu_items[] = (object) array(
-            "title"    => $title,
+            "title"    => trim($title),
             "priority" => $priority,
-            "html"     => $html,
+            "html"     => trim($html),
         );
     }
     
     public function add_left_sidebar_group($title, $html, $priority = 100)
     {
         $this->left_sidebar_groups[] = (object) array(
-            "title"    => $title,
+            "title"    => trim($title),
             "priority" => $priority,
-            "html"     => $html,
+            "html"     => trim($html),
         );
     }
     
     public function add_right_sidebar_item($title, $html, $priority = 100)
     {
         $this->right_sidebar_items[] = (object) array(
-            "title"    => $title,
+            "title"    => trim($title),
             "priority" => $priority,
-            "html"     => $html,
+            "html"     => trim($html),
         );
     }
     
@@ -136,14 +136,16 @@ class template
     {
         $items = array();
         if( empty($collection) ) return "";
-    
+        
+        $index = 100000;
         foreach($collection as $item)
         {
             $priority = sprintf("%06d", $item->priority);
             $title    = $item->title;
-            if( $sort_by == "priority" ) $items["{$priority} {$title}"] = $item->html;
-            elseif( $sort_by == "title") $items["{$title} {$priority}"] = $item->html;
+            if( $sort_by == "priority" ) $items["{$priority} {$title} {$index}"] = $item->html;
+            elseif( $sort_by == "title") $items["{$title} {$priority} {$index}"] = $item->html;
             else                         $items[]                       = $item->html;
+            $index++;
         }
         
         if( ! empty($sort_by) ) ksort($items);

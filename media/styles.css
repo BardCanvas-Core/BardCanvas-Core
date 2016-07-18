@@ -307,3 +307,13 @@ h3 .emojione { height: 14pt; }
 .noty_text        .emojione            { height: 10pt; }
 
 form .big_form_submit_button .emojione { height: 12pt; }
+
+/* TinyMCE defaults */
+
+.alignleft   { text-align: left;   }
+.aligncenter { text-align: center; }
+.alignright  { text-align: right;  }
+
+img.alignleft   { float: left; margin: 10px; }
+img.aligncenter { display: block; margin-left: auto; margin-right: auto; text-align: center; }
+img.alignright  { float: right; margin: 10px; }
