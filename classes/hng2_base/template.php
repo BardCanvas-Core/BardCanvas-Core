@@ -173,6 +173,11 @@ class template
         $this->vars[$var_name] = $value;
     }
     
+    public function append($var_name, $value)
+    {
+        $this->vars[$var_name] .= $value;
+    }
+    
     public function get($var_name)
     {
         return $this->vars[$var_name];
