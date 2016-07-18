@@ -12,12 +12,10 @@ class media_repository extends abstract_repository
         "( select concat(user_name, '\\t', display_name, '\\t', email, '\\t', level)
            from account where account.id_account = media.id_author )
            as _author_data",
-        "( select slug
+        "( select concat(slug, '\\t', title)
            from categories where categories.id_category = media.main_category )
-           as main_category_slug",
-        "( select title
-           from categories where categories.id_category = media.main_category )
-           as main_category_title",
+           as _main_category_data",
+        
         "( select group_concat(tag order by order_attached asc separator ',')
            from media_tags where media_tags.id_media = media.id_media )
            as tags_list",
@@ -93,7 +91,6 @@ class media_repository extends abstract_repository
                 publishing_date  ,
                 views            ,
                 comments_count   ,
-                tags             ,
                 
                 last_update      ,
                 last_viewed      ,
@@ -123,7 +120,6 @@ class media_repository extends abstract_repository
                 '{$obj->publishing_date  }',
                 '{$obj->views            }',
                 '{$obj->comments_count   }',
-                '{$obj->tags             }',
                 
                 '{$obj->last_update      }',
                 '{$obj->last_viewed      }',
@@ -137,7 +133,6 @@ class media_repository extends abstract_repository
                 status            = '{$obj->status           }',
                 password          = '{$obj->password         }',
                 allow_comments    = '{$obj->allow_comments   }',
-                tags              = '{$obj->tags             }',
                 
                 last_update       = '{$obj->last_update      }'
         ");

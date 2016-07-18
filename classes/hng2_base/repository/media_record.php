@@ -33,7 +33,6 @@ class media_record extends abstract_record
     public $publishing_date   ; #datetime default null,
     public $views             ; #int unsigned not null default 0,
     public $comments_count    ; #int unsigned not null default 0,
-    public $tags              ; #varchar(255) not null default '',
     
     public $last_update       ; #datetime default null,
     public $last_viewed       ; #datetime default null,
@@ -71,6 +70,16 @@ class media_record extends abstract_record
             $this->author_level        = $parts[3];
             
             unset($this->_author_data);
+        }
+        
+        if( ! empty($this->_main_category_data) )
+        {
+            $parts = explode("\t", $this->_author_data);
+        
+            $this->main_category_slug  = $parts[0];
+            $this->main_category_title = $parts[1];
+            
+            unset($this->_main_category_data);
         }
         
         if( is_string($this->tags_list) )       $this->tags_list       = explode(",", $this->tags_list);
@@ -141,6 +150,20 @@ class media_record extends abstract_record
         $contents = convert_emojis($contents);
         
         # TODO: Add get_processed_description() extension point
+        
+        return $contents;
+    }
+    
+    
+    /**
+     * Returns the display name with all output processing
+     */
+    public function get_processed_author_display_name()
+    {
+        $contents = $this->author_display_name;
+        $contents = convert_emojis($contents);
+        
+        # TODO: Add get_processed_author_display_name() extension point
         
         return $contents;
     }
