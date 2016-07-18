@@ -3,7 +3,7 @@ var tinymce_defaults = {
     menubar:                  false,
     statusbar:                false,
     selector:                 '.tinymce',
-    plugins:                  'autoresize advlist contextmenu autolink lists link anchor searchreplace paste codemirror textcolor',
+    plugins:                  'placeholder autoresize advlist contextmenu autolink lists link anchor searchreplace paste codemirror textcolor',
     toolbar:                  'bold italic strikethrough forecolor fontsizeselect removeformat | alignleft aligncenter alignright | bullist numlist outdent indent | link',
     contextmenu:              'cut copy paste | link',
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
