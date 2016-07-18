@@ -254,7 +254,7 @@ class media_repository extends abstract_repository
         $where[] = "visibility <> 'private'";
         
         if( ! $skip_date_check )
-            $where[] = "(publishing_date <> '0000-00-00 00:00:00' and publishing_date <= '$today')";
+            $where[] = "publishing_date <= '$today'";
         
         // TODO: Complement where[] with additional filters (per user level, etc.)
         
