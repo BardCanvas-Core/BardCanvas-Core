@@ -58,10 +58,13 @@ class config
         "jpg"  => "system",
         "jpeg" => "system",
         
-        "mp4" => "system",
-        "3gp" => "system",
-        "mov" => "system",
-        "avi" => "system",
+        "mp4"  => "system",
+        "3gp"  => "system",
+        "mov"  => "system",
+        "avi"  => "system",
+        "ogg"  => "system",
+        "flv"  => "system",
+        "webm" => "system",
     );
     
     public function __construct()

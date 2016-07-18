@@ -273,8 +273,9 @@
                 List of supported media types and their corresponding managers, one per line,
                 using the following syntax: <code>type - manager_class</code>.<br>
                 By default, allowed upload types are:
-                <code>png</code>, <code>gif</code>, <code>jpg</code>,
-                <code>mp4</code>, <code>3gp</code>, <code>mov</code> and <code>avi</code>.<br>
+                <code>png</code>, <code>gif</code>, <code>jpeg</code>,
+                <code>mp4</code>, <code>3gp</code>, <code>mov</code>, <code>3gp</code>, <code>ogg</code>,
+                <code>flv</code> and <code>avi</code>.<br>
                 <span class="fa fa-warning"></span>
                 This value may be updated when a module that handles file uploads is added/removed.<br>
                 Also, the <code>manager_class</code> must be an existing and valid class.
