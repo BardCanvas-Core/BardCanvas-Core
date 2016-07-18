@@ -3,6 +3,10 @@ namespace hng2_media;
 
 abstract class abstract_item_manager
 {
+    protected $media_type; // OVERRIDE
+    protected $dimensions; // OVERRIDE
+    protected $size;       // OVERRIDE
+    
     protected $save_path;
     protected $relative_path;
     
@@ -39,6 +43,7 @@ abstract class abstract_item_manager
         @chmod($target_file, 0777);
         $this->file_name = $new_file_name;
         $this->file_path = $target_file;
+        $this->size      = filesize($target_file);
     }
     
     public function move_to_repository($new_file_name)
@@ -68,6 +73,7 @@ abstract class abstract_item_manager
         @chmod($target_file, 0777);
         $this->file_name = $new_file_name;
         $this->file_path = $target_file;
+        $this->size      = filesize($target_file);
     }
     
     private function check_target_directory()
@@ -87,5 +93,20 @@ abstract class abstract_item_manager
         return "{$this->relative_path}/{$this->file_name}";
     }
     
+    public function get_type()
+    {
+        return $this->media_type;
+    }
+    
     abstract public function get_thumbnail();
+    
+    public function get_dimensions()
+    {
+        return $this->dimensions;
+    }
+    
+    public function get_size()
+    {
+        return $this->size;
+    }
 }

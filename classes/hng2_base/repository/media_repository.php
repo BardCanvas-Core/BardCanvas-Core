@@ -71,7 +71,10 @@ class media_repository extends abstract_repository
                 id_author        ,
                 
                 path             ,
-                content_type     ,
+                type             ,
+                mime_type        ,
+                dimensions       ,
+                size             ,
                 title            ,
                 thumbnail        ,
                 
@@ -100,7 +103,10 @@ class media_repository extends abstract_repository
                 '{$obj->id_author        }',
                 
                 '{$obj->path             }',
-                '{$obj->content_type     }',
+                '{$obj->type             }',
+                '{$obj->mime_type        }',
+                '{$obj->dimensions       }',
+                '{$obj->size             }',
                 '{$obj->title            }',
                 '{$obj->thumbnail        }',
                 

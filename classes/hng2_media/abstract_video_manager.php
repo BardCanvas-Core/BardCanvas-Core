@@ -1,8 +1,10 @@
 <?php
 namespace hng2_media;
 
-abstract class abstract_ffmpeg_manager extends abstract_item_manager
+abstract class abstract_video_manager extends abstract_item_manager
 {
+    protected $media_type = "video";
+    
     public function __construct($file_name, $mime_type, $file_path)
     {
         parent::__construct($file_name, $mime_type, $file_path);
@@ -12,6 +14,6 @@ abstract class abstract_ffmpeg_manager extends abstract_item_manager
     
     public function get_thumbnail()
     {
-        
+        // TODO: Implement get_thumbnail() method.
     }
 }

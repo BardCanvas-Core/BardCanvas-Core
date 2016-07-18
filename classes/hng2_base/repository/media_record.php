@@ -13,7 +13,10 @@ class media_record extends abstract_record
     # Absolute> /media_server/year/month/username_mediatitle_randomseed.png
     # /media_server is located in /data/uploaded_media
     public $path              ; #varchar(255) not null default '',
-    public $content_type      ; #varchar(64) not null default '',
+    public $type              ; #varchar(64) not null default '',
+    public $mime_type         ; #varchar(255) not null default '',
+    public $dimensions        ; #varchar(255) not null default '',
+    public $size              ; #int unsigned not null default 0,
     public $title             ; #varchar(255) not null default '',
     public $thumbnail         ; #varchar(255) not null default '',
     

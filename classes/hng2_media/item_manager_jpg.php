@@ -1,7 +1,7 @@
 <?php
 namespace hng2_media;
 
-class item_manager_jpg extends abstract_item_manager
+class item_manager_jpg extends abstract_image_manager
 {
     public function __construct($file_name, $mime_type, $file_path)
     {
@@ -20,7 +20,10 @@ class item_manager_jpg extends abstract_item_manager
         
         $compression = $settings->get("engine.thumbnail_jpg_compression");
         if( empty($compression) ) $compression = 90;
-    
+        
+        $parts = @getimagesize($this->file_path);
+        if( $parts ) $this->dimensions = "{$parts[0]}x{$parts[1]}";
+        
         return "{$this->relative_path}/" . gfuncs_getmakethumbnail(
             $this->file_path,
             $this->save_path,

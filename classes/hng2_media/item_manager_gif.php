@@ -3,7 +3,7 @@ namespace hng2_media;
 
 use GifFrameExtractor\GifFrameExtractor;
 
-class item_manager_gif extends abstract_item_manager
+class item_manager_gif extends abstract_image_manager
 {
     public function __construct($file_name, $mime_type, $file_path)
     {
@@ -24,6 +24,10 @@ class item_manager_gif extends abstract_item_manager
         if( empty($compression) ) $compression = 9;
         
         if( ! GifFrameExtractor::isAnimatedGif($this->file_path) )
+        {
+            $parts = @getimagesize($this->file_path);
+            if( $parts ) $this->dimensions = "{$parts[0]}x{$parts[1]}";
+            
             return "{$this->relative_path}/" . gfuncs_getmakePNGthumbnail(
                 $this->file_path,
                 $this->save_path,
@@ -34,6 +38,7 @@ class item_manager_gif extends abstract_item_manager
                 $compression,
                 true
             );
+        }
         
         $gfe = new GifFrameExtractor();
         $gfe->extract($this->file_path);
@@ -54,7 +59,10 @@ class item_manager_gif extends abstract_item_manager
             throw new \Exception("Thumbnailer: Can't save target file {$this->save_path}/$thumbnail_file");
         
         @chmod("{$this->save_path}/$thumbnail_file", 0777);
-    
+        
+        $parts = @getimagesize("{$this->save_path}/$thumbnail_file");
+        if( $parts ) $this->dimensions = "{$parts[0]}x{$parts[1]}";
+        
         return "{$this->relative_path}/{$thumbnail_file}";
     }
 }
