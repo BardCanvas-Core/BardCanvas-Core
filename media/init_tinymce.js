@@ -10,9 +10,7 @@ var tinymce_defaults = {
     toolbar:                  'bold italic strikethrough forecolor fontsizeselect removeformat | alignleft aligncenter alignright | bullist numlist outdent indent | link',
     contextmenu:              'cut copy paste | link',
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
-    content_css:              $_FULL_ROOT_PATH  + '/media/styles~v' + $_SCRIPTS_VERSION + '.css'
-                              + ',' +
-                              $_TEMPLATE_URL    + '/media/styles~v' + $_SCRIPTS_VERSION + '.css',
+    content_css:              tinymce_default_css_files.join(','),
     autoresize_bottom_margin: 0,
     autoresize_min_height:    200,
 //  image_advtab:             true,
