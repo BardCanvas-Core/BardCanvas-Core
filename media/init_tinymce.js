@@ -2,6 +2,9 @@
 var tinymce_defaults = {
     menubar:                  false,
     statusbar:                false,
+    relative_urls:            false,
+    remove_script_host:       false,
+    convert_urls:             false,
     selector:                 '.tinymce',
     plugins:                  'placeholder autoresize advlist contextmenu autolink lists link anchor searchreplace paste codemirror textcolor',
     toolbar:                  'bold italic strikethrough forecolor fontsizeselect removeformat | alignleft aligncenter alignright | bullist numlist outdent indent | link',

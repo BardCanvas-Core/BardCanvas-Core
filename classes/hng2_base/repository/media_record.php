@@ -171,20 +171,27 @@ class media_record extends abstract_record
         return $contents;
     }
     
-    public function get_image_url()
+    public function get_item_url($fully_qualified = false)
     {
         global $config;
         
-        $return = "$config->full_root_url/mediaserver/{$this->path}";
+        if( $fully_qualified ) $return = "$config->full_root_url/mediaserver/{$this->path}";
+        else                   $return = "$config->full_root_path/mediaserver/{$this->path}";
         
         return $return;
     }
     
-    public function get_thumbnail_url()
+    public function get_item_width()
+    {
+        return current(explode("x", $this->dimensions));
+    }
+    
+    public function get_thumbnail_url($fully_qualified = false)
     {
         global $config;
         
-        $return = "$config->full_root_url/";
+        if( $fully_qualified ) $return = "$config->full_root_url/";
+        else                   $return = "$config->full_root_path/";
         
         if( empty($this->thumbnail) ) $return .= "media/missing_image.png";
         else                          $return .= "mediaserver/{$this->thumbnail}";

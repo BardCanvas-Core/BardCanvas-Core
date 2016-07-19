@@ -109,7 +109,7 @@ a.disabled, .pseudo_link.disabled { color: dimgrey; opacity: 0.5; cursor: auto; 
                                                box-shadow: 5px 5px 10px 1px rgba(0,0,0,0.5); }
 .dropdown_menu .main_menu_item               { display: block; }
 .dropdown_menu .main_menu_item               { padding: 10px 6px; line-height: 20px; text-decoration: none;
-    color: rgba(255, 255, 255, 0.75); }
+                                               color: rgba(255, 255, 255, 0.75); }
 .dropdown_menu .main_menu_item:link          { color: rgba(255, 255, 255, 0.75); }
 .dropdown_menu .main_menu_item:hover         { color: black;   background-color: pink; }
 .dropdown_menu .main_menu_item.current       { color: #990d0d; background-color: #f6f8f9; }
