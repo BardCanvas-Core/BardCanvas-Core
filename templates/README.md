@@ -79,5 +79,5 @@ In the module's `module_info.xml` file, the `<template_includes>` node should in
     footer_top            |   √  |   √  |       |            |
     footer_bottom         |   √  |   √  |       |            |
     post_footer           |   √  |   √  |   √   |            |
-    pre_eof               |   √  |   √  |       |            |
+    pre_eof               |   √  |   √  |   √   |            |
     post_rendering        |   √  |   √  |       |            |
