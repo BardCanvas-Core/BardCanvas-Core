@@ -1,7 +1,6 @@
 <?
 /**
  * Funciones de gráficos
- * TODO: revisar variables sin definir.
  *
  * @author   Alejandro Caballero - alexknight@hotpop.com
  * @requires funciones_varias->construye_nombre_de_archivo()
