@@ -167,7 +167,7 @@ function refresh_record_browser($target)
                       }
     });
     
-    $target.find('.lightbox').lightbox();
+    $target.find('.prettyPhoto').prettyPhoto({social_tools: false});
     check_wrapped_tables();
 }
 

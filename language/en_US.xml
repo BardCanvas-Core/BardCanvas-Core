@@ -273,9 +273,10 @@
                 List of supported media types and their corresponding managers, one per line,
                 using the following syntax: <code>type - manager_class</code>.<br>
                 By default, allowed upload types are:
-                <code>png</code>, <code>gif</code>, <code>jpeg</code>,
-                <code>mp4</code>, <code>3gp</code>, <code>mov</code>, <code>3gp</code>, <code>ogg</code>,
-                <code>flv</code> and <code>avi</code>.<br>
+                <code>png</code>, <code>gif</code>, <code>jpeg</code>, <code>mpg</code>,
+                <code>mp4</code>, <code>m4v</code>, <code>3gp</code>, <code>mov</code>, <code>3gp</code>,
+                <code>flv</code>, <code>mkv</code>, <code>wmv</code>, <code>ogg</code>, <code>ogv</code
+                and <code>avi</code>.<br>
                 <span class="fa fa-warning"></span>
                 This value may be updated when a module that handles file uploads is added/removed.<br>
                 Also, the <code>manager_class</code> must be an existing and valid class.
@@ -316,6 +317,18 @@
                 <min>10</min>
                 <max>100</max>
             </options>
+        </specs>
+        <specs key="ffmpeg_path">
+            <title>FFmpeg path</title>
+            <description><![CDATA[
+                FFmpeg is needed to handle video conversions. It must be installed in the server to support
+                video uploads using the gallery manager.<br>
+                You can download and install it on your server using the command line <code>sudo apt-get install ffmpeg</code>
+                on Ubuntu/Debian or <code>sudo yum install ffmpeg</code> on Red Hat/CentOS.<br>
+                If you have a shared hosting and can't install it on the server, you can download a static version
+                <a href="http://johnvansickle.com/ffmpeg/" target="_blank">from here</a> and run it from your home folder.
+            ]]></description>
+            <type>text</type>
         </specs>
     </settings_data>
     

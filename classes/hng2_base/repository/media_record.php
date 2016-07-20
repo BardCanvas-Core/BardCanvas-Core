@@ -181,9 +181,24 @@ class media_record extends abstract_record
         return $return;
     }
     
+    public function get_item_embeddable_url($fully_qualified = false)
+    {
+        global $config;
+        
+        if( $fully_qualified ) $return = "$config->full_root_url/mediaserver-embed/{$this->path}";
+        else                   $return = "$config->full_root_path/mediaserver-embed/{$this->path}";
+        
+        return $return;
+    }
+    
     public function get_item_width()
     {
         return current(explode("x", $this->dimensions));
+    }
+    
+    public function get_item_height()
+    {
+        return end(explode("x", $this->dimensions));
     }
     
     public function get_thumbnail_url($fully_qualified = false)

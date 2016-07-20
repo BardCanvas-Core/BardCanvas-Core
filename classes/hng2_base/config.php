@@ -58,12 +58,17 @@ class config
         "jpg"  => "system",
         "jpeg" => "system",
         
+        "mpg"  => "system",
         "mp4"  => "system",
+        "m4v"  => "system",
         "3gp"  => "system",
         "mov"  => "system",
         "avi"  => "system",
         "ogg"  => "system",
+        "ogv"  => "system",
         "flv"  => "system",
+        "mkv"  => "system",
+        "wmv"  => "system",
         "webm" => "system",
     );
     

@@ -26,26 +26,6 @@ abstract class abstract_item_manager
         $this->file_path = $file_path;
     }
     
-    public function copy_to_repository($new_file_name)
-    {
-        $this->check_target_directory();
-        
-        $source_file = $this->file_path;
-        $target_file = $this->save_path . "/";
-        if( empty($new_file_name) ) $target_file .= $this->file_name;
-        else                        $target_file .= $new_file_name;
-        
-        if( ! @copy($source_file, $target_file) )
-            throw new \Exception(sprintf(
-                "Cannot copy $source_file into $target_file"
-            ));
-        
-        @chmod($target_file, 0777);
-        $this->file_name = $new_file_name;
-        $this->file_path = $target_file;
-        $this->size      = filesize($target_file);
-    }
-    
     public function move_to_repository($new_file_name)
     {
         $this->check_target_directory();
@@ -69,7 +49,7 @@ abstract class abstract_item_manager
                     "Cannot move $source_file into $target_file"
                 ));
         }
-    
+        
         @chmod($target_file, 0777);
         $this->file_name = $new_file_name;
         $this->file_path = $target_file;
