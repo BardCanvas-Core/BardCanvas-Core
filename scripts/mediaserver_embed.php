@@ -19,7 +19,7 @@ if( empty($_GET["file"]) ) throw_fake_404();
 $file  = $config->full_root_url . "/mediaserver/" . stripslashes($_GET["file"]);
 $style = "";
 
-if( ! empty($_GET["width"]) )  $style .= "width: {$_GET["width"]}px; ";
-if( ! empty($_GET["height"]) ) $style .= "height: {$_GET["height"]}px; ";
+$width  = empty($_GET["width"])  ? "" : "width='{$_GET["width"]}'";
+$height = empty($_GET["height"]) ? "" : "height='{$_GET["height"]}'";
 
-echo "<embed src='{$file}' style='{$style}'></embed>";
+echo "<video src='{$file}' {$width} {$height} controls></video>";
