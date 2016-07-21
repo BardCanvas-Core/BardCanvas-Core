@@ -43,9 +43,9 @@ textarea.no_fw_font              { font-family: Arial, Helvetica, sans-serif; fo
 
 code { color: black; background-color: silver; padding-left: 2px; padding-right: 2px; }
 
-h1 { font-size: 18pt; color: #990d0d; margin-top: 0; }
-h2 { font-size: 16pt; color: #ce6562; }
-h3 { font-size: 14pt; color: #ceaea7; }
+h1 { font-size: 14pt; color: #990d0d; margin-top: 0; }
+h2 { font-size: 13pt; color: #ce6562; }
+h3 { font-size: 12pt; color: #ceaea7; }
 
 a img { border: none; }
 
@@ -318,9 +318,9 @@ pre .emojione                 ,
 .fixed_font .emojione         ,
 code .emojione                { height: 8pt; }
 
-h1 .emojione { height: 18pt; }
-h2 .emojione { height: 16pt; }
-h3 .emojione { height: 14pt; }
+h1 .emojione { height: 14pt; }
+h2 .emojione { height: 13pt; }
+h3 .emojione { height: 12pt; }
 
 .details_table th .emojione            ,
 .details_table td .emojione            { height: 11pt; }
