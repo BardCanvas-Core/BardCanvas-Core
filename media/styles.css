@@ -219,17 +219,6 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .nav_table.vertical tr:first-child td { border-top: 1px solid #c2daea; }
 .nav_table.vertical tr:first-child th { border-top: 1px solid #c2daea; }
 
-.nav_table .thumbnail {
-    border: 1px solid; background-color: white;
-    display: inline-block; position: relative; width: 230px; height: 110px; overflow: hidden;
-}
-.nav_table .thumbnail img {
-    position: absolute; left: 50%; top: 50%; max-width: 100%; height: auto;
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform:     translate(-50%,-50%);
-    transform:         translate(-50%,-50%);
-}
-
 .nav_table_inner    { width: 100%; border-spacing: 0; border-collapse: separate; }
 .nav_table_inner    { border-left:  1px solid #c2daea; }
 .nav_table_inner tr { text-align: left; vertical-align: top; }
@@ -292,10 +281,11 @@ label, button, input[type="button"], input[type="submit"], input[type="reset"] {
 label[disabled], button[disabled], input[type="button"][disabled],
 input[type="submit"][disabled], input[type="reset"][disabled] { cursor: default; }
 
-form .field                           { margin-bottom: 15px; }
-form .field .input                    { margin: 5px 0 5px 25px; }
-form .field        input[type="text"] { width: 100%; }
-form .field        select             { width: 100%; }
+form .field                               { margin-bottom: 15px; }
+form .field .input                        { margin: 5px 0 5px 25px; }
+form .field        input[type="text"]     { width: 100%; }
+form .field        input[type="password"] { width: 100%; }
+form .field        select                 { width: 100%; }
 
 form .field .input.info_handler { font-style: italic; color: dimgrey;
                                   padding-left: 10px; border-left: 5px solid silver; }
@@ -340,6 +330,21 @@ h3 .emojione { height: 14pt; }
 
 form .big_form_submit_button .emojione { height: 12pt; }
 
+/* Thumbnail placeholders - base measures for nav tables and previews, not for contents */
+
+.nav_table .thumbnail, .thumbnail.preview {
+    border: 1px solid; background-color: transparent;
+    display: inline-block; position: relative;
+    width: 230px; height: 110px; overflow: hidden;
+}
+
+.nav_table .thumbnail img, .thumbnail.preview img {
+    position: absolute; left: 50%; top: 50%; max-width: 100%; height: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform:     translate(-50%,-50%);
+    transform:         translate(-50%,-50%);
+}
+
 /* TinyMCE defaults */
 
 .alignleft   { text-align: left;   }
@@ -349,3 +354,29 @@ form .big_form_submit_button .emojione { height: 12pt; }
 img.alignleft   { float: left; margin: 10px; }
 img.aligncenter { display: block; margin-left: auto; margin-right: auto; text-align: center; }
 img.alignright  { float: right; margin: 10px; }
+
+/* Multiple columns */
+
+@media all and (min-width: 710px)
+{
+    .multicol.cols-3 .col {
+        display:       inline-block;
+        width:         calc(33% - 10px);
+        padding-right: 10px;
+        margin-right:  10px;
+    }
+    
+    .multicol .col {
+        vertical-align: top;
+    }
+    
+    .multicol .biggest-col {
+        width: calc(33% - 20px);
+    }
+    
+    .multicol .col:last-child {
+        padding-right: 0;
+        margin-right:  0;
+        border-right:  0;
+    }
+}
