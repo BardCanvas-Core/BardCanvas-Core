@@ -218,11 +218,16 @@ function prepare_buttonized_radios()
 }
 
 //noinspection JSUnusedGlobalSymbols
-function toggle_fa_pseudo_switch(src)
+function toggle_fa_pseudo_switch(src, toggle)
 {
+    var is_on;
+    if( typeof toggle != 'undefined' )
+        is_on = toggle;
+    else
+        is_on     = $(src).find('.toggle-on:visible').length > 0;
+    
     var value_on  = $(src).attr('data-value-on');
     var value_off = $(src).attr('data-value-off');
-    var is_on     = $(src).find('.toggle-on:visible').length > 0;
     
     if( is_on ) $(src).find('input').val( value_off );
     else        $(src).find('input').val( value_on );
