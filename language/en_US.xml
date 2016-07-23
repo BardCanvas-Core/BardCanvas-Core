@@ -74,6 +74,7 @@
     <refresh>Refresh</refresh>
     <reload>Reload</reload>
     <reload_page>Reload page</reload_page>
+    <file_not_found>File not found</file_not_found>
     
     <notification_deletion_errors>
         <missing_id>You're calling this script incorrectly.</missing_id>
