@@ -330,21 +330,6 @@ h3 .emojione { height: 12pt; }
 
 form .big_form_submit_button .emojione { height: 12pt; }
 
-/* Thumbnail placeholders - base measures for nav tables and previews, not for contents */
-
-.nav_table .thumbnail, .thumbnail.preview {
-    border: 1px solid; background-color: transparent;
-    display: inline-block; position: relative;
-    width: 230px; height: 110px; overflow: hidden;
-}
-
-.nav_table .thumbnail img, .thumbnail.preview img {
-    position: absolute; left: 50%; top: 50%; max-width: 100%; height: auto;
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform:     translate(-50%,-50%);
-    transform:         translate(-50%,-50%);
-}
-
 /* TinyMCE defaults */
 
 .alignleft   { text-align: left;   }
@@ -380,3 +365,7 @@ img.alignright  { float: right; margin: 10px; }
         border-right:  0;
     }
 }
+
+/* ETC */
+
+video, embed { background-color: black; }
