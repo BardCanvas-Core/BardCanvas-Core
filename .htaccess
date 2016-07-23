@@ -9,13 +9,13 @@ ReWriteEngine On
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
 
-# Posts by category
+# Post indexes by category
 ReWriteRule ^category/(.*)/media/$ gallery/by_category.php?slug=$1 [QSA,L]
 ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
 ReWriteRule ^category/(.*)/$       posts/by_category.php?slug=$1   [QSA,L]
 ReWriteRule ^category/(.*)$        posts/by_category.php?slug=$1   [QSA,L]
 
-# Author archive
+# Author archives
 ReWriteRule ^author/(.*)/media/$   gallery/by_author.php?slug=$1             [QSA,L]
 ReWriteRule ^author/(.*)/media$    gallery/by_author.php?slug=$1             [QSA,L]
 ReWriteRule ^author/(.*)/videos/$  gallery/by_author.php?slug=$1&type=videos [QSA,L]
@@ -25,7 +25,7 @@ ReWriteRule ^author/(.*)/images$   gallery/by_author.php?slug=$1&type=images [QS
 ReWriteRule ^author/(.*)/posts/$   posts/by_author.php?slug=$1               [QSA,L]
 ReWriteRule ^author/(.*)/posts$    posts/by_author.php?slug=$1               [QSA,L]
 
-# Media archive
+# Media archives
 ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/media/$ gallery/by_date.php?date=$1 [QSA,L]
 ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/media$  gallery/by_date.php?date=$1 [QSA,L]
 ReWriteRule ^date/([0-9]{4}/[0-9]{2})/media/$          gallery/by_date.php?date=$1 [QSA,L]
@@ -33,7 +33,7 @@ ReWriteRule ^date/([0-9]{4}/[0-9]{2})/media$           gallery/by_date.php?date=
 ReWriteRule ^date/([0-9]{4})/media/$                   gallery/by_date.php?date=$1 [QSA,L]
 ReWriteRule ^date/([0-9]{4})/media$                    gallery/by_date.php?date=$1 [QSA,L]
 
-# Posts archive
+# Post archives
 ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/$ posts/by_date.php?date=$1 [QSA,L]
 ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})$  posts/by_date.php?date=$1 [QSA,L]
 ReWriteRule ^date/([0-9]{4}/[0-9]{2})/$          posts/by_date.php?date=$1 [QSA,L]
@@ -44,3 +44,15 @@ ReWriteRule ^date/([0-9]{4})$                    posts/by_date.php?date=$1 [QSA,
 # Media server
 ReWriteRule ^mediaserver/(.*)$       data/uploaded_media/$1 [QSA,L]
 ReWriteRule ^mediaserver-embed/(.*)$ scripts/mediaserver_embed.php?file=$1 [QSA,L]
+
+#
+# Document handler - for all those that support single documents
+# This ruleset must be the last in the .htaccess file
+#
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+ReWriteRule .* - [L]
+ 
+ReWriteRule ^(.+)/$ scripts/document_handler.php?REQUEST_FILENAME=%{REQUEST_FILENAME}&handle=$1 [QSA,L]
+ReWriteRule ^(.+)$  scripts/document_handler.php?REQUEST_FILENAME=%{REQUEST_FILENAME}&handle=$1 [QSA,L]
