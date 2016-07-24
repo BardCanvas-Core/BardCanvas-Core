@@ -57,6 +57,7 @@ $mem_cache = new mem_cache();
 /** @var module[] $modules */
 $modules = array();
 include dirname(__FILE__) . "/modules_autoloader.inc";
+load_tinymce_addons();
 
 $account = new account();
 $account->load_session();

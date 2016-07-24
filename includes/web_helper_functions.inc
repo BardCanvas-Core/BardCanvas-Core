@@ -170,3 +170,47 @@ function convert_emojis($input)
     
     return $emojione->unicodeToImage($input);
 }
+
+function load_tinymce_addons()
+{
+    global $modules;
+    
+    foreach($modules as $module)
+        if( ! empty($module->language->tinymce_addon) )
+            foreach($module->language->tinymce_addon as $addon)
+                register_tinymce_addon(
+                    trim($addon->title),
+                    trim($addon["function"]),
+                    trim($addon["icon"]),
+                    trim($addon->caption),
+                    trim($addon->related_field)
+                );
+                
+}
+
+function register_tinymce_addon($title, $function, $icon, $caption, $related_field)
+{
+    global $config;
+    
+    $config->globals["tinymce_addons"][] = (object) array(
+        "title"         => trim($title),
+        "function"      => trim($function),
+        "icon"          => trim($icon),
+        "caption"       => trim($caption),
+        "related_field" => trim($related_field),
+    );
+}
+
+function render_tinymce_addons_bar()
+{
+    global $config;
+    
+    foreach( $config->globals["tinymce_addons"] as $addon )
+        echo "
+        <span class='addon pseudo_link' title='{$addon->title}'
+                  data-function='{$addon->function}' data-related-field='{$addon->related_field}'
+                  onclick='trigger_tinymce_addon(this)'><span 
+                    class='fa {$addon->icon} fa-fw'></span><span 
+                    class='caption'>{$addon->caption}</span></span>
+        ";
+}

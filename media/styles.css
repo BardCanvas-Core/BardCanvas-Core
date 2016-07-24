@@ -8,24 +8,9 @@
 
 /* Clearfix  */
 
-.clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
-
-* html>body .clearfix {
-    display: inline-block;
-    width: 100%;
-}
-
-* html .clearfix {
-    /* Hides from IE-mac \*/
-    height: 1%;
-    /* End hide from IE-mac */
-}
+.clearfix:after       { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+* html>body .clearfix { display: inline-block; width: 100%; }
+* html .clearfix      { height: 1%; }
 
 /* Base styles */
 
@@ -339,6 +324,10 @@ form .big_form_submit_button .emojione { height: 12pt; }
 img.alignleft   { float: left; margin: 10px; }
 img.aligncenter { display: block; margin-left: auto; margin-right: auto; text-align: center; }
 img.alignright  { float: right; margin: 10px; }
+
+.tinymce_addons_bar                 { margin-top: 10px; }
+.tinymce_addons_bar .addon          { font-size: 24pt; }
+.tinymce_addons_bar .addon .caption { display: none; }
 
 /* Multiple columns */
 

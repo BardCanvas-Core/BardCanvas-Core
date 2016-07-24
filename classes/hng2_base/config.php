@@ -72,6 +72,13 @@ class config
         "webm" => "system",
     );
     
+    /**
+     * Generic usage
+     * 
+     * @var array
+     */
+    public $globals = array();
+    
     public function __construct()
     {
         $this->encryption_key     = ENCRYPTION_KEY;
