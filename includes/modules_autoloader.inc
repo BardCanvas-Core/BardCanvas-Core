@@ -13,8 +13,8 @@
 use hng2_base\module;
 use hng2_cache\disk_cache;
 
-$build_modules_cache = true;
-$modules_cache_enabled = $settings->get("modules:modules_manager.disable_cache") != "true";
+$load_modules = true;
+$modules_cache_enabled = $settings->get("modules:modules_manager.disable_cache") == "true";
 
 if( $modules_cache_enabled )
 {
@@ -23,11 +23,11 @@ if( $modules_cache_enabled )
     {
         $modules = $modules_cache->get_all();
         foreach($modules as &$module) $module->unserialize();
-        $build_modules_cache = false;
+        $load_modules = false;
     }
 }
 
-if( $build_modules_cache )
+if( $load_modules )
 {
     $module_dirs_pattern = ABSPATH . "/*";
     $available_modules   = glob($module_dirs_pattern, GLOB_ONLYDIR);

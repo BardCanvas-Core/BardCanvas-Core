@@ -57,13 +57,22 @@ class module
      */
     var $language;
     
-    # Information to show in the modules manager on how this module can be extended.
+    /**
+     * Information to show in the modules manager on how this module can be extended. 
+     * @var \SimpleXMLElement
+     */
     var $extension_areas_info;
     
-    # Modules it extends
+    /**
+     * Modules it extends
+     * @var \SimpleXMLElement
+     */
     var $extends_to;
     
-    # Extended by modules.
+    /**
+     * Modules that extend this module.
+     * @var array Two dimensions: module name and extension area.
+     */
     var $extended_by;
     
     # Widget definitions
@@ -166,6 +175,15 @@ class module
         $self->language          = empty($self->language)          ? "" : $self->language->asXML();
         $self->menu_items        = empty($self->menu_items)        ? "" : $self->menu_items->asXML();
         $self->working_flags     = empty($self->working_flags)     ? "" : $self->working_flags->asXML();
+    
+        $self->extension_areas_info = empty($self->extension_areas_info) ? "" : $self->extension_areas_info->asXML();
+        $self->extends_to           = empty($self->extends_to)           ? "" : $self->extends_to->asXML();
+        
+        /** @var \SimpleXMLElement $area */
+        if( ! empty($self->extended_by) )
+            foreach($self->extended_by as &$extending_areas)
+                foreach($extending_areas as &$area)
+                    $area = $area->asXML();
         
         return $self;
     }
@@ -177,5 +195,14 @@ class module
         $this->language          = simplexml_load_string($this->language);
         $this->menu_items        = simplexml_load_string($this->menu_items);
         $this->working_flags     = simplexml_load_string($this->working_flags);
+        
+        $this->extension_areas_info = simplexml_load_string($this->extension_areas_info);
+        $this->extends_to           = simplexml_load_string($this->extends_to);
+    
+        /** @var \SimpleXMLElement $area */
+        if( ! empty($this->extended_by) )
+            foreach($this->extended_by as &$extending_areas)
+                foreach($extending_areas as &$area)
+                    $area = simplexml_load_string($area);
     }
 }
