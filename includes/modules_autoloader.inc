@@ -8,13 +8,17 @@
  *             
  * @var module   $module
  * @var module[] $modules
+ * @var settings $settings
  */
 
 use hng2_base\module;
+use hng2_base\settings;
 use hng2_cache\disk_cache;
 
 $load_modules = true;
-$modules_cache_enabled = $settings->get("modules:modules_manager.disable_cache") == "true";
+$modules_cache_enabled = $settings->get("modules:modules_manager.disable_cache") != "true";
+# echo "\$modules_cache_enabled = [$modules_cache_enabled]<br>";
+# echo "\$load_modules = [$load_modules]<br>";
 
 if( $modules_cache_enabled )
 {
@@ -41,9 +45,6 @@ if( $load_modules )
         
         $module = new module($info_file);
         if( $module->installed && $module->enabled ) $modules[$module_keyname] = clone $module;
-        
-        if( ! empty($module->php_includes->bootstrap) )
-            include "{$module->abspath}/{$module->php_includes->bootstrap}";
     }
     
     # Part 2: extenders
@@ -86,6 +87,16 @@ if( $load_modules )
         }
         $modules_cache->prefill($caching_modules);
         unset( $caching_modules );
+    }
+}
+
+# Bootstraps preload
+foreach($modules as $module_keyname => $this_module)
+{
+    if( ! empty($module->php_includes->bootstrap) )
+    {
+        # echo "{$module->abspath}/{$module->php_includes->bootstrap}<br>";
+        include "{$module->abspath}/{$module->php_includes->bootstrap}";
     }
 }
 
