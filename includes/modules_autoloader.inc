@@ -91,7 +91,7 @@ if( $load_modules )
 }
 
 # Bootstraps preload
-foreach($modules as $module_keyname => $this_module)
+foreach($modules as $module)
 {
     if( ! empty($module->php_includes->bootstrap) )
     {
