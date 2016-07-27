@@ -74,7 +74,8 @@
     <refresh>Refresh</refresh>
     <reload>Reload</reload>
     <reload_page>Reload page</reload_page>
-    <file_not_found>File not found</file_not_found>
+    <resource_not_found>Resource not found</resource_not_found>
+    <resource_unavailable>Resource unavailable</resource_unavailable>
     
     <notification_deletion_errors>
         <missing_id>You're calling this script incorrectly.</missing_id>
@@ -96,6 +97,10 @@
     <show_contents>Show contents</show_contents>
     
     <home_title>Home</home_title>
+    
+    <captcha_not_configured><![CDATA[
+        Captcha keys aren't configured! Please get into the settings admin page and specify them.
+    ]]></captcha_not_configured>
     
     <install_messages>
         <table_created_ok>Table {$table_name} successfully created.</table_created_ok>

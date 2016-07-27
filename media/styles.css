@@ -268,9 +268,11 @@ input[type="submit"][disabled], input[type="reset"][disabled] { cursor: default;
 
 form .field                               { margin-bottom: 15px; }
 form .field .input                        { margin: 5px 0 5px 25px; }
-form .field        input[type="text"]     { width: 100%; }
-form .field        input[type="password"] { width: 100%; }
-form .field        select                 { width: 100%; }
+
+form .field input[type="text"]     ,
+form .field input[type="email"]    ,
+form .field input[type="password"] ,
+form .field select                 { width: 100%; }
 
 form .field .input.info_handler { font-style: italic; color: dimgrey;
                                   padding-left: 10px; border-left: 5px solid silver; }
