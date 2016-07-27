@@ -123,7 +123,7 @@ class account
     
     public function set_new_id()
     {
-        $this->id_account = uniqid(true);
+        $this->id_account = uniqid();
     }
     
     /**
