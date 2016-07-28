@@ -60,7 +60,7 @@ a.disabled, .pseudo_link.disabled { color: dimgrey; opacity: 0.5; cursor: auto; 
 
 /* Header items */
 
-#header .menu { white-space: nowrap; }
+/*#header .menu { white-space: nowrap; }*/
 
 #header .main_menu_item               { padding: 5px 6px; line-height: 30px; text-decoration: none;
                                         display: inline-block; color: rgba(255, 255, 255, 0.75); }
