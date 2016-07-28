@@ -59,6 +59,8 @@ class media_record extends abstract_record
     public $categories_list = array(); # from post_categories
     public $mentions_list   = array(); # from post_mentions
     
+    private $_author_account;
+    
     protected function set_from_object($object_or_array)
     {
         parent::set_from_object($object_or_array);
@@ -77,7 +79,7 @@ class media_record extends abstract_record
         
         if( ! empty($this->_main_category_data) )
         {
-            $parts = explode("\t", $this->_author_data);
+            $parts = explode("\t", $this->_main_category_data);
         
             $this->main_category_slug  = $parts[0];
             $this->main_category_title = $parts[1];
@@ -113,7 +115,9 @@ class media_record extends abstract_record
             
             $return["tags_list"],
             $return["categories_list"],
-            $return["mentions_list"]
+            $return["mentions_list"],
+            
+            $return["_author_account"]
         );
         
         foreach( $return as $key => &$val ) $val = addslashes($val);
@@ -122,11 +126,24 @@ class media_record extends abstract_record
     }
     
     /**
+     * @param null|account $prefetched_author_record
+     */
+    public function set_author($prefetched_author_record = null)
+    {
+        if( ! is_null($prefetched_author_record) )
+            $this->_author_account = $prefetched_author_record;
+        else
+            $this->_author_account = new account($this->id_author);
+    }
+    
+    /**
      * @return account
      */
     public function get_author()
     {
         // TODO: Implement accounts repository for caching
+        
+        if( is_object($this->_author_account) ) return $this->_author_account;
         
         return new account($this->id_author);
     }

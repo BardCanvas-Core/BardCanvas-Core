@@ -2,6 +2,8 @@
 namespace hng2_base\repository;
 
 use hng2_modules\categories\category_record;
+use hng2_modules\gallery\items_data;
+use hng2_tools\record_browser;
 
 class media_repository extends abstract_repository
 {
@@ -277,7 +279,7 @@ class media_repository extends abstract_repository
      *
      * @return object {where:array, limit:int, offset:int, order:string}
      */
-    public function build_find_params_for_category($id_category)
+    protected function build_find_params_for_category($id_category)
     {
         $return = $this->build_find_params();
         
@@ -291,7 +293,7 @@ class media_repository extends abstract_repository
         return $return;
     }
     
-    public function build_find_params_for_date_archive($start_date, $end_date)
+    protected function build_find_params_for_date_archive($start_date, $end_date)
     {
         $return = $this->build_find_params(array(), true);
         
@@ -306,12 +308,68 @@ class media_repository extends abstract_repository
      *
      * @return object {where:array, limit:int, offset:int, order:string}
      */
-    public function build_find_params_for_author($id_account)
+    protected function build_find_params_for_author($id_account)
     {
         $return = $this->build_find_params();
         
         $return->where[] = "id_author = '$id_account'";
         
         return $return;
+    }
+    
+    public function get_for_author($id_account)
+    {
+        $find_params = $this->build_find_params_for_author($id_account);
+        
+        return $this->get_items_data($find_params);
+    }
+    
+    public function get_for_category($id_category)
+    {
+        $find_params = $this->build_find_params_for_category($id_category);
+        
+        return $this->get_items_data($find_params);
+    }
+    
+    public function get_for_date_archive($start_date, $end_date)
+    {
+        $find_params = $this->build_find_params_for_date_archive($start_date, $end_date);
+        
+        return $this->get_items_data($find_params);
+    }
+    
+    /**
+     * @param $find_params
+     *
+     * @return items_data
+     */
+    private function get_items_data($find_params)
+    {
+        $items_data = new items_data();
+        
+        $items_data->browser    = new record_browser("");
+        $items_data->count      = $this->get_record_count($find_params->where);
+        $items_data->pagination = $items_data->browser->build_pagination($items_data->count, $find_params->limit, $find_params->offset);
+        $items_data->items      = $this->find($find_params->where, $find_params->limit, $find_params->offset, $find_params->order);
+        
+        $this->preload_authors($items_data);
+        
+        return $items_data;
+    }
+    
+    private function preload_authors(items_data &$items_data)
+    {
+        $author_ids = array();
+        foreach( $items_data->items as $item ) $author_ids[] = $item->id_author;
+        
+        if( count($author_ids) > 0 )
+        {
+            $author_ids         = array_unique($author_ids);
+            $authors_repository = new accounts_repository();
+            $authors            = $authors_repository->get_multiple($author_ids);
+            
+            foreach( $items_data->items as $index => &$item )
+                $item->set_author($authors[$item->id_author]);
+        }
     }
 }
