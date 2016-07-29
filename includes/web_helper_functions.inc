@@ -214,3 +214,19 @@ function render_tinymce_addons_bar()
                     class='caption'>{$addon->caption}</span></span>
         ";
 }
+
+/**
+ * Extracts hashtags from contents and returns them in an array
+ *
+ * @param string $contents
+ *
+ * @return array
+ */
+function extract_hash_tags($contents)
+{
+    $count = preg_match_all('/#([a-z0-9]+)\b/i', $contents, $matches);
+    if( empty($count) ) return array();
+    
+    $return = array_unique($matches[1]);
+    return $return;
+}
