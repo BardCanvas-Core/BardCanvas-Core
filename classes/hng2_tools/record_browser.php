@@ -54,18 +54,12 @@ class record_browser
             {
                 if(stristr($key, "search_") !== false)
                 {
-                    if( is_array($val) )
+                    $value = is_array($val) ? implode(",", $val) : $val;
+                    
+                    if( $_COOKIE["{$this->data_vars_prefix}_nav_filter_{$key}"] != $value )
                         setcookie(
-                            "{$this->data_vars_prefix}_nav_filter_" . $key,
-                            implode(",", $val),
-                            86400 * 30,
-                            $config->full_root_path,
-                            $config->cookies_domain
-                        );
-                    else
-                        setcookie(
-                            "{$this->data_vars_prefix}_nav_filter_" . $key,
-                            $val,
+                            "{$this->data_vars_prefix}_nav_filter_{$key}",
+                            $value,
                             86400 * 30,
                             $config->full_root_path,
                             $config->cookies_domain
@@ -73,20 +67,24 @@ class record_browser
                 }
             }
             if( ! is_numeric($_REQUEST["limit"]) ) $_REQUEST["limit"] = $default_limit;
-            setcookie(
-                "{$this->data_vars_prefix}_nav_limit",
-                $_REQUEST["limit"],
-                86400 * 30,
-                $config->full_root_path,
-                $config->cookies_domain
-            );
-            setcookie(
-                "{$this->data_vars_prefix}_nav_order",
-                $_REQUEST["order"],
-                86400 * 30,
-                $config->full_root_path,
-                $config->cookies_domain
-            );
+            
+            if( $_REQUEST["limit"] != $_COOKIE["{$this->data_vars_prefix}_nav_limit"])
+                setcookie(
+                    "{$this->data_vars_prefix}_nav_limit",
+                    $_REQUEST["limit"],
+                    86400 * 30,
+                    $config->full_root_path,
+                    $config->cookies_domain
+                );
+    
+            if( $_REQUEST["order"] != $_COOKIE["{$this->data_vars_prefix}_nav_order"])
+                setcookie(
+                    "{$this->data_vars_prefix}_nav_order",
+                    $_REQUEST["order"],
+                    86400 * 30,
+                    $config->full_root_path,
+                    $config->cookies_domain
+                );
         }
         
         foreach($_COOKIE as $key => $val)
@@ -126,13 +124,19 @@ class record_browser
             {
                 if(stristr($key, "search_") !== false)
                 {
-                    if(is_array($val)) $account->set_engine_pref( "{$this->data_vars_prefix}_nav_filter_".$key, implode(",", $val) );
-                    else               $account->set_engine_pref( "{$this->data_vars_prefix}_nav_filter_".$key, $val );
+                    $value = is_array($val) ? implode(",", $val) : $val;
+                    
+                    if( $account->engine_prefs["{$this->data_vars_prefix}_nav_filter_{$key}"] != $value )
+                        $account->set_engine_pref( "{$this->data_vars_prefix}_nav_filter_{$key}", $value );
                 }
             }
             if( ! is_numeric($_REQUEST["limit"]) ) $_REQUEST["limit"] = $default_limit;
-            $account->set_engine_pref( "{$this->data_vars_prefix}_nav_limit", $_REQUEST["limit"] );
-            $account->set_engine_pref( "{$this->data_vars_prefix}_nav_order", $_REQUEST["order"] );
+            
+            if( $account->engine_prefs["{$this->data_vars_prefix}_nav_limit"] != $_REQUEST["limit"] )
+                $account->set_engine_pref( "{$this->data_vars_prefix}_nav_limit", $_REQUEST["limit"] );
+    
+            if( $account->engine_prefs["{$this->data_vars_prefix}_nav_order"] != $_REQUEST["order"] )
+                $account->set_engine_pref( "{$this->data_vars_prefix}_nav_order", $_REQUEST["order"] );
         }
         
         foreach($account->engine_prefs as $key => $val)
