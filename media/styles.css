@@ -94,13 +94,12 @@ a.disabled, .pseudo_link.disabled { color: dimgrey; opacity: 0.5; cursor: auto; 
 
 #header .special_menu_item { display: inline; }
 #main_menu_trigger.main_menu_item { display: none; }
-@media all and (max-width: 700px)
-{
-    #header .main_menu_item           { display: none; }
-    #header .special_menu_item        { display: none; }
-    #header .main_menu_item.current   { display: inline-block; float: none; }
-    #main_menu_trigger.main_menu_item { display: inline-block; }
-}
+
+body[data-main-menu-collapsed="true"] #header .main_menu_item           { display: none; }
+body[data-main-menu-collapsed="true"] #header .special_menu_item        { display: none; }
+body[data-main-menu-collapsed="true"] #header .main_menu_item.current   { display: inline-block; float: none; }
+body[data-main-menu-collapsed="true"] #main_menu_trigger.main_menu_item { display: inline-block; }
+
 #header .main_menu_item.always_visible         { display: inline-block; }
 #header .main_menu_item.always_visible.visible { display: block; float: none !important; }
 #header .main_menu_item.visible                { display: block; float: none !important; }

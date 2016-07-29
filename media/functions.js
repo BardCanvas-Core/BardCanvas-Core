@@ -261,18 +261,34 @@ function trigger_tinymce_addon(src)
     $_TINYMCE_ADDON_FUNCTIONS[function_to_call]($this, $form);
 }
 
+function check_main_menu_auto_collapse()
+{
+    if( typeof $_MAIN_MENU_AUTO_COLLAPSE_WIDTH == 'undefined' )
+        $_MAIN_MENU_AUTO_COLLAPSE_WIDTH = 700;
+    
+    if( $_MAIN_MENU_AUTO_COLLAPSE_WIDTH == 0 )
+        $_MAIN_MENU_AUTO_COLLAPSE_WIDTH = 700;
+    
+    if( $(window).width() <= $_MAIN_MENU_AUTO_COLLAPSE_WIDTH )
+        $('body').attr('data-main-menu-collapsed', 'true');
+    else
+        $('body').attr('data-main-menu-collapsed', null);
+}
+
 $(document).ready(function()
 {
     set_body_metas();
+    check_wrapped_tables();
+    check_main_menu_auto_collapse();
     
     $(window).resize(function()
     {
         if( $('#main_menu_trigger').hasClass('open') ) toggle_main_menu_items();
+        set_body_metas();
         check_wrapped_tables();
-        set_body_metas();        
+        check_main_menu_auto_collapse();
     });
     
-    check_wrapped_tables();
     prepare_submenus();
     
     $(window).click(function()

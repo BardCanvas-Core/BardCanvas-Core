@@ -337,6 +337,15 @@
             ]]></description>
             <type>text</type>
         </specs>
+        <specs key="main_menu_auto_collapse_width">
+            <title>Main menu auto-collapse width</title>
+            <description><![CDATA[
+                Specify the width in pixels that the browser window/display must have to collapse the main menu.<br>
+                The best amount to specify here is the width of the browser window with all menu items being shown.<br>
+                Defaults to 700.
+            ]]></description>
+            <type>number</type>
+        </specs>
     </settings_data>
     
 </language>
