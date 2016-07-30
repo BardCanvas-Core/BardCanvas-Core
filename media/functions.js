@@ -71,7 +71,7 @@ function set_body_metas()
     else if(width >= 1340) $('body').attr('data-viewport-class', '1360');
     else if(width >= 1260) $('body').attr('data-viewport-class', '1280');
     else if(width >= 1000) $('body').attr('data-viewport-class', '1024');
-    else if(width >=  700) $('body').attr('data-viewport-class',  '720');
+    else if(width >=  700) $('body').attr('data-viewport-class',  '768');
     else                   $('body').attr('data-viewport-class',  '480');
 }
 
