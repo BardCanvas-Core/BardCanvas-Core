@@ -448,7 +448,6 @@ class account
         $this->_is_admin = true;
         
         $now              = date("Y-m-d H:i:s");
-        $this->state      = "disabled";
         $query = "
             update account set
                 last_update = '$now'
@@ -572,5 +571,32 @@ class account
         global $config;
         
         return $config->user_levels_by_level[$this->level];
+    }
+    
+    public function set_level($new_level)
+    {
+        global $settings, $database, $config;
+        
+        if( $new_level >= $config::COADMIN_USER_LEVEL )
+        {
+            $admins_list = explode(",", $settings->get("engine.admins"));
+            if( ! in_array($this->id_account, $admins_list) )
+            {
+                $admins_list[] = $this->id_account;
+                $settings->set("engine.admins", implode(",", $admins_list));
+            }
+            $this->_is_admin = true;
+        }
+        
+        $now              = date("Y-m-d H:i:s");
+        $this->level      = $new_level;
+        
+        return $database->exec("
+            update account set
+                level       = '$new_level',
+                last_update = '$now'
+            where
+                id_account  = '$this->id_account'
+        ");
     }
 }
