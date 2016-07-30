@@ -15,7 +15,7 @@ class item_manager_jpeg extends abstract_image_manager
     {
         global $settings;
         
-        $width  = $settings->get("engine.thumbnail_width");
+        $width = current(explode("x", $settings->get("engine.thumbnail_size", "460x220")));
         if( empty($width) ) $width = 460;
         
         $compression = $settings->get("engine.thumbnail_jpg_compression");

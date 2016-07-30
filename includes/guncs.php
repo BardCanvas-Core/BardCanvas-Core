@@ -20,7 +20,7 @@ define("THUMBNAILER_NO_CREATION_DESTINATION", false);
 
 function gfuncs_getmakethumbnail(
     $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
-    $force_overwrite = false, $jpeg_quality = 100
+    $force_overwrite = false, $jpeg_quality = 100, $crop = true
 ) {
     # Pre-checks:
     if(
@@ -141,6 +141,8 @@ function gfuncs_getmakethumbnail(
         if( ! @mkdir($savepath) ) throw new \Exception("Thumbnailer: Can't create target directory $savepath.");
     @chmod($savepath, 0777);
     
+    if($crop) $dest = gfuncs_resample_in_window($dest, $dest_w, $dest_h);
+    
     # Guardamos el archivo destino y borramos el original...
     if( ! @imagejpeg($dest, "$savepath/$thumbnail_file", $jpeg_quality) )
         throw new \Exception("Thumbnailer: Can't save target file $dest");
@@ -154,7 +156,8 @@ function gfuncs_getmakethumbnail(
 
 function gfuncs_getmakePNGthumbnail(
     $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
-    $force_overwrite = false, $png_compression = 1, $create_destination = false
+    $force_overwrite = false, $png_compression = 1, $create_destination = false,
+    $crop = true
 ) {
     # Pre-checks:
     if( ($dimension_to_use == THUMBNAILER_USE_WIDTH && $xwidth <= 0) ||
@@ -288,6 +291,8 @@ function gfuncs_getmakePNGthumbnail(
         if( ! @mkdir($savepath) ) throw new \Exception("Thumbnailer: Can't create target directory $savepath.");
     @chmod($savepath, 0777);
     
+    if($crop) $dest = gfuncs_resample_in_window($dest, $dest_w, $dest_h);
+    
     # Guardamos el archivo destino y borramos el original...
     if( ! @imagepng($dest, "$savepath/$thumbnail_file", $png_compression) )
         throw new \Exception("Thumbnailer: Can't save target file $dest");
@@ -297,4 +302,40 @@ function gfuncs_getmakePNGthumbnail(
     @chmod("$savepath/$thumbnail_file", 0777);
     
     return $thumbnail_file;
+}
+
+function gfuncs_resample_in_window($src, $source_w, $source_h)
+{
+    global $settings;
+    
+    list($window_w, $window_h) = explode("x", $settings->get("engine.thumbnail_size"));
+    if( empty($window_w) ) $window_w = 460;
+    if( empty($window_h) ) $window_h = 220;
+    
+    $dest = imagecreatetruecolor($window_w, $window_h);
+    imagealphablending($dest, false);
+    $bgcolor = imagecolorallocatealpha($dest, 0, 0, 0, 0);
+    imagefill($dest, 0, 0, $bgcolor);
+    
+    $xpos = 0; $ypos = 0;
+    if( $source_w - $window_w != 0 ) $xpos = (($source_w - $window_w) / 2);
+    if( $source_h - $window_h != 0 ) $ypos = (($source_h - $window_h) / 2);
+    
+    imageantialias($src, true);
+    imageantialias($dest, true);
+    imagecopyresampled(
+        $dest,
+        $src,
+        0,      # int dstX, 
+        0,      # int dstY, 
+        $xpos,          # int srcX, 
+        $ypos,          # int srcY, 
+        $window_w,  # int dstW, 
+        $window_h,  # int dstH, 
+        $window_w,  # int srcW, 
+        $window_h   # int srcH 
+    );
+    
+    @imagedestroy($src);
+    return $dest;
 }

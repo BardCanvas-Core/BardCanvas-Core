@@ -282,7 +282,7 @@
                 By default, allowed upload types are:
                 <code>png</code>, <code>gif</code>, <code>jpeg</code>, <code>mpg</code>,
                 <code>mp4</code>, <code>m4v</code>, <code>3gp</code>, <code>mov</code>, <code>3gp</code>,
-                <code>flv</code>, <code>mkv</code>, <code>wmv</code>, <code>ogg</code>, <code>ogv</code
+                <code>flv</code>, <code>mkv</code>, <code>wmv</code>, <code>ogg</code>, <code>ogv</code>
                 and <code>avi</code>.<br>
                 <span class="fa fa-warning"></span>
                 This value may be updated when a module that handles file uploads is added/removed.<br>
@@ -291,14 +291,15 @@
             ]]></description>
             <type>textarea</type>
         </specs>
-        <specs key="thumbnail_width">
-            <title>Thumbnails width</title>
+        <specs key="thumbnail_size">
+            <title>Thumbnails size</title>
             <description><![CDATA[
                 The image manager builds thumbnails when files are uploaded and builds
-                thumbnails keeping the image aspect ratio. Specify here the width they should have.<br>
-                By default, Thumbnails are managed at 460x220px.
+                thumbnails keeping the image aspect ratio and then cropping them within the defined size.<br>
+                Specify here the dimensions in pixels.
+                By default, Thumbnails are managed at <code>460x220</code>.
             ]]></description>
-            <type>number</type>
+            <type>text</type>
         </specs>
         <specs key="thumbnail_png_compression">
             <title>PNG thumbnails compression</title>
