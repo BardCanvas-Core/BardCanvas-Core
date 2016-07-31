@@ -304,22 +304,26 @@ class media_repository extends abstract_repository
     }
     
     /**
-     * @param $id_account
+     * @param        $id_account
+     *
+     * @param string $type
      *
      * @return object {where:array, limit:int, offset:int, order:string}
      */
-    protected function build_find_params_for_author($id_account)
+    protected function build_find_params_for_author($id_account, $type = "")
     {
         $return = $this->build_find_params();
         
         $return->where[] = "id_author = '$id_account'";
+        if( ! empty($type) )
+            $return->where[] = "type = '" . trim(stripslashes($type)) . "'";
         
         return $return;
     }
     
-    public function get_for_author($id_account)
+    public function get_for_author($id_account, $type = "")
     {
-        $find_params = $this->build_find_params_for_author($id_account);
+        $find_params = $this->build_find_params_for_author($id_account, $type);
         
         return $this->get_items_data($find_params);
     }
