@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `alt_email`       VARCHAR(255) NOT NULL DEFAULT '',
   `avatar`          VARCHAR(255) NOT NULL DEFAULT '',
   `profile_banner`  VARCHAR(255) NOT NULL DEFAULT '',
-  `signature`       VARCHAR(255) NOT NULL DEFAULT '',
+  `signature`       TEXT,
   `bio`             TEXT,
   `homepage_url`    VARCHAR(255) NOT NULL DEFAULT '',
   `country`         VARCHAR(2) NOT NULL DEFAULT '' COMMENT 'ISO code',
