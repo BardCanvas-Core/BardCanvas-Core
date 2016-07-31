@@ -666,7 +666,7 @@ class account
             @chmod($target_dir, 0777);
         }
         
-        $tmp_file = "/tmp/" . sanitize_file_name($_FILES["uploaded_avatar"]["name"]);
+        $tmp_file = "/tmp/avatar-" . sanitize_file_name($_FILES["uploaded_avatar"]["name"]);
         if( ! @move_uploaded_file($_FILES["uploaded_avatar"]["tmp_name"], $tmp_file) )
         {
             $errors[] = $current_module->language->user_account_form->messages->cant_move_uploaded_file;
@@ -682,9 +682,11 @@ class account
             if( empty($jpeg_quality) ) $jpeg_quality = 90;
             if( empty($png_quality)  ) $png_quality  = 9;
             
+            list($width, $height) = getimagesize($tmp_file);
+            $dimension  = $width > $height ? THUMBNAILER_USE_HEIGHT : THUMBNAILER_USE_WIDTH;
             $new_avatar = preg_match('/(.jpg|.jpeg)$/i', $_FILES["uploaded_avatar"]["name"])
-                        ? gfuncs_getmakethumbnail(   $tmp_file, $target_dir, 300, 300, THUMBNAILER_USE_WIDTH, false, $jpeg_quality,        true, 300, 300)
-                        : gfuncs_getmakePNGthumbnail($tmp_file, $target_dir, 300, 300, THUMBNAILER_USE_WIDTH, false, $png_quality,  false, true, 300, 300)
+                        ? gfuncs_resample_jpg($tmp_file, $target_dir, 300, 300, $dimension, false, $jpeg_quality,        true, 300, 300)
+                        : gfuncs_resample_png($tmp_file, $target_dir, 300, 300, $dimension, false, $png_quality,  false, true, 300, 300)
             ;
         }
         catch(\Exception $e)
@@ -732,7 +734,7 @@ class account
             @chmod($target_dir, 0777);
         }
         
-        $tmp_file = "/tmp/" . sanitize_file_name($_FILES["uploaded_profile_banner"]["name"]);
+        $tmp_file = "/tmp/banner-" . sanitize_file_name($_FILES["uploaded_profile_banner"]["name"]);
         if( ! @move_uploaded_file($_FILES["uploaded_profile_banner"]["tmp_name"], $tmp_file) )
         {
             $errors[] = $current_module->language->user_account_form->messages->cant_move_uploaded_file;
@@ -749,8 +751,8 @@ class account
             if( empty($png_quality)  ) $png_quality  = 9;
             
             $new_banner = preg_match('/(.jpg|.jpeg)$/i', $_FILES["uploaded_profile_banner"]["name"])
-                ? gfuncs_getmakethumbnail(   $tmp_file, $target_dir, 900, 300, THUMBNAILER_USE_WIDTH, false, $jpeg_quality,        true, 900, 300)
-                : gfuncs_getmakePNGthumbnail($tmp_file, $target_dir, 900, 300, THUMBNAILER_USE_WIDTH, false, $png_quality,  false, true, 900, 300)
+                ? gfuncs_resample_jpg($tmp_file, $target_dir, 900, 300, THUMBNAILER_USE_WIDTH, false, $jpeg_quality,        true, 900, 300)
+                : gfuncs_resample_png($tmp_file, $target_dir, 900, 300, THUMBNAILER_USE_WIDTH, false, $png_quality,  false, true, 900, 300)
             ;
         }
         catch(\Exception $e)

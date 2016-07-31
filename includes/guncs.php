@@ -18,11 +18,15 @@ define("THUMBNAILER_NO_OVERWRITE",    false);
 define("THUMBNAILER_CREATION_DESTINATION",    true);
 define("THUMBNAILER_NO_CREATION_DESTINATION", false);
 
+$thumbnailer_avoid_modifying_file_names = false;
+
 function gfuncs_getmakethumbnail(
     $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
     $force_overwrite = false, $jpeg_quality = 100, $crop = true,
     $cropping_width = 0, $cropping_height = 0
 ) {
+    global $thumbnailer_avoid_modifying_file_names;
+    
     # Pre-checks:
     if(
         ($dimension_to_use == THUMBNAILER_USE_WIDTH && $xwidth <= 0) ||
@@ -51,8 +55,10 @@ function gfuncs_getmakethumbnail(
             break;
     }
     
-    list($file_name, $file_ext) = explode(".", $source_filename);
-    $thumbnail_file = $file_name . "-thumbnail-" . $dimensions_string . "." . $file_ext;
+    $filename_parts = explode(".", $source_filename);
+    $file_ext       = array_pop($filename_parts);
+    $file_name      = implode(".", $filename_parts);
+    $thumbnail_file = $file_name . ($thumbnailer_avoid_modifying_file_names ? "" : "-thumbnail-{$dimensions_string}") . ".{$file_ext}";
     
     # Primero veamos si existe el archivo en la ruta...
     if( ! $force_overwrite && file_exists("$savepath/$thumbnail_file") )
@@ -160,6 +166,8 @@ function gfuncs_getmakePNGthumbnail(
     $force_overwrite = false, $png_compression = 1, $create_destination = false,
     $crop = true, $cropping_width = 0, $cropping_height = 0
 ) {
+    global $thumbnailer_avoid_modifying_file_names;
+    
     # Pre-checks:
     if( ($dimension_to_use == THUMBNAILER_USE_WIDTH && $xwidth <= 0) ||
         ($dimension_to_use == THUMBNAILER_USE_HEIGHT && $xheight <= 0) ||
@@ -187,11 +195,10 @@ function gfuncs_getmakePNGthumbnail(
             break;
     }
     
-    # list($file_name, $file_ext) = explode(".", $source_filename);
     $filename_parts = explode(".", $source_filename);
-    unset($filename_parts[count($filename_parts) - 1]);
-    $file_name = implode(".", $filename_parts);
-    $thumbnail_file = $file_name . "-thumbnail-" . $dimensions_string . ".png";
+    $file_ext       = array_pop($filename_parts);
+    $file_name      = implode(".", $filename_parts);
+    $thumbnail_file = $file_name . ($thumbnailer_avoid_modifying_file_names ? "" : "-thumbnail-{$dimensions_string}") . ".{$file_ext}";
     
     # Primero veamos si existe el archivo en la ruta...
     if( ! $force_overwrite && file_exists("$savepath/$thumbnail_file") )
@@ -341,4 +348,42 @@ function gfuncs_resample_in_window($src, $source_w, $source_h, $window_w = 0, $w
     
     @imagedestroy($src);
     return $dest;
+}
+
+function gfuncs_resample_jpg(
+    $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
+    $force_overwrite = false, $jpeg_quality = 100, $crop = true,
+    $cropping_width = 0, $cropping_height = 0
+) {
+    global $thumbnailer_avoid_modifying_file_names;
+    
+    $actual_flag_state = $thumbnailer_avoid_modifying_file_names;
+    $thumbnailer_avoid_modifying_file_names = true;
+    $return = gfuncs_getmakethumbnail(
+        $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
+        $force_overwrite, $jpeg_quality, $crop,
+        $cropping_width, $cropping_height
+    );
+    $thumbnailer_avoid_modifying_file_names = $actual_flag_state;
+    
+    return $return;
+}
+
+function gfuncs_resample_png(
+    $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
+    $force_overwrite = false, $png_compression = 1, $create_destination = false,
+    $crop = true, $cropping_width = 0, $cropping_height = 0
+) {
+    global $thumbnailer_avoid_modifying_file_names;
+    
+    $actual_flag_state = $thumbnailer_avoid_modifying_file_names;
+    $thumbnailer_avoid_modifying_file_names = true;
+    $return = gfuncs_getmakePNGthumbnail(
+        $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
+        $force_overwrite, $png_compression, $create_destination,
+        $crop, $cropping_width, $cropping_height
+    );
+    $thumbnailer_avoid_modifying_file_names = $actual_flag_state;
+    
+    return $return;
 }
