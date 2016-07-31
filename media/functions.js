@@ -243,9 +243,9 @@ function toggle_fa_pseudo_switch(src, toggle)
  */
 function trigger_tinymce_addon(src)
 {
-    var $this = $(src);
+    var $this            = $(src);
     var function_to_call = $this.attr('data-function');
-    var $form = $this.closest('form');
+    var $container       = $this.closest('.tinymce_container');
     
     if( typeof $_TINYMCE_ADDON_FUNCTIONS[function_to_call] == 'undefined' )
     {
@@ -258,7 +258,7 @@ function trigger_tinymce_addon(src)
         return;
     }
     
-    $_TINYMCE_ADDON_FUNCTIONS[function_to_call]($this, $form);
+    $_TINYMCE_ADDON_FUNCTIONS[function_to_call]($this, $container);
 }
 
 function check_main_menu_auto_collapse()
