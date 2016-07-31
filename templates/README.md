@@ -31,6 +31,9 @@ In the module's `module_info.xml` file, the `<template_includes>` node should in
 * `header_bottom` after rendering the main menu.  
   Use cases: rendering tool bars after the main menu.
 
+* `pre_content` before opening the main contents loop.    
+  Use cases: make main content wrappers **only on the main layout**.
+
 * `content_top` before the main contents loop.    
   Use cases: rendering top priority elements.
 
@@ -43,6 +46,9 @@ In the module's `module_info.xml` file, the `<template_includes>` node should in
 
 * `content_bottom` after the main contents loop.  
   Use cases: rendering low priority elements.
+
+* `post_content` after closing the main contents loop.    
+  Use cases: closing any content wrapping code  **only on the main layout**.
 
 * `pre_footer` before opening the footer div.  
   Use cases: rendering hidden elements that need to be out of the main contents.
@@ -72,9 +78,11 @@ In the module's `module_info.xml` file, the `<template_includes>` node should in
     header_top            |   √  |   √  |   √   |            |
     header_menu           |   √  |   √  |   √   |            |
     header_bottom         |   √  |   √  |   √   |            |
+    pre_content           |      |   √  |       |            |
     content_top           |   √  |   √  |       |            |
     home_content          |   √  |      |       |            |
     content_bottom        |   √  |   √  |       |            |
+    post_content          |      |   √  |       |            |
     pre_footer            |   √  |   √  |       |            |
     footer_top            |   √  |   √  |       |            |
     footer_bottom         |   √  |   √  |       |            |
