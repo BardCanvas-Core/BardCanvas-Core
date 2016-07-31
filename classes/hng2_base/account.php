@@ -19,6 +19,12 @@ class account
     public $display_name;
     public $email;
     public $alt_email;
+    public $birthdate;
+    public $avatar;
+    public $profile_banner;
+    public $signature;
+    public $bio;
+    public $homepage_url;
     public $country;
     public $level = 1;
     public $engine_prefs = array();
@@ -89,19 +95,26 @@ class account
      */ 
     protected function assign_from_object($object)
     {
-        $this->id_account    = $object->id_account           ;
-        $this->user_name     = $object->user_name            ;
-        $this->password      = $object->password             ;
-        $this->display_name  = $object->display_name         ;
-        $this->email         = $object->email                ;
-        $this->alt_email     = $object->alt_email            ;
-        $this->country       = $object->country              ;
-        $this->level         = $object->level                ;
-        $this->state         = $object->state                ;
-        $this->creation_host = $object->creation_host        ;
-        $this->creation_date = $object->creation_date        ;
-        $this->last_update           = $object->last_update          ;
+        $this->id_account     = $object->id_account    ;
+        $this->user_name      = $object->user_name     ;
+        $this->password       = $object->password      ;
+        $this->display_name   = $object->display_name  ;
+        $this->email          = $object->email         ;
+        $this->alt_email      = $object->alt_email     ;
+        $this->birthdate      = $object->birthdate     ;
+        $this->avatar         = $object->avatar        ;
+        $this->profile_banner = $object->profile_banner;
+        $this->signature      = $object->signature     ;
+        $this->bio            = $object->bio           ;
+        $this->homepage_url   = $object->homepage_url  ;
+        $this->country        = $object->country       ;
+        $this->level          = $object->level         ;
+        $this->state          = $object->state         ;
+        $this->creation_host  = $object->creation_host ;
+        $this->creation_date  = $object->creation_date ;
+        $this->last_update    = $object->last_update   ;
         
+        if($this->birthdate       == "0000-00-00")          $this->birthdate      = "";
         if($this->creation_date   == "0000-00-00 00:00:00") $this->creation_date  = "";
         if($this->last_update     == "0000-00-00 00:00:00") $this->last_update    = "";
         
@@ -113,12 +126,18 @@ class account
      */
     public function assign_from_posted_form()
     {
-        $this->user_name     = trim(stripslashes($_POST["user_name"]));
-        $this->_raw_password = trim(stripslashes($_POST["password"]));
-        $this->display_name  = trim(stripslashes($_POST["display_name"]));
-        $this->email         = trim(stripslashes($_POST["email"]));
-        $this->alt_email     = trim(stripslashes($_POST["alt_email"]));
-        $this->country       = trim(stripslashes($_POST["country"]));
+        $this->user_name      = trim(stripslashes($_POST["user_name"]))     ;
+        $this->_raw_password  = trim(stripslashes($_POST["password"]))      ;
+        $this->display_name   = trim(stripslashes($_POST["display_name"]))  ;
+        $this->email          = trim(stripslashes($_POST["email"]))         ;
+        $this->alt_email      = trim(stripslashes($_POST["alt_email"]))     ;
+        $this->birthdate      = trim(stripslashes($_POST["birthdate"]))     ;
+        $this->avatar         = trim(stripslashes($_POST["avatar"]))        ;
+        $this->profile_banner = trim(stripslashes($_POST["profile_banner"]));
+        $this->signature      = trim(stripslashes($_POST["signature"]))     ;
+        $this->bio            = trim(stripslashes($_POST["bio"]))           ;
+        $this->homepage_url   = trim(stripslashes($_POST["homepage_url"]))  ;
+        $this->country        = trim(stripslashes($_POST["country"]))       ;
     }
     
     public function set_new_id()
@@ -307,17 +326,17 @@ class account
             $this->last_activity    = $now;
             $query = "
                 insert into account set
-                id_account    = '".addslashes($this->id_account)."',
-                user_name     = '".addslashes($this->user_name)."',
-                password      = '".addslashes($this->password)."',
-                display_name  = '".addslashes($this->display_name)."',
-                email         = '".addslashes($this->email)."',
-                alt_email     = '".addslashes($this->alt_email)."',
-                country       = '".addslashes($this->country)."',
-                level         = '".addslashes($this->level)."',
-                state         = '".addslashes($this->state)."',
-                creation_host = '".addslashes($this->creation_host)."',
-                creation_date = '$now',
+                id_account    = '".addslashes($this->id_account)."'     ,
+                user_name     = '".addslashes($this->user_name)."'      ,
+                password      = '".addslashes($this->password)."'       ,
+                display_name  = '".addslashes($this->display_name)."'   ,
+                email         = '".addslashes($this->email)."'          ,
+                alt_email     = '".addslashes($this->alt_email)."'      ,
+                country       = '".addslashes($this->country)."'        ,
+                level         = '".addslashes($this->level)."'          ,
+                state         = '".addslashes($this->state)."'          ,
+                creation_host = '".addslashes($this->creation_host)."'  ,
+                creation_date = '$now'                                  ,
                 last_update   = '$now'
             ";
         }
@@ -325,14 +344,20 @@ class account
         {
             $query = "
                 update account set
-                    password     = '".addslashes($this->password)."',
-                    display_name = '".addslashes($this->display_name)."',
-                    email        = '".addslashes($this->email)."',
-                    alt_email    = '".addslashes($this->alt_email)."',
-                    country      = '".addslashes($this->country)."',
-                    last_update  = '$now'
+                    password       = '".addslashes($this->password)."'      ,
+                    display_name   = '".addslashes($this->display_name)."'  ,
+                    email          = '".addslashes($this->email)."'         ,
+                    alt_email      = '".addslashes($this->alt_email)."'     ,
+                    birthdate      = '".addslashes($this->birthdate)."'     ,
+                    avatar         = '".addslashes($this->avatar)."'        ,
+                    profile_banner = '".addslashes($this->profile_banner)."',
+                    signature      = '".addslashes($this->signature)."'     ,
+                    bio            = '".addslashes($this->bio)."'           ,
+                    homepage_url   = '".addslashes($this->homepage_url)."'  ,
+                    country        = '".addslashes($this->country)."'       ,
+                    last_update    = '$now'
                 where
-                    id_account   = '".addslashes($this->id_account)."'
+                    id_account     = '".addslashes($this->id_account)."'
             ";
         }
         
@@ -599,4 +624,169 @@ class account
                 id_account  = '$this->id_account'
         ");
     }
+    
+    public function set_avatar_from_post()
+    {
+        global $messages, $errors, $current_module, $config, $settings;
+        
+        if( $_POST["use_gravatar"] == "true" )
+        {
+            $this->avatar = "@gravatar";
+            
+            return;
+        }
+        
+        if( empty($_FILES["uploaded_avatar"]) ) return;
+        if( empty($_FILES["uploaded_avatar"]["tmp_name"]) ) return;
+        
+        if( ! preg_match('/(.jpg|.jpeg|.png|.gif)$/i', $_FILES["uploaded_avatar"]["name"]) )
+        {
+            $errors[] = $current_module->language->user_account_form->messages->invalid_avatar;
+            
+            return;
+        }
+        
+        if( ! is_uploaded_file($_FILES["uploaded_avatar"]["tmp_name"]) )
+        {
+            $errors[] = $current_module->language->user_account_form->messages->invalid_avatar_uploaded;
+            
+            return;
+        }
+        
+        $target_dir = "{$config->datafiles_location}/user_avatars/{$this->user_name}";
+        if( ! is_dir($target_dir) )
+        {
+            if( ! @mkdir($target_dir, 0777, true) )
+            {
+                $errors[] = $current_module->language->user_account_form->messages->cant_create_avatars_dir;
+                
+                return;
+            }
+            
+            @chmod($target_dir, 0777);
+        }
+        
+        $tmp_file = "/tmp/" . sanitize_file_name($_FILES["uploaded_avatar"]["name"]);
+        if( ! @move_uploaded_file($_FILES["uploaded_avatar"]["tmp_name"], $tmp_file) )
+        {
+            $errors[] = $current_module->language->user_account_form->messages->cant_move_uploaded_file;
+            
+            return;
+        }
+        
+        try
+        {
+            $jpeg_quality = $settings->get("engine.thumbnail_jpg_compression");
+            $png_quality  = $settings->get("engine.thumbnail_png_compression");
+            
+            if( empty($jpeg_quality) ) $jpeg_quality = 90;
+            if( empty($png_quality)  ) $png_quality  = 9;
+            
+            $new_avatar = preg_match('/(.jpg|.jpeg)$/i', $_FILES["uploaded_avatar"]["name"])
+                        ? gfuncs_getmakethumbnail(   $tmp_file, $target_dir, 300, 300, THUMBNAILER_USE_WIDTH, false, $jpeg_quality,        true, 300, 300)
+                        : gfuncs_getmakePNGthumbnail($tmp_file, $target_dir, 300, 300, THUMBNAILER_USE_WIDTH, false, $png_quality,  false, true, 300, 300)
+            ;
+        }
+        catch(\Exception $e)
+        {
+            $errors[] = $e->getMessage();
+    
+            return;
+        }
+        
+        $this->avatar = $new_avatar;
+        $messages[]   = $current_module->language->user_account_form->messages->avatar_set_ok;
+    }
+    
+    public function set_banner_from_post()
+    {
+        global $messages, $errors, $current_module, $config, $settings;
+        
+        if( empty($_FILES["uploaded_profile_banner"]) ) return;
+        if( empty($_FILES["uploaded_profile_banner"]["tmp_name"]) ) return;
+        
+        if( ! preg_match('/(.jpg|.jpeg|.png|.gif)$/i', $_FILES["uploaded_profile_banner"]["name"]) )
+        {
+            $errors[] = $current_module->language->user_account_form->messages->invalid_banner;
+            
+            return;
+        }
+        
+        if( ! is_uploaded_file($_FILES["uploaded_profile_banner"]["tmp_name"]) )
+        {
+            $errors[] = $current_module->language->user_account_form->messages->invalid_banner_uploaded;
+            
+            return;
+        }
+        
+        $target_dir = "{$config->datafiles_location}/user_profile_banners/{$this->user_name}";
+        if( ! is_dir($target_dir) )
+        {
+            if( ! @mkdir($target_dir, 0777, true) )
+            {
+                $errors[] = $current_module->language->user_account_form->messages->cant_create_banners_dir;
+                
+                return;
+            }
+            
+            @chmod($target_dir, 0777);
+        }
+        
+        $tmp_file = "/tmp/" . sanitize_file_name($_FILES["uploaded_profile_banner"]["name"]);
+        if( ! @move_uploaded_file($_FILES["uploaded_profile_banner"]["tmp_name"], $tmp_file) )
+        {
+            $errors[] = $current_module->language->user_account_form->messages->cant_move_uploaded_file;
+            
+            return;
+        }
+        
+        try
+        {
+            $jpeg_quality = $settings->get("engine.thumbnail_jpg_compression");
+            $png_quality  = $settings->get("engine.thumbnail_png_compression");
+            
+            if( empty($jpeg_quality) ) $jpeg_quality = 90;
+            if( empty($png_quality)  ) $png_quality  = 9;
+            
+            $new_banner = preg_match('/(.jpg|.jpeg)$/i', $_FILES["uploaded_profile_banner"]["name"])
+                ? gfuncs_getmakethumbnail(   $tmp_file, $target_dir, 900, 300, THUMBNAILER_USE_WIDTH, false, $jpeg_quality,        true, 900, 300)
+                : gfuncs_getmakePNGthumbnail($tmp_file, $target_dir, 900, 300, THUMBNAILER_USE_WIDTH, false, $png_quality,  false, true, 900, 300)
+            ;
+        }
+        catch(\Exception $e)
+        {
+            $errors[] = $e->getMessage();
+            
+            return;
+        }
+        
+        $this->profile_banner = $new_banner;
+        $messages[]           = $current_module->language->user_account_form->messages->banner_set_ok;
+    }
+    
+    public function get_avatar_url($fully_qualified = false)
+    {
+        global $config;
+        
+        if( $this->avatar == "@gravatar" )
+            return "https://www.gravatar.com/avatar/" . md5(trim(strtolower($this->email)));
+        
+        $file = empty($this->avatar) ? "media/default_avatar.jpg" : "user/{$this->user_name}/avatar";
+        
+        if( $fully_qualified ) return "{$config->full_root_url}/{$file}";
+        
+        return "{$config->full_root_path}/{$file}";
+    }
+    
+    function get_profile_banner_url($fully_qualified = false)
+    {
+        global $config;
+        
+        $file = empty($this->profile_banner) ? "media/default_user_banner.jpg" : "user/{$this->user_name}/profile_banner";
+        
+        if( $fully_qualified ) return "{$config->full_root_url}/{$file}";
+        
+        return "{$config->full_root_path}/{$file}";
+    }
+    
 }

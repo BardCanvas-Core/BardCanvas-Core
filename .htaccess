@@ -15,6 +15,12 @@ ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
 ReWriteRule ^category/(.*)/$       posts/by_category.php?slug=$1   [QSA,L]
 ReWriteRule ^category/(.*)$        posts/by_category.php?slug=$1   [QSA,L]
 
+# User profile resources
+ReWriteRule ^user/(.*)/avatar/$         scripts/get_user_profile_resource.php?slug=$1&type=avatar         [QSA,L]
+ReWriteRule ^user/(.*)/avatar$          scripts/get_user_profile_resource.php?slug=$1&type=avatar         [QSA,L]
+ReWriteRule ^user/(.*)/profile_banner/$ scripts/get_user_profile_resource.php?slug=$1&type=profile_banner [QSA,L]
+ReWriteRule ^user/(.*)/profile_banner$  scripts/get_user_profile_resource.php?slug=$1&type=profile_banner [QSA,L]
+
 # Author archives
 ReWriteRule ^author/(.*)/media/$   gallery/by_author.php?slug=$1             [QSA,L]
 ReWriteRule ^author/(.*)/media$    gallery/by_author.php?slug=$1             [QSA,L]

@@ -20,7 +20,8 @@ define("THUMBNAILER_NO_CREATION_DESTINATION", false);
 
 function gfuncs_getmakethumbnail(
     $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
-    $force_overwrite = false, $jpeg_quality = 100, $crop = true
+    $force_overwrite = false, $jpeg_quality = 100, $crop = true,
+    $cropping_width = 0, $cropping_height = 0
 ) {
     # Pre-checks:
     if(
@@ -141,7 +142,7 @@ function gfuncs_getmakethumbnail(
         if( ! @mkdir($savepath) ) throw new \Exception("Thumbnailer: Can't create target directory $savepath.");
     @chmod($savepath, 0777);
     
-    if($crop) $dest = gfuncs_resample_in_window($dest, $dest_w, $dest_h);
+    if($crop) $dest = gfuncs_resample_in_window($dest, $dest_w, $dest_h, $cropping_width, $cropping_height);
     
     # Guardamos el archivo destino y borramos el original...
     if( ! @imagejpeg($dest, "$savepath/$thumbnail_file", $jpeg_quality) )
@@ -157,7 +158,7 @@ function gfuncs_getmakethumbnail(
 function gfuncs_getmakePNGthumbnail(
     $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
     $force_overwrite = false, $png_compression = 1, $create_destination = false,
-    $crop = true
+    $crop = true, $cropping_width = 0, $cropping_height = 0
 ) {
     # Pre-checks:
     if( ($dimension_to_use == THUMBNAILER_USE_WIDTH && $xwidth <= 0) ||
@@ -291,7 +292,7 @@ function gfuncs_getmakePNGthumbnail(
         if( ! @mkdir($savepath) ) throw new \Exception("Thumbnailer: Can't create target directory $savepath.");
     @chmod($savepath, 0777);
     
-    if($crop) $dest = gfuncs_resample_in_window($dest, $dest_w, $dest_h);
+    if($crop) $dest = gfuncs_resample_in_window($dest, $dest_w, $dest_h, $cropping_width, $cropping_height);
     
     # Guardamos el archivo destino y borramos el original...
     if( ! @imagepng($dest, "$savepath/$thumbnail_file", $png_compression) )
@@ -304,11 +305,13 @@ function gfuncs_getmakePNGthumbnail(
     return $thumbnail_file;
 }
 
-function gfuncs_resample_in_window($src, $source_w, $source_h)
+function gfuncs_resample_in_window($src, $source_w, $source_h, $window_w = 0, $window_h = 0)
 {
     global $settings;
     
-    list($window_w, $window_h) = explode("x", $settings->get("engine.thumbnail_size"));
+    if( empty($window_w) || empty($window_h) )
+        list($window_w, $window_h) = explode("x", $settings->get("engine.thumbnail_size"));
+    
     if( empty($window_w) ) $window_w = 460;
     if( empty($window_h) ) $window_h = 220;
     

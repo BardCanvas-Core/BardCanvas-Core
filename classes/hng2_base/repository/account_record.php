@@ -9,6 +9,12 @@ class account_record extends abstract_record
     public $display_name;
     public $email;
     public $alt_email;
+    public $birthdate;
+    public $avatar;
+    public $profile_banner;
+    public $signature;
+    public $bio;
+    public $homepage_url;
     public $country;
     public $level;
     public $state;
@@ -69,4 +75,30 @@ class account_record extends abstract_record
         
         return (object) $return;
     }
+    
+    public function get_avatar_url($fully_qualified = false)
+    {
+        global $config;
+        
+        if( $this->avatar == "@gravatar" )
+            return "https://www.gravatar.com/avatar/" . md5(trim(strtolower($this->email)));
+        
+        $file = empty($this->avatar) ? "media/default_avatar.jpg" : "user/{$this->user_name}/avatar";
+        
+        if( $fully_qualified ) return "{$config->full_root_url}/{$file}";
+        
+        return "{$config->full_root_path}/{$file}";
+    }
+    
+    function get_profile_banner_url($fully_qualified = false)
+    {
+        global $config;
+        
+        $file = empty($this->profile_banner) ? "media/default_user_banner.jpg" : "user/{$this->user_name}/profile_banner";
+        
+        if( $fully_qualified ) return "{$config->full_root_url}/{$file}";
+        
+        return "{$config->full_root_path}/{$file}";
+    }
+    
 }

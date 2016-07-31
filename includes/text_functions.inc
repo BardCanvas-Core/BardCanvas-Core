@@ -282,6 +282,7 @@ function sanitize_file_name($filename, $to_lower_case = true)
         "}",
         chr(0),
     );
+    $filename      = preg_replace('/\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]/', "", $filename);
     $filename      = remove_quotation_marks($filename);
     $filename      = remove_accents($filename);
     $filename      = preg_replace("#\x{00a0}#siu", ' ', $filename);

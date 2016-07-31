@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <language>
     
+    <info>
+        <full_name>English/United States</full_name>
+        <locale>en_US</locale>
+        <iso>en</iso>
+        <country>US</country>
+    </info>
+    
     <bootstrap>
         <errors>
             <language_file_dont_exist>Language file for "{$language}" in module "{$module_name}" doesn't exist!</language_file_dont_exist>
