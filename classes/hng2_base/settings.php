@@ -116,4 +116,27 @@ class settings
         $this->cache->delete($name);
         $database->exec("delete from settings where name = '$name'");
     }
+    
+    /**
+     * Find settings containing the provided string within the key
+     * 
+     * @param $pattern
+     * 
+     * @return array
+     */
+    public function find($pattern)
+    {
+        if( ! $this->cache->loaded )
+        {
+            $res = $this->get_all();
+            $this->cache->prefill($res);
+        }
+        
+        $found = array();
+        
+        foreach($this->cache->get_all() as $key => $val)
+            if( stristr($key, $pattern) !== false ) $found[$key] = $val;
+        
+        return $found;
+    }
 }

@@ -168,11 +168,23 @@ class template
             . "v" . $config->engine_version;
     }
     
+    /**
+     * Sets/replaces a variable in the vars collection
+     * 
+     * @param $var_name
+     * @param $value
+     */
     public function set($var_name, $value)
     {
         $this->vars[$var_name] = $value;
     }
     
+    /**
+     * APPENDS to a variable in the vars collection
+     * 
+     * @param $var_name
+     * @param $value
+     */
     public function append($var_name, $value)
     {
         $this->vars[$var_name] .= $value;
@@ -181,5 +193,144 @@ class template
     public function get($var_name)
     {
         return $this->vars[$var_name];
+    }
+    
+    /**
+     * Must be called within the pre_render stage, after the page_tag has been set.
+     * 
+     * @param $layout_settings_key
+     */
+    public function prepare_widgets($layout_settings_key)
+    {
+        global $settings;
+        
+        $layout = $settings->get($layout_settings_key);
+        if( empty($layout) ) return;
+        
+        foreach( explode("\n", $layout) as $entry )
+        {
+            list($id, $seed, $title, $user_scope, $page_scope, $pages_list) = explode("|", trim($entry));
+            $id         = trim($id);
+            $seed       = trim($seed);
+            $title      = trim($title);
+            $user_scope = trim($user_scope);
+            $page_scope = trim($page_scope);
+            $pages_list = trim($pages_list);
+            
+            $pages_list = empty($pages_list) ? array() : explode(",", $pages_list);
+            
+            $res = $this->get_widget_contents($id, $seed, $title, $user_scope, $page_scope, $pages_list);
+            
+            if( ! is_null($res) ) $this->add_right_sidebar_item($res->title, $res->content);
+        }
+    }
+    
+    /**
+     * @param        $id
+     * @param        $seed
+     * @param        $title
+     * @param string $user_scope all|online|offline
+     * @param string $page_scope show|hide
+     * @param array  $pages_list May contain any of the cases below:
+     *                           home,
+     *                           post_author_index,  post_category_index,  post_archive
+     *                           media_author_index, media_category_index, media_archive
+     *                           TODO: search_results, user_home, user_mentions,
+     *
+     * @return null|object {title:string, content:string}
+     */
+    private function get_widget_contents($id, $seed, $title, $user_scope, $page_scope, $pages_list)
+    {
+        global $modules, $account;
+        
+        $current_page_tag = $this->get("page_tag");
+        $content_template = file_get_contents("{$this->abspath}/segments/right_sidebar_item_template.tpl");
+        
+        foreach($modules as $module)
+        {
+            if( empty($module->widgets) ) continue;
+            
+            $matches = $module->widgets->xpath("//widget[@for='right_sidebar'][@id='$id']");
+            
+            if( empty($matches) ) continue;
+            
+            /** @var \SimpleXMLElement $widget */
+            $widget = current($matches);
+            
+            # Filtering by user case
+            if( $user_scope == "online"  && ! $account->_exists ) continue;
+            if( $user_scope == "offline" &&   $account->_exists ) continue;
+            
+            # Filtering by page tag
+            if( ! empty($pages_list) )
+            {
+                if( $page_scope == "show" && ! in_array($current_page_tag, $pages_list) ) continue;
+                if( $page_scope == "hide" &&   in_array($current_page_tag, $pages_list) ) continue;
+            }
+            
+            $content = $this->build_widget_contents($module, $widget, $seed);
+            
+            if( empty($content) ) continue;
+            
+            $content = replace_escaped_vars(
+                $content_template,
+                array('{$title}', '{$content}', '{$added_classes}'),
+                array(  $title,     $content,     trim($widget["added_classes"]))
+            );
+            
+            return (object) array(
+                "title"   => $title,
+                "content" => $content,
+            );
+        }
+        
+        return null;
+    }
+    
+    /**
+     * @param module            $this_module
+     * @param \SimpleXMLElement $widget
+     * @param string            $seed
+     * 
+     * @return string
+     */
+    private function build_widget_contents($this_module, $widget, /** @noinspection PhpUnusedParameterInspection */ $seed)
+    {
+        global $modules;
+        
+        /** @noinspection PhpUnusedLocalVariableInspection */
+        $data_key = "_right_sidebar_widgets:{$this_module->name}.{$widget["type"]}" . (empty($seed) ? "" : "_{$seed}");
+        
+        if( $widget["type"] == "php" )
+        {
+            $include = "{$this_module->abspath}/widgets/{$widget["file"]}";
+            
+            if( ! is_file($include) )
+            {
+                $message = replace_escaped_vars(
+                    $modules["widgets_manager"]->language->messages->widget_file_not_found,
+                    array('{$file}', '{$module}', '{$widget}'),
+                    array( $widget["file"], $this_module->name, $widget["id"] )
+                );
+                
+                return "
+                    <div class='framed_content state_ko'>
+                        <span class='fa fa-warning'></span>
+                        {$message}
+                    </div>
+                ";
+            }
+    
+            /** @noinspection PhpUnusedLocalVariableInspection */
+            $template = $this;
+            return include($include);
+        }
+        
+        return "
+            <div class='framed_content state_ko'>
+                <span class='fa fa-warning'></span>
+                {$modules["widgets_manager"]->language->messages->rs_widget_type_not_supported}
+            </div>
+        ";
     }
 }

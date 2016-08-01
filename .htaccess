@@ -15,6 +15,12 @@ ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
 ReWriteRule ^category/(.*)/$       posts/by_category.php?slug=$1   [QSA,L]
 ReWriteRule ^category/(.*)$        posts/by_category.php?slug=$1   [QSA,L]
 
+# TODO: Post indexes by tag
+ReWriteRule ^tag/(.*)/media/$ gallery/by_tag.php?slug=$1 [QSA,L]
+ReWriteRule ^tag/(.*)/media$  gallery/by_tag.php?slug=$1 [QSA,L]
+ReWriteRule ^tag/(.*)/$       posts/by_tag.php?slug=$1   [QSA,L]
+ReWriteRule ^tag/(.*)$        posts/by_tag.php?slug=$1   [QSA,L]
+
 # User profile resources
 ReWriteRule ^user/(.*)/avatar/$         scripts/get_user_profile_resource.php?slug=$1&type=avatar         [QSA,L]
 ReWriteRule ^user/(.*)/avatar$          scripts/get_user_profile_resource.php?slug=$1&type=avatar         [QSA,L]
@@ -31,13 +37,13 @@ ReWriteRule ^author/(.*)/images$    gallery/by_author.php?slug=$1&type=image [QS
 ReWriteRule ^author/(.*)/posts/$    posts/by_author.php?slug=$1              [QSA,L]
 ReWriteRule ^author/(.*)/posts$     posts/by_author.php?slug=$1              [QSA,L]
 
-# Mentions
+# TODO: Mentions
 ReWriteRule ^user/(.*)/mentions/$   accounts/profile_mentions.php?slug=$1    [QSA,L]
 ReWriteRule ^user/(.*)/mentions$    accounts/profile_mentions.php?slug=$1    [QSA,L]
 ReWriteRule ^author/(.*)/mentions/$ accounts/profile_mentions.php?slug=$1    [QSA,L]
 ReWriteRule ^author/(.*)/mentions$  accounts/profile_mentions.php?slug=$1    [QSA,L]
 
-# Author profile itself
+# TODO: Author profile itself
 ReWriteRule ^user/(.*)/$   accounts/public_profile.php?slug=$1 [QSA,L]
 ReWriteRule ^user/(.*)$    accounts/public_profile.php?slug=$1 [QSA,L]
 ReWriteRule ^author/(.*)/$ accounts/public_profile.php?slug=$1 [QSA,L]

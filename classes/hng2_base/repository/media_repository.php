@@ -376,4 +376,31 @@ class media_repository extends abstract_repository
                 $item->set_author($authors[$item->id_author]);
         }
     }
+    
+    
+    public function get_grouped_tag_counts($since = "")
+    {
+        global $database;
+        
+        if( empty($since) )
+            $query = "
+                select tag, count(tag) as `count` from media_tags
+                group by tag order by `count` desc
+            ";
+        else
+            $query = "
+                select tag, count(tag) as `count` from media_tags
+                where date_attached >= '{$since}'
+                group by tag order by `count` desc
+            ";
+        
+        $res = $database->query($query);
+        if( $database->num_rows($res) == 0 ) return array();
+        
+        $return = array();
+        while( $row = $database->fetch_object($res) )
+            $return[$row->tag] = $row->count;
+        
+        return $return;
+    }
 }

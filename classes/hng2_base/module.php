@@ -75,7 +75,11 @@ class module
      */
     var $extended_by;
     
-    # Widget definitions
+    /**
+     * Widget definitions
+     * 
+     * @var \SimpleXMLElement
+     */
     var $widgets;
     
     /**
@@ -178,6 +182,7 @@ class module
     
         $self->extension_areas_info = empty($self->extension_areas_info) ? "" : $self->extension_areas_info->asXML();
         $self->extends_to           = empty($self->extends_to)           ? "" : $self->extends_to->asXML();
+        $self->widgets              = empty($self->widgets)              ? "" : $self->widgets->asXML();
         
         /** @var \SimpleXMLElement $area */
         if( ! empty($self->extended_by) )
@@ -198,7 +203,8 @@ class module
         
         $this->extension_areas_info = simplexml_load_string($this->extension_areas_info);
         $this->extends_to           = simplexml_load_string($this->extends_to);
-    
+        $this->widgets              = simplexml_load_string($this->widgets);
+        
         /** @var \SimpleXMLElement $area */
         if( ! empty($this->extended_by) )
             foreach($this->extended_by as &$extending_areas)

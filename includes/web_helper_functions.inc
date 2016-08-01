@@ -230,3 +230,52 @@ function extract_hash_tags($contents)
     $return = array_unique($matches[1]);
     return $return;
 }
+
+/**
+ * Cloud builder
+ *
+ * @author http://stackoverflow.com/users/73673/berkes
+ * @see    http://stackoverflow.com/questions/227/whats-the-best-way-to-generate-a-tag-cloud-from-an-array-using-h1-through-h6-fo
+ *
+ * @param array $items
+ * @param int   $steps
+ * @param int   $min_font_size
+ * @param int   $max_font_size
+ *
+ * @return array
+ */
+function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_size = 30)
+{
+    if( empty($items) ) return array();
+    
+    $tags = array();
+    $min  = 1e9;
+    $max  = -1e9;
+    
+    $font_size_factor = ($max_font_size - $min_font_size) / $steps;
+    
+    foreach($items as $key => $count)
+    {
+        $tag        = (object) array();
+        $tag->tag   = $key;
+        $tag->count = $count;
+        
+        $tag->number_of_posts = $tag->count; #sets the amount of items a certain tag has attached to it
+        $tag->count           = log($tag->count);
+        $min                  = min($min, $tag->count);
+        $max                  = max($max, $tag->count);
+        $tags[$tag->tag]      = $tag;
+    }
+    
+    // Note: we need to ensure the range is slightly too large to make sure even
+    // the largest element is rounded down.
+    $range = max(.01, $max - $min) * 1.0001;
+    
+    foreach ($tags as $key => $value)
+    {
+        $tags[$key]->weight = 1 + floor($steps * ($value->count - $min) / $range);
+        $tags[$key]->size   = round($min_font_size + (($tags[$key]->weight - 1) * $font_size_factor));
+    }
+    
+    return $tags;
+}
