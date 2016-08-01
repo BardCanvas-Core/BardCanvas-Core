@@ -6,6 +6,7 @@ Options -Indexes
 
 ReWriteEngine On
 
+# Versioned resources
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
 
@@ -15,7 +16,7 @@ ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
 ReWriteRule ^category/(.*)/$       posts/by_category.php?slug=$1   [QSA,L]
 ReWriteRule ^category/(.*)$        posts/by_category.php?slug=$1   [QSA,L]
 
-# TODO: Post indexes by tag
+# TODO: Indexes by tag
 ReWriteRule ^tag/(.*)/media/$ gallery/by_tag.php?slug=$1 [QSA,L]
 ReWriteRule ^tag/(.*)/media$  gallery/by_tag.php?slug=$1 [QSA,L]
 ReWriteRule ^tag/(.*)/$       posts/by_tag.php?slug=$1   [QSA,L]
@@ -68,6 +69,10 @@ ReWriteRule ^date/([0-9]{4})$                    posts/by_date.php?date=$1 [QSA,
 # Media server
 ReWriteRule ^mediaserver/(.*)$       data/uploaded_media/$1 [QSA,L]
 ReWriteRule ^mediaserver-embed/(.*)$ scripts/mediaserver_embed.php?file=$1 [QSA,L]
+
+# TODO: Search
+RewriteCond %{QUERY_STRING} ^s=(.*)$
+RewriteRule .* search/index.php [QSA,L]
 
 #
 # Document handler - for all those that support single documents
