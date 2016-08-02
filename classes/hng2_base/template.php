@@ -226,7 +226,7 @@ class template
     }
     
     /**
-     * @param        $id
+     * @param        $id         module.id
      * @param        $seed
      * @param        $title
      * @param string $user_scope all|online|offline
@@ -246,45 +246,58 @@ class template
         $current_page_tag = $this->get("page_tag");
         $content_template = file_get_contents("{$this->abspath}/segments/right_sidebar_item_template.tpl");
         
-        foreach($modules as $module)
+        list($module_name, $id) = explode(".", $id);
+        
+        if( ! isset($modules[$module_name]) )
         {
-            if( empty($module->widgets) ) continue;
-            
-            $matches = $module->widgets->xpath("//widget[@for='right_sidebar'][@id='$id']");
-            
-            if( empty($matches) ) continue;
-            
-            /** @var \SimpleXMLElement $widget */
-            $widget = current($matches);
-            
-            # Filtering by user case
-            if( $user_scope == "online"  && ! $account->_exists ) continue;
-            if( $user_scope == "offline" &&   $account->_exists ) continue;
-            
-            # Filtering by page tag
-            if( ! empty($pages_list) )
-            {
-                if( $page_scope == "show" && ! in_array($current_page_tag, $pages_list) ) continue;
-                if( $page_scope == "hide" &&   in_array($current_page_tag, $pages_list) ) continue;
-            }
-            
-            $content = $this->build_widget_contents($module, $widget, $seed);
-            
-            if( empty($content) ) continue;
-            
-            $content = replace_escaped_vars(
-                $content_template,
-                array('{$title}', '{$content}', '{$added_classes}'),
-                array(  $title,     $content,     trim($widget["added_classes"]))
+            $message = replace_escaped_vars(
+                $modules["widgets_manager"]->language->messages->module_not_found,
+                array('{$module_name}', '{$id}', '{$title}'),
+                array( $module_name, $id, $title )
             );
             
             return (object) array(
                 "title"   => $title,
-                "content" => $content,
+                "content" => "<div class='framed_content state_ko'><span class='fa fa-warning'></span> {$message}</div>",
             );
         }
         
-        return null;
+        $module = $modules[$module_name];
+        
+        if( empty($module->widgets) ) return null;
+        
+        $matches = $module->widgets->xpath("//widget[@for='right_sidebar'][@id='$id']");
+        
+        if( empty($matches) ) return null;
+        
+        /** @var \SimpleXMLElement $widget */
+        $widget = current($matches);
+        
+        # Filtering by user case
+        if( $user_scope == "online"  && ! $account->_exists ) return null;
+        if( $user_scope == "offline" &&   $account->_exists ) return null;
+        
+        # Filtering by page tag
+        if( ! empty($pages_list) )
+        {
+            if( $page_scope == "show" && ! in_array($current_page_tag, $pages_list) ) return null;
+            if( $page_scope == "hide" &&   in_array($current_page_tag, $pages_list) ) return null;
+        }
+        
+        $content = $this->build_widget_contents($module, $widget, $seed);
+        
+        if( empty($content) ) return null;
+        
+        $content = replace_escaped_vars(
+            $content_template,
+            array('{$title}', '{$content}', '{$added_classes}'),
+            array(  $title,     $content,     trim($widget["added_classes"]))
+        );
+        
+        return (object) array(
+            "title"   => $title,
+            "content" => $content,
+        );
     }
     
     /**
@@ -299,7 +312,7 @@ class template
         global $modules;
         
         /** @noinspection PhpUnusedLocalVariableInspection */
-        $data_key = "_right_sidebar_widgets:{$this_module->name}.{$widget["type"]}" . (empty($seed) ? "" : "_{$seed}");
+        $data_key = "_right_sidebar_widgets:{$this_module->name}.{$widget["id"]}" . (empty($seed) ? "" : "_{$seed}");
         
         if( $widget["type"] == "php" )
         {
