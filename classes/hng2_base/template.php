@@ -197,10 +197,12 @@ class template
     
     /**
      * Must be called within the pre_render stage, after the page_tag has been set.
-     * 
-     * @param $layout_settings_key
+     *
+     * @param string $layout_settings_key Settings variable containing the layout
+     * @param string $template_file       Name of the segments/file.tpl template for each sidebar item 
+     * @param string $use_case            left_sidebar|right_sidebar
      */
-    public function prepare_widgets($layout_settings_key)
+    public function prepare_widgets($layout_settings_key, $template_file, $use_case)
     {
         global $settings;
         
@@ -219,32 +221,56 @@ class template
             
             $pages_list = empty($pages_list) ? array() : explode(",", $pages_list);
             
-            $res = $this->get_widget_contents($id, $seed, $title, $user_scope, $page_scope, $pages_list);
+            $res = $this->get_widget_contents(
+                $id, $seed, $title, $user_scope, $page_scope, $pages_list, $template_file, $use_case
+            );
             
-            if( ! is_null($res) ) $this->add_right_sidebar_item($res->title, $res->content);
+            if( is_null($res) ) continue;
+            
+            if(     $use_case == "left_sidebar"  ) $this->add_left_sidebar_group($res->title, $res->content);
+            elseif( $use_case == "right_sidebar" ) $this->add_right_sidebar_item($res->title, $res->content);
         }
     }
     
     /**
-     * @param        $id         module.id
+     * @param        $id            module.id
      * @param        $seed
      * @param        $title
-     * @param string $user_scope all|online|offline
-     * @param string $page_scope show|hide
-     * @param array  $pages_list May contain any of the cases below:
-     *                           home,
-     *                           post_author_index,  post_category_index,  post_archive
-     *                           media_author_index, media_category_index, media_archive
-     *                           TODO: search_results, user_home, user_mentions,
+     * @param string $user_scope    all|online|offline
+     * @param string $page_scope    show|hide
+     * @param array  $pages_list    May contain any of the cases below:
+     *                              home,
+     *                              post_author_index,  post_category_index,  post_archive
+     *                              media_author_index, media_category_index, media_archive
+     *                              TODO: add support for search_results, user_home, user_mentions,
+     * @param string $template_file Name of the segments/file.tpl template for each sidebar item
+     * @param string $use_case      "for" attribute used in the widget definition (in module_settings.xml)
      *
      * @return null|object {title:string, content:string}
      */
-    private function get_widget_contents($id, $seed, $title, $user_scope, $page_scope, $pages_list)
-    {
+    private function get_widget_contents(
+        $id, $seed, $title, $user_scope, $page_scope, $pages_list, $template_file, $use_case
+    ) {
         global $modules, $account;
         
         $current_page_tag = $this->get("page_tag");
-        $content_template = file_get_contents("{$this->abspath}/segments/right_sidebar_item_template.tpl");
+        $template_file    = "{$this->abspath}/segments/{$template_file}";
+        
+        if( ! is_file($template_file) )
+        {
+            $message = replace_escaped_vars(
+                $modules["widgets_manager"]->language->messages->template_file_not_found,
+                array('{$file}'),
+                array( $template_file )
+            );
+            
+            return (object) array(
+                "title"   => $title,
+                "content" => "<div class='framed_content state_ko'><span class='fa fa-warning'></span> {$message}</div>",
+            );
+        }
+        
+        $content_template = file_get_contents($template_file);
         
         list($module_name, $id) = explode(".", $id);
         
@@ -266,7 +292,7 @@ class template
         
         if( empty($module->widgets) ) return null;
         
-        $matches = $module->widgets->xpath("//widget[@for='right_sidebar'][@id='$id']");
+        $matches = $module->widgets->xpath("//widget[@for='$use_case'][@id='$id']");
         
         if( empty($matches) ) return null;
         
