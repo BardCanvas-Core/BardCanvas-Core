@@ -10,6 +10,12 @@ ReWriteEngine On
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
 
+# TODO: Feeds --- WARNING: THESE MUST GO ABOVE EVERYTHING!
+ReWriteRule ^feed/$               scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
+ReWriteRule ^feed$                scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
+ReWriteRule ^(.+)/feed/$          scripts/rss_feed_generator.php?handle=$1     [QSA,L]
+ReWriteRule ^(.+)/feed$           scripts/rss_feed_generator.php?handle=$1     [QSA,L]
+
 # Post indexes by category
 ReWriteRule ^category/(.*)/media/$ gallery/by_category.php?slug=$1 [QSA,L]
 ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
