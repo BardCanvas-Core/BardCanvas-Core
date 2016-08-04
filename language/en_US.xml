@@ -67,6 +67,17 @@
     <last_seen>Last seen:</last_seen>
     <never>never</never>
     <edit_profile>Edit profile</edit_profile>
+    <contact>
+        <contact_user>Contact {$display_name}</contact_user>
+        <pm>
+            <caption>Send PM</caption>
+            <title>Send a personal message to the user's inbox at {$website_name}</title>
+        </pm>
+        <email>
+            <caption>E-mail</caption>
+            <title>Send an Email to the user's address</title>
+        </email>
+    </contact>
     
     <failed_to_create_cron_job><![CDATA[
         The background processing job couldn't be created because of the next error:<br>

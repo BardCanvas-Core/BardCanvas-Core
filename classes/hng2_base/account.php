@@ -34,6 +34,9 @@ class account
     public $last_update;
     public $last_activity;
     
+    # Dynamically loaded
+    public $country_name;
+    
     # Temporary and control
     public $_raw_password;
     public $_exists    = false;
@@ -73,7 +76,15 @@ class account
         }
         
         $input = addslashes(trim(stripslashes($input)));
-        $res   = $database->query("select * from account where id_account = '$input' or user_name = '$input'");
+        $res   = $database->query("
+            select
+                account.*,
+                (select name from countries where alpha_2 = account.country) as country_name
+            from
+                account
+            where
+                id_account = '$input' or user_name = '$input'
+        ");
         
         if( ! $res ) return;
         if( $database->num_rows($res) == 0 ) return;
@@ -113,6 +124,7 @@ class account
         $this->creation_host  = $object->creation_host ;
         $this->creation_date  = $object->creation_date ;
         $this->last_update    = $object->last_update   ;
+        $this->country_name   = $object->country_name  ;
         
         if($this->birthdate       == "0000-00-00")          $this->birthdate      = "";
         if($this->creation_date   == "0000-00-00 00:00:00") $this->creation_date  = "";
