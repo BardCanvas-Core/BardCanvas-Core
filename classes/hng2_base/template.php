@@ -372,4 +372,39 @@ class template
             </div>
         ";
     }
+    
+    public function render_tinymce_additions()
+    {
+        global $modules, $config;
+        
+        foreach($modules as $module)
+        {
+            if( empty($module->tinymce_additions) ) continue;
+            
+            foreach($module->tinymce_additions->plugin as $plugin)
+                echo "
+                    
+                    <script type='text/javascript' src='{$config->full_root_path}/{$module->name}/{$plugin}'></script>
+                    <script type='text/javascript'>
+                        tinymce_custom_plugins[tinymce_custom_plugins.length] = '{$plugin["name"]}';
+                    </script>
+                ";
+    
+            if( ! empty($module->tinymce_additions->css) )
+                echo "
+                    <script type='text/javascript'>
+                        tinymce_default_css_files[tinymce_default_css_files.length]
+                            = '{$config->full_root_path}/{$module->name}/{$module->tinymce_additions->css}';
+                    </script>        
+                ";
+            
+            if( ! empty($module->tinymce_additions->toolbar) )
+                echo "
+                    <script type='text/javascript'>    
+                        tinymce_custom_toolbar_buttons[tinymce_custom_toolbar_buttons.length] = '{$module->tinymce_additions->toolbar}';
+                    </script>
+                ";
+            
+        }
+    }
 }

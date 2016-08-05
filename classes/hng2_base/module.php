@@ -83,6 +83,13 @@ class module
     var $widgets;
     
     /**
+     * Additions to TinyMCE editor
+     *
+     * @var \SimpleXMLElement
+     */
+    var $tinymce_additions;
+    
+    /**
      * Module template
      *
      * @param string $module_info_file
@@ -183,6 +190,7 @@ class module
         $self->extension_areas_info = empty($self->extension_areas_info) ? "" : $self->extension_areas_info->asXML();
         $self->extends_to           = empty($self->extends_to)           ? "" : $self->extends_to->asXML();
         $self->widgets              = empty($self->widgets)              ? "" : $self->widgets->asXML();
+        $self->tinymce_additions    = empty($self->tinymce_additions)    ? "" : $self->tinymce_additions->asXML();
         
         /** @var \SimpleXMLElement $area */
         if( ! empty($self->extended_by) )
@@ -204,6 +212,7 @@ class module
         $this->extension_areas_info = simplexml_load_string($this->extension_areas_info);
         $this->extends_to           = simplexml_load_string($this->extends_to);
         $this->widgets              = simplexml_load_string($this->widgets);
+        $this->tinymce_additions    = simplexml_load_string($this->tinymce_additions);
         
         /** @var \SimpleXMLElement $area */
         if( ! empty($this->extended_by) )

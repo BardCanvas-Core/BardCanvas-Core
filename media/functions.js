@@ -237,31 +237,6 @@ function toggle_fa_pseudo_switch(src, toggle)
 
 //noinspection JSUnusedGlobalSymbols
 /**
- * Triggers the addon function tied to the form addon button being clicked
- *
- * @param src
- */
-function trigger_tinymce_addon(src)
-{
-    var $this            = $(src);
-    var function_to_call = $this.attr('data-function');
-    var $container       = $this.closest('.tinymce_container');
-    
-    if( typeof $_TINYMCE_ADDON_FUNCTIONS[function_to_call] == 'undefined' )
-    {
-        alert(
-            'JavaScript Exception hit!\n\n' +
-            'function "' + function_to_call + '" is undefined\n\n' +
-            'Please contact the webmaster.'
-        );
-        
-        return;
-    }
-    
-    $_TINYMCE_ADDON_FUNCTIONS[function_to_call]($this, $container);
-}
-
-/**
  * Deprecated and kept until a better solution is found
  */
 function check_main_menu_auto_collapse()
