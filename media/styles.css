@@ -87,7 +87,7 @@ a.disabled, .pseudo_link.disabled { color: dimgrey; opacity: 0.5; cursor: auto; 
 #header .main_menu_item.submenu_visible              { color: #f6f8f9; background-color: #990d0d; }
 #header .main_menu_item.submenu_visible:hover        { color: #990d0d; background-color: #f6f8f9; }
 
-#main_menu_trigger              { float: right; cursor: pointer; padding-left: 12px; padding-right: 12px; }
+#main_menu_trigger              { float: right; cursor: pointer; padding-left: 12px; padding-right: 12px; text-align: right; }
 #main_menu_trigger.open         { color: #990d0d; background-color: #f6f8f9; }
 
 /* Collapsed/Expanded menu */
@@ -104,6 +104,11 @@ body[data-main-menu-collapsed="true"] #main_menu_trigger.main_menu_item { displa
 #header .main_menu_item.always_visible.visible { display: block; float: none !important; }
 #header .main_menu_item.visible                { display: block; float: none !important; }
 #header .special_menu_item.visible             { display: block; float: none !important; }
+
+body[data-main-menu-collapsed="true"] #header .main_menu_item.always_visible         { display: inline-block; }
+body[data-main-menu-collapsed="true"] #header .main_menu_item.always_visible.visible { display: block; float: none !important; }
+body[data-main-menu-collapsed="true"] #header .main_menu_item.visible                { display: block; float: none !important; }
+body[data-main-menu-collapsed="true"] #header .special_menu_item.visible             { display: block; float: none !important; }
 
 /* Dropdown menu */
 

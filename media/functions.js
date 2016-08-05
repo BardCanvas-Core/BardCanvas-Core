@@ -261,13 +261,16 @@ function trigger_tinymce_addon(src)
     $_TINYMCE_ADDON_FUNCTIONS[function_to_call]($this, $container);
 }
 
+/**
+ * Deprecated and kept until a better solution is found
+ */
 function check_main_menu_auto_collapse()
 {
     if( typeof $_MAIN_MENU_AUTO_COLLAPSE_WIDTH == 'undefined' )
-        $_MAIN_MENU_AUTO_COLLAPSE_WIDTH = 700;
+        $_MAIN_MENU_AUTO_COLLAPSE_WIDTH = 0;
     
     if( $_MAIN_MENU_AUTO_COLLAPSE_WIDTH == 0 )
-        $_MAIN_MENU_AUTO_COLLAPSE_WIDTH = 700;
+        return;
     
     if( $(window).width() <= $_MAIN_MENU_AUTO_COLLAPSE_WIDTH )
         $('body').attr('data-main-menu-collapsed', 'true');
@@ -279,14 +282,14 @@ $(document).ready(function()
 {
     set_body_metas();
     check_wrapped_tables();
-    check_main_menu_auto_collapse();
+    // check_main_menu_auto_collapse();
     
     $(window).resize(function()
     {
         if( $('#main_menu_trigger').hasClass('open') ) toggle_main_menu_items();
         set_body_metas();
         check_wrapped_tables();
-        check_main_menu_auto_collapse();
+        // check_main_menu_auto_collapse();
     });
     
     prepare_submenus();
