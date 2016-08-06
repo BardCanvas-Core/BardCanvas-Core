@@ -1,6 +1,8 @@
 <?php
 namespace hng2_base\repository;
 
+use hng2_base\config;
+
 class account_record extends abstract_record
 {
     public $id_account;
@@ -29,14 +31,11 @@ class account_record extends abstract_record
     
     protected function set_from_object($object_or_array)
     {
-        global $settings;
-        
         parent::set_from_object($object_or_array);
         
         if( ! empty($this->id_account) ) $this->_exists = true;
         
-        $admins_list = explode(",", $settings->get("engine.admins"));
-        if( in_array($this->id_account, $admins_list) ) $this->_is_admin = true;
+        if( $this->level >= config::COADMIN_USER_LEVEL ) $this->_is_admin = true;
     }
     
     public function set_new_id()

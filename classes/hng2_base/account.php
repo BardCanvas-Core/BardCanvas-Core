@@ -55,14 +55,12 @@ class account
      */
     public function __construct($input = "")
     {
-        global $settings, $database;
+        global $database;
         
         if( is_object($input) )
         {
             $this->assign_from_object($input);
-            $admins_list = explode(",", $settings->get("engine.admins"));
-            if( in_array($this->id_account, $admins_list) )
-                $this->_is_admin = true;
+            if( $this->level >= config::COADMIN_USER_LEVEL ) $this->_is_admin = true;
             $this->_exists = true;
             
             return;
@@ -93,8 +91,7 @@ class account
         $this->assign_from_object($row);
         $this->_exists = true;
         
-        $admins_list = explode(",", $settings->get("engine.admins"));
-        if( in_array($this->id_account, $admins_list) ) $this->_is_admin = true;
+        if( $this->level >= config::COADMIN_USER_LEVEL ) $this->_is_admin = true;
     }
     
     /**
@@ -176,10 +173,8 @@ class account
         {
             $this->assign_from_object($cached_row);
             $this->_exists = true;
-    
-            $admins_list = explode(",", $settings->get("engine.admins"));
-            if( ! $this->_is_locked )
-                if( in_array($this->id_account, $admins_list) )
+            
+            if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL )
                     $this->_is_admin = true;
             
             return;
@@ -215,9 +210,7 @@ class account
         $this->_exists = true;
         
         # Admin identification
-        $admins_list = explode(",", $settings->get("engine.admins"));
-        if( ! $this->_is_locked )
-            if( in_array($this->id_account, $admins_list) )
+        if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL )
                 $this->_is_admin = true;
         
         if( isset($_COOKIE[$settings->get("engine.user_online_cookie")]) )
@@ -474,14 +467,8 @@ class account
     
     public function set_admin()
     {
-        global $settings, $database;
+        global $database;
         
-        $admins_list = explode(",", $settings->get("engine.admins"));
-        if( ! in_array($this->id_account, $admins_list) )
-        {
-            $admins_list[] = $this->id_account;
-            $settings->set("engine.admins", implode(",", $admins_list));
-        }
         $this->_is_admin = true;
         
         $now              = date("Y-m-d H:i:s");
@@ -497,15 +484,8 @@ class account
     
     public function unset_admin()
     {
-        global $settings, $database;
+        global $database;
         
-        $admins_list = explode(",", $settings->get("engine.admins"));
-        if( in_array($this->id_account, $admins_list) )
-        {
-            $key = array_search($this->id_account, $admins_list);
-            unset( $admins_list[$key] );
-            $settings->set("engine.admins", implode(",", $admins_list));
-        }
         $this->_is_admin = false;
         
         $now              = date("Y-m-d H:i:s");
@@ -516,7 +496,7 @@ class account
             where
                 id_account  = '".addslashes($this->id_account)."'
         ";
-    
+        
         return $database->exec($query);
     }
     
@@ -612,18 +592,10 @@ class account
     
     public function set_level($new_level)
     {
-        global $settings, $database, $config;
+        global $database, $config;
         
         if( $new_level >= $config::COADMIN_USER_LEVEL )
-        {
-            $admins_list = explode(",", $settings->get("engine.admins"));
-            if( ! in_array($this->id_account, $admins_list) )
-            {
-                $admins_list[] = $this->id_account;
-                $settings->set("engine.admins", implode(",", $admins_list));
-            }
             $this->_is_admin = true;
-        }
         
         $now              = date("Y-m-d H:i:s");
         $this->level      = $new_level;
