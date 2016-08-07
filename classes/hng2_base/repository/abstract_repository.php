@@ -16,6 +16,8 @@ abstract class abstract_repository
     protected $key_column_name          = "";      // OVERRIDE THIS
     protected $additional_select_fields = array(); // OVERRIDE IF NEEDED
     
+    protected $last_query;
+    
     /**
      * @param $id
      *
@@ -84,6 +86,7 @@ abstract class abstract_repository
         }
         
         # echo "<pre>$query</pre>";
+        $this->last_query = $query;
         $res = $database->query($query);
         
         if( $database->num_rows($res) == 0 ) return array();
@@ -129,6 +132,7 @@ abstract class abstract_repository
             from {$this->table_name}
             where {$where}
         ";
+        $this->last_query = $query;
         $res = $database->query($query);
         $row = $database->fetch_object($res);
         
@@ -162,7 +166,7 @@ abstract class abstract_repository
             delete from {$this->table_name}
             where {$this->key_column_name} = '{$key}'
         ";
-        
+        $this->last_query = $query;
         return $database->exec($query);
     }
     

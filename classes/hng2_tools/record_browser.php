@@ -300,9 +300,11 @@ class record_browser
         $next_disabled     = $pagination_vars["this_page_number"] >= $pagination_vars["total_pages"] ? "disabled" : "";
         $last_disabled     = $pagination_vars["total_pages"] == 1 || $pagination_vars["this_page_number"] == $pagination_vars["total_pages"] ? "disabled" : "";
         
+        $query = stristr($url_prefix, "?" === false) ? "?" : "&";
+        
         if($pagination_vars["total_pages"] < 1)
         {
-            $middle_buttons = "<a disabled href='{$url_prefix}?offset=0'>1</a>";
+            $middle_buttons = "<a disabled href='{$url_prefix}{$query}offset=0'>1</a>";
         }
         else
         {
@@ -312,28 +314,28 @@ class record_browser
             {
                 $disabled = $cpage == $pagination_vars["this_page_number"] ? "disabled" : "";
                 $middle_buttons .= "
-                    <a {$disabled} href='{$url_prefix}?offset={$offset_start_point}'>{$cpage}</a>
+                    <a {$disabled} href='{$url_prefix}{$query}offset={$offset_start_point}'>{$cpage}</a>
                 ";
                 $offset_start_point += $pagination_vars["limit"];
             }
         }
         
         echo "
-            <a {$backward_disabled} href='{$url_prefix}?offset=0'>
+            <a {$backward_disabled} href='{$url_prefix}{$query}offset=0'>
                 <span class='fa fa-fw fa-step-backward'></span>
             </a>
             
-            <a {$backward_disabled} href='{$url_prefix}?offset={$pagination_vars["previous_page"]}'>
+            <a {$backward_disabled} href='{$url_prefix}{$query}offset={$pagination_vars["previous_page"]}'>
                 <span class='fa fa-fw fa-caret-left'></span>
             </a>
             
             {$middle_buttons}
             
-            <a {$next_disabled} href='{$url_prefix}?offset={$pagination_vars["next_page"]}'>
+            <a {$next_disabled} href='{$url_prefix}{$query}offset={$pagination_vars["next_page"]}'>
                 <span class='fa fa-fw fa-caret-right'></span>
             </a>
             
-            <a {$last_disabled} href='{$url_prefix}?offset={$pagination_vars["last_page"]}'>
+            <a {$last_disabled} href='{$url_prefix}{$query}offset={$pagination_vars["last_page"]}'>
                 <span class='fa fa-fw fa-step-forward'></span>
             </a>
         ";

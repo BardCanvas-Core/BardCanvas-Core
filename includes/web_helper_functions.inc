@@ -246,11 +246,11 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
         $tag->tag   = $key;
         $tag->count = $count;
         
-        $tag->number_of_posts = $tag->count; #sets the amount of items a certain tag has attached to it
-        $tag->count           = log($tag->count);
-        $min                  = min($min, $tag->count);
-        $max                  = max($max, $tag->count);
-        $tags[$tag->tag]      = $tag;
+        $tag->hits       = $tag->count; #sets the amount of items a certain tag has attached to it
+        $tag->count      = log($tag->count);
+        $min             = min($min, $tag->count);
+        $max             = max($max, $tag->count);
+        $tags[$tag->tag] = $tag;
     }
     
     // Note: we need to ensure the range is slightly too large to make sure even

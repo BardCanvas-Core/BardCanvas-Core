@@ -378,20 +378,27 @@ class media_repository extends abstract_repository
     }
     
     
-    public function get_grouped_tag_counts($since = "")
+    public function get_grouped_tag_counts($since = "", $min_hits = 10)
     {
         global $database;
+        
+        $min_hits = empty($min_hits) ? 10 : $min_hits;
+        $having   = $min_hits == 1   ? "" : "having `count` >= '$min_hits'";
         
         if( empty($since) )
             $query = "
                 select tag, count(tag) as `count` from media_tags
-                group by tag order by `count` desc
+                group by tag
+                $having
+                order by `count` desc
             ";
         else
             $query = "
                 select tag, count(tag) as `count` from media_tags
                 where date_attached >= '{$since}'
-                group by tag order by `count` desc
+                group by tag
+                $having
+                order by `count` desc
             ";
         
         $res = $database->query($query);
