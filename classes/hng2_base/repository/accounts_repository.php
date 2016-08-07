@@ -8,13 +8,19 @@ class accounts_repository extends abstract_repository
     protected $key_column_name          = "id_account";
     
     /**
-     * @param $id
+     * @param $id_or_slug
      *
      * @return account_record|null
      */
-    public function get($id)
+    public function get($id_or_slug)
     {
-        return parent::get($id);
+        $where = array("id_account = '$id_or_slug' or user_name = '$id_or_slug'");
+        
+        $res = $this->find($where, 1, 0, "");
+        
+        if( count($res) == 0 ) return null;
+        
+        return current($res);
     }
     
     /**
