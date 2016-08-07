@@ -172,8 +172,6 @@ abstract class abstract_repository
     
     public function get_last_query()
     {
-        global $database;
-        
-        return $database->get_last_query();
+        return $this->last_query;
     }
 }
