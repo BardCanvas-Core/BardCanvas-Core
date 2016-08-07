@@ -9,8 +9,8 @@ var tinymce_defaults = {
     remove_script_host:       false,
     convert_urls:             false,
     selector:                 '.tinymce',
-    plugins:                  'placeholder advlist contextmenu autolink lists link anchor searchreplace paste codemirror textcolor fullscreen autoresize',
-    toolbar:                  'bold italic strikethrough forecolor fontsizeselect removeformat | alignleft aligncenter alignright | bullist numlist outdent indent | link',
+    plugins:                  'placeholder advlist contextmenu autolink lists link anchor searchreplace paste codemirror textcolor fullscreen autoresize hr',
+    toolbar:                  tinymce_full_toolbar,
     contextmenu:              'cut copy paste | link',
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
     content_css:              tinymce_default_css_files.join(','),
@@ -56,7 +56,7 @@ if( tinymce_custom_plugins.length > 0 )
     tinymce_defaults.plugins = tinymce_defaults.plugins + ' ' + tinymce_custom_plugins.join(' ');
 
 if( tinymce_custom_toolbar_buttons.length > 0 )
-    tinymce_defaults.toolbar = tinymce_defaults.toolbar + ' ' + tinymce_custom_toolbar_buttons.join(' ');
+    tinymce_defaults.toolbar = tinymce_defaults.toolbar + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
 tinymce_defaults.toolbar = tinymce_defaults.toolbar  + ' | fullscreen';
 
 if( $_CURRENT_USER_IS_ADMIN )
