@@ -149,9 +149,9 @@
             </options>
         </specs>
         <specs key="enabled">
-            <title>Engine enabled</title>
+            <title>Engine state</title>
             <description><![CDATA[
-                Emergency switch to issue an all systems halt. Only administrative functions will work.
+                Emergency switch to issue an all-systems halt. Only administrative functions will work if "Off" is selected.
             ]]></description>
             <type>boolean</type>
         </specs>
