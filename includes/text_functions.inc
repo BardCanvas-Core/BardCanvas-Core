@@ -871,3 +871,28 @@ function unindent($text)
     
     return $text;
 }
+
+/**
+ * Adds a CDATA property to a SimpleXML node
+ * 
+ * @see http://stackoverflow.com/a/27306705
+ * 
+ * @param string $name
+ * @param string $value
+ * @param \SimpleXMLElement $parent
+ *
+ * @return \SimpleXMLElement
+ */
+function add_cdata_node($name, $value, &$parent)
+{
+    $child = $parent->addChild($name);
+    
+    if( ! is_null($child) )
+    {
+        $child_node = dom_import_simplexml($child);
+        $child_owner = $child_node->ownerDocument;
+        $child_node->appendChild($child_owner->createCDATASection($value));
+    }
+    
+    return $child;
+}
