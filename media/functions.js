@@ -63,20 +63,26 @@ function set_body_metas()
 {
     var width  = $(window).width();
     var height = $(window).height();
+    var $body  = $('body');
     
-    if( height >= width ) $('body').attr('data-orientation', 'portrait');
-    else                  $('body').attr('data-orientation', 'landscape');
+    $body.attr('data-start-width', width);
     
-         if(width >= 1900) $('body').attr('data-viewport-class', '1920');
-    else if(width >= 1340) $('body').attr('data-viewport-class', '1360');
-    else if(width >= 1260) $('body').attr('data-viewport-class', '1280');
-    else if(width >= 1000) $('body').attr('data-viewport-class', '1024');
-    else if(width >=  700) $('body').attr('data-viewport-class',  '768');
-    else                   $('body').attr('data-viewport-class',  '480');
+    if( height >= width ) $body.attr('data-orientation', 'portrait');
+    else                  $body.attr('data-orientation', 'landscape');
+    
+         if(width >= 1900) $body.attr('data-viewport-class', '1920');
+    else if(width >= 1340) $body.attr('data-viewport-class', '1360');
+    else if(width >= 1260) $body.attr('data-viewport-class', '1280');
+    else if(width >= 1000) $body.attr('data-viewport-class', '1024');
+    else if(width >=  700) $body.attr('data-viewport-class',  '768');
+    else                   $body.attr('data-viewport-class',  '480');
 }
 
-function toggle_main_menu_items()
+function toggle_main_menu_items(forced)
 {
+    if( forced )
+        if( $(window).width() == $('body').attr('data-start-width') ) return;
+    
     var $header = $('#header');
     if( navigator.userAgent.indexOf('MSIE') > 0 || navigator.userAgent.indexOf('Safari') > 0 )
     {
@@ -261,7 +267,7 @@ $(document).ready(function()
     
     $(window).resize(function()
     {
-        if( $('#main_menu_trigger').hasClass('open') ) toggle_main_menu_items();
+        if( $('#main_menu_trigger').hasClass('open') ) toggle_main_menu_items(true);
         set_body_metas();
         check_wrapped_tables();
         // check_main_menu_auto_collapse();
