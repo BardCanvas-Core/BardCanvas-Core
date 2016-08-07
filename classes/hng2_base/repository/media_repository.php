@@ -343,6 +343,30 @@ class media_repository extends abstract_repository
     }
     
     /**
+     * Standard way to build the posts collection
+     *
+     * @param array  $where
+     * @param int    $limit
+     * @param int    $offset
+     * @param string $order
+     *
+     * @return media_record[]
+     */
+    public function lookup($where, $limit = 0, $offset = 0, $order = "")
+    {
+        $params = $this->build_find_params();
+        
+        if( empty($where)  ) $where  = array();
+        if( empty($limit)  ) $limit  = $params->limit;
+        if( empty($offset) ) $offset = $params->offset;
+        if( empty($order)  ) $order  = $params->order;
+        
+        $where = array_merge($where, $params->where);
+        
+        return parent::find($where, $limit, $offset, $order);
+    }
+    
+    /**
      * @param $find_params
      *
      * @return items_data

@@ -198,6 +198,16 @@ class media_record extends abstract_record
         return $return;
     }
     
+    public function get_page_url($fully_qualified = false)
+    {
+        global $config;
+        
+        if( $fully_qualified ) $return = "$config->full_root_url/media/{$this->id_media}";
+        else                   $return = "$config->full_root_path/media/{$this->id_media}";
+        
+        return $return;
+    }
+    
     public function get_item_embeddable_url($fully_qualified = false)
     {
         global $config;
