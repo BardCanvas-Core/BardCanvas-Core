@@ -10,13 +10,14 @@ var tinymce_defaults = {
     convert_urls:             false,
     selector:                 '.tinymce',
     plugins:                  'placeholder advlist contextmenu autolink lists link anchor searchreplace paste codemirror textcolor fullscreen autoresize hr',
-    toolbar:                  tinymce_full_toolbar,
+    toolbar:                  tinymce_standard_toolbar,
     contextmenu:              'cut copy paste | link',
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
     content_css:              tinymce_default_css_files.join(','),
     autoresize_bottom_margin: 0,
     autoresize_min_height:    100,
     autoresize_max_height:    max_height,
+    entity_encoding:          'raw',
     formats : {
         alignleft:   {selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes : 'alignleft'},
         aligncenter: {selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes : 'aligncenter'},
@@ -52,15 +53,38 @@ var tinymce_defaults = {
     }
 };
 
+
 if( tinymce_custom_plugins.length > 0 )
     tinymce_defaults.plugins = tinymce_defaults.plugins + ' ' + tinymce_custom_plugins.join(' ');
 
+var tinymce_full_defaults = $.extend({}, tinymce_defaults);
+tinymce_full_defaults.selector = '.tinymce_full';
+
+var tinymce_minimal_defaults = $.extend({}, tinymce_defaults);
+tinymce_minimal_defaults.selector = '.tinymce_minimal';
+
 if( tinymce_custom_toolbar_buttons.length > 0 )
-    tinymce_defaults.toolbar = tinymce_defaults.toolbar + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
-tinymce_defaults.toolbar = tinymce_defaults.toolbar  + ' | fullscreen';
+{
+    tinymce_defaults.toolbar         = tinymce_standard_toolbar + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
+    tinymce_full_defaults.toolbar    = tinymce_full_toolbar     + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
+    tinymce_minimal_defaults.toolbar = tinymce_minimal_toolbar  + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
+    
+}
+tinymce_defaults.toolbar         = tinymce_defaults.toolbar          + ' | fullscreen';
+tinymce_full_defaults.toolbar    = tinymce_full_defaults.toolbar     + ' | fullscreen';
+tinymce_minimal_defaults.toolbar = tinymce_minimal_defaults.toolbar  + ' | fullscreen';
 
 if( $_CURRENT_USER_IS_ADMIN )
-    tinymce_defaults.toolbar = tinymce_defaults.toolbar + ' | code';
+{
+    tinymce_defaults.toolbar         = tinymce_defaults.toolbar          + ' | code';
+    tinymce_full_defaults.toolbar    = tinymce_full_defaults.toolbar     + ' | code';
+    tinymce_minimal_defaults.toolbar = tinymce_minimal_defaults.toolbar  + ' | code';
+    
+}
 
 if( $_CURRENT_USER_LANGUAGE != "en" && $_CURRENT_USER_LANGUAGE != "en_US" )
-    tinymce_defaults.language = $_CURRENT_USER_LANGUAGE;
+{
+    tinymce_defaults.language         = $_CURRENT_USER_LANGUAGE;
+    tinymce_full_defaults.language    = $_CURRENT_USER_LANGUAGE;
+    tinymce_minimal_defaults.language = $_CURRENT_USER_LANGUAGE;
+}
