@@ -32,6 +32,14 @@ class item
         if( ! empty($this->link)         ) $node->addChild("link",         $this->link);
         if( ! empty($this->description)  ) $node->addChild("description",  $this->description);
         
+        if( ! empty($this->enclosure) )
+        {
+            $enclosure = $node->addChild("enclosure");
+            $enclosure->addChild("type",   $this->enclosure->type);
+            $enclosure->addChild("length", $this->enclosure->length);
+            $enclosure->addChild("url",    $this->enclosure->url);
+        }
+        
         if( ! empty($this->guid) ) $node->addChild("guid",  $this->guid);
     }
 }
