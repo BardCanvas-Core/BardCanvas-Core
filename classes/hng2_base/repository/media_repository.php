@@ -1,6 +1,7 @@
 <?php
 namespace hng2_base\repository;
 
+use hng2_media\abstract_item_manager;
 use hng2_modules\categories\category_record;
 use hng2_modules\gallery\items_data;
 use hng2_tools\record_browser;
@@ -433,5 +434,128 @@ class media_repository extends abstract_repository
             $return[$row->tag] = $row->count;
         
         return $return;
+    }
+    
+    /**
+     * Receives an uploaded media item and process it for saving
+     *
+     * @param array $data                   actual or forged $_POST array
+     * @param array $file                   an item from $_FILES
+     * @param bool  $return_item_on_success If true, the item object will be returned instead of "OK".
+     *
+     * @return string|media_record "OK" or error message or object
+     */
+    public function receive_and_save($data, $file, $return_item_on_success = false)
+    {
+        global $modules, $config, $account;
+        
+        $current_module = $modules["gallery"];
+        
+        $item = new media_record();
+        # We don't use set_from_post because actual data may not come from $_POST but from $data
+        # $item->set_from_post();
+        foreach( $data as $key => $val ) $item->{$key} = stripslashes($val);
+        
+        if( empty($item->id_media) )
+        {
+            if( empty($item->main_category) )
+                $item->main_category = "0000000000000";
+            
+            if( empty($item->title) )
+            {
+                $item->title = stripslashes($account->display_name . " - " . $file["name"]);
+                
+                if( $this->get_record_count(array("title" => $item->title)) )
+                    return $current_module->language->messages->item_exists;
+            }
+        }
+        
+        /** @var abstract_item_manager $media_manager */
+        $media_manager = null;
+        $media_path    = "";
+        $thumbnail     = "";
+        $media_type    = "";
+        $mime_type     = "";
+        $dimensions    = "";
+        $size          = 0;
+        
+        if( empty($data["id_media"]) && ! empty($file) )
+        {
+            if( ! is_uploaded_file($file["tmp_name"]) )
+                return $current_module->language->messages->invalid->upload;
+            
+            $extension = strtolower(end(explode(".", $file["name"])));
+            if( empty($extension) ) return $current_module->language->messages->invalid->file;
+            
+            if( ! isset($config->upload_file_types[$extension]) )
+                return $current_module->language->messages->invalid->file;
+            
+            $media_manager_class = $config->upload_file_types[$extension];
+            if( $media_manager_class == "system" )
+                $media_manager_class = "hng2_media\\item_manager_{$extension}";
+            
+            try
+            {
+                $media_manager = new $media_manager_class(
+                    $file["name"],
+                    $file["type"],
+                    $file["tmp_name"]
+                );
+                
+                $parts         = explode(".", $file["name"]); array_pop($parts);
+                $file_name     = sanitize_file_name(implode(".", $parts));
+                $date          = date("dHis");
+                $new_file_name = "{$account->user_name}-{$date}-{$file_name}.{$extension}";
+                
+                $media_manager->move_to_repository($new_file_name);
+                $media_path = $media_manager->get_relative_path();
+                $thumbnail  = $media_manager->get_thumbnail();
+                $media_type = $media_manager->get_type();
+                $mime_type  = $file["type"];
+                $dimensions = $media_manager->get_dimensions();
+                $size       = $media_manager->get_size();
+            }
+            catch(\Exception $e)
+            {
+                return unindent(replace_escaped_vars(
+                    $current_module->language->messages->media_manager_exception,
+                    array('{$class}', '{$exception}'),
+                    array($media_manager_class, $e->getMessage())
+                ));
+            }
+        }
+        
+        $old_item = empty($data["id_media"]) ? null : $this->get($data["id_media"]);
+        
+        if( empty($item->id_media) )
+        {
+            $item->set_new_id();
+            $item->type              = $media_type;
+            $item->mime_type         = $mime_type;
+            $item->dimensions        = $dimensions;
+            $item->size              = $size;
+            $item->path              = $media_path;
+            $item->thumbnail         = $thumbnail;
+            $item->id_author         = $account->id_account;
+            $item->creation_date     = date("Y-m-d H:i:s");
+            $item->creation_ip       = get_remote_address();
+            $item->creation_host     = gethostbyaddr($item->creation_ip);
+            $item->creation_location = forge_geoip_location($item->creation_ip);
+            $item->last_update       = date("Y-m-d H:i:s");
+        }
+        
+        if( $item->main_category != $old_item->main_category )
+            $this->unset_category($old_item->main_category, $item->id_media);
+        $this->set_category($item->main_category, $item->id_media);
+        
+        if( $item->status == "published" && $old_item->status != $item->status )
+            $item->publishing_date = date("Y-m-d H:i:s");
+        
+        $this->save($item);
+        
+        if( $return_item_on_success )
+            return $item;
+        else
+            return "OK";
     }
 }
