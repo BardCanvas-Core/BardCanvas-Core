@@ -583,6 +583,14 @@ class account
         return $contents;
     }
     
+    public function get_processed_signature()
+    {
+        $contents = $this->signature;
+        $contents = convert_emojis($contents);
+    
+        return $contents;
+    }
+    
     public function get_role()
     {
         global $config;
