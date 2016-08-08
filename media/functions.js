@@ -12,9 +12,9 @@
 /**
  * Get a document and show a dialog from it
  * 
- * @param {string} title
- * @param {string} url
- * @param {bool}   full_sized
+ * @param {string}  title
+ * @param {string}  url
+ * @param {boolean} full_sized
  */
 function show_ajax_dialog(title, url, full_sized)
 {
@@ -34,6 +34,11 @@ function show_ajax_dialog(title, url, full_sized)
             close:     function() { $('#ajax_temporary_dialog').dialog('destroy').remove(); }
         });
     });
+}
+
+function close_ajax_dialog()
+{
+    $('#ajax_temporary_dialog').dialog('close');
 }
 
 /**
