@@ -9,7 +9,7 @@
 
 use hng2_base\account;
 use hng2_base\config;
-use hng2_base\db\db_controller;
+use hng2_db\db_controller;
 use hng2_base\module;
 use hng2_base\settings;
 use hng2_base\template;

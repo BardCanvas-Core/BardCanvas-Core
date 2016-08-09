@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-namespace hng2_base\db;
+namespace hng2_db;
 
 class db_controller
 {
@@ -35,7 +35,7 @@ class db_controller
     
     public function __construct()
     {
-        global $DATABASES, $config;
+        global $DATABASES;
         
         if( count($DATABASES) == 1 )
         {
