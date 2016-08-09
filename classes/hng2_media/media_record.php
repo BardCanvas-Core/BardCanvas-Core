@@ -154,8 +154,11 @@ class media_record extends abstract_record
      */
     public function get_processed_title()
     {
+        global $config;
+        
         $contents = $this->title;
         $contents = convert_emojis($contents);
+        $contents = autolink_hash_tags($contents, "{$config->full_root_path}/tag/", "/media");
         
         # TODO: Add get_processed_title() extension point
         
@@ -167,14 +170,27 @@ class media_record extends abstract_record
      */
     public function get_processed_description()
     {
+        global $config;
+        
         $contents = $this->description;
         $contents = convert_emojis($contents);
+        $contents = autolink_hash_tags($contents, "{$config->full_root_path}/tag/", "/media");
         
         # TODO: Add get_processed_description() extension point
         
         return $contents;
     }
     
+    public function get_description_excerpt()
+    {
+        global $config, $settings;
+        
+        $contents = make_excerpt_of($this->description, $settings->get("modules:gallery.excerpt_length", 30));
+        $contents = convert_emojis($contents);
+        $contents = autolink_hash_tags($contents, "{$config->full_root_path}/tag/", "/media");
+        
+        return $contents;
+    }
     
     /**
      * Returns the display name with all output processing

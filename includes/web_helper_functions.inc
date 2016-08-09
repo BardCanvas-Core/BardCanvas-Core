@@ -218,6 +218,31 @@ function extract_hash_tags($contents)
 }
 
 /**
+ * Converts hashtags into links
+ * 
+ * @param string $contents   Markup to process
+ * @param string $url_prefix URL prefix to view tag index
+ * @param string $url_suffix Added to the URL if defined
+ * 
+ * @return string
+ */
+function autolink_hash_tags($contents, $url_prefix, $url_suffix = "")
+{
+    $count = preg_match_all('/(#[a-z0-9]+)\b/i', $contents, $matches);
+    
+    if( $count == 0 ) return $contents;
+    
+    foreach($matches[1] as $match)
+    {
+        $raw_match = str_replace("#", "", $match);
+        $tag = "<a href='{$url_prefix}{$raw_match}{$url_suffix}'>$match</a>";
+        $contents = str_replace($match, $tag, $contents);
+    }
+    
+    return $contents;
+}
+
+/**
  * Cloud builder
  *
  * @author http://stackoverflow.com/users/73673/berkes
