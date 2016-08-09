@@ -36,6 +36,7 @@ function show_ajax_dialog(title, url, full_sized)
     });
 }
 
+//noinspection JSUnusedGlobalSymbols
 function close_ajax_dialog()
 {
     $('#ajax_temporary_dialog').dialog('close');
@@ -233,17 +234,25 @@ function toggle_fa_pseudo_switch(src, toggle)
 {
     var is_on;
     if( typeof toggle != 'undefined' )
-        is_on = toggle;
+        is_on = ! toggle;
     else
-        is_on     = $(src).find('.toggle-on:visible').length > 0;
+        is_on = $(src).find('.toggle-on:visible').length > 0;
     
     var value_on  = $(src).attr('data-value-on');
     var value_off = $(src).attr('data-value-off');
     
-    if( is_on ) $(src).find('input').val( value_off );
-    else        $(src).find('input').val( value_on );
-    
-    $(src).find('.toggler').toggle();
+    if( is_on )
+    {
+        $(src).find('input').val( value_off );
+        $(src).find('.toggle-on').hide();
+        $(src).find('.toggle-off').show();
+    }
+    else
+    {
+        $(src).find('input').val( value_on );
+        $(src).find('.toggle-on').show();
+        $(src).find('.toggle-off').hide();
+    }
 }
 
 //noinspection JSUnusedGlobalSymbols
