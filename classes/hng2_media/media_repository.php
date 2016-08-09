@@ -1,7 +1,7 @@
 <?php
 namespace hng2_media;
 
-use hng2_base\repository\abstract_repository;
+use hng2_repository\abstract_repository;
 use hng2_modules\categories\category_record;
 use hng2_modules\gallery\items_data;
 use hng2_tools\record_browser;

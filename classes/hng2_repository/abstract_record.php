@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-namespace hng2_base\repository;
+namespace hng2_repository;
 
 abstract class abstract_record
 {

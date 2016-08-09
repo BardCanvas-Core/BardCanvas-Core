@@ -1,9 +1,11 @@
 <?php
-namespace hng2_base\repository;
+namespace hng2_base;
+
+use hng2_repository\abstract_repository;
 
 class accounts_repository extends abstract_repository
 {
-    protected $row_class                = "hng2_base\\repository\\account_record";
+    protected $row_class                = "hng2_base\\account_record";
     protected $table_name               = "account";
     protected $key_column_name          = "id_account";
     

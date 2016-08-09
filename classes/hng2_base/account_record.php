@@ -1,7 +1,7 @@
 <?php
-namespace hng2_base\repository;
+namespace hng2_base;
 
-use hng2_base\config;
+use hng2_repository\abstract_record;
 
 class account_record extends abstract_record
 {
