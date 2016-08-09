@@ -362,3 +362,4 @@ img.alignright  { float: right; margin: 10px; }
 /* ETC */
 
 video, embed { background-color: black; }
+.hashtag { display: inline-block; }

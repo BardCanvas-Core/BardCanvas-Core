@@ -1,6 +1,7 @@
 <?php
 namespace hng2_media;
 
+use hng2_base\accounts_repository;
 use hng2_repository\abstract_repository;
 use hng2_modules\categories\category_record;
 use hng2_modules\gallery\items_data;
@@ -19,13 +20,13 @@ class media_repository extends abstract_repository
            from categories where categories.id_category = media.main_category )
            as _main_category_data",
         
-        "( select group_concat(tag order by order_attached asc separator ',')
+        "( select group_concat(tag order by date_attached asc, order_attached asc separator ',')
            from media_tags where media_tags.id_media = media.id_media )
            as tags_list",
-        "( select group_concat(id_category order by order_attached asc separator ',')
+        "( select group_concat(id_category order by date_attached asc, order_attached asc separator ',')
            from media_categories where media_categories.id_media = media.id_media )
            as categories_list",
-        "( select group_concat(id_account order by order_attached asc separator ',')
+        "( select group_concat(id_account order by date_attached asc, order_attached asc separator ',')
            from media_mentions where media_mentions.id_media = media.id_media )
            as mentions_list",
     );
@@ -167,14 +168,13 @@ class media_repository extends abstract_repository
         $attached = $this->get_attached_categories($id_media);
         if( isset($attached[$id_category]) ) return 0;
         
-        $order = microtime(true);
         $date  = date("Y-m-d H:i:s");
         return $database->exec("
             insert into media_categories set
             id_media       = '$id_media',
             id_category    = '$id_category',
             date_attached  = '$date',
-            order_attached = '$order'
+            order_attached = '0'
         ");
     }
     
@@ -210,7 +210,7 @@ class media_repository extends abstract_repository
                 media_categories.id_media = '$id_media' and
                 categories.id_category    = media_categories.id_category
             order by
-                order_attached
+                media_categories.date_attached asc, media_categories.order_attached asc
         ");
         
         if( $database->num_rows($res) == 0 ) return array();
@@ -544,12 +544,15 @@ class media_repository extends abstract_repository
             $item->last_update       = date("Y-m-d H:i:s");
         }
         
-        if( $item->main_category != $old_item->main_category )
-            $this->unset_category($old_item->main_category, $item->id_media);
-        $this->set_category($item->main_category, $item->id_media);
+        # if( $item->main_category != $old_item->main_category )
+        #     $this->unset_category($old_item->main_category, $item->id_media);
+        # $this->set_category($item->main_category, $item->id_media);
         
         if( $item->status == "published" && $old_item->status != $item->status )
             $item->publishing_date = date("Y-m-d H:i:s");
+        
+        $tags = extract_hash_tags($item->title . " " . $item->description);
+        if( ! empty($tags) ) $this->set_tags($tags, $item->id_media);
         
         $this->save($item);
         
@@ -557,5 +560,66 @@ class media_repository extends abstract_repository
             return $item;
         else
             return "OK";
+    }
+    
+    /**
+     * @param $id_media
+     *
+     * @return media_tag[]
+     *
+     * @throws \Exception
+     */
+    public function get_tags($id_media)
+    {
+        global $database;
+        
+        $res = $database->query("select * from media_tags where id_media = '$id_media'");
+        $this->last_query = $database->get_last_query();
+        
+        if( $database->num_rows($res) == 0 ) return array();
+        
+        $rows = array();
+        while($row = $database->fetch_object($res))
+            $rows[$row->tag] = new media_tag($row);
+        
+        return $rows;
+    }
+    
+    public function set_tags(array $list, $id_media)
+    {
+        global $database;
+        
+        $actual_tags = $this->get_tags($id_media);
+        
+        if( empty($actual_tags) && empty($list) ) return;
+        
+        $date = date("Y-m-d H:i:s");
+        $inserts = array();
+        $index   = 1;
+        foreach($list as $tag)
+        {
+            if( ! isset($actual_tags[$tag]) ) $inserts[] = "('$id_media', '$tag', '$date', '$index')";
+            unset($actual_tags[$tag]);
+            $index++;
+        }
+        
+        if( ! empty($inserts) )
+        {
+            $database->exec(
+                "insert into media_tags (id_media, tag, date_attached, order_attached) values "
+                . implode(", ", $inserts)
+            );
+            $this->last_query = $database->get_last_query();
+        }
+        
+        if( ! empty($actual_tags) )
+        {
+            $deletes = array();
+            foreach($actual_tags as $tag => $object) $deletes[] = "'$tag'";
+            $database->exec(
+                "delete from media_tags where id_media = '$id_media' and tag in (" . implode(", ", $deletes) . ")"
+            );
+            $this->last_query = $database->get_last_query();
+        }
     }
 }
