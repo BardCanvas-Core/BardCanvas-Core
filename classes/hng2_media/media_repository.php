@@ -511,7 +511,7 @@ class media_repository extends abstract_repository
                 $media_path = $media_manager->get_relative_path();
                 $thumbnail  = $media_manager->get_thumbnail();
                 $media_type = $media_manager->get_type();
-                $mime_type  = $file["type"];
+                $mime_type  = $media_manager->get_final_mime_type();
                 $dimensions = $media_manager->get_dimensions();
                 $size       = $media_manager->get_size();
             }

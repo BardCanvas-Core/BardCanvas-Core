@@ -7,6 +7,8 @@ abstract class abstract_item_manager
     protected $dimensions; // OVERRIDE
     protected $size;       // OVERRIDE
     
+    protected $enforced_mime_type = ""; // OVERRIDE IF NEEDED
+    
     protected $save_path;
     protected $relative_path;
     
@@ -76,6 +78,14 @@ abstract class abstract_item_manager
     public function get_type()
     {
         return $this->media_type;
+    }
+    
+    public function get_final_mime_type()
+    {
+        if( ! empty($this->enforced_mime_type) )
+            return $this->enforced_mime_type;
+        else
+            return $this->mime_type;
     }
     
     abstract public function get_thumbnail();

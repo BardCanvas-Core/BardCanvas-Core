@@ -6,6 +6,8 @@ abstract class abstract_video_manager extends abstract_item_manager
     protected $media_type  = "video";
     protected $ffmpeg_bin  = "";
     
+    protected $enforced_mime_type = "video/mp4";
+    
     /**
      * This needs to be overriden to true for non-web-standard input files
      * 
@@ -50,6 +52,7 @@ abstract class abstract_video_manager extends abstract_item_manager
         if( ! file_exists($target) )
             throw new \Exception("Can't convert {$this->file_name} to mp4! ffmepg output: {$res}");
         
+        $this->mime_type = $this->enforced_mime_type;
         $this->file_path = $target;
     }
     
