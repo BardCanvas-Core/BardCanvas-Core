@@ -1,7 +1,8 @@
 <?php
-namespace hng2_base\repository;
+namespace hng2_media;
 
 use hng2_base\account;
+use hng2_base\repository\abstract_record;
 
 class media_record extends abstract_record
 {

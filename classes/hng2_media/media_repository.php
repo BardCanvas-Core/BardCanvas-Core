@@ -1,14 +1,14 @@
 <?php
-namespace hng2_base\repository;
+namespace hng2_media;
 
-use hng2_media\abstract_item_manager;
+use hng2_base\repository\abstract_repository;
 use hng2_modules\categories\category_record;
 use hng2_modules\gallery\items_data;
 use hng2_tools\record_browser;
 
 class media_repository extends abstract_repository
 {
-    protected $row_class       = "hng2_base\\repository\\media_record";
+    protected $row_class       = "hng2_media\\media_record";
     protected $table_name      = "media";
     protected $key_column_name = "id_media";
     protected $additional_select_fields = array(
