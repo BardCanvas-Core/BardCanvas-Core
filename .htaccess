@@ -10,7 +10,7 @@ ReWriteEngine On
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
 
-# TODO: Feeds --- WARNING: THESE MUST GO ABOVE EVERYTHING!
+# Feeds --- WARNING: THESE MUST GO ABOVE EVERYTHING!
 ReWriteRule ^feed/$               scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
 ReWriteRule ^feed$                scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
 ReWriteRule ^(.+)/feed/$          scripts/rss_feed_generator.php?handle=$1     [QSA,L]
@@ -50,7 +50,7 @@ ReWriteRule ^user/(.*)/mentions$    accounts/profile_mentions.php?slug=$1    [QS
 ReWriteRule ^author/(.*)/mentions/$ accounts/profile_mentions.php?slug=$1    [QSA,L]
 ReWriteRule ^author/(.*)/mentions$  accounts/profile_mentions.php?slug=$1    [QSA,L]
 
-# TODO: Author profile itself
+# Author profile itself
 ReWriteRule ^user/(.*)/$   accounts/public_profile.php?slug=$1 [QSA,L]
 ReWriteRule ^user/(.*)$    accounts/public_profile.php?slug=$1 [QSA,L]
 ReWriteRule ^author/(.*)/$ accounts/public_profile.php?slug=$1 [QSA,L]
@@ -76,7 +76,7 @@ ReWriteRule ^date/([0-9]{4})$                    posts/by_date.php?date=$1 [QSA,
 ReWriteRule ^mediaserver/(.*)$       data/uploaded_media/$1 [QSA,L]
 ReWriteRule ^mediaserver-embed/(.*)$ scripts/mediaserver_embed.php?file=$1 [QSA,L]
 
-# TODO: Search
+# Search
 RewriteCond %{QUERY_STRING} ^s=(.*)$
 RewriteRule .* search/index.php [QSA,L]
 
