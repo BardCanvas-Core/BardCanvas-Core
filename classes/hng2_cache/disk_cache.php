@@ -38,6 +38,16 @@ class disk_cache
         
         if( ! empty($res) ) $this->data = $res;
         $this->loaded = true;
+        
+        $backtrace = debug_backtrace();
+        foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        self::$cache_hits[] = (object) array(
+            "file"      => basename($this->disk_cache_file),
+            "type"      => "load",
+            "key"       => "N/A",
+            "timestamp" => microtime(true),
+            "backtrace" => $backtrace,
+        );
     }
     
     public function prefill(array $data)
@@ -56,20 +66,6 @@ class disk_cache
         global $config;
         
         if( ! isset($this->data[$key]) ) return null;
-    
-        $backtrace = "N/A";
-        if( $config->query_backtrace_enabled )
-        {
-            $backtrace = debug_backtrace();
-            foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
-        }
-        self::$cache_hits[] = (object) array(
-            "file"      => basename($this->disk_cache_file),
-            "type"      => "get",
-            "key"       => $key,
-            "timestamp" => microtime(true),
-            "backtrace" => $backtrace,
-        );
         
         return $this->data[$key];
     }
@@ -116,7 +112,7 @@ class disk_cache
         
         unset( $this->data[$key] );
         $this->save();
-    
+        
         $backtrace = "N/A";
         if( $config->query_backtrace_enabled )
         {
@@ -134,12 +130,28 @@ class disk_cache
     
     private function save()
     {
+        global $config;
+        
         $data = serialize($this->data);
         
         if( ! @file_put_contents($this->disk_cache_file, $data) )
             throw new \RuntimeException("Can't write cache file {$this->disk_cache_file}");
         
         @chmod($this->disk_cache_file, 0777);
+        
+        $backtrace = "N/A";
+        if( $config->query_backtrace_enabled )
+        {
+            $backtrace = debug_backtrace();
+            foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        }
+        self::$cache_hits[] = (object) array(
+            "file"      => basename($this->disk_cache_file),
+            "type"      => "save",
+            "key"       => "N/A",
+            "timestamp" => microtime(true),
+            "backtrace" => $backtrace,
+        );
     }
     
     public static function get_hits()

@@ -363,3 +363,5 @@ img.alignright  { float: right; margin: 10px; }
 
 video, embed { background-color: black; }
 .hashtag { display: inline-block; }
+.internals pre { margin: 0; }
+.internals .scrollable pre { max-height: 150px; overflow: auto; border: 1px solid silver; }

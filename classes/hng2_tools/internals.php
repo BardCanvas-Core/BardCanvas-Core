@@ -10,6 +10,7 @@
 namespace hng2_tools;
 
 use hng2_cache\disk_cache;
+use SqlFormatter;
 
 class internals
 {
@@ -54,6 +55,8 @@ class internals
     {
         global $database, $account, $config;
         
+        $formatter = new SqlFormatter();
+        
         $backtrace    = "";
         $output       = "";
         $seq          = 1;
@@ -71,7 +74,7 @@ class internals
                 <tr>
                     <td align='right'>{$seq}</td>
                     <td>{$query->host_and_db}</td>
-                    <td class='fixed_font'>{$query->query}</td>
+                    <td class='fixed_font scrollable'>{$formatter->format($query->query)}</td>
                     <td align='right'>{$query->rows_in_result}</td>
                     <td align='right'>{$execution_time}</td>
                     {$backtrace}
