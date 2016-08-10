@@ -22,11 +22,11 @@ ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
 ReWriteRule ^category/(.*)/$       posts/by_category.php?slug=$1   [QSA,L]
 ReWriteRule ^category/(.*)$        posts/by_category.php?slug=$1   [QSA,L]
 
-# TODO: Indexes by tag
-ReWriteRule ^tag/(.*)/media/$ gallery/by_tag.php?slug=$1 [QSA,L]
-ReWriteRule ^tag/(.*)/media$  gallery/by_tag.php?slug=$1 [QSA,L]
-ReWriteRule ^tag/(.*)/$       posts/by_tag.php?slug=$1   [QSA,L]
-ReWriteRule ^tag/(.*)$        posts/by_tag.php?slug=$1   [QSA,L]
+# Indexes by tag
+ReWriteRule ^tag/(.*)/media/$ gallery/by_tag.php?tag=$1 [QSA,L]
+ReWriteRule ^tag/(.*)/media$  gallery/by_tag.php?tag=$1 [QSA,L]
+ReWriteRule ^tag/(.*)/$       posts/by_tag.php?tag=$1   [QSA,L]
+ReWriteRule ^tag/(.*)$        posts/by_tag.php?tag=$1   [QSA,L]
 
 # User profile resources
 ReWriteRule ^user/(.*)/avatar/$         scripts/get_user_profile_resource.php?slug=$1&type=avatar         [QSA,L]

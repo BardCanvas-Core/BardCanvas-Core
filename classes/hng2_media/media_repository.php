@@ -284,7 +284,6 @@ class media_repository extends abstract_repository
     {
         $return = $this->build_find_params();
         
-        # Added to EXCLUDE featured posts
         $return->where[]
             = "( main_category = '{$id_category}' or id_media in
                  ( select id_media from media_categories
@@ -322,6 +321,21 @@ class media_repository extends abstract_repository
         return $return;
     }
     
+    /**
+     * @param $tag
+     *
+     * @return object {where:array, limit:int, offset:int, order:string}
+     */
+    protected function build_find_params_for_tag($tag)
+    {
+        $return = $this->build_find_params();
+        
+        $return->where[]
+            = "( id_media in (select id_media from media_tags where media_tags.tag = '{$tag}') )";
+        
+        return $return;
+    }
+    
     public function get_for_author($id_account, $type = "")
     {
         $find_params = $this->build_find_params_for_author($id_account, $type);
@@ -339,6 +353,13 @@ class media_repository extends abstract_repository
     public function get_for_date_archive($start_date, $end_date)
     {
         $find_params = $this->build_find_params_for_date_archive($start_date, $end_date);
+        
+        return $this->get_items_data($find_params);
+    }
+    
+    public function get_for_tag($tag)
+    {
+        $find_params = $this->build_find_params_for_tag($tag);
         
         return $this->get_items_data($find_params);
     }
