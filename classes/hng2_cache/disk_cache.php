@@ -63,8 +63,6 @@ class disk_cache
      */
     public function get($key)
     {
-        global $config;
-        
         if( ! isset($this->data[$key]) ) return null;
         
         return $this->data[$key];

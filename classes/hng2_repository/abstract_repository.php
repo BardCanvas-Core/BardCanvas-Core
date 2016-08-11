@@ -9,6 +9,8 @@
 
 namespace hng2_repository;
 
+use hng2_cache\object_cache;
+
 abstract class abstract_repository
 {
     protected $row_class                = "";      // OVERRIDE THIS
@@ -18,6 +20,13 @@ abstract class abstract_repository
     
     protected $last_query;
     
+    protected static $cache = null;
+    
+    public function __construct()
+    {
+        self::$cache = new object_cache( get_class($this) );
+    }
+    
     /**
      * @param $id
      *
@@ -26,11 +35,15 @@ abstract class abstract_repository
      */
     public function get($id)
     {
+        if( self::$cache->exists($id) ) return self::$cache->get($id);
+        
         $where = array($this->key_column_name => $id);
         
         $res = $this->find($where, 1, 0, "");
         
         if( count($res) == 0 ) return null;
+        
+        self::$cache->set($id, $res);
         
         return current($res);
     }
@@ -125,7 +138,7 @@ abstract class abstract_repository
     public function get_record_count(array $where)
     {
         global $database;
-    
+        
         $where = $this->convert_where($where);
         $query = "
             select count(*) as total_rows
@@ -167,6 +180,9 @@ abstract class abstract_repository
             where {$this->key_column_name} = '{$key}'
         ";
         $this->last_query = $query;
+        
+        self::$cache->delete($key);
+        
         return $database->exec($query);
     }
     

@@ -16,11 +16,15 @@ class accounts_repository extends abstract_repository
      */
     public function get($id_or_slug)
     {
+        if( self::$cache->exists($id_or_slug) ) return self::$cache->get($id_or_slug);
+        
         $where = array("id_account = '$id_or_slug' or user_name = '$id_or_slug'");
         
         $res = $this->find($where, 1, 0, "");
         
         if( count($res) == 0 ) return null;
+        
+        self::$cache->set($id_or_slug, $res);
         
         return current($res);
     }

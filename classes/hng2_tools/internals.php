@@ -10,6 +10,7 @@
 namespace hng2_tools;
 
 use hng2_cache\disk_cache;
+use hng2_cache\object_cache;
 use SqlFormatter;
 
 class internals
@@ -45,6 +46,7 @@ class internals
             echo "</div>";
             
             self::render_database_details();
+            self::render_object_cache_details();
             self::render_mem_cache_details();
             self::render_disk_cache_details();
             
@@ -141,6 +143,71 @@ class internals
         ";
     }
     
+    private static function render_object_cache_details()
+    {
+        global $account, $config;
+    
+        $backtrace    = "";
+        $output       = "";
+        $seq          = 1;
+        foreach(object_cache::get_hits() as $hit)
+        {
+            if( $config->query_backtrace_enabled )
+                $backtrace = "<td><pre style='margin: 0'>" . implode("\n", (array) $hit->backtrace) . "</pre></td>";
+        
+            $output .= "
+                <tr>
+                    <td align='right'>{$seq}</td>
+                    <td>{$hit->owner}</td>
+                    <td>{$hit->type}</td>
+                    <td align='right'>{$hit->timestamp}</td>
+                    <td>{$hit->key}</td>
+                    {$backtrace}
+                </tr>
+            ";
+            $seq++;
+        }
+    
+        $backtrace_th   = $config->query_backtrace_enabled ? "<th>Backtrace</th>" : "";
+        $table_style    = $account->engine_prefs["internals_objectcache_stats_hidden"] == "true" ? "display: none;" : "";
+        $new_state      = $account->engine_prefs["internals_objectcache_stats_hidden"] == "true" ? "" : "true";
+        $expand_style   = $account->engine_prefs["internals_objectcache_stats_hidden"] == "true" ? "" : "display: none";
+        $collapse_style = $account->engine_prefs["internals_objectcache_stats_hidden"] == "true" ? "display: none" : "";
+    
+        $seq--;
+        echo "
+            <div class='internals'>
+                <section>
+                    <h2>
+                        <span class='toggler' onclick='$(this).find(\"span\").toggle(); $(this).closest(\"section\").find(\".hideable\").toggle(); set_engine_pref(\"internals_objectcache_stats_hidden\", \"{$new_state}\")'>
+                            <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
+                            <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
+                        </span>
+                        Object (RAM) cache hits
+                        ({$seq})
+                    </h2>
+                    <div class='framed_content hideable table_wrapper' style='{$table_style}'>
+                        <table class='nav_table'>
+                            <thead>
+                            <tr>
+                                <th>Call #</th>
+                                <th>Repository</th>
+                                <th>Type</th>
+                                <th>Timestamp</th>
+                                <th>Key</th>
+                                {$backtrace_th}
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {$output}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        ";
+    }
+    
     private static function render_mem_cache_details()
     {
         global $mem_cache, $account, $config;
@@ -180,7 +247,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
-                        Memory cache hits
+                        MemCache hits
                         ({$seq})
                     </h2>
                     <div class='framed_content hideable table_wrapper' style='{$table_style}'>
