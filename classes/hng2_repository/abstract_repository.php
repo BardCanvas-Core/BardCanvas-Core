@@ -43,7 +43,7 @@ abstract class abstract_repository
         
         if( count($res) == 0 ) return null;
         
-        self::$cache->set($id, $res);
+        self::$cache->set($id, current($res));
         
         return current($res);
     }
