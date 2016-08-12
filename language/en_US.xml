@@ -45,6 +45,7 @@
         <page_requires_login>Error: this page requires you to have an opened session. Please login.</page_requires_login>
         <account_is_locked>Error: your account is currently locked. Please contact us for further information.</account_is_locked>
         <access_denied>Access denied</access_denied>
+        <invalid_call>You've called this script the wrong way</invalid_call>
     </errors>
     
     <click_here_to_continue>Click here to continue...</click_here_to_continue>
