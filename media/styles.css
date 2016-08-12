@@ -44,7 +44,10 @@ h1 a, h1 .pseudo_link, h2 a, h2 .pseudo_link, h3 a, h3 .pseudo_link { color: #99
 .pseudo_link.fa  { text-decoration: none; }
 .pseudo_link .fa { text-decoration: none; }
 
-a.disabled, .pseudo_link.disabled { color: dimgrey; opacity: 0.5; cursor: auto; }
+a.greengo  , .pseudo_link.greengo   { color: green;   text-shadow: 1px 1px 1px dimgrey; }
+a.important, .pseudo_link.important { color: orange;  text-shadow: 1px 1px 1px dimgrey; }
+a.critical,  .pseudo_link.critical  { color: red;     text-shadow: 1px 1px 1px dimgrey; }
+a.disabled,  .pseudo_link.disabled  { color: dimgrey; opacity: 0.5; cursor: auto; }
 
 .pseudo_link.fa, .pseudo_link .fa, .fa .pseudo_link { text-decoration: none; }
 
@@ -107,6 +110,8 @@ a.disabled, .pseudo_link.disabled { color: dimgrey; opacity: 0.5; cursor: auto; 
 #header .main_menu_item.always_visible.visible { display: block; float: none !important; }
 #header .main_menu_item.visible                { display: block; float: none !important; }
 #header .special_menu_item.visible             { display: block; float: none !important; }
+
+#header.fixed { position: fixed; top: 0; left: 0; right: 0; }
 
 /* Dropdown menu */
 

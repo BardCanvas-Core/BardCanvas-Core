@@ -71,7 +71,12 @@ function set_body_metas()
     var height = $(window).height();
     var $body  = $('body');
     
-    $body.attr('data-start-width', width);
+    $body.attr('data-start-width',   width);
+    $body.attr('data-window-width',  width);
+    $body.attr('data-start-height',  height);
+    $body.attr('data-window-height', height);
+    
+    $body.attr('data-header-can-be-fixed', height >= 300 ? "true" : "false");
     
     if( height >= width ) $body.attr('data-orientation', 'portrait');
     else                  $body.attr('data-orientation', 'landscape');
@@ -84,6 +89,33 @@ function set_body_metas()
     else                   $body.attr('data-viewport-class',  '480');
 }
 
+/**
+ * This function should be called AFTER set_body_metas
+ */
+function adjust_top_dimensions()
+{
+    var height = $(window).height();
+    
+    var $header     = $('#header');
+    var $admin_menu = $('#admin_menu');
+    if( height < 300 )
+    {
+        $header.toggleClass('fixed', false);
+        $('body').css('padding-top', 0);
+    }
+    else
+    {
+        var header_height = $header.height();
+        $header.toggleClass('fixed', true);
+        $('body').css('padding-top', header_height);
+    }
+}
+
+/**
+ * If forced, this function should run AFTER set_body_metas.
+ * 
+ * @param {boolean} forced
+ */
 function toggle_main_menu_items(forced)
 {
     if( forced )
@@ -275,6 +307,7 @@ function check_main_menu_auto_collapse()
 
 $(document).ready(function()
 {
+    // adjust_top_dimensions();
     set_body_metas();
     check_wrapped_tables();
     // check_main_menu_auto_collapse();
@@ -282,6 +315,7 @@ $(document).ready(function()
     $(window).resize(function()
     {
         if( $('#main_menu_trigger').hasClass('open') ) toggle_main_menu_items(true);
+        // adjust_top_dimensions();
         set_body_metas();
         check_wrapped_tables();
         // check_main_menu_auto_collapse();
