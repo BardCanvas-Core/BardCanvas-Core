@@ -24,7 +24,7 @@ class accounts_repository extends abstract_repository
         
         if( count($res) == 0 ) return null;
         
-        self::$cache->set($id_or_slug, $res);
+        self::$cache->set($id_or_slug, current($res));
         
         return current($res);
     }
@@ -86,6 +86,19 @@ class accounts_repository extends abstract_repository
         $rows   = $this->find(array("id_account in ($prepared_ids)"), 0, 0, "");
         
         foreach($rows as $row) $return[$row->id_account] = $row;
+        
+        return $return;
+    }
+    
+    public function get_ids_above_level($level)
+    {
+        global $database;
+        
+        $res = $database->query("select id_account from account where level >= '$level'");
+        if( $database->num_rows($res) == 0 ) return array();
+        
+        $return = array();
+        while($row = $database->fetch_object($res)) $return[] = $row->id_account;
         
         return $return;
     }
