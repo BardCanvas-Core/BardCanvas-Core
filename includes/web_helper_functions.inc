@@ -6,6 +6,8 @@
  * @subpackage core
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
+use hng2_base\accounts_repository;
+use hng2_base\config;
 
 /**
  * Echoes a fake "404 - Not found" error and quits the program.
@@ -120,6 +122,19 @@ function send_notification($id_account, $type, $contents)
     file_put_contents($target_file, json_encode(array("message_type" => $type, "message" => $message_contents)));
     @chmod($target_file, 0777);
     usleep(10000);
+}
+
+/**
+ * Send a notification to all admins
+ *
+ * @param string $type       alert, success, error, warning, information, confirm
+ * @param string $contents
+ */
+function broadcast_to_moderators($type, $contents)
+{
+    $repository = new accounts_repository();
+    $ids = $repository->get_ids_above_level(config::MODERATOR_USER_LEVEL);
+    foreach($ids as $id) send_notification($id, $type, $contents);
 }
 
 /**
