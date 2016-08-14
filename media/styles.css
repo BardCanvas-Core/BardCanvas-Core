@@ -326,6 +326,10 @@ form .big_form_submit_button .emojione { height: 12pt; }
 
 /* TinyMCE defaults */
 
+.tinymce         {}
+.tinymce_full    {}
+.tinymce_minimal {}
+
 .alignleft   { text-align: left;   }
 .aligncenter { text-align: center; }
 .alignright  { text-align: right;  }
