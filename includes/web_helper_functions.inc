@@ -306,3 +306,39 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
     
     return $tags;
 }
+
+function send_mail($subject, $body, $recipients, $sender = array())
+{
+    global $settings;
+    
+    if( ! class_exists("PHPMailer") )
+    {
+        include_once ABSPATH . "/lib/PHPMailer/class.phpmailer.php";
+        include_once ABSPATH . "/lib/PHPMailer/class.smtp.php";
+    }
+    
+    $mail = new PHPMailer();
+    
+    $mail->isSendmail();
+    $mail->isHTML(true);
+    
+    foreach($recipients as $name => $address)
+        $mail->addAddress($address, $name);
+    
+    if( empty($sender) )
+        $sender = array(
+            $settings->get("engine.mail_sender_name") => $settings->get("engine.mail_sender_email")
+        );
+    
+    $mail->CharSet  = "utf-8";
+    $mail->Sender   = $settings->get("engine.mail_sender_email");
+    $mail->From     = current($sender);
+    $mail->FromName = key($sender);
+    $mail->Subject  = $subject;
+    $mail->Body     = $body;
+    $mail->AltBody  = strip_tags($body);
+    
+    if( ! $mail->send() ) return $mail->ErrorInfo;
+    
+    return "OK";
+}
