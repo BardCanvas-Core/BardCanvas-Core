@@ -79,6 +79,11 @@ class config
      */
     public $globals = array();
     
+    /**
+     * @var string MD5 of concatenated module version strings
+     */
+    public $module_versions_hash = "";
+    
     public function __construct()
     {
         $this->encryption_key     = ENCRYPTION_KEY;

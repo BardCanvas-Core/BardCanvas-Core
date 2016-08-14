@@ -90,15 +90,16 @@ if( $load_modules )
     }
 }
 
+# Versions hash preload
+$module_versions = array();
+foreach($modules as $module)
+    $module_versions[] = trim($module->version);
+$config->module_versions_hash = md5(implode(", ", $module_versions));
+
 # Bootstraps preload
 foreach($modules as $module)
-{
     if( ! empty($module->php_includes->bootstrap) )
-    {
-        # echo "{$module->abspath}/{$module->php_includes->bootstrap}<br>";
         include "{$module->abspath}/{$module->php_includes->bootstrap}";
-    }
-}
 
 # Current module forge
 $current_module = null;

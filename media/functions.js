@@ -305,6 +305,11 @@ function check_main_menu_auto_collapse()
         $('body').attr('data-main-menu-collapsed', null);
 }
 
+function send_private_message(id_account)
+{
+    // TODO: implement send_private_message() function
+}
+
 $(document).ready(function()
 {
     // adjust_top_dimensions();
