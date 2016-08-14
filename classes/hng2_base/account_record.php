@@ -1,9 +1,14 @@
 <?php
+/**
+ * Class account_record
+ * Extends the account toolbox, which also extends the abstract record class.
+ * 
+ * @package hng2_base
+ */
+
 namespace hng2_base;
 
-use hng2_repository\abstract_record;
-
-class account_record extends abstract_record
+class account_record extends account_toolbox
 {
     public $id_account;
     public $user_name;
@@ -38,34 +43,6 @@ class account_record extends abstract_record
         if( $this->level >= config::COADMIN_USER_LEVEL ) $this->_is_admin = true;
     }
     
-    public function set_new_id()
-    {
-        $this->id_account = uniqid();
-    }
-    
-    public function get_processed_display_name()
-    {
-        $contents = $this->display_name;
-        $contents = convert_emojis($contents);
-        
-        return $contents;
-    }
-    
-    public function get_processed_signature()
-    {
-        $contents = $this->signature;
-        $contents = convert_emojis($contents);
-        
-        return $contents;
-    }
-    
-    public function get_role()
-    {
-        global $config;
-        
-        return $config->user_levels_by_level[$this->level];
-    }
-    
     /**
      * @return object
      */
@@ -82,30 +59,4 @@ class account_record extends abstract_record
         
         return (object) $return;
     }
-    
-    public function get_avatar_url($fully_qualified = false)
-    {
-        global $config;
-        
-        if( $this->avatar == "@gravatar" )
-            return "https://www.gravatar.com/avatar/" . md5(trim(strtolower($this->email)));
-        
-        $file = empty($this->avatar) ? "media/default_avatar.jpg" : "user/{$this->user_name}/avatar";
-        
-        if( $fully_qualified ) return "{$config->full_root_url}/{$file}";
-        
-        return "{$config->full_root_path}/{$file}";
-    }
-    
-    function get_profile_banner_url($fully_qualified = false)
-    {
-        global $config;
-        
-        $file = empty($this->profile_banner) ? "media/default_user_banner.jpg" : "user/{$this->user_name}/profile_banner";
-        
-        if( $fully_qualified ) return "{$config->full_root_url}/{$file}";
-        
-        return "{$config->full_root_path}/{$file}";
-    }
-    
 }
