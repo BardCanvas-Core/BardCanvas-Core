@@ -11,34 +11,15 @@ namespace hng2_base;
 
 class account extends account_toolbox
 {
-    public $id_account;
-    public $user_name;
-    public $password;
-    public $display_name;
-    public $email;
-    public $alt_email;
-    public $birthdate;
-    public $avatar;
-    public $profile_banner;
-    public $signature;
-    public $bio;
-    public $homepage_url;
-    public $country;
     public $level = 1;
-    public $engine_prefs = array();
     public $state = "new";
-    public $creation_host;
-    public $creation_date;
-    public $last_update;
-    public $last_activity;
     
     # Dynamically loaded
+    public $engine_prefs = array();
     public $country_name;
     
     # Temporary and control
     public $_raw_password;
-    public $_exists    = false;
-    public $_is_admin  = false;
     public $_is_locked = false;
     
     /** @noinspection PhpMissingParentConstructorInspection */

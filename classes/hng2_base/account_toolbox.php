@@ -14,6 +14,31 @@ use hng2_repository\abstract_record;
 
 class account_toolbox extends abstract_record
 {
+    public $id_account;
+    public $user_name;
+    public $password;
+    public $display_name;
+    public $email;
+    public $alt_email;
+    public $birthdate;
+    public $avatar;
+    public $profile_banner;
+    public $signature;
+    public $bio;
+    public $homepage_url;
+    public $country;
+    public $level;
+    public $state;
+    public $creation_host;
+    public $creation_date;
+    public $last_update;
+    public $last_activity;
+    public $changelog;
+    
+    # Dynamically loaded
+    public $_exists    = false;
+    public $_is_admin  = false;
+    
     /**
      * @var disk_cache
      */
@@ -124,7 +149,7 @@ class account_toolbox extends abstract_record
     public function set_engine_pref($key, $value)
     {
         global $database;
-    
+        
         $this->load_engine_prefs();
         
         if( empty($value) )
@@ -155,5 +180,29 @@ class account_toolbox extends abstract_record
                     `value`    = '".json_encode($value)."'
             ");
         }
+    }
+    
+    /**
+     * @return array
+     * 
+     * @throws \Exception
+     */
+    public function get_editable_prefs()
+    {
+        global $database;
+        
+        $res = $database->query("
+            select * from account_engine_prefs
+            where id_account = '{$this->id_account}'
+            and   name like '@%'
+        ");
+        
+        if( $database->num_rows($res) == 0 ) return array();
+        
+        $return = array();
+        while($row = $database->fetch_object($res) )
+            $return[$row->name] = json_decode($row->value);
+        
+        return $return;
     }
 }
