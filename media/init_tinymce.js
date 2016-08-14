@@ -67,7 +67,7 @@ if( tinymce_custom_toolbar_buttons.length > 0 )
 {
     tinymce_defaults.toolbar         = tinymce_standard_toolbar + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
     tinymce_full_defaults.toolbar    = tinymce_full_toolbar     + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
-    tinymce_minimal_defaults.toolbar = tinymce_minimal_toolbar  + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
+    // tinymce_minimal_defaults.toolbar = tinymce_minimal_toolbar  + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
     
 }
 tinymce_defaults.toolbar         = tinymce_defaults.toolbar          + ' | fullscreen';
