@@ -46,6 +46,8 @@
         <account_is_locked>Error: your account is currently locked. Please contact us for further information.</account_is_locked>
         <access_denied>Access denied</access_denied>
         <invalid_call>You've called this script the wrong way</invalid_call>
+        <recaptcha_not_configured>ReCaptcha isn't configured! Please notify the webmaster that a ReCaptcha keypair must be added on the Website Settings Module.</recaptcha_not_configured>
+        <webmaster_address_empty>The Webmaster address is empty. No emails can be delivered to the staff.</webmaster_address_empty>
     </errors>
     
     <click_here_to_continue>Click here to continue...</click_here_to_continue>
@@ -155,6 +157,13 @@
                 Emergency switch to issue an all-systems halt. Only administrative functions will work if "Off" is selected.
             ]]></description>
             <type>boolean</type>
+        </specs>
+        <specs key="webmaster_address">
+            <title>Webmaster address</title>
+            <description><![CDATA[
+                Email address where all contact requests and engine notifications should be sent to.
+            ]]></description>
+            <type>email</type>
         </specs>
         <specs key="mail_sender_name">
             <title>Email sender name</title>
