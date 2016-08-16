@@ -86,13 +86,16 @@ class accounts_repository extends abstract_repository
         global $object_cache;
         
         if( empty($ids) ) return array();
-    
+        
         $return = array();
         foreach($ids as $index => $id)
         {
             $record = $object_cache->get($this->table_name, $id);
-            if( ! is_null($record) ) $return[$id] = $record;
-            unset($ids[$index]);
+            if( ! is_null($record) )
+            {
+                $return[$id] = $record;
+                unset($ids[$index]);
+            }
         }
         
         if( empty($ids) ) return $return;
