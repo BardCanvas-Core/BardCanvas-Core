@@ -634,25 +634,4 @@ class account extends account_toolbox
         $this->profile_banner = $new_banner;
         $messages[]           = $current_module->language->user_account_form->messages->banner_set_ok;
     }
-    
-    public function get_last_activity($as_elapsed_string = false)
-    {
-        global $database, $language;
-        
-        $res = $database->query("
-            select last_activity from account_devices
-            where account_devices.id_account = '{$this->id_account}'
-            order by last_activity desc limit 1
-        ");
-        
-        if( $database->num_rows($res) == 0 )
-        {
-            if($as_elapsed_string) return $language->never;
-            else                   return "";
-        }
-        
-        $row = $database->fetch_object($res);
-        if( $as_elapsed_string ) return time_elapsed_string($row->last_activity);
-        else                     return $row->last_activity;
-    }
 }

@@ -205,4 +205,54 @@ class account_toolbox extends abstract_record
         
         return $return;
     }
+    
+    public function get_last_activity($as_elapsed_string = false)
+    {
+        global $database, $language;
+        
+        $res = $database->query("
+            select last_activity from account_devices
+            where account_devices.id_account = '{$this->id_account}'
+            order by last_activity desc limit 1
+        ");
+        
+        if( $database->num_rows($res) == 0 )
+        {
+            if($as_elapsed_string) return $language->never;
+            else                   return "";
+        }
+        
+        $row = $database->fetch_object($res);
+        if( $as_elapsed_string ) return time_elapsed_string($row->last_activity);
+        else                     return $row->last_activity;
+    }
+    
+    public function is_online()
+    {
+        $last_activity = $this->get_last_activity();
+        
+        if( empty($last_activity) ) return false;
+        
+        return $last_activity >= date("Y-m-d H:i:s", strtotime("now - 1 minute"));
+    }
+    
+    public function ping()
+    {
+        global $config, $database;
+        
+        if( ! $this->_exists ) return;
+        
+        $device_cookie_key = "_" . $config->website_key . "_DIC";
+        if( empty($_COOKIE[$device_cookie_key]) ) return;
+        
+        $id_device = decrypt( $_COOKIE[$device_cookie_key], $config->encryption_key );
+        $date      = date("Y-m-d H:i:s");
+        
+        $database->exec("
+            update account_devices set
+                last_activity    = '$date'
+            where
+                id_device        = '$id_device'
+        ");
+    }
 }
