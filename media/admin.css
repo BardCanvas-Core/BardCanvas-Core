@@ -83,14 +83,3 @@ body.admin section > h1, body.admin section > h2, body.admin section > h3 {
 
 #modules_listing tr td:first-child { border-right: none; }
 #modules_listing tr td:last-child  { border-left: none; }
-
-/* Settings manager */
-
-.settings_group tr { background-color: white; }
-
-.settings_group.nav_table.no_highlight tbody tr:hover       { background-color: white; }
-.settings_group.nav_table.no_highlight tbody tr.highlighted { background-color: white; }
-
-.settings_group td.control select              { width: 100%; }
-.settings_group td.control input[type="text"]  { width: 100%; }
-.settings_group td.control input[type="email"] { width: 100%; }

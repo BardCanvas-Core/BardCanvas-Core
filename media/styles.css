@@ -368,6 +368,17 @@ img.alignright  { float: right; margin: 10px; }
     }
 }
 
+/* Settings manager/Preferences */
+
+.settings_group tr { background-color: white; }
+
+.settings_group.nav_table.no_highlight tbody tr:hover       { background-color: white; }
+.settings_group.nav_table.no_highlight tbody tr.highlighted { background-color: white; }
+
+.settings_group td.control select              { width: 100%; }
+.settings_group td.control input[type="text"]  { width: 100%; }
+.settings_group td.control input[type="email"] { width: 100%; }
+
 /* ETC */
 
 video, embed { background-color: black; }
