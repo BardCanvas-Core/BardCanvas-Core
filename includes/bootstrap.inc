@@ -27,6 +27,7 @@ $config       = new config();
 $database     = new db_controller();
 $settings     = new settings();
 $object_cache = new object_cache("system");
+$mem_cache    = new mem_cache();
 $config->fill_user_levels();
 $config->set_metering_toggles();
 $config->fill_upload_types();
@@ -54,7 +55,6 @@ $this_module    = null;
 $current_module = null;
 
 $template  = new template();
-$mem_cache = new mem_cache();
 
 /** @var module[] $modules */
 $modules = array();
