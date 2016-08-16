@@ -5,6 +5,8 @@
  * @package    HNG2
  * @subpackage Core::public_html
  * @author     Alejandro Caballero - lava.caballero@gmail.com
+ * 
+ * @var module[] $modules
  */
 
 use hng2_base\module;
@@ -27,16 +29,15 @@ $notifications_return_collection = array(
 
 $notifications_return_collection["notifications"] = get_notifications($account->id_account);
 
-# Extensions
-/** @var module[] $modules */
+# Extenders
 foreach($modules as $module)
 {
-    if( ! isset($module->extends_to->_base_system_->notifications_getter->return_additions) ) continue;
+    if( ! isset($module->php_includes->notifications_getter) ) continue;
     
-    foreach($module->extends_to->_base_system_->notifications_getter->return_additions as $addition)
+    foreach($module->php_includes->notifications_getter as $getter)
     {
         $this_module = $module;
-        $include = ABSPATH . "/{$module->name}/$addition";
+        $include = ABSPATH . "/{$module->name}/$getter";
         
         if( ! file_exists($include) ) continue;
         
