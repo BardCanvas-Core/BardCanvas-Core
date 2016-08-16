@@ -118,4 +118,66 @@ class mem_cache
     {
         return $this->cache_hits;
     }
+    
+    /**
+     * Gets all keys stored in memcache with this prefix
+     * 
+     * @see https://coderwall.com/p/imot3w/php-memcache-list-keys
+     * 
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function get_all_keys($limit = 10000)
+    {
+        $keys = array();
+        
+        $slabs = $this->server->getextendedstats('slabs');
+        foreach( $slabs as $serverSlabs )
+        {
+            foreach( $serverSlabs as $slabId => $slabMeta )
+            {
+                try
+                {
+                    $cacheDump = $this->server->getextendedstats('cachedump', (int) $slabId, 1000);
+                }
+                catch( \Exception $e )
+                {
+                    continue;
+                }
+                
+                if( ! is_array($cacheDump) ) continue;
+                
+                foreach( $cacheDump as $dump )
+                {
+                
+                    if( ! is_array($dump) ) continue;
+                    
+                    foreach( $dump as $key => $value )
+                    {
+                        if( preg_match("/^{$this->var_prefix}.*/", $key) )
+                            $keys[] = $key;
+                        
+                        if( count($keys) == $limit ) return $keys;
+                    }
+                }
+            }
+        }
+        
+        return $keys;
+    }
+    
+    public function purge_by_prefix($prefix)
+    {
+        $all_keys = $this->get_all_keys();
+        $key      = $this->var_prefix . $prefix;
+        
+        foreach($all_keys as $existing_key)
+        {
+            if( preg_match("/^{$key}.*/", $existing_key) == 0 ) continue;
+            
+            unset( $this->data[$key] );
+            $this->server->delete($key);
+        }
+    }
 }
