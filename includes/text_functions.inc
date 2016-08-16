@@ -138,6 +138,28 @@ function time_elapsed_string_alternate($date)
 }
 
 /**
+ * Returns time of given date or short day version if today
+ *
+ * @param $input
+ *
+ * @return string
+ */
+function get_minimized_date($input)
+{
+    $timestamp = strtotime($input);
+    
+    if( date("Y") > substr($input, 0, 4) )
+        # Another year = full date
+        return strftime("%b %e, %G", $timestamp);
+    elseif( date("Y-m-d") == substr($input, 0, 10) )
+        # Today = time
+        return strftime("%H:%M", $timestamp);
+    else
+        # Other day = day
+        return strftime("%b %e", $timestamp);
+}
+
+/**
  * Return remaining time to reach a given date
  *
  * @param      $date
