@@ -59,19 +59,23 @@ class internals
         
         $formatter = new SqlFormatter();
         
+        $querys = $database->get_tracked_queries();
+        if( count($querys) == 0 ) return;
+        
         $backtrace    = "";
         $output       = "";
         $seq          = 1;
         $total_time   = 0;
         $rows_fetched = 0;
-        foreach($database->get_tracked_queries() as $query)
+    
+        foreach($querys as $query)
         {
             $execution_time = number_format($query->execution_time * 1000, 3);
             if( $execution_time < 1 ) $execution_time = "&lt;1";
-            
+        
             if( $config->query_backtrace_enabled )
                 $backtrace = "<td><pre style='margin: 0'>" . implode("\n", $query->backtrace) . "</pre></td>";
-            
+        
             $output .= "
                 <tr>
                     <td align='right'>{$seq}</td>
@@ -82,12 +86,11 @@ class internals
                     {$backtrace}
                 </tr>
             ";
-            
+        
             $rows_fetched += $query->rows_in_result;
             $total_time   += $query->execution_time;
             $seq++;
         }
-        
         $backtrace_th  = $config->query_backtrace_enabled ? "<th>Backtrace</th>" : "";
         $backtrace_tf  = $config->query_backtrace_enabled ? "<td>&nbsp;</td>"    : "";
         
@@ -146,11 +149,14 @@ class internals
     private static function render_object_cache_details()
     {
         global $account, $config;
-    
+        
+        $hits = object_cache::get_hits();
+        if( count($hits) == 0 ) return;
+        
         $backtrace    = "";
         $output       = "";
         $seq          = 1;
-        foreach(object_cache::get_hits() as $hit)
+        foreach($hits as $hit)
         {
             if( $config->query_backtrace_enabled )
                 $backtrace = "<td><pre style='margin: 0'>" . implode("\n", (array) $hit->backtrace) . "</pre></td>";
@@ -212,10 +218,13 @@ class internals
     {
         global $mem_cache, $account, $config;
         
+        $hits = $mem_cache->get_hits();
+        if( count($hits) == 0 ) return;
+        
         $backtrace    = "";
         $output       = "";
         $seq          = 1;
-        foreach($mem_cache->get_hits() as $hit)
+        foreach($hits as $hit)
         {
             if( $config->query_backtrace_enabled )
                 $backtrace = "<td><pre style='margin: 0'>" . implode("\n", $hit->backtrace) . "</pre></td>";
@@ -275,10 +284,13 @@ class internals
     {
         global $account, $config;
         
+        $hits = disk_cache::get_hits();
+        if( count($hits) == 0 ) return;
+        
         $backtrace    = "";
         $output       = "";
         $seq          = 1;
-        foreach(disk_cache::get_hits() as $hit)
+        foreach($hits as $hit)
         {
             if( $config->query_backtrace_enabled )
                 $backtrace = "<td><pre style='margin: 0'>" . implode("\n", (array) $hit->backtrace) . "</pre></td>";
