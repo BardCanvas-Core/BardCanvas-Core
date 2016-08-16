@@ -75,6 +75,8 @@ class mem_cache
         if( $value === false ) $value = null;
         $this->data[$key] = $value;
         
+        if( is_null($value) ) return $value;
+        
         $backtrace = "N/A";
         if( $config->query_backtrace_enabled )
         {
