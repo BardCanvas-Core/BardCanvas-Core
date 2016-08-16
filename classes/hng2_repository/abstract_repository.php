@@ -9,8 +9,6 @@
 
 namespace hng2_repository;
 
-use hng2_cache\object_cache;
-
 abstract class abstract_repository
 {
     protected $row_class                = "";      // OVERRIDE THIS
@@ -20,11 +18,8 @@ abstract class abstract_repository
     
     protected $last_query;
     
-    protected static $cache = null;
-    
     public function __construct()
     {
-        self::$cache = new object_cache( get_class($this) );
     }
     
     /**
@@ -35,7 +30,10 @@ abstract class abstract_repository
      */
     public function get($id)
     {
-        if( self::$cache->exists($id) ) return self::$cache->get($id);
+        global $object_cache;
+        
+        if( $object_cache->exists($this->table_name, $id) )
+            return $object_cache->get($this->table_name, $id);
         
         $where = array($this->key_column_name => $id);
         
@@ -43,7 +41,9 @@ abstract class abstract_repository
         
         if( count($res) == 0 ) return null;
         
-        self::$cache->set($id, current($res));
+        /** @var abstract_record $item */
+        $item = current($res);
+        $object_cache->set($this->table_name, $id, $item);
         
         return current($res);
     }
@@ -173,15 +173,14 @@ abstract class abstract_repository
      */
     public function delete($key)
     {
-        global $database;
+        global $database, $object_cache;
         
         $query = "
             delete from {$this->table_name}
             where {$this->key_column_name} = '{$key}'
         ";
         $this->last_query = $query;
-        
-        self::$cache->delete($key);
+        $object_cache->delete($this->table_name, $key);
         
         return $database->exec($query);
     }

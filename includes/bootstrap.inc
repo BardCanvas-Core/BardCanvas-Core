@@ -9,6 +9,7 @@
 
 use hng2_base\account;
 use hng2_base\config;
+use hng2_cache\object_cache;
 use hng2_db\db_controller;
 use hng2_base\module;
 use hng2_base\settings;
@@ -22,9 +23,10 @@ include dirname(__FILE__) . "/geoip_functions.inc";
 include dirname(__FILE__) . "/web_helper_functions.inc";
 
 # Inits
-$config   = new config();
-$database = new db_controller();
-$settings = new settings();
+$config       = new config();
+$database     = new db_controller();
+$settings     = new settings();
+$object_cache = new object_cache("system");
 $config->fill_user_levels();
 $config->set_metering_toggles();
 $config->fill_upload_types();

@@ -15,13 +15,15 @@ class object_cache
     }
     
     /**
+     * @param $pool
      * @param $key
      *
      * @return mixed|null
      */
-    public function get($key)
+    public function get($pool, $key)
     {
         global $config;
+        $key = "$pool:$key";
         
         if( ! isset($this->data[$key]) ) return null;
     
@@ -42,8 +44,9 @@ class object_cache
         return $this->data[$key];
     }
     
-    public function exists($key)
+    public function exists($pool, $key)
     {
+        $key = "$pool:$key";
         return isset($this->data[$key]);
     }
     
@@ -55,9 +58,10 @@ class object_cache
         return $this->data;
     }
     
-    public function set($key, $value)
+    public function set($pool, $key, $value)
     {
         global $config;
+        $key = "$pool:$key";
         
         $this->data[$key] = $value;
         
@@ -76,9 +80,10 @@ class object_cache
         );
     }
     
-    public function delete($key)
+    public function delete($pool, $key)
     {
         global $config;
+        $key = "$pool:$key";
         
         if( isset($this->data[$key]) )
         {

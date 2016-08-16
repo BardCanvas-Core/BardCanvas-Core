@@ -1,6 +1,7 @@
 <?php
 namespace hng2_base;
 
+use hng2_cache\object_cache;
 use hng2_repository\abstract_repository;
 
 class accounts_repository extends abstract_repository
@@ -16,7 +17,10 @@ class accounts_repository extends abstract_repository
      */
     public function get($id_or_slug)
     {
-        if( self::$cache->exists($id_or_slug) ) return self::$cache->get($id_or_slug);
+        global $object_cache;
+        
+        if( $object_cache->exists($this->table_name, $id_or_slug) )
+            return $object_cache->get($this->table_name, $id_or_slug);
         
         $where = array("id_account = '$id_or_slug' or user_name = '$id_or_slug'");
         
@@ -24,9 +28,12 @@ class accounts_repository extends abstract_repository
         
         if( count($res) == 0 ) return null;
         
-        self::$cache->set($id_or_slug, current($res));
+        /** @var account_record $record */
+        $record = current($res);
+    
+        $object_cache->set($this->table_name, $record->id_account, $record);
         
-        return current($res);
+        return $record;
     }
     
     /**
@@ -76,16 +83,30 @@ class accounts_repository extends abstract_repository
      */
     public function get_multiple(array $ids)
     {
+        global $object_cache;
+        
         if( empty($ids) ) return array();
+    
+        $return = array();
+        foreach($ids as $index => $id)
+        {
+            $record = $object_cache->get($this->table_name, $id);
+            if( ! is_null($record) ) $return[$id] = $record;
+            unset($ids[$index]);
+        }
+        
+        if( empty($ids) ) return $return;
         
         $prepared_ids = array();
         foreach($ids as $id) $prepared_ids[] = "'$id'";
         $prepared_ids = implode(", ", $prepared_ids);
         
-        $return = array();
-        $rows   = $this->find(array("id_account in ($prepared_ids)"), 0, 0, "");
-        
-        foreach($rows as $row) $return[$row->id_account] = $row;
+        $rows = $this->find(array("id_account in ($prepared_ids)"), 0, 0, "");
+        foreach($rows as $row)
+        {
+            $object_cache->set($this->table_name, $row->id_account, $row);
+            $return[$row->id_account] = $row;
+        }
         
         return $return;
     }
@@ -101,5 +122,19 @@ class accounts_repository extends abstract_repository
         while($row = $database->fetch_object($res)) $return[] = $row->id_account;
         
         return $return;
+    }
+    
+    /**
+     * @param $key
+     *
+     * @return int
+     */
+    public function delete($key)
+    {
+        global $object_cache;
+        
+        $object_cache->delete($this->table_name, $key);
+        
+        return parent::delete($key);
     }
 }
