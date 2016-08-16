@@ -73,8 +73,9 @@
     <contact>
         <contact_user>Contact {$display_name}</contact_user>
         <pm>
-            <caption>Send PM</caption>
-            <title>Send a personal message to the user's inbox at {$website_name}</title>
+            <caption>PM</caption>
+            <title>Send a private message to the user's inbox at {$website_name}</title>
+            <send_to>Send PM to {$recipient}</send_to>
         </pm>
         <email>
             <caption>E-mail</caption>
