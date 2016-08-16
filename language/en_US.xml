@@ -138,6 +138,28 @@
     
     <settings_data>
         <title>Engine behavior, presentation and defaults</title>
+        
+        <!-- Core -->
+        <specs is_separator="true">Core</specs>
+        
+        <specs key="enabled">
+            <title>Engine state</title>
+            <description><![CDATA[
+                Emergency switch to issue an all-systems halt. Only administrative functions will work if "Off" is selected.
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        <specs key="website_name">
+            <title>Website name</title>
+            <description><![CDATA[
+                Name of this website
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
+        <!-- Display -->
+        <specs is_separator="true">Display and layout</specs>
+        
         <specs key="default_language">
             <title>Default language</title>
             <description><![CDATA[
@@ -151,52 +173,6 @@
             <options>
                 <option value="en_US">English/United States</option>
             </options>
-        </specs>
-        <specs key="enabled">
-            <title>Engine state</title>
-            <description><![CDATA[
-                Emergency switch to issue an all-systems halt. Only administrative functions will work if "Off" is selected.
-            ]]></description>
-            <type>boolean</type>
-        </specs>
-        <specs key="webmaster_address">
-            <title>Webmaster address</title>
-            <description><![CDATA[
-                Email address where all contact requests and engine notifications should be sent to.
-            ]]></description>
-            <type>email</type>
-        </specs>
-        <specs key="mail_sender_name">
-            <title>Email sender name</title>
-            <description><![CDATA[
-                Name of the sender for delivery of email notifications and messages. 
-            ]]></description>
-            <type>text</type>
-        </specs>
-        <specs key="mail_sender_email">
-            <title>Email sender address</title>
-            <description><![CDATA[
-                Email address used to deliver notificacions and messages
-            ]]></description>
-            <type>email</type>
-        </specs>
-        <specs key="recaptcha_private_key">
-            <title>reCAPTCHA secret key</title>
-            <description><![CDATA[
-                Secret key provided by Google Recaptcha. Used to protect the engine from automated accounts
-                creation among other things.<br>
-                Visit <a href="https://www.google.com/recaptcha" target="_blank">Google reCAPTCHA</a> to get your secret/site keypair
-                or leave blank to disable reCAPTCHA functionality.
-            ]]></description>
-            <type>text</type>
-        </specs>
-        <specs key="recaptcha_public_key">
-            <title>reCAPTCHA site key</title>
-            <description><![CDATA[
-                Public key provided by Google Recaptcha. Used in conjunction with the private key.<br>
-                Leave blank to disable reCAPTCHA functionality.
-            ]]></description>
-            <type>text</type>
         </specs>
         <specs key="template">
             <title>Active template</title>
@@ -221,6 +197,44 @@
             ]]></description>
             <type>boolean</type>
         </specs>
+        <specs key="main_menu_auto_collapse_width" disabled="true">
+            <title>Main menu auto-collapse width</title>
+            <description><![CDATA[
+                Specify the width in pixels that the browser window/display must have to collapse the main menu.<br>
+                The best amount to specify here is the width of the browser window with all menu items being shown.<br>
+                Defaults to 700.
+            ]]></description>
+            <type>number</type>
+        </specs>
+        
+        <!-- Email -->
+        <specs is_separator="true">Email</specs>
+        
+        <specs key="webmaster_address">
+            <title>Webmaster address</title>
+            <description><![CDATA[
+                Email address where all contact requests and engine notifications should be sent to.
+            ]]></description>
+            <type>email</type>
+        </specs>
+        <specs key="mail_sender_name">
+            <title>Email sender name</title>
+            <description><![CDATA[
+                Name of the sender for delivery of email notifications and messages. 
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_email">
+            <title>Email sender address</title>
+            <description><![CDATA[
+                Email address used to deliver notificacions and messages
+            ]]></description>
+            <type>email</type>
+        </specs>
+        
+        <!-- Users -->
+        <specs is_separator="true">User settings</specs>
+        
         <specs key="user_levels">
             <title>User levels</title>
             <description><![CDATA[
@@ -254,52 +268,27 @@
             ]]></description>
             <type>text</type>
         </specs>
-        <specs key="website_name">
-            <title>Website name</title>
+        
+        <!-- Input and uploads -->
+        <specs is_separator="true">Form input and uploads</specs>
+        
+        <specs key="recaptcha_private_key">
+            <title>reCAPTCHA secret key</title>
             <description><![CDATA[
-                Name of this website
+                Secret key provided by Google Recaptcha. Used to protect the engine from automated accounts
+                creation among other things.<br>
+                Visit <a href="https://www.google.com/recaptcha" target="_blank">Google reCAPTCHA</a> to get your secret/site keypair
+                or leave blank to disable reCAPTCHA functionality.
             ]]></description>
             <type>text</type>
         </specs>
-        
-        <specs key="display_performance_details" highlight_class="sensitive">
-            <title><![CDATA[
-                <span class="framed_content state_highlight inlined">Debugging</span>
-                Display performance details
-            ]]></title>
+        <specs key="recaptcha_public_key">
+            <title>reCAPTCHA site key</title>
             <description><![CDATA[
-                Display page load times and resource consumption at the footer of every page.<br>
-                <span class="fa fa-warning"></span>
-                <b>Warning:</b> all users will be able to see these details!
+                Public key provided by Google Recaptcha. Used in conjunction with the private key.<br>
+                Leave blank to disable reCAPTCHA functionality.
             ]]></description>
-            <type>boolean</type>
-            <config_callback>toggle_display_performance</config_callback>
-        </specs>
-        <specs key="query_tracking_enabled" highlight_class="sensitive">
-            <title><![CDATA[
-                <span class="framed_content state_highlight inlined">Debugging</span>
-                Query tracking
-            ]]></title>
-            <description><![CDATA[
-                Allows the engine to track database queries and show a table at the end of every page, below the footer.<br>
-                <span class="fa fa-warning"></span>
-                <b>Warning:</b> all users will be able to see these details!
-            ]]></description>
-            <type>boolean</type>
-            <config_callback>toggle_query_tracking</config_callback>
-        </specs>
-        <specs key="query_backtrace_enabled" highlight_class="sensitive">
-            <title><![CDATA[
-                <span class="framed_content state_highlight inlined">Debugging</span>
-                Query backtrace
-            ]]></title>
-            <description><![CDATA[
-                When query tracking is enabled, add a column showing the PHP scripts doing the calls.<br>
-                <span class="fa fa-warning"></span>
-                <b>Warning:</b> all users will be able to see these details!
-            ]]></description>
-            <type>boolean</type>
-            <config_callback>toggle_query_backtrace</config_callback>
+            <type>text</type>
         </specs>
         <specs key="max_upload_size">
             <title>Maximum upload size</title>
@@ -325,6 +314,10 @@
             ]]></description>
             <type>textarea</type>
         </specs>
+        
+        <!-- Media -->
+        <specs is_separator="true">Media defaults</specs>
+        
         <specs key="thumbnail_size">
             <title>Thumbnails size</title>
             <description><![CDATA[
@@ -372,15 +365,50 @@
             ]]></description>
             <type>text</type>
         </specs>
-        <specs key="main_menu_auto_collapse_width" disabled="true">
-            <title>Main menu auto-collapse width</title>
+        
+        <!-- Debug -->
+        <specs is_separator="true">Debugging</specs>
+        
+        <specs key="display_performance_details" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Debugging</span>
+                Display performance details
+            ]]></title>
             <description><![CDATA[
-                Specify the width in pixels that the browser window/display must have to collapse the main menu.<br>
-                The best amount to specify here is the width of the browser window with all menu items being shown.<br>
-                Defaults to 700.
+                Display page load times and resource consumption at the footer of every page.<br>
+                <span class="fa fa-warning"></span>
+                <b>Warning:</b> all users will be able to see these details!
             ]]></description>
-            <type>number</type>
+            <type>boolean</type>
+            <config_callback>toggle_display_performance</config_callback>
         </specs>
+        <specs key="query_tracking_enabled" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Debugging</span>
+                Query tracking
+            ]]></title>
+            <description><![CDATA[
+                Allows the engine to track database queries and show a table at the end of every page, below the footer.<br>
+                <span class="fa fa-warning"></span>
+                <b>Warning:</b> all users will be able to see these details!
+            ]]></description>
+            <type>boolean</type>
+            <config_callback>toggle_query_tracking</config_callback>
+        </specs>
+        <specs key="query_backtrace_enabled" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Debugging</span>
+                Query backtrace
+            ]]></title>
+            <description><![CDATA[
+                When query tracking is enabled, add a column showing the PHP scripts doing the calls.<br>
+                <span class="fa fa-warning"></span>
+                <b>Warning:</b> all users will be able to see these details!
+            ]]></description>
+            <type>boolean</type>
+            <config_callback>toggle_query_backtrace</config_callback>
+        </specs>
+        
     </settings_data>
     
 </language>
