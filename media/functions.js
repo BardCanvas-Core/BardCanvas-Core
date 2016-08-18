@@ -89,6 +89,7 @@ function set_body_metas()
     else                   $body.attr('data-viewport-class',  '480');
 }
 
+//noinspection JSUnusedGlobalSymbols
 /**
  * This function should be called AFTER set_body_metas
  */
@@ -198,7 +199,7 @@ function check_wrapped_tables()
 function refresh_record_browser($target)
 {
     var target_id = '#' + $target.attr('id');
-    $target.find('form').ajaxForm({
+    $target.find('form[data-avoid-ajax-browser-hooks!="true"]').ajaxForm({
         target:       target_id,
         beforeSubmit: function()
                       {
@@ -213,6 +214,16 @@ function refresh_record_browser($target)
     
     $target.find('.prettyPhoto').prettyPhoto({social_tools: false});
     check_wrapped_tables();
+}
+
+//noinspection JSUnusedGlobalSymbols
+function reload_record_browser($browser)
+{
+    var url = $browser.attr('data-src');
+    $browser.load(url, function()
+    {
+        refresh_record_browser( $(this) );
+    });
 }
 
 function toggle_info_section(handler, handler_is_prefix)
@@ -303,11 +314,6 @@ function check_main_menu_auto_collapse()
         $('body').attr('data-main-menu-collapsed', 'true');
     else
         $('body').attr('data-main-menu-collapsed', null);
-}
-
-function send_private_message(id_account)
-{
-    // TODO: implement send_private_message() function
 }
 
 $(document).ready(function()
