@@ -148,15 +148,34 @@ function get_minimized_date($input)
 {
     $timestamp = strtotime($input);
     
-    if( date("Y") > substr($input, 0, 4) )
-        # Another year = full date
+    if( date("Y") > substr($input, 0, 4) )           # Another year = full date
         return strftime("%b %e, %G", $timestamp);
-    elseif( date("Y-m-d") == substr($input, 0, 10) )
-        # Today = time
+    if( date("Y-m-d") == substr($input, 0, 10) ) # Today = time
         return strftime("%H:%M", $timestamp);
-    else
-        # Other day = day
+    else                                             # Other day = day
         return strftime("%b %e", $timestamp);
+}
+
+/**
+ * Depending on the input:
+ * - if today, returns hour
+ * - if this month, returns weekday and hour
+ * - if this year, returns full date
+ *
+ * @param $input
+ *
+ * @return string
+ */
+function get_selective_date($input)
+{
+    $timestamp = strtotime($input);
+    
+    if( date("Y-m-d") == substr($input, 0, 10) )        # Today = time
+        return strftime("%H:%M", $timestamp);
+    if( date("Y-m") == substr($input, 0, 7) )           # This month = weekday, time 
+        return strftime("%A %e, %H:%M", $timestamp);
+    else                                                # Other day = full time
+        return strftime("%b %e %G, %H:%M", $timestamp);
 }
 
 /**
