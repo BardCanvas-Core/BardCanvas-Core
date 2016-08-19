@@ -162,16 +162,19 @@ function get_minimized_date($input)
  * - if this month, returns weekday and hour
  * - if this year, returns full date
  *
- * @param $input
+ * @param      $input
+ * @param bool $time_elapsed_if_today if true and today, will return "time ago" instead of hour
  *
  * @return string
  */
-function get_selective_date($input)
+function get_selective_date($input, $time_elapsed_if_today = false)
 {
     $timestamp = strtotime($input);
     
     if( date("Y-m-d") == substr($input, 0, 10) )        # Today = time
-        return strftime("%H:%M", $timestamp);
+        return $time_elapsed_if_today
+            ? time_elapsed_string($input)
+            : strftime("%H:%M", $timestamp);
     if( date("Y-m") == substr($input, 0, 7) )           # This month = weekday, time 
         return strftime("%A %e, %H:%M", $timestamp);
     else                                                # Other day = full time
