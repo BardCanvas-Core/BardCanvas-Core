@@ -49,10 +49,10 @@ ReWriteRule ^author/(.*)/posts/$    posts/by_author.php?slug=$1              [QS
 ReWriteRule ^author/(.*)/posts$     posts/by_author.php?slug=$1              [QSA,L]
 
 # TODO: Mentions
-ReWriteRule ^user/(.*)/mentions/$   accounts/profile_mentions.php?slug=$1    [QSA,L]
-ReWriteRule ^user/(.*)/mentions$    accounts/profile_mentions.php?slug=$1    [QSA,L]
-ReWriteRule ^author/(.*)/mentions/$ accounts/profile_mentions.php?slug=$1    [QSA,L]
-ReWriteRule ^author/(.*)/mentions$  accounts/profile_mentions.php?slug=$1    [QSA,L]
+# ReWriteRule ^user/(.*)/mentions/$   accounts/profile_mentions.php?slug=$1    [QSA,L]
+# ReWriteRule ^user/(.*)/mentions$    accounts/profile_mentions.php?slug=$1    [QSA,L]
+# ReWriteRule ^author/(.*)/mentions/$ accounts/profile_mentions.php?slug=$1    [QSA,L]
+# ReWriteRule ^author/(.*)/mentions$  accounts/profile_mentions.php?slug=$1    [QSA,L]
 
 # Author profile itself
 ReWriteRule ^user/(.*)/$   accounts/public_profile.php?slug=$1 [QSA,L]
