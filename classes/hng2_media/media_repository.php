@@ -643,4 +643,14 @@ class media_repository extends abstract_repository
             $this->last_query = $database->get_last_query();
         }
     }
+    
+    public function change_status($id_media, $new_status)
+    {
+        global $database;
+        
+        $res = $database->exec("update {$this->table_name} set status = '$new_status' where  id_media = '$id_media'");
+        $this->last_query = $database->get_last_query();
+        
+        return $res;
+    }
 }
