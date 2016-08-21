@@ -10,6 +10,10 @@ ReWriteEngine On
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
 
+# Registration
+RewriteRule ^confirm_account/$ accounts/confirm_account.php [QSA,L] 
+RewriteRule ^confirm_account$  accounts/confirm_account.php [QSA,L] 
+
 # Feeds --- WARNING: THESE MUST GO ABOVE EVERYTHING!
 ReWriteRule ^feed/$               scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
 ReWriteRule ^feed$                scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
