@@ -45,12 +45,52 @@ class internals
                 ";
             echo "</div>";
             
+            self::render_globals();
             self::render_database_details();
             self::render_object_cache_details();
             self::render_mem_cache_details();
             self::render_disk_cache_details();
             
         echo "</div>";
+    }
+    
+    private static function render_globals()
+    {
+        global $config, $account;
+        
+        if( empty($config->globals["internals:debug_info"]) ) return;
+        
+        $table_style    = $account->engine_prefs["internals_globals_hidden"] == "true" ? "display: none;" : "";
+        $new_state      = $account->engine_prefs["internals_globals_hidden"] == "true" ? "" : "true";
+        $expand_style   = $account->engine_prefs["internals_globals_hidden"] == "true" ? "" : "display: none";
+        $collapse_style = $account->engine_prefs["internals_globals_hidden"] == "true" ? "display: none" : "";
+        
+        $output = "";
+        foreach($config->globals["internals:debug_info"] as $key => $val)
+            $output .= "
+                <section>
+                    <h3>$key</h3>
+                    <pre class='framed_content' style='margin-bottom: 10px;'>" . print_r($val, true) . "</pre>
+                </section>
+            ";
+        
+        echo "
+            <div class='internals'>
+                <section>
+                    <h2>
+                        <span class='toggler' onclick='$(this).find(\"span\").toggle(); $(this).closest(\"section\").find(\".hideable\").toggle(); set_engine_pref(\"internals_db_stats_hidden\", \"{$new_state}\")'>
+                            <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
+                            <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
+                        </span>
+                        Debug info
+                    </h2>
+                    <div class='framed_content hideable' style='{$table_style}'>
+                        {$output}
+                    </div>
+                </section>
+            </div>
+        ";
+        
     }
     
     private static function render_database_details()
