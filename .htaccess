@@ -10,31 +10,13 @@ ReWriteEngine On
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
 
-# Registration
+# Account utilities
 RewriteRule ^confirm_account/$ accounts/confirm_account.php [QSA,L] 
 RewriteRule ^confirm_account$  accounts/confirm_account.php [QSA,L] 
-
-# Feeds --- WARNING: THESE MUST GO ABOVE EVERYTHING!
-ReWriteRule ^feed/$               scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
-ReWriteRule ^feed$                scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
-ReWriteRule ^(.+)/feed/$          scripts/rss_feed_generator.php?handle=$1     [QSA,L]
-ReWriteRule ^(.+)/feed$           scripts/rss_feed_generator.php?handle=$1     [QSA,L]
-
-# Post indexes by category
-ReWriteRule ^category/(.*)/media/$ gallery/by_category.php?slug=$1 [QSA,L]
-ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
-ReWriteRule ^category/(.*)/$       posts/by_category.php?slug=$1   [QSA,L]
-ReWriteRule ^category/(.*)$        posts/by_category.php?slug=$1   [QSA,L]
-
-# Indexes by tag
-ReWriteRule ^tag/(.*)/media/$    gallery/by_tag.php?tag=$1  [QSA,L]
-ReWriteRule ^tag/(.*)/media$     gallery/by_tag.php?tag=$1  [QSA,L]
-ReWriteRule ^tag/(.*)/posts/$    posts/by_tag.php?tag=$1    [QSA,L]
-ReWriteRule ^tag/(.*)/posts$     posts/by_tag.php?tag=$1    [QSA,L]
-# ReWriteRule ^tag/(.*)/comments/$ comments/by_tag.php?tag=$1 [QSA,L]
-# ReWriteRule ^tag/(.*)/comments$  comments/by_tag.php?tag=$1 [QSA,L]
-ReWriteRule ^tag/(.*)/$          search/by_tag.php?tag=$1   [QSA,L]
-ReWriteRule ^tag/(.*)$           search/by_tag.php?tag=$1   [QSA,L]
+RewriteRule ^confirm_device/$  accounts/confirm_device.php  [QSA,L] 
+RewriteRule ^confirm_device$   accounts/confirm_device.php  [QSA,L] 
+RewriteRule ^reset_password/$  accounts/reset_password.php  [QSA,L] 
+RewriteRule ^reset_password$   accounts/reset_password.php  [QSA,L] 
 
 # User profile resources
 ReWriteRule ^user/(.*)/avatar/$         scripts/get_user_profile_resource.php?slug=$1&type=avatar         [QSA,L]
@@ -57,12 +39,6 @@ ReWriteRule ^author/(.*)/posts$     posts/by_author.php?slug=$1              [QS
 # ReWriteRule ^user/(.*)/mentions$    accounts/profile_mentions.php?slug=$1    [QSA,L]
 # ReWriteRule ^author/(.*)/mentions/$ accounts/profile_mentions.php?slug=$1    [QSA,L]
 # ReWriteRule ^author/(.*)/mentions$  accounts/profile_mentions.php?slug=$1    [QSA,L]
-
-# Author profile itself
-ReWriteRule ^user/(.*)/$   accounts/public_profile.php?slug=$1 [QSA,L]
-ReWriteRule ^user/(.*)$    accounts/public_profile.php?slug=$1 [QSA,L]
-ReWriteRule ^author/(.*)/$ accounts/public_profile.php?slug=$1 [QSA,L]
-ReWriteRule ^author/(.*)$  accounts/public_profile.php?slug=$1 [QSA,L]
 
 # Media archives
 ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/media/$ gallery/by_date.php?date=$1 [QSA,L]
@@ -88,6 +64,34 @@ ReWriteRule ^pm_attachments/(.*)$    data/pm_attachments/$1                [QSA,
 # Search
 RewriteCond %{QUERY_STRING} ^s=(.*)$
 RewriteRule .* search/index.php [QSA,L]
+
+# TODO: Feeds --- WARNING: THESE MUST GO ABOVE EVERYTHING!
+ReWriteRule ^feed/$               scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
+ReWriteRule ^feed$                scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
+ReWriteRule ^(.+)/feed/$          scripts/rss_feed_generator.php?handle=$1     [QSA,L]
+ReWriteRule ^(.+)/feed$           scripts/rss_feed_generator.php?handle=$1     [QSA,L]
+
+# Post indexes by category
+ReWriteRule ^category/(.*)/media/$ gallery/by_category.php?slug=$1 [QSA,L]
+ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
+ReWriteRule ^category/(.*)/$       posts/by_category.php?slug=$1   [QSA,L]
+ReWriteRule ^category/(.*)$        posts/by_category.php?slug=$1   [QSA,L]
+
+# Indexes by tag
+ReWriteRule ^tag/(.*)/media/$    gallery/by_tag.php?tag=$1  [QSA,L]
+ReWriteRule ^tag/(.*)/media$     gallery/by_tag.php?tag=$1  [QSA,L]
+ReWriteRule ^tag/(.*)/posts/$    posts/by_tag.php?tag=$1    [QSA,L]
+ReWriteRule ^tag/(.*)/posts$     posts/by_tag.php?tag=$1    [QSA,L]
+# ReWriteRule ^tag/(.*)/comments/$ comments/by_tag.php?tag=$1 [QSA,L]
+# ReWriteRule ^tag/(.*)/comments$  comments/by_tag.php?tag=$1 [QSA,L]
+ReWriteRule ^tag/(.*)/$          search/by_tag.php?tag=$1   [QSA,L]
+ReWriteRule ^tag/(.*)$           search/by_tag.php?tag=$1   [QSA,L]
+
+# Author profile itself
+ReWriteRule ^user/(.*)/$   accounts/public_profile.php?slug=$1 [QSA,L]
+ReWriteRule ^user/(.*)$    accounts/public_profile.php?slug=$1 [QSA,L]
+ReWriteRule ^author/(.*)/$ accounts/public_profile.php?slug=$1 [QSA,L]
+ReWriteRule ^author/(.*)$  accounts/public_profile.php?slug=$1 [QSA,L]
 
 #
 # Document handler - for all those that support single documents
