@@ -307,6 +307,15 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
     return $tags;
 }
 
+/**
+ * @param       $subject
+ * @param       $body
+ * @param       $recipients [name => address, name => address, ...]
+ * @param array $sender     [name => address, name => address, ...] If empty, default sender will be used
+ *
+ * @return string
+ * @throws phpmailerException
+ */
 function send_mail($subject, $body, $recipients, $sender = array())
 {
     global $settings;

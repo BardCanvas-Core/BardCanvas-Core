@@ -121,14 +121,14 @@ class device
         
         $limit        = date("Y-m-d H:i:s", strtotime("now + 70 minutes"));
         $token        = encrypt( $this->id_account."\t".$this->id_device."\t".$limit, $config->encryption_key );
-        $token_url    = (empty($_SERVER["HTTPS"]) ? "http://" : "https://").$_SERVER["HTTP_HOST"]."/confirm_device?token=".urlencode($token);
+        $token_url    = "{$config->full_root_url}/confirm_device?token=".urlencode($token);
         $ip           = get_remote_address();
         $hostname     = gethostbyaddr(get_remote_address());
         $fecha_envio  = date("Y-m-d H:i:s");
-        $mail_from    = $settings->get("engine.mail_sender_name")."<".$settings->get("engine.mail_sender_email").">";
-        $mail_to      = "$account->display_name<$account->email>";
-        $mail_alt     = "$account->display_name alternate email<$account->email>";
-    
+        
+        $recipients = array($account->display_name => $account->email);
+        if( ! empty($account->alt_email) ) $recipients["$account->display_name (2)"] = $account->alt_email;
+        
         $request_location = forge_geoip_location($ip);
         
         # header("X-Auth-Token: $token_url");
@@ -143,14 +143,9 @@ class device
                          array('{$website_name}',                       '{$display_name}',        '{$device_info}',       '{$token_url}', '{$main_email}',    '{$alt_email}',        '{$date_sent}', '{$request_ip}', '{$request_hostname}', '{$request_location}', '{$request_user_agent}'      ),
                          array(  $settings->get("engine.website_name"),   $account->display_name,   $this->device_header,   $token_url,     $account->email,    $account->alt_email,   $fecha_envio,   $ip,             $hostname,             $request_location,     $_SERVER["HTTP_USER_AGENT"])
                      );
-        $mail_body = str_replace("<br />", "", preg_replace('/\n\s*/', "\n", nl2br($mail_body)));
-        return @mail(
-            $mail_to, $mail_subject, $mail_body, 
-            "From: ".$mail_from . "\r\n" . 
-            "MIME-Version: 1.0\r\n" .
-            "Content-Type: text/plain; charset=utf-8\r\n" .
-            (empty($account->alt_email) ? "" : "CC: ".$mail_alt."\r\n")
-        );
+        $mail_body = unindent($mail_body);
+        
+        return send_mail($mail_subject, nl2br($mail_body), $recipients);
     }
     
     function enable()

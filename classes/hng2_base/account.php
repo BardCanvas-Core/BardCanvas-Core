@@ -361,9 +361,9 @@ class account extends account_toolbox
         $ip           = get_remote_address();
         $hostname     = gethostbyaddr(get_remote_address());
         $fecha_envio  = date("Y-m-d H:i:s");
-        $mail_from    = $settings->get("engine.mail_sender_name")."<".$settings->get("engine.mail_sender_email").">";
-        $mail_to      = "$this->display_name<$this->email>";
-        $mail_alt     = "$this->display_name alternate email<$this->email>";
+        
+        $recipients = array($this->display_name => $this->email);
+        if( ! empty($this->alt_email) ) $recipients["$this->display_name (2)"] = $this->alt_email;
         
         $request_location = forge_geoip_location($ip);
         
@@ -377,14 +377,9 @@ class account extends account_toolbox
                          array('{$website_name}',                       '{$display_name}',     '{$token_url}', '{$main_email}', '{$alt_email}',     '{$date_sent}', '{$request_ip}', '{$request_hostname}', '{$request_location}', '{$request_user_agent}'      ),
                          array(  $settings->get("engine.website_name"),   $this->display_name,   $token_url,     $this->email,    $this->alt_email,   $fecha_envio,   $ip,             $hostname,             $request_location,     $_SERVER["HTTP_USER_AGENT"])
                      );
-        $mail_body = str_replace("<br />", "", preg_replace('/\n\s*/', "\n", nl2br($mail_body)));
-        return @mail(
-            $mail_to, $mail_subject, $mail_body, 
-            "From: ".$mail_from . "\r\n" . 
-            "MIME-Version: 1.0\r\n" .
-            "Content-Type: text/plain; charset=utf-8\r\n" .
-            (empty($this->alt_email) ? "" : "CC: ".$mail_alt."\r\n")
-        );
+        $mail_body = unindent($mail_body);
+        
+        return send_mail($mail_subject, nl2br($mail_body), $recipients);
     }
     
     /**
