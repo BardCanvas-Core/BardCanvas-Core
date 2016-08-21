@@ -101,10 +101,11 @@ class account_toolbox extends abstract_record
     {
         global $config;
         
+        $dir = substr($this->user_name, 0, 3);
+        $cache_file = "{$config->datafiles_location}/cache/account_prefs/{$dir}/{$this->user_name}.dat";
+        
         if( ! is_object($this->engine_prefs_cache) )
-            $this->engine_prefs_cache = new disk_cache(
-                "{$config->datafiles_location}/cache/account_prefs_{$this->user_name}.dat"
-            );
+            $this->engine_prefs_cache = new disk_cache($cache_file);
     }
     
     protected function load_engine_prefs()
