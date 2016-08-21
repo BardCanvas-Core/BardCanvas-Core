@@ -157,7 +157,7 @@ class mem_cache
                     
                     foreach( $dump as $key => $value )
                     {
-                        if( preg_match("/^{$this->var_prefix}.*/", $key) )
+                        if( preg_match("#^{$this->var_prefix}.*#", $key) )
                             $keys[] = $key;
                         
                         if( count($keys) == $limit ) return $keys;
