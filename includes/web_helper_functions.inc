@@ -133,7 +133,8 @@ function send_notification($id_account, $type, $contents)
 function broadcast_to_moderators($type, $contents)
 {
     $repository = new accounts_repository();
-    $ids = $repository->get_ids_above_level(config::MODERATOR_USER_LEVEL);
+    $res = $repository->get_basics_above_level(config::MODERATOR_USER_LEVEL);
+    $ids = array_keys($res);
     foreach($ids as $id) send_notification($id, $type, $contents);
 }
 
@@ -346,8 +347,26 @@ function send_mail($subject, $body, $recipients, $sender = array())
     $mail->Subject  = $subject;
     $mail->Body     = $body;
     $mail->AltBody  = strip_tags($body);
+    sleep(1);
     
     if( ! $mail->send() ) return $mail->ErrorInfo;
     
     return "OK";
+}
+
+function broadcast_mail_to_moderators($subject, $body)
+{
+    $repository = new accounts_repository();
+    $mods       = $repository->get_basics_above_level(config::MODERATOR_USER_LEVEL);
+    $prefs      = $repository->get_multiple_engine_prefs(array_keys($mods), "@contact:moderator_emails_for_comments");
+    
+    if( ! empty($prefs) )
+        foreach($prefs as $id_account => $value)
+            if( $value == "false" )
+                unset( $mods[$id_account] );
+    
+    if( empty($mods) ) return;
+    
+    foreach($mods as $mod)
+        send_mail($subject, $body, array($mod->display_name => $mod->email));
 }
