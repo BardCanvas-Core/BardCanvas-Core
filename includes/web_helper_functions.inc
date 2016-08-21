@@ -317,7 +317,7 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
  * @return string
  * @throws phpmailerException
  */
-function send_mail($subject, $body, $recipients, $sender = array())
+function send_mail($subject, $body, $recipients, $sender = null)
 {
     global $settings;
     
@@ -335,7 +335,7 @@ function send_mail($subject, $body, $recipients, $sender = array())
     foreach($recipients as $name => $address)
         $mail->addAddress($address, $name);
     
-    if( empty($sender) )
+    if( is_null($sender) )
         $sender = array(
             $settings->get("engine.mail_sender_name") => $settings->get("engine.mail_sender_email")
         );
@@ -347,7 +347,6 @@ function send_mail($subject, $body, $recipients, $sender = array())
     $mail->Subject  = $subject;
     $mail->Body     = $body;
     $mail->AltBody  = strip_tags($body);
-    sleep(1);
     
     if( ! $mail->send() ) return $mail->ErrorInfo;
     
