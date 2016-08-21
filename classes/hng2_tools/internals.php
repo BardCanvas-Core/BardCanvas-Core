@@ -78,7 +78,7 @@ class internals
             <div class='internals'>
                 <section>
                     <h2>
-                        <span class='toggler' onclick='$(this).find(\"span\").toggle(); $(this).closest(\"section\").find(\".hideable\").toggle(); set_engine_pref(\"internals_db_stats_hidden\", \"{$new_state}\")'>
+                        <span class='toggler' onclick='$(this).find(\"span\").toggle(); $(this).closest(\"section\").find(\".hideable\").toggle(); set_engine_pref(\"internals_globals_hidden\", \"{$new_state}\")'>
                             <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
@@ -257,6 +257,31 @@ class internals
     private static function render_mem_cache_details()
     {
         global $mem_cache, $account, $config;
+        
+        $keys = $mem_cache->get_all_keys();
+        $table_style    = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "display: none;" : "";
+        $new_state      = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "" : "true";
+        $expand_style   = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "" : "display: none";
+        $collapse_style = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "display: none" : "";
+    
+        echo "
+            <div class='internals'>
+                <section>
+                    <h2>
+                        <span class='toggler' onclick='$(this).find(\"span\").toggle(); $(this).closest(\"section\").find(\".hideable\").toggle(); set_engine_pref(\"internals_memcache_keys_hidden\", \"{$new_state}\")'>
+                            <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
+                            <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
+                        </span>
+                        MemCache keys
+                    </h2>
+                    <div class='framed_content hideable' style='{$table_style}'>
+                        <ul>
+                            <li>" . implode("</li>\n                            <li>", $keys) . "</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        ";
         
         $hits = $mem_cache->get_hits();
         if( count($hits) == 0 ) return;
