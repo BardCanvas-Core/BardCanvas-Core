@@ -153,7 +153,7 @@ class module
     public function load_extensions($hook_area, $hook_marker)
     {
         /** @noinspection PhpUnusedLocalVariableInspection */
-        global $modules, $current_module;
+        global $modules, $current_module, $config;
         
         /**
          * @var module[] $modules
@@ -163,16 +163,59 @@ class module
         
         if( empty($this->extended_by) ) return;
         
+        # foreach($this->extended_by as $module_name => $sections)
+        # {
+        #     if( empty($sections[$hook_area]) ) continue;
+        #     
+        #     if( empty($sections[$hook_area]->{$hook_marker}) ) continue;
+        #     
+        #     /** @noinspection PhpUnusedLocalVariableInspection */
+        #     $this_module = $modules[$module_name];
+        #     include ABSPATH . "/$module_name/".trim($sections[$hook_area]->{$hook_marker});
+        # }
+        
+        $config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"] = array();
         foreach($this->extended_by as $module_name => $sections)
         {
             if( empty($sections[$hook_area]) ) continue;
-            
             if( empty($sections[$hook_area]->{$hook_marker}) ) continue;
+            
+            $priority = trim($sections[$hook_area]->{$hook_marker}["priority"]);
+            if( $priority == "" ) $priority = "500";
+            else                  $priority = sprintf("%03.0f", $priority);
     
+            $config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"]["$priority - $module_name"]
+                = ABSPATH . "/$module_name/".trim($sections[$hook_area]->{$hook_marker});
+        }
+        
+        if( empty($config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"]) )
+        {
+            unset($config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"]);
+            
+            return;
+        }
+        
+        ksort($config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"]);
+        # $config->globals["internals:debug_info"]["Extension list for {$this->name}/$hook_area/$hook_marker"]
+        #     = print_r($config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"], true);
+        
+        foreach($config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"] as $module_data => $include_file)
+        {
+            if( ! file_exists($include_file) )
+            {
+                $config->globals["internals:debug_info"]["modules:{$this->name} - Warnings"][]
+                    = "Include file '$include_file' not found while loading extension for '$hook_area'->'$hook_marker'.";
+                
+                continue;
+            }
+            
+            $module_name = end(explode(" - ", $module_data));
             /** @noinspection PhpUnusedLocalVariableInspection */
             $this_module = $modules[$module_name];
-            include ABSPATH . "/$module_name/".trim($sections[$hook_area]->{$hook_marker});
+            include $include_file;
         }
+        
+        unset( $config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"] );
     }
     
     /**
