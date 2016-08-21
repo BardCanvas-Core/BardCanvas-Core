@@ -244,7 +244,7 @@
                 <span class="fa fa-warning"></span> <b>Warning:</b>
                 There are <b>8</b> roles tied to specific levels:
                 <span class="framed_content inlined">0 - Unregistered</span>, <span class="framed_content inlined">1 - Unconfirmed</span>,
-                <span class="framed_content inlined">50 - Newcomer</span>,    <span class="framed_content inlined">100 - Author</span>,
+                <span class="framed_content inlined">10 - Newcomer</span>,    <span class="framed_content inlined">100 - Author</span>,
                 <span class="framed_content inlined">150 - VIP</span>,        <span class="framed_content inlined">200 - Moderator</span>,
                 <span class="framed_content inlined">240 - Coadmin</span> and <span class="framed_content inlined">255 - Admin</span>.<br>
                 You must <b>keep these levels</b> in the list and just change their names as needed. Plus,

@@ -41,7 +41,7 @@ class config
     
     const UNREGISTERED_USER_LEVEL =   0;
     const UNCONFIRMED_USER_LEVEL  =   1;
-    const NEWCOMER_USER_LEVEL     =  50;
+    const NEWCOMER_USER_LEVEL     =  10;
     const AUTHOR_USER_LEVEL       = 100;
     const VIP_USER_LEVEL          = 150;
     const MODERATOR_USER_LEVEL    = 200;
