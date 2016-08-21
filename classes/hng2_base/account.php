@@ -312,6 +312,7 @@ class account extends account_toolbox
                 display_name  = '".addslashes($this->display_name)."'   ,
                 email         = '".addslashes($this->email)."'          ,
                 alt_email     = '".addslashes($this->alt_email)."'      ,
+                birthdate     = '".addslashes($this->birthdate)."'      ,
                 country       = '".addslashes($this->country)."'        ,
                 level         = '".addslashes($this->level)."'          ,
                 state         = '".addslashes($this->state)."'          ,
@@ -388,20 +389,36 @@ class account extends account_toolbox
     
     /**
      * Activate an account that has been created and confirmed
+     *
+     * @param bool|int $set_user_level If specified, it must be integer
+     *
+     * @return int
+     * @throws \Exception
      */
-    public function activate()
+    public function activate($set_user_level = false)
     {
         global $database;
         
-        $now              = date("Y-m-d H:i:s");
-        $this->state      = "enabled";
-        $query = "
-            update account set
-                state       = '".addslashes($this->state)."',
-                last_update = '$now'
-            where
-                id_account  = '".addslashes($this->id_account)."'
-        ";
+        $now         = date("Y-m-d H:i:s");
+        $this->state = "enabled";
+        
+        if( $set_user_level === false )
+            $query = "
+                update account set
+                    state       = '".addslashes($this->state)."',
+                    last_update = '$now'
+                where
+                    id_account  = '".addslashes($this->id_account)."'
+            ";
+        else
+            $query = "
+                update account set
+                    state       = '".addslashes($this->state)."',
+                    user_level  = '$set_user_level',
+                    last_update = '$now'
+                where
+                    id_account  = '".addslashes($this->id_account)."'
+            ";
         
         return $database->exec($query);
     }
