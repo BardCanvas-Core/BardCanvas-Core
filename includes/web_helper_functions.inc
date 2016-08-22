@@ -366,6 +366,7 @@ function broadcast_mail_to_moderators($subject, $body)
     
     if( empty($mods) ) return;
     
-    foreach($mods as $mod)
-        send_mail($subject, $body, array($mod->display_name => $mod->email));
+    $recipients = array();
+    foreach($mods as $mod) $recipients[$mod->display_name] = $mod->email;
+    send_mail($subject, $body, $recipients);
 }
