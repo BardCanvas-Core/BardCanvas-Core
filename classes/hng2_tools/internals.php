@@ -64,6 +64,7 @@ class internals
         $new_state      = $account->engine_prefs["internals_globals_hidden"] == "true" ? "" : "true";
         $expand_style   = $account->engine_prefs["internals_globals_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_globals_hidden"] == "true" ? "display: none" : "";
+        $wasuuup        = md5(mt_rand(1, 65535));
         
         $output = "";
         foreach($config->globals["internals:debug_info"] as $key => $val)
@@ -75,6 +76,7 @@ class internals
             ";
         
         echo "
+            <a name='debug_info'></a>
             <div class='internals'>
                 <section>
                     <h2>
@@ -82,7 +84,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
-                        Debug info
+                        <a href='?wasuuup={$wasuuup}#debug_info'>Debug info</a>
                     </h2>
                     <div class='framed_content hideable' style='{$table_style}'>
                         {$output}
@@ -90,7 +92,6 @@ class internals
                 </section>
             </div>
         ";
-        
     }
     
     private static function render_database_details()
@@ -107,7 +108,7 @@ class internals
         $seq          = 1;
         $total_time   = 0;
         $rows_fetched = 0;
-    
+        
         foreach($querys as $query)
         {
             $execution_time = number_format($query->execution_time * 1000, 3);
@@ -143,9 +144,11 @@ class internals
         $new_state      = $account->engine_prefs["internals_db_stats_hidden"] == "true" ? "" : "true";
         $expand_style   = $account->engine_prefs["internals_db_stats_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_db_stats_hidden"] == "true" ? "display: none" : "";
+        $wasuuup        = md5(mt_rand(1, 65535));
         
         $seq--;
         echo "
+            <a name='db_stats'></a>
             <div class='internals'>
                 <section>
                     <h2>
@@ -153,7 +156,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
-                        Database statistics
+                        <a href='?wasuuup={$wasuuup}#db_stats'>Database statistics</a>
                         ({$seq})
                     </h2>
                     <div class='framed_content hideable table_wrapper' style='{$table_style}'>
@@ -213,15 +216,17 @@ class internals
             ";
             $seq++;
         }
-    
+        
         $backtrace_th   = $config->query_backtrace_enabled ? "<th>Backtrace</th>" : "";
         $table_style    = $account->engine_prefs["internals_objectcache_stats_hidden"] == "true" ? "display: none;" : "";
         $new_state      = $account->engine_prefs["internals_objectcache_stats_hidden"] == "true" ? "" : "true";
         $expand_style   = $account->engine_prefs["internals_objectcache_stats_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_objectcache_stats_hidden"] == "true" ? "display: none" : "";
-    
+        $wasuuup        = md5(mt_rand(1, 65535));
+        
         $seq--;
         echo "
+            <a name='object_cache'></a>
             <div class='internals'>
                 <section>
                     <h2>
@@ -229,7 +234,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
-                        Object (RAM) cache hits
+                        <a href='?wasuuup={$wasuuup}#object_cache'>Object (RAM) cache hits</a>
                         ({$seq})
                     </h2>
                     <div class='framed_content hideable table_wrapper' style='{$table_style}'>
@@ -258,13 +263,15 @@ class internals
     {
         global $mem_cache, $account, $config;
         
-        $keys = $mem_cache->get_all_keys();
+        $keys           = $mem_cache->get_all_keys();
         $table_style    = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "display: none;" : "";
         $new_state      = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "" : "true";
         $expand_style   = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "display: none" : "";
-    
+        $wasuuup        = md5(mt_rand(1, 65535));
+        
         echo "
+            <a name='mem_keys'></a>
             <div class='internals'>
                 <section>
                     <h2>
@@ -272,7 +279,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
-                        MemCache keys
+                        <a href='?wasuuup={$wasuuup}#mem_keys'>MemCache keys</a>
                     </h2>
                     <div class='framed_content hideable' style='{$table_style}'>
                         <ul>
@@ -311,9 +318,11 @@ class internals
         $new_state      = $account->engine_prefs["internals_memcache_stats_hidden"] == "true" ? "" : "true";
         $expand_style   = $account->engine_prefs["internals_memcache_stats_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_memcache_stats_hidden"] == "true" ? "display: none" : "";
+        $wasuuup        = md5(mt_rand(1, 65535));
         
         $seq--;
         echo "
+            <a name='mem_hits'></a>
             <div class='internals'>
                 <section>
                     <h2>
@@ -321,7 +330,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
-                        MemCache hits
+                        <a href='?wasuuup={$wasuuup}#mem_hits'>MemCache hits</a>
                         ({$seq})
                     </h2>
                     <div class='framed_content hideable table_wrapper' style='{$table_style}'>
@@ -378,9 +387,11 @@ class internals
         $new_state      = $account->engine_prefs["internals_diskcache_stats_hidden"] == "true" ? "" : "true";
         $expand_style   = $account->engine_prefs["internals_diskcache_stats_hidden"] == "true" ? "" : "display: none";
         $collapse_style = $account->engine_prefs["internals_diskcache_stats_hidden"] == "true" ? "display: none" : "";
+        $wasuuup        = md5(mt_rand(1, 65535));
         
         $seq--;
         echo "
+            <a name='disk_cache'></a>
             <div class='internals'>
                 <section>
                     <h2>
@@ -388,7 +399,7 @@ class internals
                             <span class='fa pseudo_link fa-caret-right fa-border fa-fw' style='{$expand_style}'></span>
                             <span class='fa pseudo_link fa-caret-down  fa-border fa-fw' style='{$collapse_style}'></span>
                         </span>
-                        Disk cache hits
+                        <a href='?wasuuup={$wasuuup}#disk_cache'>Disk cache hits</a>
                         ({$seq})
                     </h2>
                     <div class='framed_content hideable table_wrapper' style='{$table_style}'>
