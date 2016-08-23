@@ -93,6 +93,12 @@ class media_record extends abstract_record
         if( is_string($this->mentions_list) )   $this->mentions_list   = explode(",", $this->mentions_list);
     }
     
+    public function set_from_post()
+    {
+        parent::set_from_post();
+        if( empty($this->visibility) ) $this->visibility = "public";
+    }
+    
     public function set_new_id()
     {
         $this->id_media = uniqid();

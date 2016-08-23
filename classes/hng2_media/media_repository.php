@@ -477,6 +477,8 @@ class media_repository extends abstract_repository
         # $item->set_from_post();
         foreach( $data as $key => $val ) $item->{$key} = stripslashes($val);
         
+        if( empty($item->visibility) ) $item->visibility = "public";
+        
         if( empty($item->id_media) )
         {
             if( empty($item->main_category) )
