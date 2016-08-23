@@ -14,9 +14,11 @@
  *
  * @returns string city; region; country; isp
  */
-function forge_geoip_location($ip)
+function forge_geoip_location($ip = "")
 {
     if( ! function_exists("geoip_record_by_name") ) return "";
+    
+    if( empty($ip) ) $ip = get_remote_address();
     
     $record       = @geoip_record_by_name($ip);
     $country_name = $record["country_name"];
