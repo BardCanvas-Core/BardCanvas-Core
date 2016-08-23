@@ -353,16 +353,19 @@ function send_mail($subject, $body, $recipients, $sender = null)
     return "OK";
 }
 
-function broadcast_mail_to_moderators($subject, $body)
+function broadcast_mail_to_moderators($subject, $body, $prefs_key = "")
 {
     $repository = new accounts_repository();
     $mods       = $repository->get_basics_above_level(config::MODERATOR_USER_LEVEL);
-    $prefs      = $repository->get_multiple_engine_prefs(array_keys($mods), "@contact:moderator_emails_for_comments");
     
-    if( ! empty($prefs) )
-        foreach($prefs as $id_account => $value)
-            if( $value == "false" )
-                unset( $mods[$id_account] );
+    if( ! empty($prefs_key) )
+    {
+        $prefs = $repository->get_multiple_engine_prefs(array_keys($mods), $prefs_key);
+        if( ! empty($prefs) )
+            foreach($prefs as $id_account => $value)
+                if( $value == "false" )
+                    unset( $mods[$id_account] );
+    }
     
     if( empty($mods) ) return;
     
