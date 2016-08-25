@@ -236,11 +236,22 @@ function rounded_trimming($amount, $digits = 0, $comma_separated = false)
     return $amount;
 }
 
+function convert_to_hashtag($input)
+{
+    $input = remove_filesystem_invalid_chars($input);
+    $input = str_replace("-", "", $input);
+    $input = str_replace(".", "", $input);
+    $input = str_replace(" ", "", $input);
+    
+    return $input;
+}
+
 function remove_filesystem_invalid_chars($filename)
 {
     $special_chars = array(
         "…",
         "?",
+        "%",
         "[",
         "]",
         "/",
