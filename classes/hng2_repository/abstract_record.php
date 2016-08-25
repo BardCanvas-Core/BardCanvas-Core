@@ -25,7 +25,9 @@ abstract class abstract_record
     
     public function set_from_post()
     {
-        foreach( $_POST as $key => $val ) $this->{$key} = stripslashes($val);
+        foreach( $_POST as $key => $val )
+            if( is_string($val) )
+                $this->{$key} = stripslashes($val);
     }
     
     abstract public function set_new_id();
