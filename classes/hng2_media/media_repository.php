@@ -655,4 +655,48 @@ class media_repository extends abstract_repository
         
         return $res;
     }
+    
+    public function add_tag($id_media, $tag, $date, $order)
+    {
+        global $database;
+        
+        $res = $database->exec("
+            insert ignore into media_tags set
+            id_media      = '$id_media',
+            tag            = '$tag',
+            date_attached  = '$date',
+            order_attached = '$order'
+        ");
+        $this->last_query = $database->get_last_query();
+        
+        return $res;
+    }
+    
+    public function delete_tag($id_media, $tag)
+    {
+        global $database;
+        
+        $res = $database->exec("
+            delete from media_tags where
+            id_media = '$id_media' and
+            tag      = '$tag'
+        ");
+        $this->last_query = $database->get_last_query();
+        
+        return $res;
+    }
+    
+    public function delete_tag_by_post($id_post, $tag)
+    {
+        global $database;
+        
+        $res = $database->exec("
+            delete from media_tags where
+            id_post = '$id_post' and
+            tag     = '$tag'
+        ");
+        $this->last_query = $database->get_last_query();
+        
+        return $res;
+    }
 }
