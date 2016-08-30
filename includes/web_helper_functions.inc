@@ -272,7 +272,7 @@ function autolink_hash_tags($contents, $url_prefix, $url_suffix = "")
  *
  * @return array
  */
-function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_size = 30)
+function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_size = 28)
 {
     if( empty($items) ) return array();
     
@@ -305,6 +305,7 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
         $tags[$key]->size   = round($min_font_size + (($tags[$key]->weight - 1) * $font_size_factor));
     }
     
+    ksort($tags);
     return $tags;
 }
 
