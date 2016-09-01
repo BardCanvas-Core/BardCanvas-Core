@@ -300,7 +300,7 @@ class record_browser
         $next_disabled     = $pagination_vars["this_page_number"] >= $pagination_vars["total_pages"] ? "disabled" : "";
         $last_disabled     = $pagination_vars["total_pages"] == 1 || $pagination_vars["this_page_number"] == $pagination_vars["total_pages"] ? "disabled" : "";
         
-        $query = stristr($url_prefix, "?" === false) ? "?" : "&";
+        $query = stristr($url_prefix, "?") === false ? "?" : "&";
         
         if($pagination_vars["total_pages"] < 1)
         {
