@@ -91,12 +91,14 @@ abstract class abstract_item_manager
     abstract public function get_thumbnail();
     
     /**
-     * @param $source_file
-     * 
+     * @param        $source_file
+     * @param string $target_dir
+     * @param string $dimension Dimension to use when resizing. Options: THUMBNAILER_USE_WIDTH, THUMBNAILER_USE_HEIGHT
+     *
      * @return string basename of the file
      * @throws \Exception
      */
-    protected function build_cropped_thumbnail($source_file, $target_dir = "")
+    protected function build_cropped_thumbnail($source_file, $target_dir = "", $dimension = "")
     {
         global $settings;
         
@@ -122,7 +124,7 @@ abstract class abstract_item_manager
         if( empty($png_quality)  ) $png_quality  = 9;
         
         list($width, $height) = getimagesize($temp_file);
-        $dimension  = $width > $height ? THUMBNAILER_USE_HEIGHT : THUMBNAILER_USE_WIDTH;
+        if( empty($dimension) ) $dimension  = $width > $height ? THUMBNAILER_USE_HEIGHT : THUMBNAILER_USE_WIDTH;
         $res = preg_match('/(.jpg|.jpeg)$/i', $filename)
             ? gfuncs_resample_jpg($temp_file, $target_dir, $th_width, $th_height, $dimension, false, $jpeg_quality,        true, $th_width, $th_height)
             : gfuncs_resample_png($temp_file, $target_dir, $th_width, $th_height, $dimension, false, $png_quality,  false, true, $th_width, $th_height)

@@ -37,6 +37,7 @@ class item_manager_png extends abstract_image_manager
         );
         */
         
-        return "{$this->relative_path}/" . $this->build_cropped_thumbnail($this->file_path, $this->save_path);
+        return "{$this->relative_path}/"
+            . $this->build_cropped_thumbnail($this->file_path, $this->save_path, THUMBNAILER_USE_WIDTH);
     }
 }

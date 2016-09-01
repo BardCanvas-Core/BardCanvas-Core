@@ -25,6 +25,7 @@ class item_manager_gif extends abstract_image_manager
         
         if( ! GifFrameExtractor::isAnimatedGif($this->file_path) )
         {
+            /*
             $parts = @getimagesize($this->file_path);
             if( $parts ) $this->dimensions = "{$parts[0]}x{$parts[1]}";
             
@@ -38,6 +39,10 @@ class item_manager_gif extends abstract_image_manager
                 $compression,
                 true
             );
+            */
+            
+            return "{$this->relative_path}/"
+                . $this->build_cropped_thumbnail($this->file_path, $this->save_path, THUMBNAILER_USE_WIDTH);
         }
         
         $gfe = new GifFrameExtractor();
@@ -62,6 +67,7 @@ class item_manager_gif extends abstract_image_manager
         if( $parts ) $this->dimensions = "{$parts[0]}x{$parts[1]}";
         
         # return "{$this->relative_path}/{$thumbnail_file}";
-        return "{$this->relative_path}/" . $this->build_cropped_thumbnail("{$this->save_path}/$thumbnail_file", $this->save_path);
+        return "{$this->relative_path}/"
+            . $this->build_cropped_thumbnail("{$this->save_path}/$thumbnail_file", $this->save_path, THUMBNAILER_USE_WIDTH);
     }
 }
