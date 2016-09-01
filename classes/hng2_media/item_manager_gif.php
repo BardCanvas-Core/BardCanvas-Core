@@ -49,11 +49,9 @@ class item_manager_gif extends abstract_image_manager
                 throw new \Exception("GIF Thumbnailer: Can't create target directory $this->save_path.");
         @chmod($this->save_path, 0777);
         
-        $filename_parts = explode(".", basename($this->file_path));
-        unset($filename_parts[count($filename_parts) - 1]);
-        
+        $filename_parts = explode(".", basename($this->file_path)); array_pop($filename_parts);
         $file_name      = implode(".", $filename_parts);
-        $thumbnail_file = $file_name . "-thumbnail.png";
+        $thumbnail_file = $file_name . "-preview.png";
         
         if( ! @imagepng($frame, "{$this->save_path}/$thumbnail_file", $compression) )
             throw new \Exception("Thumbnailer: Can't save target file {$this->save_path}/$thumbnail_file");
@@ -63,6 +61,7 @@ class item_manager_gif extends abstract_image_manager
         $parts = @getimagesize("{$this->save_path}/$thumbnail_file");
         if( $parts ) $this->dimensions = "{$parts[0]}x{$parts[1]}";
         
-        return "{$this->relative_path}/{$thumbnail_file}";
+        # return "{$this->relative_path}/{$thumbnail_file}";
+        return "{$this->relative_path}/" . $this->build_cropped_thumbnail("{$this->save_path}/$thumbnail_file", $this->save_path);
     }
 }

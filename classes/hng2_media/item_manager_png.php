@@ -13,6 +13,7 @@ class item_manager_png extends abstract_image_manager
     
     public function get_thumbnail()
     {
+        /*
         global $settings;
         
         $width = current(explode("x", $settings->get("engine.thumbnail_size", "460x220")));
@@ -34,5 +35,8 @@ class item_manager_png extends abstract_image_manager
             $compression,
             true
         );
+        */
+        
+        return "{$this->relative_path}/" . $this->build_cropped_thumbnail($this->file_path, $this->save_path);
     }
 }

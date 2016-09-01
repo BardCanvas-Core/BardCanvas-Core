@@ -67,6 +67,11 @@ abstract class abstract_video_manager extends abstract_item_manager
         parent::move_to_repository($new_file_name);
     }
     
+    /**
+     * Note: thumbnails here keep aspect ratio without cropping.
+     * 
+     * @return string
+     */
     public function get_thumbnail()
     {
         $source = $this->file_path;

@@ -90,6 +90,47 @@ abstract class abstract_item_manager
     
     abstract public function get_thumbnail();
     
+    /**
+     * @param $source_file
+     * 
+     * @return string basename of the file
+     * @throws \Exception
+     */
+    protected function build_cropped_thumbnail($source_file, $target_dir = "")
+    {
+        global $settings;
+        
+        $filename    = basename($source_file);
+        $target_dir  = empty($target_dir) ? dirname($source_file) : $target_dir;
+        $parts       = explode(".", basename($this->file_path));
+        $extension   = array_pop($parts);
+        $thumbnail   = implode(".", $parts) . "-thumbnail.{$extension}";
+        $temp_file   = "/tmp/{$thumbnail}";
+        
+        if( file_exists("{$target_dir}/{$thumbnail}") ) return $thumbnail;
+        
+        if( ! @copy($source_file, $temp_file) )
+            throw new \Exception(sprintf("Can't copy %s into %s!", $source_file, $temp_file));
+        
+        $dimensions = $settings->get("engine.thumbnail_size");
+        if( empty($dimensions) ) $dimensions = "460x220";
+        list($th_width, $th_height) = explode("x", $dimensions);
+        
+        $jpeg_quality = $settings->get("engine.thumbnail_jpg_compression");
+        $png_quality  = $settings->get("engine.thumbnail_png_compression");
+        if( empty($jpeg_quality) ) $jpeg_quality = 90;
+        if( empty($png_quality)  ) $png_quality  = 9;
+        
+        list($width, $height) = getimagesize($temp_file);
+        $dimension  = $width > $height ? THUMBNAILER_USE_HEIGHT : THUMBNAILER_USE_WIDTH;
+        $res = preg_match('/(.jpg|.jpeg)$/i', $filename)
+            ? gfuncs_resample_jpg($temp_file, $target_dir, $th_width, $th_height, $dimension, false, $jpeg_quality,        true, $th_width, $th_height)
+            : gfuncs_resample_png($temp_file, $target_dir, $th_width, $th_height, $dimension, false, $png_quality,  false, true, $th_width, $th_height)
+        ;
+        
+        return $res;
+    }
+    
     public function get_dimensions()
     {
         return $this->dimensions;
