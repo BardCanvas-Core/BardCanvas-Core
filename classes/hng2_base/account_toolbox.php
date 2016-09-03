@@ -65,11 +65,12 @@ class account_toolbox extends abstract_record
         return $contents;
     }
     
-    public function get_role()
+    public function get_role($lowercased = false)
     {
         global $config;
         
-        return $config->user_levels_by_level[$this->level];
+        if( $lowercased ) return strtolower($config->user_levels_by_level[$this->level]);
+        else              return $config->user_levels_by_level[$this->level];
     }
     
     public function get_avatar_url($fully_qualified = false)
