@@ -407,4 +407,24 @@ class template
             
         }
     }
+    
+    public function render_always_on_files()
+    {
+        global $config;
+        
+        if( empty($this->vars["always_on_files"]) ) return;
+        
+        foreach($this->vars["always_on_files"] as $file)
+        {
+            $parts = explode(".", $file);
+            $ext   = array_pop($parts);
+            $name  = implode(".", $parts);
+            $file  = "{$name}~v{$config->scripts_version}.{$ext}";
+            
+            if( strtolower($ext) == "js" )
+                echo "<script type='text/javascript' src='$file'></script>";
+            else
+                echo "<link rel='stylesheet' type='text/css' href='$file'>";
+        }
+    }
 }

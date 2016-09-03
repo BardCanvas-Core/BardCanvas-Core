@@ -29,10 +29,18 @@ if( $modules_cache_enabled )
         foreach($modules as &$module) $module->unserialize();
         $load_modules = false;
     }
+    
+    $always_on_cache = new disk_cache("{$config->datafiles_location}/cache/always_on.dat");
+    if( $modules_cache->loaded )
+    {
+        $files = $always_on_cache->get_all();
+        $template->set("always_on_files", $files);
+    }
 }
 
 if( $load_modules )
 {
+    $always_on_files = array();
     $module_dirs_pattern = ABSPATH . "/*";
     $available_modules   = glob($module_dirs_pattern, GLOB_ONLYDIR);
     
@@ -45,7 +53,12 @@ if( $load_modules )
         
         $module = new module($info_file);
         if( $module->installed && $module->enabled ) $modules[$module_keyname] = clone $module;
+        
+        if( isset($module->template_includes->always_on) )
+            foreach($module->template_includes->always_on->file as $file)
+                $always_on_files[] = "{$config->full_root_path}/{$module_keyname}/" . trim($file);
     }
+    $template->set("always_on_files", $always_on_files);
     
     # Part 2: extenders
     foreach($modules as $extender_keyname => $extender_module)
@@ -87,6 +100,9 @@ if( $load_modules )
         }
         $modules_cache->prefill($caching_modules);
         unset( $caching_modules );
+        
+        $always_on_cache->prefill($always_on_files);
+        unset( $always_on_files );
     }
 }
 
