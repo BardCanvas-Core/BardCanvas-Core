@@ -176,7 +176,7 @@ class accounts_repository extends abstract_repository
         
         $return = array();
         while($row = $database->fetch_object($res))
-            $return[$row->id_account] = $row->value;
+            $return[$row->id_account] = json_decode($row->value);
         
         return $return;
     }
