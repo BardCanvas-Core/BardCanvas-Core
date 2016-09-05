@@ -354,10 +354,16 @@ function send_mail($subject, $body, $recipients, $sender = null)
     return "OK";
 }
 
-function broadcast_mail_to_moderators($subject, $body, $prefs_key = "")
+function broadcast_mail_to_moderators($subject, $body, $prefs_key = "", $exclude_mod_ids = array())
 {
     $repository = new accounts_repository();
     $mods       = $repository->get_basics_above_level(config::MODERATOR_USER_LEVEL);
+    
+    if( ! empty($exclude_mod_ids) )
+        foreach($exclude_mod_ids as $id_account)
+            unset( $mods[$id_account] );
+    
+    if( empty($mods) ) return;
     
     if( ! empty($prefs_key) )
     {
