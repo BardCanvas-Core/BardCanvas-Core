@@ -227,7 +227,7 @@ function register_tinymce_addon($title, $function, $icon, $caption, $related_fie
 function extract_hash_tags($contents)
 {
     $contents = strip_tags($contents);
-    $count = preg_match_all('/#(\w+)/i', $contents, $matches);
+    $count = preg_match_all('/#([a-z0-9]+)/i', $contents, $matches);
     if( empty($count) ) return array();
     
     $return = array_unique($matches[1]);
@@ -245,7 +245,7 @@ function extract_hash_tags($contents)
  */
 function autolink_hash_tags($contents, $url_prefix, $url_suffix = "")
 {
-    $count = preg_match_all('/(#\w+)/i', strip_tags($contents), $matches);
+    $count = preg_match_all('/(#[a-z0-9]+)/i', strip_tags($contents), $matches);
     
     if( $count == 0 ) return $contents;
     
