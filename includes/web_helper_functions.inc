@@ -346,7 +346,7 @@ function send_mail($subject, $body, $recipients, $sender = null)
     $mail->From     = current($sender);
     $mail->FromName = key($sender);
     $mail->Subject  = $subject;
-    $mail->Body     = $body;
+    $mail->Body     = externalize_urls($body);
     $mail->AltBody  = strip_tags($body);
     
     if( ! $mail->send() ) return $mail->ErrorInfo;
@@ -379,4 +379,43 @@ function broadcast_mail_to_moderators($subject, $body, $prefs_key = "", $exclude
     $recipients = array();
     foreach($mods as $mod) $recipients[$mod->display_name] = $mod->email;
     send_mail($subject, $body, $recipients);
+}
+
+function externalize_urls($text)
+{
+    global $config;
+    
+    $replacements = array();
+    
+    $doc = new DOMDocument();
+    @$doc->loadHTML($text);
+    
+    /**
+     * @var DOMNodeList $tags
+     * @var DOMElement  $tag
+     */
+    
+    $tags = $doc->getElementsByTagName('img');
+    foreach($tags as $tag)
+    {
+        $src = trim($tag->getAttribute('src'));
+        if( empty($src) ) continue;
+        
+        if( ! preg_match('/^http:|https:/i', $src) )
+            $replacements[$src] = $config->full_root_url . $src;
+    }
+    
+    $tags = $doc->getElementsByTagName('a');
+    foreach($tags as $tag)
+    {
+        $src = trim($tag->getAttribute('href'));
+        if( empty($src) ) continue;
+        
+        if( ! preg_match('/^http:|https:/i', $src) )
+            $replacements[$src] = $config->full_root_url . $src;
+    }
+    
+    $text = str_replace(array_keys($replacements), $replacements, $text);
+    
+    return $text;
 }
