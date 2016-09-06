@@ -11,10 +11,11 @@
  * Forging of country, state, city info
  *
  * @param string $ip
+ * @param bool   $skip_isp
  *
- * @returns string city; region; country; isp
+ * @return string city; region; country; isp
  */
-function forge_geoip_location($ip = "")
+function forge_geoip_location($ip = "", $skip_isp = false)
 {
     if( ! function_exists("geoip_record_by_name") ) return "";
     
@@ -24,14 +25,23 @@ function forge_geoip_location($ip = "")
     $country_name = $record["country_name"];
     $region_name  = @geoip_region_name_by_code($record["country_code"], $record["region"]);
     $city         = $record["city"];
-    $isp          = @geoip_org_by_name($ip);
     
     if( empty($city) )         $city = "n/a";
     if( empty($region_name) )  $region_name = "n/a";
     if( empty($country_name) ) $country_name = "n/a";
-    if( empty($isp) )          $isp = "n/a";
     
-    return utf8_encode("$city; $region_name; $country_name; $isp");
+    
+    if( ! $skip_isp )
+    {
+        $isp = @geoip_org_by_name($ip);
+        if( empty($isp) ) $isp = "n/a";
+        
+        return utf8_encode("$city; $region_name; $country_name; $isp");
+    }
+    else
+    {
+        return utf8_encode("$city; $region_name; $country_name");
+    }
 }
 
 /**
@@ -45,6 +55,8 @@ function forge_geoip_location($ip = "")
 function get_geoip_location_data($ip, $what = "country_code")
 {
     if( ! function_exists("geoip_record_by_name") ) return "";
+    
+    if( empty($ip) ) $ip = get_remote_address();
     
     $record       = @geoip_record_by_name($ip);
     $country_code = $record["country_code"];
