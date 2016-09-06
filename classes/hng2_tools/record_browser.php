@@ -60,7 +60,7 @@ class record_browser
                         setcookie(
                             "{$this->data_vars_prefix}_nav_filter_{$key}",
                             $value,
-                            86400 * 30,
+                            time() + (86400 * 30),
                             $config->full_root_path,
                             $config->cookies_domain
                         );
@@ -72,7 +72,7 @@ class record_browser
                 setcookie(
                     "{$this->data_vars_prefix}_nav_limit",
                     $_REQUEST["limit"],
-                    86400 * 30,
+                    time() + (86400 * 30),
                     $config->full_root_path,
                     $config->cookies_domain
                 );
@@ -81,7 +81,7 @@ class record_browser
                 setcookie(
                     "{$this->data_vars_prefix}_nav_order",
                     $_REQUEST["order"],
-                    86400 * 30,
+                    time() + (86400 * 30),
                     $config->full_root_path,
                     $config->cookies_domain
                 );

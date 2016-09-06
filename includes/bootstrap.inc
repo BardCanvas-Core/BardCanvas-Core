@@ -39,7 +39,7 @@ if( empty($_COOKIE[$language_cookie_name]) )
     $language_cookie_val = $settings->get("engine.default_language");
     if( empty($language_cookie_val) ) $language_cookie_val = "en_US";
     
-    @setcookie($language_cookie_name, $language_cookie_val, (86400*365), "/", $config->cookies_domain );
+    @setcookie($language_cookie_name, $language_cookie_val, time()+(86400*365), "/", $config->cookies_domain );
     $_COOKIE[$language_cookie_name] = $language_cookie_val;
 }
 $language = simplexml_load_file( ABSPATH . "/language/".$_COOKIE[$language_cookie_name].".xml" );
