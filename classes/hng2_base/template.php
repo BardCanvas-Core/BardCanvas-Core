@@ -375,11 +375,14 @@ class template
     
     public function render_tinymce_additions()
     {
-        global $modules, $config;
+        global $modules, $config, $account;
         
         foreach($modules as $module)
         {
             if( empty($module->tinymce_additions) ) continue;
+            $min_level = trim($module->tinymce_additions["minimum_user_level"]);
+            if( ! empty($min_level) && ! $account->_exists ) continue;
+            if( ! empty($min_level) && $account->level < $min_level ) continue;
             
             foreach($module->tinymce_additions->plugin as $plugin)
                 echo "
