@@ -171,7 +171,8 @@ function toggle_dropdown_menu($trigger)
     
     $trigger.toggleClass('submenu_visible');
     $menu.toggle().css('left', left + 'px').css('top',  top + 'px');
-    $trigger.find('.menu_toggle > span').toggle();
+    // TODO: Fix this fucking toggle!
+    // $trigger.find('.menu_toggle > span').toggle();
 }
 
 function hide_dropdown_menus()
