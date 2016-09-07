@@ -2,6 +2,7 @@
 namespace hng2_media;
 
 use hng2_base\accounts_repository;
+use hng2_base\config;
 use hng2_repository\abstract_repository;
 use hng2_modules\categories\category_record;
 use hng2_modules\gallery\items_data;
@@ -426,7 +427,7 @@ class media_repository extends abstract_repository
     
     public function get_grouped_tag_counts($since = "", $min_hits = 10)
     {
-        global $database;
+        global $database, $settings;
         
         $min_hits = empty($min_hits) ? 10 : $min_hits;
         $having   = $min_hits == 1   ? "" : "having `count` >= '$min_hits'";
@@ -454,6 +455,12 @@ class media_repository extends abstract_repository
         while( $row = $database->fetch_object($res) )
             $return[$row->tag] = $row->count;
         
+        if( $settings->get("modules:posts.show_featured_posts_tag_everywhere") == "true" ) return $return;
+        
+        $excluded = $settings->get("modules:posts.featured_posts_tag");
+        if( empty($excluded) ) return $return;
+        
+        unset($return[$excluded]);
         return $return;
     }
     
@@ -468,7 +475,7 @@ class media_repository extends abstract_repository
      */
     public function receive_and_save($data, $file, $return_item_on_success = false)
     {
-        global $modules, $config, $account;
+        global $modules, $config, $account, $settings;
         
         $current_module = $modules["gallery"];
         
@@ -575,6 +582,18 @@ class media_repository extends abstract_repository
             $item->publishing_date = date("Y-m-d H:i:s");
         
         $tags = extract_hash_tags($item->title . " " . $item->description);
+        $featured_posts_tag = $settings->get("modules:posts.featured_posts_tag");
+        if(
+            $account->level < config::MODERATOR_USER_LEVEL
+            && $settings->get("modules:posts.show_featured_posts_tag_everywhere") != "true"
+            && ! empty($featured_posts_tag)
+            && in_array($featured_posts_tag, $tags)
+        ) {
+            unset($tags[array_search($featured_posts_tag, $tags)]);
+            $item->title       = str_replace("#$featured_posts_tag", $featured_posts_tag, $item->title);
+            $item->description = str_replace("#$featured_posts_tag", $featured_posts_tag, $item->description);
+        }
+        
         if( ! empty($tags) ) $this->set_tags($tags, $item->id_media);
         
         $this->save($item);
