@@ -13,6 +13,8 @@ HNG2 uses 5 different layouts for all page renderings:
 
 In the module's `module_info.xml` file, the `<template_includes>` node should include all needed injection point tags:
 
+* `always_on` CSS/JS files included always in the header. It basically is a collection of `<file>` tags.
+
 * `pre_rendering` before outputting the first line of the document (the `<html>` tag).  
   Use cases: pre-processing variables.
 
@@ -68,10 +70,11 @@ In the module's `module_info.xml` file, the `<template_includes>` node should in
 * `post_rendering` after closing the `<html>` tag.  
   Use cases: non-output related operations.
 
-## Injections per layout reference
+## Injections per layout
 
     tag                   | home | main | admin | embeddable | popup
     ----------------------|------|------|-------|------------|-------
+    always_on             |   √  |   √  |   √   |            |   √
     pre_rendering         |   √  |   √  |   √   |            |   √
     html_head             |   √  |   √  |   √   |            |
     pre_header            |   √  |   √  |   √   |            |
