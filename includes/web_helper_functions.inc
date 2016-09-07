@@ -320,7 +320,7 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
  */
 function send_mail($subject, $body, $recipients, $sender = null)
 {
-    global $settings, $modules;
+    global $settings, $modules, $config;
     
     foreach($modules as $module)
     {
@@ -342,25 +342,62 @@ function send_mail($subject, $body, $recipients, $sender = null)
     }
     
     $mail = new PHPMailer();
-    $mail->isSendmail();
     $mail->isHTML(true);
+    $mail->CharSet = "utf-8";
+    $mail->Body    = externalize_urls($body);
+    $mail->AltBody = strip_tags($body);
+    $mail->Subject = $subject;
+    
+    if( $config->globals["phpmailer_debug_mode_enabled"] )
+        $mail->SMTPDebug = 2;
+    
+    $smtp_enabled  = $settings->get("engine.mail_sender_smtp_enabled");
+    $smtp_host     = $settings->get("engine.mail_sender_smtp_host");
+    $smtp_port     = $settings->get("engine.mail_sender_smtp_port");
+    $smtp_user     = $settings->get("engine.mail_sender_smtp_user");
+    $smtp_password = $settings->get("engine.mail_sender_smtp_password");
+    $smtp_security = $settings->get("engine.mail_sender_smtp_security");
+    
+    if( $smtp_enabled != "true" || empty($smtp_host) || empty($smtp_port) || empty($smtp_user) || empty($smtp_password) )
+    {
+        $mail->isSendmail();
+        if( $config->globals["phpmailer_debug_mode_enabled"] )
+            echo "Sending using sendmail.\n";
+    }
+    else
+    {
+        $mail->isSMTP();
+        $mail->SMTPSecure = $smtp_security;
+        $mail->Host       = $smtp_host;
+        $mail->Port       = $smtp_port;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $smtp_user;
+        $mail->Password   = $smtp_password;
+        if( $config->globals["phpmailer_debug_mode_enabled"] )
+            echo "Sending using SMTP. Details:\n"
+            .    " • SMTPSecure = $smtp_security\n"
+            .    " • Host       = $smtp_host\n"
+            .    " • Port       = $smtp_port\n"
+            .    " • SMTPAuth   = true\n"
+            .    " • Username   = $smtp_user\n"
+            .    " • Password   = $smtp_password\n"
+            ;
+    }
     
     foreach($recipients as $name => $address)
         $mail->addAddress($address, $name);
     
-    if( is_null($sender) )
-        $sender = array(
-            $settings->get("engine.mail_sender_name") => $settings->get("engine.mail_sender_email")
-        );
+    # $mail->Sender   = $settings->get("engine.mail_sender_email");
+    $mail->From     = $settings->get("engine.mail_sender_email");
+    $mail->FromName = $settings->get("engine.mail_sender_name");
     
-    $mail->CharSet  = "utf-8";
-    $mail->Sender   = $settings->get("engine.mail_sender_email");
-    $mail->From     = current($sender);
-    $mail->FromName = key($sender);
-    $mail->Subject  = $subject;
-    $mail->Body     = externalize_urls($body);
-    $mail->AltBody  = strip_tags($body);
+    if( ! is_null($sender) )
+        $mail->addReplyTo(current($sender), key($sender));
     
+    if( $config->globals["phpmailer_debug_mode_enabled"] )
+        echo "Init complete. Sending now.\n"
+        .    "---------------------------\n"
+        ;
     if( ! $mail->send() ) return $mail->ErrorInfo;
     
     return "OK";

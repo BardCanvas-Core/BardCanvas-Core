@@ -231,6 +231,61 @@
             ]]></description>
             <type>email</type>
         </specs>
+        <specs key="mail_sender_smtp_enabled">
+            <title>Send email through SMTP</title>
+            <description><![CDATA[
+                By default, all email is sent through the local transport (usually sendmail).
+                If you want to send email through a local or external SMTP server, enable this option
+                and set account/connection details ahead.
+                <a class="framed_content inlined state_highlight" href="{$full_root_url}/scripts/test_mail.php" target="_blank"
+                   onclick="var $this = $(this); var a = prompt('Type an email address to send to'); if( a ) { $this.attr('href', $this.attr('href') + '?to=' + a); return true; } else { return false; } ">
+                    Click here to send a test email
+                </a>
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        <specs key="mail_sender_smtp_host">
+            <title>SMTP host</title>
+            <description><![CDATA[
+                IP or Hostname
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_smtp_port">
+            <title>SMTP port</title>
+            <description><![CDATA[
+                Specify the SMTP port. Hints:<br>
+                <code>25</code> is the plain text standard.<br> 
+                <code>465</code> is the standard for SSL authentication.<br> 
+                <code>587</code> is the standard for TLS authentication.<br> 
+            ]]></description>
+            <type>number</type>
+        </specs>
+        <specs key="mail_sender_smtp_user">
+            <title>SMTP account user</title>
+            <description><![CDATA[
+                Username of the SMTP account 
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_smtp_password">
+            <title>SMTP account password</title>
+            <description><![CDATA[
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_smtp_security">
+            <title>SMTP security</title>
+            <description><![CDATA[
+                Please select an option.
+            ]]></description>
+            <type>list</type>
+            <options>
+                <option value="">Plain text</option>
+                <option value="ssl">SSL</option>
+                <option value="tls">TLS</option>
+            </options>
+        </specs>
         
         <!-- Users -->
         <specs is_separator="true">User settings</specs>
