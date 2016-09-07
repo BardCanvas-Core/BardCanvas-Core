@@ -33,20 +33,19 @@ $config->set_metering_toggles();
 $config->fill_upload_types();
 
 # Engine Language loader
-$language_cookie_name = "{$config->website_key}_UL";
-if( empty($_COOKIE[$language_cookie_name]) )
+if( empty($_COOKIE[$config->language_cookie_var]) )
 {
     $language_cookie_val = $settings->get("engine.default_language");
     if( empty($language_cookie_val) ) $language_cookie_val = "en_US";
     
-    @setcookie($language_cookie_name, $language_cookie_val, time()+(86400*365), "/", $config->cookies_domain );
-    $_COOKIE[$language_cookie_name] = $language_cookie_val;
+    @setcookie($config->language_cookie_var, $language_cookie_val, 0, "/", $config->cookies_domain );
+    $_COOKIE[$config->language_cookie_var] = $language_cookie_val;
 }
-$language = simplexml_load_file( ABSPATH . "/language/".$_COOKIE[$language_cookie_name].".xml" );
+$language = simplexml_load_file( ABSPATH . "/language/".$_COOKIE[$config->language_cookie_var].".xml" );
 
 # Localization
-if( file_exists(ABSPATH . "/language/".$_COOKIE[$language_cookie_name].".inc") )
-    include ABSPATH . "/language/".$_COOKIE[$language_cookie_name].".inc";
+if( file_exists(ABSPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc") )
+    include ABSPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc";
     
 /** @var module $this_module */
 $this_module    = null;

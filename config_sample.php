@@ -13,8 +13,9 @@ define("ABSPATH", __DIR__);
 # define("FULL_ROOT_URL",  "https://www.domain.com:8080/dir/subdir");
 # define("FULL_ROOT_PATH", "/dir/subdir");
 
-define("ENCRYPTION_KEY", "BIG_RANDOM_SRING_HERE");
-define("WEBSITE_ID",     "hng2site");
+define("ENCRYPTION_KEY",       "BIG_RANDOM_SRING_HERE");
+define("WEBSITE_ID",          "hng2site");
+define("LANGUAGE_COOKIE_VAR", "ULANG");
 
 $DATABASES = array(
     array(

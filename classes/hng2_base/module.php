@@ -118,8 +118,7 @@ class module
         $this->admin_only = trim($this->admin_only);
         
         # Language var loading
-        $language_cookie_name = "{$config->website_key}_UL";
-        $language_file = "$this->abspath/language/{$_COOKIE[$language_cookie_name]}.xml";
+        $language_file = "$this->abspath/language/{$_COOKIE[$config->language_cookie_var]}.xml";
         if( ! file_exists($language_file) )
             $language_file = "$this->abspath/language/{$settings->get("engine.default_language")}.xml";
         
@@ -131,7 +130,7 @@ class module
             $message = replace_escaped_vars(
                 $language->bootstrap->errors->language_file_dont_exist,
                 array('{$language}', '{$module_name}'),
-                array($_COOKIE[$language_cookie_name], $this->name)
+                array($_COOKIE[$config->language_cookie_var], $this->name)
             );
             
             die($message);

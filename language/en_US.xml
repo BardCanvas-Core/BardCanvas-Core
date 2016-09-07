@@ -169,10 +169,7 @@
                 it is possible that not all the installed modules do. In such case, the fallback
                 language will always be <code>English/United States</code>.
             ]]></description>
-            <type>list</type>
-            <options>
-                <option value="en_US">English/United States</option>
-            </options>
+            <type>locale_list</type>
         </specs>
         <specs key="template">
             <title>Active template</title>
@@ -234,7 +231,7 @@
         <specs key="mail_sender_smtp_enabled">
             <title>Send email through SMTP</title>
             <description><![CDATA[
-                By default, all email is sent through the local transport (usually sendmail).
+                By default, all email is sent through the local transport (usually <code>sendmail</code>).
                 If you want to send email through a local or external SMTP server, enable this option
                 and set account/connection details ahead.
                 <a class="framed_content inlined state_highlight" href="{$full_root_url}/scripts/test_mail.php" target="_blank"
@@ -255,9 +252,9 @@
             <title>SMTP port</title>
             <description><![CDATA[
                 Specify the SMTP port. Hints:<br>
-                <code>25</code> is the plain text standard.<br> 
-                <code>465</code> is the standard for SSL authentication.<br> 
-                <code>587</code> is the standard for TLS authentication.<br> 
+                • <code>25</code> is the plain text standard.<br> 
+                • <code>465</code> is the standard for SSL authentication.<br> 
+                • <code>587</code> is the standard for TLS authentication.<br> 
             ]]></description>
             <type>number</type>
         </specs>
@@ -376,8 +373,8 @@
         <specs key="thumbnail_size">
             <title>Thumbnails size</title>
             <description><![CDATA[
-                The image manager builds thumbnails when files are uploaded and builds
-                thumbnails keeping the image aspect ratio and then cropping them within the defined size.<br>
+                The image manager builds thumbnails when files are uploaded and built keeping
+                the aspect ratio before cropping within the defined size.<br>
                 Specify here the dimensions in pixels.
                 By default, Thumbnails are managed at <code>460x220</code>.
             ]]></description>
@@ -387,7 +384,7 @@
             <title>PNG thumbnails compression</title>
             <description><![CDATA[
                 Specify the lossless PNG compression level used for thumbnails generation in PNG format.<br>
-                Default value is 9 (best compression).
+                Default value is <code>9</code> (best compression).
             ]]></description>
             <type>number</type>
             <options>
@@ -399,8 +396,8 @@
             <title>JPEG thumbnails quality</title>
             <description><![CDATA[
                 Specify the quality percent used for thumbnails generation in JPEG format.<br>
-                Default value is 90% (good quality with less file size).<br>
-                Minimum recommended value is 40%. Anything below that will be ugly.
+                Default value is <code>90%</code> (good quality with less file size).<br>
+                Minimum recommended value is <code>40%</code>. Anything below that will be ugly.
             ]]></description>
             <type>number</type>
             <options>

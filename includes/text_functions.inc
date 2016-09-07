@@ -743,7 +743,7 @@ function remove_accents($string)
         );
         
         // Used for locale-specific rules
-        $language_cookie_name = "{$config->website_key}_UL";
+        $language_cookie_name = $config->language_cookie_var;
         $locale = $_COOKIE[$language_cookie_name];
         
         if( 'de_DE' == $locale )

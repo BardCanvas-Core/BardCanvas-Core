@@ -14,6 +14,7 @@ class config
     public $encryption_key;
     public $website_key;
     public $cookies_domain;
+    public $language_cookie_var;
     
     public $engine_version;
     public $scripts_version;
@@ -86,9 +87,10 @@ class config
     
     public function __construct()
     {
-        $this->encryption_key     = ENCRYPTION_KEY;
-        $this->website_key        = WEBSITE_ID;
-        $this->cookies_domain     = "." . trim(str_replace("www", "", $_SERVER["HTTP_HOST"]), ".");
+        $this->encryption_key      = ENCRYPTION_KEY;
+        $this->website_key         = WEBSITE_ID;
+        $this->cookies_domain      = "." . trim(str_replace("www", "", $_SERVER["HTTP_HOST"]), ".");
+        $this->language_cookie_var = WEBSITE_ID . "_" . LANGUAGE_COOKIE_VAR;
         
         $this->datafiles_location = ABSPATH . "/data";
         $this->logfiles_location  = ABSPATH . "/logs";
