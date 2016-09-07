@@ -18,6 +18,8 @@ class accounts_repository extends abstract_repository
     {
         global $object_cache;
         
+        if( empty($id_or_slug) ) return null;
+        
         if( $object_cache->exists($this->table_name, $id_or_slug) )
             return $object_cache->get($this->table_name, $id_or_slug);
         
