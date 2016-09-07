@@ -320,7 +320,20 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
  */
 function send_mail($subject, $body, $recipients, $sender = null)
 {
-    global $settings;
+    global $settings, $modules;
+    
+    foreach($modules as $module)
+    {
+        if( empty($module->php_includes->web_helper_before_send_mail) ) continue;
+        
+        $include = "{$module->abspath}/{$module->php_includes->web_helper_before_send_mail}";
+        if( ! file_exists($include) ) continue;
+        
+        include $include;
+    }
+    
+    # These may have changed by an extension
+    if( empty($recipients) ) return "OK";
     
     if( ! class_exists("PHPMailer") )
     {
@@ -329,7 +342,6 @@ function send_mail($subject, $body, $recipients, $sender = null)
     }
     
     $mail = new PHPMailer();
-    
     $mail->isSendmail();
     $mail->isHTML(true);
     
