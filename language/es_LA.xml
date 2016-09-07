@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+    
+    <info>
+        <full_name>Español/América Latina</full_name>
+        <locale>es_LA</locale>
+        <iso>es</iso>
+        <country>LA</country>
+    </info>
+    
+    <bootstrap>
+        <errors>
+            <language_file_dont_exist>El archivo de lenguaje para "{$language}" en el módulo "{$module_name}" no existe!</language_file_dont_exist>
+        </errors>
+    </bootstrap>
+    
+    <admin>
+        <bar_title>Versión del motor:</bar_title>
+    </admin>
+    
+    <record_nav>
+        <page>Página</page>
+        <of>de</of>
+        <records>entradas</records>
+        <entries>entradas</entries>
+        <search>Buscar:</search>
+        <filter>Filtrar:</filter>
+        <show>Mostrar:</show>
+        <recs_per_page>Regs/pág</recs_per_page>
+        <show_all>Todo</show_all>
+        <actions>Acciones</actions>
+        <buttons>
+            <first>Inicio</first>
+            <previous>Anterior</previous>
+            <next>Siguiente</next>
+            <last>Final</last>
+            <apply>Aplicar</apply>
+            <reset>Reiniciar</reset>
+        </buttons>
+        <no_records_found>No hay registros que coincidan con el patrón de búsqueda especificado</no_records_found>
+        <empty_table_add_records>La tabla está vacía. Añade un registro.</empty_table_add_records>
+    </record_nav>
+    
+    <errors>
+        <page_requires_login>Error: esta página requiere una sesión abierta. Favor de abrir sesión.</page_requires_login>
+        <account_is_locked>Error: tu cuenta está bloqueada. Favor de contactarnos si requieres más información.</account_is_locked>
+        <access_denied>Acceso negado</access_denied>
+        <invalid_call>Has invocado este script de una manera incorrecta</invalid_call>
+        <recaptcha_not_configured>ReCaptcha no está configurado! Favor de notificar al webmaster, ya que se requiere de un juego de llaves ReCaptcha en el módulo de configuración de este sitio web.</recaptcha_not_configured>
+        <webmaster_address_empty>La dirección de correo del webmaster no se ha configurado. No se pueden enviar correos al personal de este website.</webmaster_address_empty>
+    </errors>
+    
+    <click_here_to_continue>Da click aquí para continuar...</click_here_to_continue>
+    
+    <toggle_info>Mostrar/ocutar detalles</toggle_info>
+    
+    <wait>Favor de esperar...</wait>
+    
+    <ok>OK</ok>
+    <save>Guardar</save>
+    <submit>Enviar</submit>
+    <done>Heho</done>
+    <cancel>Cancelar</cancel>
+    <close>Cerrar</close>
+    <none>Ninguno</none>
+    <yes>Sí</yes>
+    <no>No</no>
+    <off>Apagado</off>
+    <on>Encendido</on>
+    <last_seen>Última vez visto:</last_seen>
+    <never>nunca</never>
+    <edit_profile>Editar perfil</edit_profile>
+    <contact>
+        <contact_user>Contactar a {$display_name}</contact_user>
+        <pm>
+            <caption>MP</caption>
+            <title>Enviar un mensaje privado al buzón del usuario en {$website_name}</title>
+            <send_to>Enviar MP a {$recipient}</send_to>
+        </pm>
+        <email>
+            <caption>E-Mail</caption>
+            <title>Enviar un correo a la dirección del usuario</title>
+        </email>
+    </contact>
+    
+    <failed_to_create_cron_job><![CDATA[
+        No se puede crear el trabajo de proceso en segundo plano debido al siguiente error:<br>
+        {$error}<br>
+        Favor de contactar al personal de soporte del website.
+    ]]></failed_to_create_cron_job>
+    
+    <time>
+        <ago>atrás</ago>
+    </time>
+    
+    <view>Ver</view>
+    <lookup>Buscar</lookup>
+    <return>Regresar</return>
+    <refresh>Actualizar</refresh>
+    <reload>Recargar</reload>
+    <reload_page>Recargar página</reload_page>
+    <resource_not_found>Recurso no encontrado</resource_not_found>
+    <resource_unavailable>Recurso no disponible</resource_unavailable>
+    
+    <notification_deletion_errors>
+        <missing_id>Estas llamando este script de manera incorrecta.</missing_id>
+        <belongs_to_other>La notificación que tratas de accesar no te pertenece.</belongs_to_other>
+        <cant_be_deleted>La notificación no se puede borrar! Favor de contactar al personal de soporte del website.</cant_be_deleted>
+    </notification_deletion_errors>
+    
+    <zip>
+        <zip_support_disabled><![CDATA[
+            El soporte para archivos zip no está presente en la configuración de PHP del servidor.<br>
+            <b>Subir archivos zip causará un error.</b><br>
+            Favor de evitar subir archivos zip e informar al personal de soporte del website al respecto.
+        ]]></zip_support_disabled>
+        <zip_file_cannot_be_opened>El archivo zip que has subido no se puede abrir. Asegúrate de que estás subiendo un archivo zip válido y desprotegido. Error reportado por el descompresor: {$error}</zip_file_cannot_be_opened>
+        <zip_file_cannot_be_extracted>El/los archivo(s) dentro del zip que has subido no se pueden extraer. Asegúrate de que estás subiendo un archivo zip válido y desprotegido. Si el archivo está corrupto, trata de subirlo de nuevo. Error reportaqdo por el descompresor: {$error}</zip_file_cannot_be_extracted>
+    </zip>
+    
+    <show_log>Ver bitácora</show_log>
+    <show_contents>Mostrar contenidos</show_contents>
+    
+    <home_title>Inicio</home_title>
+    
+    <captcha_not_configured><![CDATA[
+        Las llaves de Captcha no están configuradas! Favor de ir a la página de configuración y definirlas.
+    ]]></captcha_not_configured>
+    
+    <search_placeholder>Palabras o "frase" a buscar</search_placeholder>
+    
+    <install_messages>
+        <table_created_ok>Tabla {$table_name} creada con éxito.</table_created_ok>
+        <table_created_ko>¡La tabla {$table_name} no se puede crear! Error: {$error}</table_created_ko>
+        <table_deleted_ok>Tabla {$table_name} eliminada con éxito.</table_deleted_ok>
+        <table_deleted_ko>¡La tabla {$table_name} no se puede eliminar! Error: {$error}</table_deleted_ko>
+    </install_messages>
+    
+    <settings_data>
+        <title>Comportamiento, presentación y valores del motor</title>
+        
+        <!-- Core -->
+        <specs is_separator="true">Núcleo</specs>
+        
+        <specs key="enabled">
+            <title>Estado del motor</title>
+            <description><![CDATA[
+                Interrputor de emergencia para un alto total de los sistemas. Sólo funciones administrativas funcionarán si se elige "apagado".
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        <specs key="website_name">
+            <title>Nombre del website</title>
+            <description><![CDATA[
+                Nombre de este website
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
+        <!-- Display -->
+        <specs is_separator="true">Despliegue y distribución</specs>
+        
+        <specs key="default_language">
+            <title>Lenguaje predeterminado</title>
+            <description><![CDATA[
+                Lenguaje a mostrar.<br>
+                <span class="fa fa-warning"></span>
+                <b>Importante:</b> El motor y los módulos base soportan los lenguajes listados,
+                pero es posible que no todos los módulos instalados lo hagan. En dado caso,
+                el lenguaje de soporte siempre será <code>Inglés/Estados Unidos</code>.
+            ]]></description>
+            <type>locale_list</type>
+        </specs>
+        <specs key="template">
+            <title>Plantilla activa</title>
+            <description><![CDATA[
+                Plantilla a usar para toda la salida al usuario.
+            ]]></description>
+            <type>template_selector</type>
+        </specs>
+        <specs key="hide_left_sidebar_on_admin_pages">
+            <title>Ocultar barra izquierda en páginas administrativas</title>
+            <description><![CDATA[
+                Si la plantilla tiene soporte para la barra lateral izquierda (normalmente usada para mostrar
+                vínculos relacionados con el público en general), ocultarla en aquellas páginas que usen
+                la distribución administrativa.
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
+        <specs key="show_admin_menu_in_header_menu">
+            <title>Distribución alterna del menú administrativo</title>
+            <description><![CDATA[
+                Por defecto, el menú para administradores se muestra en una barra por encima de la barra de menú estándar.<br>
+                Si esta opción se habilita, los vínculos del menú administrativo se moverán a la barra estándar (manteniéndose
+                invisibles para usuarios normales).
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        <specs key="main_menu_auto_collapse_width" disabled="true">
+            <title>Ancho auto-colapsable para el menú principal</title>
+            <description><![CDATA[
+                Especificar el ancho en pixeles que la ventana del navegador debe tener para que el menú se colapse automáticamente.<br>
+                El mejor valor a mostrar aquí es el ancho de la ventana con todos los elementos del menú a la vista<br>
+                Valor por defecto: 700.
+            ]]></description>
+            <type>number</type>
+        </specs>
+        
+        <!-- Email -->
+        <specs is_separator="true">Correo</specs>
+        
+        <specs key="webmaster_address">
+            <title>Dirección del webmaster</title>
+            <description><![CDATA[
+                Dirección de correo a la que las solicitudes de contacto y notificaciones administrativas deben enviarse.
+            ]]></description>
+            <type>email</type>
+        </specs>
+        <specs key="mail_sender_name">
+            <title>Nombre del remitente de correo</title>
+            <description><![CDATA[
+                Nombre a usar como remitente para las notificaciones y mensajes envaidos por correo electrónico.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_email">
+            <title>Dirección del remitente de correo</title>
+            <description><![CDATA[
+                Dirección a usar como remitente para las notificaciones y mensajes envaidos por correo electrónico.
+            ]]></description>
+            <type>email</type>
+        </specs>
+        <specs key="mail_sender_smtp_enabled">
+            <title>Enviar correo a través de SMTP</title>
+            <description><![CDATA[
+                Por defecto, todo el correo es enviado a través del transporte local (usualmente <code>sendmail</code>).
+                Si deseas enviar el correo a través de SMTP, habilita esta opción e introduce los datos requeridos
+                en los campos subsecuentes.
+                <a class="framed_content inlined state_highlight" href="{$full_root_url}/scripts/test_mail.php" target="_blank"
+                   onclick="var $this = $(this); var a = prompt('Favor de introducir una dirección de correo'); if( a ) { $this.attr('href', $this.attr('href') + '?to=' + a); return true; } else { return false; } ">
+                    Da click aquí para enviar un correo de prueba
+                </a>
+            ]]></description>
+            <type>boolean</type>
+        </specs>
+        <specs key="mail_sender_smtp_host">
+            <title>Servidor saliente</title>
+            <description><![CDATA[
+                IP o nombre del host SMTP
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_smtp_port">
+            <title>Puerto SMTP</title>
+            <description><![CDATA[
+                Especifica el puerto usado para establecer la conexión. Puede ser:<br>
+                • <code>25</code> es el puerto estándar sin cifrar.<br> 
+                • <code>465</code> es el estándar para cifrado SSL.<br> 
+                • <code>587</code> es el estándar para cifrado TLS.<br> 
+            ]]></description>
+            <type>number</type>
+        </specs>
+        <specs key="mail_sender_smtp_user">
+            <title>Usuario SMTP</title>
+            <description><![CDATA[
+                Nombre de usuario de la cuenta en el servidor saliente. Puede ser una dirección de correo electrónico. 
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_smtp_password">
+            <title>Contraseña SMTP</title>
+            <description><![CDATA[
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="mail_sender_smtp_security">
+            <title>Seguridad SMTP</title>
+            <description><![CDATA[
+                Selecciona una opción que se adecúe al servidor saliente.
+            ]]></description>
+            <type>list</type>
+            <options>
+                <option value="">Texto plano (sin cifrar)</option>
+                <option value="ssl">Cifrado SSL</option>
+                <option value="tls">Cifrado TLS</option>
+            </options>
+        </specs>
+        
+        <!-- Users -->
+        <specs is_separator="true">Configuración de usuarios</specs>
+        
+        <specs key="user_levels">
+            <title>Niveles de usuario</title>
+            <description><![CDATA[
+                Lista de todos los niveles de usuario en el sistema.<br>
+                Los niveles van de <code>0</code> a <code>255</code>.
+                Puedes añadir tantos como necesites para diferenciar los tipos de usuario usando la siguiente sintaxis:
+                <code>nivel - nombre</code>, E.G. <code>100 - Autor</code>.<br>
+                <span class="fa fa-warning"></span> <b>Advertencia:</b>
+                Hay <b>8</b> roles atados a niveles específicos:
+                <span class="framed_content inlined">0 - Sin registrar</span>, <span class="framed_content inlined">1 - Sin confirmar</span>,
+                <span class="framed_content inlined">10 - Novato</span>,       <span class="framed_content inlined">100 - Autor</span>,
+                <span class="framed_content inlined">150 - VIP</span>,         <span class="framed_content inlined">200 - Moderador</span>,
+                <span class="framed_content inlined">240 - Coadmin</span> y    <span class="framed_content inlined">255 - Admin</span>.<br>
+                <b>Debes mantener estos niveles en la lista</b> y sólo renombrarlos o traducirlos.
+                Si necesitas más niveles, añádelos <b>entre ellos</b>.
+            ]]></description>
+            <type>textarea</type>
+        </specs>
+        <specs key="user_online_cookie">
+            <title>Cookie de sesión actual</title>
+            <description><![CDATA[
+                Nombre de la cookie en la que se almacena el identificador del usuario en el navegador.<br>
+                De cambiarse, se forzará a los usuarios <u>que están conectados</u> a reiniciar su sesión.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="user_session_cookie">
+            <title>Cookie de sesión permanente</title>
+            <description><![CDATA[
+                Nombre de la cookie en la que se almacena el identificador del usuario de forma que no se tenga que abrir sesión
+                cada vez que se abre el navegador (a menos que el mismo usuario cierre su sesión).<br>
+                De cambiarse, se forzará a <u>todos los usuarios</u> (presentes o no) a reiniciar su sesión.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
+        <!-- Input and uploads -->
+        <specs is_separator="true">Entrada y subidas de archivos</specs>
+        
+        <specs key="recaptcha_private_key">
+            <title>Llave secreta de reCAPTCHA</title>
+            <description><![CDATA[
+                Llave secreta otorgada por Google Recaptcha. Usada para proteger el motor de spammers.<br>
+                Visita <a href="https://www.google.com/recaptcha" target="_blank">Google reCAPTCHA</a> para obtener tu par de llaves
+                de forma gratuita o deja este campo en blanco para deshabilitar la funcionalidad (no recomendado).
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="recaptcha_public_key">
+            <title>Llave de sitio reCAPTCHA</title>
+            <description><![CDATA[
+                Llave pública otorgada por Google Recaptcha. Usada en conjunto con la llave secreta.<br>
+                Dejar en blanco para deshabilitar la funcionalidad (no recomendado).
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="max_upload_size">
+            <title>Tamaño máximo de subidas</title>
+            <description><![CDATA[
+                Cantidad <u>de megabytes</u> máxima para imágenes, videos, etc. Valor por defecto: <code>10</code>.
+            ]]></description>
+            <type>number</type>
+        </specs>
+        <specs key="upload_file_types" highlight_class="sensitive">
+            <title>Tipos de archivo permitidos</title>
+            <description><![CDATA[
+                Lista de tipos de media permitidos y sus manejadores correspondientes, uno por línea,
+                usando la siguiente sintaxis: <code>tipo - clase_manejadora</code>.<br>
+                Por defecto, los tipos de archivo permitidos son:
+                <code>png</code>, <code>gif</code>, <code>jpeg</code>, <code>mpg</code>,
+                <code>mp4</code>, <code>m4v</code>, <code>3gp</code>, <code>mov</code>, <code>3gp</code>,
+                <code>flv</code>, <code>mkv</code>, <code>wmv</code>, <code>ogg</code>, <code>ogv</code>
+                y <code>avi</code>.<br>
+                <span class="fa fa-warning"></span>
+                Este valor puede ser actualizado cuando un módulo que maneja subidas de archivos es instalado o
+                desinstalado.<br>
+                Adicionalmente, la <code>clase_manejadora</code> debe existir y ser válida.
+                <b>No toques este valor</b> a menos que sepas lo que haces.
+            ]]></description>
+            <type>textarea</type>
+        </specs>
+        
+        <!-- Media -->
+        <specs is_separator="true">Valores para medios</specs>
+        
+        <specs key="thumbnail_size">
+            <title>Tamaño de miniaturas</title>
+            <description><![CDATA[
+                El administrador de imágenes construye miniaturas cuando recibe archivos,
+                conservando la relación de aspecto y recortándolas dentro del tamaño especificado.<br>
+                Especificar aquí las dimensiones en pixeles.
+                Por defecto, las miniaturas se manejan a <code>460x220</code>.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="thumbnail_png_compression">
+            <title>Compresión de miniaturas PNG</title>
+            <description><![CDATA[
+                Especificar el valor de compresión de archivos PNG usado para la generación de miniaturas
+                en este formato.<br>
+                Valor por defecto: <code>9</code> (máxima compresión sin pérdida de calidad).
+            ]]></description>
+            <type>number</type>
+            <options>
+                <min>0</min>
+                <max>9</max>
+            </options>
+        </specs>
+        <specs key="thumbnail_jpg_compression">
+            <title>Calidad de miniaturas JPEG</title>
+            <description><![CDATA[
+                Especificar el porcentaje de calidad usado para guardar las miniaturas en este formato.<br>
+                El valor por defecto es <code>90%</code> (buena calidad con archivos de menor tamaño).<br>
+                El valor mínimo recomendado es <code>40%</code>. Cualquier valor por debajo de este dará pésimos resultados.
+            ]]></description>
+            <type>number</type>
+            <options>
+                <min>10</min>
+                <max>100</max>
+            </options>
+        </specs>
+        <specs key="ffmpeg_path">
+            <title>Ruta hacia FFmpeg</title>
+            <description><![CDATA[
+                FFmpeg es necesario para relizar conversiones de videos. Debe estar instalado en el servidor
+                para dar soporte a subidas de video en el administrador de medios.<br>
+                Puedes descargarlo e instalarlo en el servidor usando la línea de comandos:<br>
+                • <code>sudo apt-get install ffmpeg</code> en Ubuntu/Debian<br>
+                • <code>sudo yum install ffmpeg</code> en Red Hat/CentOS.<br>
+                Si no puedes instalarlo en el servidor, puedes descargar una versión estática 
+                <a href="http://johnvansickle.com/ffmpeg/" target="_blank">de este sitio</a> y ejecutarla desde tu directorio de usuario.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
+        <!-- Debug -->
+        <specs is_separator="true">Depuración</specs>
+        
+        <specs key="display_performance_details" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Depuración</span>
+                Mostrar detalles de rendimiento
+            ]]></title>
+            <description><![CDATA[
+                Mostrar tiempos de carga y consumo de recursos al final de cada página.<br>
+                <span class="fa fa-warning"></span>
+                <b>Advertencia:</b> TODOS los usuarios (incluyendo visitantes) podrán ver estos detalles!
+            ]]></description>
+            <type>boolean</type>
+            <config_callback>toggle_display_performance</config_callback>
+        </specs>
+        <specs key="query_tracking_enabled" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Depuración</span>
+                Rastreo de base de datos
+            ]]></title>
+            <description><![CDATA[
+                Permite al motor registrar todas las consultas a la base de datos y mostrar una tabla al final de cada página.<br>
+                <span class="fa fa-warning"></span>
+                <b>Advertencia:</b> TODOS los usuarios (incluyendo visitantes) podrán ver estos detalles!
+            ]]></description>
+            <type>boolean</type>
+            <config_callback>toggle_query_tracking</config_callback>
+        </specs>
+        <specs key="query_backtrace_enabled" highlight_class="sensitive">
+            <title><![CDATA[
+                <span class="framed_content state_highlight inlined">Depuración</span>
+                Trazado de consultas
+            ]]></title>
+            <description><![CDATA[
+                Cuando el rastreo de base de datos está habilitado, se agrega una columna mostrando los scripts de PHP
+                y el número de línea que hace la llamada.<br>
+                <span class="fa fa-warning"></span>
+                <b>Advertencia:</b> TODOS los usuarios (incluyendo visitantes) podrán ver estos detalles!
+            ]]></description>
+            <type>boolean</type>
+            <config_callback>toggle_query_backtrace</config_callback>
+        </specs>
+        
+    </settings_data>
+    
+</language>
