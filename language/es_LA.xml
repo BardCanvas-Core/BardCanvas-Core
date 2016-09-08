@@ -124,7 +124,7 @@
     <home_title>Inicio</home_title>
     
     <captcha_not_configured><![CDATA[
-        Las llaves de Captcha no están configuradas! Favor de ir a la página de configuración y definirlas.
+        Las llaves de Captcha no están configuradas! Favor de ir a la página de configuración y especificarlas.
     ]]></captcha_not_configured>
     
     <search_placeholder>Palabras o "frase" a buscar</search_placeholder>
