@@ -89,9 +89,13 @@ class account_toolbox extends abstract_record
     
     function get_profile_banner_url($fully_qualified = false)
     {
-        global $config;
+        global $config, $settings;
         
-        $file = empty($this->profile_banner) ? "media/default_user_banner.jpg" : "user/{$this->user_name}/profile_banner";
+        $default = $settings->get("modules:accounts.default_profile_banner");
+        if( empty($default) ) $default = "media/default_user_banner.jpg";
+        
+        $file = empty($this->profile_banner) ? $default : "user/{$this->user_name}/profile_banner";
+        $file = ltrim($file, "/");
         
         if( $fully_qualified ) return "{$config->full_root_url}/{$file}";
         
