@@ -14,6 +14,8 @@
         </errors>
     </bootstrap>
     
+    <powered_by>usa BardCanvas v{$version}</powered_by>
+    
     <admin>
         <bar_title>Versión del motor:</bar_title>
     </admin>

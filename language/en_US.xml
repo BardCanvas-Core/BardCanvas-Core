@@ -14,6 +14,8 @@
         </errors>
     </bootstrap>
     
+    <powered_by>is powered by BardCanvas v{$version}</powered_by>
+    
     <admin>
         <bar_title>Engine Version:</bar_title>
     </admin>
