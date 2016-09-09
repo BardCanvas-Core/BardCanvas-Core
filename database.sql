@@ -28,13 +28,14 @@ insert into settings set name='engine.user_levels'           , value='0 - Unregi
 
 insert into settings set name='modules:accounts.installed'                    , value='true';
 insert into settings set name='modules:accounts.enabled'                      , value='true';
-insert into settings set name='modules:accounts.register_enabled'             , value='true';
+insert into settings set name='modules:accounts.register_enabled'             , value='false';
 insert into settings set name='modules:accounts.enforce_device_registration'  , value='false';
 insert into settings set name='modules:accounts.disable_registrations_widget' , value='false';
 insert into settings set name='modules:settings.installed'                    , value='true';
 insert into settings set name='modules:settings.enabled'                      , value='true';
 insert into settings set name='modules:modules_manager.installed'             , value='true';
 insert into settings set name='modules:modules_manager.enabled'               , value='true';
+insert into settings set name='modules:modules_manager.disable_cache'         , value='true';
 
 insert into settings set name='engine.recaptcha_public_key' , value='';
 insert into settings set name='engine.recaptcha_private_key', value='';
@@ -43,28 +44,28 @@ insert into settings set name='engine.recaptcha_private_key', value='';
 -- Table `account`
 -- -----------------------------------------------------
 drop table if exists `account`;
-CREATE TABLE IF NOT EXISTS `account` (
+CREATE TABLE `account` (
   `id_account`      VARCHAR(32) NOT NULL DEFAULT '',
   `user_name`       VARCHAR(64) NOT NULL DEFAULT '',
   `password`        VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'MD5 hash of password',
   `display_name`    VARCHAR(255) NOT NULL DEFAULT '',
   `email`           VARCHAR(255) NOT NULL DEFAULT '',
   `alt_email`       VARCHAR(255) NOT NULL DEFAULT '',
+  `birthdate`       DATE,
   `avatar`          VARCHAR(255) NOT NULL DEFAULT '',
   `profile_banner`  VARCHAR(255) NOT NULL DEFAULT '',
   `signature`       TEXT,
   `bio`             TEXT,
   `homepage_url`    VARCHAR(255) NOT NULL DEFAULT '',
   `country`         VARCHAR(2) NOT NULL DEFAULT '' COMMENT 'ISO code',
-  `level`           TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  `level`           TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
   `state`           ENUM('new','enabled','disabled') NOT NULL DEFAULT 'new',
   `creation_host`   VARCHAR(255) NOT NULL DEFAULT '',
   `creation_date`   DATETIME NOT NULL,
   `last_update`     DATETIME NOT NULL,
-  `changelog`       TEXT NOT NULL,
-
+  `changelog`       TEXT,
   PRIMARY KEY (`id_account`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE='utf8mb4_unicode_ci';
+) DEFAULT CHARSET = utf8mb4 COLLATE='utf8mb4_unicode_ci' ENGINE=InnoDB;
 
 delete from account;
 insert into account set
