@@ -235,6 +235,18 @@ class media_record extends abstract_record
         return $return;
     }
     
+    /**
+     * Alias of get_page_url
+     * 
+     * @param bool $fully_qualified
+     *
+     * @return string
+     */
+    public function get_permalink($fully_qualified = false)
+    {
+        return $this->get_page_url($fully_qualified);
+    }
+    
     public function get_item_embeddable_url($fully_qualified = false)
     {
         global $config;
