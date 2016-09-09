@@ -409,7 +409,7 @@ class account extends account_toolbox
             $query = "
                 update account set
                     state       = '".addslashes($this->state)."',
-                    user_level  = '$set_user_level',
+                    level       = '$set_user_level',
                     last_update = '$now'
                 where
                     id_account  = '".addslashes($this->id_account)."'
