@@ -71,12 +71,12 @@ function time_elapsed_string($date)
     }
     
     $a = array(
-        12 * 30 * 24 * 60 * 60 => 'year',
-        30 * 24 * 60 * 60      => 'month',
-        24 * 60 * 60           => 'day',
-        60 * 60                => 'hour',
-        60                     => 'minute',
-        1                      => 'second',
+        12 * 30 * 24 * 60 * 60 => $language->time->years,
+        30 * 24 * 60 * 60      => $language->time->monts,
+        24 * 60 * 60           => $language->time->days,
+        60 * 60                => $language->time->hours,
+        60                     => $language->time->minutes,
+        1                      => $language->time->seconds,
     );
     
     $return = "";
@@ -86,12 +86,15 @@ function time_elapsed_string($date)
         if( $d >= 1 )
         {
             $r      = round($d);
-            $return = $r . ' ' . $str . ($r > 1 ? 's' : '') . ' ';
+            $return = $r . ' ' . $str . ($r > 1 ? '' : '') . ' ';
             break;
         }
     }
     
-    return trim($return) . " " . $language->time->ago;
+    $prefix = trim($language->time->ago_prefix); if( $prefix != "" ) $prefix = "{$prefix} ";
+    $suffix = trim($language->time->ago);        if( $suffix != "" ) $suffix = " {$suffix}";
+    
+    return $prefix . trim($return) . $suffix;
 }
 
 /**
@@ -105,6 +108,8 @@ function time_elapsed_string($date)
  */
 function time_elapsed_string_alternate($date)
 {
+    global $language;
+    
     if( empty($date) ) return "";
     if( stristr($date, "0000-00-00") ) return "";
     
@@ -114,12 +119,12 @@ function time_elapsed_string_alternate($date)
     if( $etime < 1 ) return '0s';
     
     $a = array(
-        12 * 30 * 24 * 60 * 60 => 'y',
-        30 * 24 * 60 * 60      => 'mo',
-        24 * 60 * 60           => 'd',
-        60 * 60                => 'h',
-        60                     => 'm',
-        1                      => 's',
+        12 * 30 * 24 * 60 * 60 => $language->time->short->years,
+        30 * 24 * 60 * 60      => $language->time->short->monts,
+        24 * 60 * 60           => $language->time->short->days,
+        60 * 60                => $language->time->short->hours,
+        60                     => $language->time->short->minutes,
+        1                      => $language->time->short->seconds,
     );
     
     $return = "";
@@ -148,11 +153,11 @@ function get_minimized_date($input)
 {
     $timestamp = strtotime($input);
     
-    if( date("Y") > substr($input, 0, 4) )           # Another year = full date
+    if( date("Y") > substr($input, 0, 4) )        # Another year = full date
         return strftime("%b %e, %G", $timestamp);
-    if( date("Y-m-d") == substr($input, 0, 10) ) # Today = time
+    if( date("Y-m-d") == substr($input, 0, 10) )  # Today = time
         return strftime("%H:%M", $timestamp);
-    else                                             # Other day = day
+    else                                          # Other day = day
         return strftime("%b %e", $timestamp);
 }
 
@@ -191,19 +196,26 @@ function get_selective_date($input, $time_elapsed_if_today = false)
  */
 function time_remaining_string($date, $in_time_format = false)
 {
+    global $language;
+    
+    $d = $language->time->short->days;
+    $h = $language->time->short->hours;
+    $m = $language->time->short->minutes;
+    $s = $language->time->short->seconds;
+    
     $now         = new DateTime();
     $future_date = new DateTime($date);
     
     $interval = $future_date->diff($now);
     
-    $return = $interval->format("%ad %hh %im %ss");
-    $return = str_replace("0d", "", $return);
-    $return = str_replace(" 0h", "", $return);
-    $return = str_replace(" 0m", "", $return);
+    $return = $interval->format("%a{$d} %h{$h} %i{$m} %s{$s}");
+    $return = str_replace("0{$d}", "", $return);
+    $return = str_replace(" 0{$h}", "", $return);
+    $return = str_replace(" 0{$m}", "", $return);
     
     if( $in_time_format )
     {
-        $return = str_replace(array("d", "h", "m", "s"), ":", $return);
+        $return = str_replace(array($d, $h, $m, $s), ":", $return);
         $return = str_replace(" ", "", $return);
         
         $sanitized = "";

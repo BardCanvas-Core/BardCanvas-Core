@@ -90,7 +90,22 @@
     ]]></failed_to_create_cron_job>
     
     <time>
-        <ago>atrás</ago>
+        <years>años</years>
+        <months>meses</months>
+        <days>días</days>
+        <hours>horas</hours>
+        <minutes>minutos</minutes>
+        <seconds>segundos</seconds>
+        <ago></ago>
+        <ago_prefix>hace</ago_prefix>
+        <short>
+            <years>a</years>
+            <months>m</months>
+            <days>d</days>
+            <hours>h</hours>
+            <minutes>m</minutes>
+            <seconds>s</seconds>
+        </short>
     </time>
     
     <view>Ver</view>
