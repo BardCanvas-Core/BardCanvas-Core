@@ -14,10 +14,17 @@ class disk_cache
     
     public function __construct($target_file_path = "")
     {
+        global $config;
+        
         if( empty($target_file_path) ) return;
         
         $this->disk_cache_dir  = dirname($target_file_path);
-        $this->disk_cache_file = $target_file_path;
+        
+        $parts = explode(".", $target_file_path);
+        $ext   = array_pop($parts);
+        $name  = implode(".", $parts);
+        
+        $this->disk_cache_file = "$name~v{$config->disk_cache_version}.$ext";
         
         $this->load();
     }

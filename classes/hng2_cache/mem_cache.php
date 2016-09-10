@@ -7,6 +7,8 @@ class mem_cache
     
     private $var_prefix;
     
+    private $suffix;
+    
     /**
      * @var \Memcache()
      */
@@ -26,13 +28,15 @@ class mem_cache
         
         foreach($MEMCACHE_SERVERS as $server)
             $this->server->addserver($server["host"], $server["port"]);
+        
+        $this->suffix = $config->memory_cache_version;
     }
     
     public function set($key, $value, $flag = 0, $expiration = 0)
     {
         global $config;
         
-        $key = $this->var_prefix . $key;
+        $key = $this->var_prefix . $key . "~v" . $this->suffix;
         
         if( empty($value) )
         {
@@ -67,7 +71,7 @@ class mem_cache
     {
         global $config;
         
-        $key = $this->var_prefix . $key;
+        $key = $this->var_prefix . $key . "~v" . $this->suffix;
         
         if( isset($this->data[$key]) ) return $this->data[$key];
         
@@ -98,7 +102,7 @@ class mem_cache
     {
         global $config;
         
-        $key = $this->var_prefix . $key;
+        $key = $this->var_prefix . $key . "~v" . $this->suffix;
         unset( $this->data[$key] );
         $this->server->delete($key);
     

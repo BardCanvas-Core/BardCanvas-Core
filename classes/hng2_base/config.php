@@ -18,6 +18,8 @@ class config
     
     public $engine_version;
     public $scripts_version;
+    public $memory_cache_version;
+    public $disk_cache_version;
     
     public $datafiles_location;
     public $logfiles_location;
@@ -105,11 +107,21 @@ class config
             $this->engine_version = trim(file_get_contents(ABSPATH . "/engine_version.dat"));
         else
             $this->engine_version = "1.0";
-    
-        if( file_exists(ABSPATH . "/scripts_version.dat") )
-            $this->scripts_version = trim(file_get_contents(ABSPATH . "/scripts_version.dat"));
+        
+        if( file_exists(ABSPATH . "/data/scripts_version.dat") )
+            $this->scripts_version = trim(file_get_contents(ABSPATH . "/data/scripts_version.dat"));
         else
             $this->scripts_version = "1.0";
+        
+        if( file_exists(ABSPATH . "/data/memory_cache_version.dat") )
+            $this->memory_cache_version = trim(file_get_contents(ABSPATH . "/data/memory_cache_version.dat"));
+        else
+            $this->memory_cache_version = "1";
+        
+        if( file_exists(ABSPATH . "/data/disk_cache_version.dat") )
+            $this->disk_cache_version = trim(file_get_contents(ABSPATH . "/data/disk_cache_version.dat"));
+        else
+            $this->disk_cache_version = "1";
     }
     
     private function set_paths()
