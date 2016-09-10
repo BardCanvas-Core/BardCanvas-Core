@@ -30,14 +30,14 @@ code           { padding-left: 2px; padding-right: 2px; }
 code, pre.code { color: black; background-color: silver; }
 
 h1 { font-size: 14pt; color: #990d0d; margin-top: 0; }
-h2 { font-size: 13pt; color: #ce6562; }
-h3 { font-size: 12pt; color: #ceaea7; }
+h2 { font-size: 13pt; color: #990d0d; }
+h3 { font-size: 12pt; color: #990d0d; }
 
 a img { border: none; }
 
 a:link,            .pseudo_link                            { color: #990d0d; }
 a:active, a:hover, .pseudo_link:active, .pseudo_link:hover { color: red; }
-a:visited,         .pseudo_link:visited                    { color: #ce8687; }
+a:visited,         .pseudo_link:visited                    { color: #990d0d; }
 
 h1 a, h1 .pseudo_link, h2 a, h2 .pseudo_link, h3 a, h3 .pseudo_link { color: #990d0d; }
 

@@ -54,6 +54,8 @@ class media_record extends abstract_record
     
     public $main_category_slug;
     public $main_category_title;
+    public $main_category_visibility;
+    public $main_category_min_level;
     
     # Taken with a group_concat from other tables:
     public $tags_list       = array(); # from post_tags
@@ -81,9 +83,11 @@ class media_record extends abstract_record
         if( ! empty($this->_main_category_data) )
         {
             $parts = explode("\t", $this->_main_category_data);
-        
+            
             $this->main_category_slug  = $parts[0];
             $this->main_category_title = $parts[1];
+            $this->main_category_visibility = $parts[2];
+            $this->main_category_min_level  = $parts[3];
             
             unset($this->_main_category_data);
         }
@@ -119,6 +123,8 @@ class media_record extends abstract_record
             
             $return["main_category_slug"],
             $return["main_category_title"],
+            $return["main_category_visibility"],
+            $return["main_category_min_level"],
             
             $return["tags_list"],
             $return["categories_list"],

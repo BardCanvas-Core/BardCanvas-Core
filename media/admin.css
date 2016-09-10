@@ -44,7 +44,7 @@
 body.admin h1, body.admin h2, body.admin h3 { padding: 5px 10px; border-radius: 5px; }
 
 body.admin h1 { color: white;   background-color: #990d0d; border: 2px solid #710707; }
-body.admin h2 { color: white;   background-color: #ce6562; border: 2px solid #990d0d; }
+body.admin h2 { color: white;   background-color: #990d0d; border: 2px solid #990d0d; }
 body.admin h3 { color: #830606; background-color: #ceaea7; border: 2px solid #ce6562; }
 
 body.admin h1 a, body.admin h1 .pseudo_link { color: white;   }

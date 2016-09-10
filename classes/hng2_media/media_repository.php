@@ -14,19 +14,23 @@ class media_repository extends abstract_repository
     protected $table_name      = "media";
     protected $key_column_name = "id_media";
     protected $additional_select_fields = array(
+        # Author data
         "( select concat(user_name, '\\t', display_name, '\\t', email, '\\t', level)
            from account where account.id_account = media.id_author )
            as _author_data",
-        "( select concat(slug, '\\t', title)
+        # Main category data
+        "( select concat(slug, '\\t', title, '\\t', visibility, '\\t', min_level)
            from categories where categories.id_category = media.main_category )
            as _main_category_data",
-        
+        # Tags list
         "( select group_concat(tag order by date_attached asc, order_attached asc separator ',')
            from media_tags where media_tags.id_media = media.id_media )
            as tags_list",
+        # Categories list
         "( select group_concat(id_category order by date_attached asc, order_attached asc separator ',')
            from media_categories where media_categories.id_media = media.id_media )
            as categories_list",
+        # Mentions list
         "( select group_concat(id_account order by date_attached asc, order_attached asc separator ',')
            from media_mentions where media_mentions.id_media = media.id_media )
            as mentions_list",
