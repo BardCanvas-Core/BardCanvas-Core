@@ -251,16 +251,32 @@ class media_repository extends abstract_repository
      */
     protected function build_find_params($where = array(), $skip_date_check = false)
     {
-        global $settings;
+        global $settings, $account;
         
         $today = date("Y-m-d H:i:s");
         $where[] = "status = 'published'";
         $where[] = "visibility <> 'private'";
         
-        if( ! $skip_date_check )
-            $where[] = "publishing_date <= '$today'";
+        if( ! $skip_date_check ) $where[] = "publishing_date <= '$today'";
         
-        // TODO: Complement where[] with additional filters (per user level, etc.)
+        if( ! $account->_exists )
+            $where[] = "visibility = 'public'";
+        else
+            $where[] = "(
+                            visibility = 'public' or visibility = 'users' or 
+                            (
+                                visibility = 'level_based' and
+                                '{$account->level}' >= (select level from account where account.id_account = media.id_author)
+                            ) 
+                        )";
+        
+        $where[] = "(
+            media.main_category in (
+                select id_category from categories where
+                visibility = 'public' or visibility = 'users' or
+                (visibility = 'level_based' and '{$account->level}' >= min_level)
+            )
+        )";
         
         $order  = "publishing_date desc";
         $limit  = $settings->get("modules:gallery.items_per_page", 30);
