@@ -718,4 +718,22 @@ class media_repository extends abstract_repository
         
         return $res;
     }
+    
+    public function increment_views($id_media)
+    {
+        global $database, $config;
+        
+        $cookie_key = "{$config->website_key}_lvm_{$id_media}";
+        if( ! empty($_COOKIE[$cookie_key]) ) return 0;
+        setcookie($cookie_key, $id_media, time() + 300, "/", $config->cookies_domain);
+        
+        $now = date("Y-m-d H:i:s");
+        return $database->exec("
+            update {$this->table_name} set
+                views       = views + 1,
+                last_viewed = '$now'
+            where
+                id_media = '$id_media'
+        ");
+    }
 }
