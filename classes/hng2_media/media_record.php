@@ -2,6 +2,7 @@
 namespace hng2_media;
 
 use hng2_base\account;
+use hng2_base\config;
 use hng2_repository\abstract_record;
 
 class media_record extends abstract_record
@@ -284,5 +285,17 @@ class media_record extends abstract_record
         else                          $return .= "mediaserver/{$this->thumbnail}";
         
         return $return;
+    }
+    
+    public function can_be_edited()
+    {
+        global $account;
+        
+        if( ! $account->_exists ) return false;
+        if( $account->level >= config::MODERATOR_USER_LEVEL ) return true;
+        if( $this->id_author != $account->id_account ) return false;
+        if( $this->status == "draft" ) return true;
+        
+        return false;
     }
 }

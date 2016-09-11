@@ -118,6 +118,11 @@
     <reload_page>Recargar página</reload_page>
     <resource_not_found>Recurso no encontrado</resource_not_found>
     <resource_unavailable>Recurso no disponible</resource_unavailable>
+    <permalink>Enlace permanente</permalink>
+    <edit>Editar</edit>
+    <pm_author>MP al autor</pm_author>
+    <email_author>Correo al autor</email_author>
+    <report_as_spam>Reportar al webmaster</report_as_spam>
     
     <notification_deletion_errors>
         <missing_id>Estas llamando este script de manera incorrecta.</missing_id>
