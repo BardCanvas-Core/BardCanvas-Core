@@ -122,7 +122,8 @@
     <edit>Editar</edit>
     <pm_author>MP al autor</pm_author>
     <email_author>Correo al autor</email_author>
-    <report_as_spam>Reportar al webmaster</report_as_spam>
+    <report_to_webmaster>Reportar al webmaster</report_to_webmaster>
+    <flag_as_spam>Es spam</flag_as_spam>
     
     <notification_deletion_errors>
         <missing_id>Estas llamando este script de manera incorrecta.</missing_id>
