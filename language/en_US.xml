@@ -140,6 +140,11 @@
         <zip_file_cannot_be_extracted>The file/s inside the zip you've uploaded cannot be extracted. Please make sure you're uploading a non-corrupt, unprotected zip file. If the file was corrupted, please try uploading it again. Error reported by the unzip function: {$error}</zip_file_cannot_be_extracted>
     </zip>
     
+    <clipboard>
+        <copied>Information copied to clipboard.</copied>
+        <unable_to_copy>Can't copy to the clipboard. Please select/copy manually.</unable_to_copy>
+    </clipboard>
+    
     <show_log>Show log</show_log>
     <show_contents>Show contents</show_contents>
     
