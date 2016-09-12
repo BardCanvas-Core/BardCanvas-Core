@@ -18,15 +18,28 @@ class internals
     public static function render($referer)
     {
         global $database, $global_start_time, $config;
-    
+        
         if( ! $config->display_performance_details ) return;
         
-        echo "<div class='internals framed_content state_active' style='margin-left: 0; margin-right: 0;'>";
+        ob_start();
+        echo "<!DOCTYPE html>
+            <html>
+            <head>
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/media/styles~v{$config->scripts_version}.css\">
+            </head>
+            <body>
+        ";
+        echo "<div class='internals framed_content state_active'>";
             
             echo "<div class='internals framed_content' align='center'>";
                 echo "
                     <span class='framed_content state_highlight'>
                         Results for: <b>" . basename($referer) . "</b>
+                    </span>
+                ";
+                echo "
+                    <span class='framed_content state_highlight'>
+                        URI: <b>" . htmlspecialchars($_SERVER["REQUEST_URI"]) . "</b>
                     </span>
                 ";
                 if( $config->query_tracking_enabled )
@@ -52,6 +65,20 @@ class internals
             self::render_disk_cache_details();
             
         echo "</div>";
+        echo "</body</html>";
+        $output = ob_get_clean();
+        
+        $dir = "{$config->logfiles_location}/internals";
+        if( ! is_dir($dir) )
+        {
+            if( ! @mkdir($dir) ) throw new \Exception("Can't create $dir");
+            @chmod($dir, 0777);
+        }
+        
+        $date = date("YmdHis") . sprintf("%03.0f", end(explode(".", microtime(true))));
+        $file = $dir . "/" . urlencode($_SERVER["REQUEST_URI"]) . " - $date.html";
+        @file_put_contents($file, $output);
+        @chmod($file, 0777);
     }
     
     private static function render_globals()
