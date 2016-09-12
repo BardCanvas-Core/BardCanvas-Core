@@ -298,4 +298,22 @@ class media_record extends abstract_record
         
         return false;
     }
+    
+    public function get_filtered_tags_list()
+    {
+        global $config, $modules;
+        
+        $list = $this->tags_list;
+        if( empty($list) ) return array();
+        
+        if( is_string($list) ) $list = explode(",", $list);
+        
+        $config->globals["media_record/filtering_tags_list"] = $list;
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->media_record_filtering_tags_list) )
+                include "{$module->abspath}/{$module->php_includes->media_record_filtering_tags_list}";
+        $list = $config->globals["media_record/filtering_tags_list"];
+        
+        return $list;
+    }
 }

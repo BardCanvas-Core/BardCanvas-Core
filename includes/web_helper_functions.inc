@@ -245,16 +245,31 @@ function extract_hash_tags($contents)
  */
 function autolink_hash_tags($contents, $url_prefix, $url_suffix = "")
 {
+    global $config, $modules;
+    
     $count = preg_match_all('/(#[a-z0-9]+)/i', strip_tags($contents), $matches);
     
     if( $count == 0 ) return $contents;
     
+    $list = array();
     foreach($matches[1] as $match)
     {
         $raw_match = str_replace("#", "", $match);
         $tag = "<a href='{$url_prefix}{$raw_match}{$url_suffix}'>$match</a>";
-        $contents = str_replace($match, $tag, $contents);
+        # $contents = str_replace($match, $tag, $contents);
+        $list[$match] = $tag;
     }
+    
+    $config->globals["webhelper/filtering_tags_list"] = $list;
+    foreach($modules as $module)
+        if( ! empty($module->php_includes->webhelper_autolink_hash_tags_filter) )
+            include "{$module->abspath}/{$module->php_includes->webhelper_autolink_hash_tags_filter}";
+    $list = $config->globals["webhelper/filtering_tags_list"];
+    
+    if( empty($list) ) return $contents;
+    
+    foreach($list as $search => $replace)
+        $contents = str_replace($search, $replace, $contents);
     
     return $contents;
 }
