@@ -386,3 +386,7 @@ video, embed { background-color: black; }
 .hashtag { display: inline-block; }
 .internals pre { margin: 0; }
 .internals .scrollable pre { max-height: 150px; overflow: auto; border: 1px solid silver; }
+.big_monospace_select {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 13pt; padding: 2px;
+}
