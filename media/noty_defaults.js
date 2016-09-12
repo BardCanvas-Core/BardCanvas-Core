@@ -15,7 +15,11 @@ $.noty.defaults = {
     type: 'information',
     text: '', // can be html or string
     dismissQueue: true, // If you want to use queue feature set this true
-    template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+    template: '<div class="noty_message">'
+              + '<span class="fa fa-times fa-fw" style="cursor: pointer; position: absolute; top: 4px; right: 4px; font-size: 12px; width: 12px; height: 12px;"></span>'
+              + '<span class="noty_text"></span>' 
+              // + '<span class="noty_close"></span>'
+              + '</div>',
     animation: {
         open:  { height: 'toggle' },
         close: { height: 'toggle' },
