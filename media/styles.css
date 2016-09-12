@@ -91,6 +91,8 @@ a.disabled,  .pseudo_link.disabled  { color: dimgrey; opacity: 0.5; cursor: auto
 #header .main_menu_item.submenu_visible              { color: #f6f8f9; background-color: #990d0d; }
 #header .main_menu_item.submenu_visible:hover        { color: #990d0d; background-color: #f6f8f9; }
 
+#logedin_user_name { display: inline-block; max-widtH: 150px; overflow: hidden; white-space: nowrap; vertical-align: bottom; }
+
 #main_menu_trigger              { float: right; cursor: pointer; padding-left: 12px; padding-right: 12px; text-align: right; }
 #main_menu_trigger.open         { color: #990d0d; background-color: #f6f8f9; }
 
