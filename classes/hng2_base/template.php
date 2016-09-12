@@ -149,7 +149,7 @@ class template
         }
         
         if( ! empty($sort_by) ) ksort($items);
-        return implode("\n", $items);
+        return implode("", $items);
     }
     
     public function set_page_title($title)
