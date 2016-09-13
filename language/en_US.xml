@@ -58,6 +58,10 @@
     
     <wait>Please wait...</wait>
     
+    <ip>IP</ip>
+    <segment>Segment</segment>
+    <disable>Disable</disable>
+    
     <ok>OK</ok>
     <save>Save</save>
     <submit>Submit</submit>
