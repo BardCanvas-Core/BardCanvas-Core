@@ -9,7 +9,8 @@ var tinymce_defaults = {
     remove_script_host:       false,
     convert_urls:             false,
     selector:                 '.tinymce',
-    plugins:                  'placeholder advlist contextmenu autolink lists link anchor searchreplace paste codemirror textcolor fullscreen autoresize hr',
+    plugins:                  'placeholder advlist contextmenu autolink lists link anchor searchreplace paste codemirror '
+                              + 'textcolor fullscreen autoresize hr',
     toolbar:                  tinymce_standard_toolbar,
     contextmenu:              'cut copy paste | link',
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
@@ -84,7 +85,12 @@ if( $_CURRENT_USER_IS_ADMIN )
 
 if( $_CURRENT_USER_LANGUAGE != "en" && $_CURRENT_USER_LANGUAGE != "en_US" )
 {
-    tinymce_defaults.language         = $_CURRENT_USER_LANGUAGE;
-    tinymce_full_defaults.language    = $_CURRENT_USER_LANGUAGE;
-    tinymce_minimal_defaults.language = $_CURRENT_USER_LANGUAGE;
+    tinymce_defaults.language     = $_CURRENT_USER_LANGUAGE;
+    tinymce_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.4.0/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=2';
+    
+    tinymce_full_defaults.language     = $_CURRENT_USER_LANGUAGE;
+    tinymce_full_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.4.0/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=2';
+    
+    tinymce_minimal_defaults.language     = $_CURRENT_USER_LANGUAGE;
+    tinymce_minimal_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.4.0/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=2';
 }
