@@ -17,19 +17,24 @@ class internals
 {
     public static function render($referer)
     {
-        global $database, $global_start_time, $config;
+        global $database, $global_start_time, $config, $account;
         
         if( ! $config->display_performance_details ) return;
         
-        ob_start();
-        echo "<!DOCTYPE html>
-            <html>
-            <head>
-                <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/media/styles~v{$config->scripts_version}.css\">
-            </head>
-            <body>
-        ";
-        echo "<div class='internals framed_content state_active'>";
+        if( ! EMBED_INTERNALS )
+        {
+            ob_start();
+            echo "<!DOCTYPE html>
+                <html>
+                <head>
+                    <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/media/styles~v{$config->scripts_version}.css\">
+                </head>
+                <body>
+            ";
+        }
+        
+        $style = EMBED_INTERNALS ? "display: none;" : "";
+        echo "<div class='internals framed_content state_active' style='$style'>";
             
             echo "<div class='internals framed_content' align='center'>";
                 echo "
@@ -65,20 +70,25 @@ class internals
             self::render_disk_cache_details();
             
         echo "</div>";
-        echo "</body</html>";
-        $output = ob_get_clean();
         
-        $dir = "{$config->logfiles_location}/internals";
-        if( ! is_dir($dir) )
+        if( ! EMBED_INTERNALS )
         {
-            if( ! @mkdir($dir) ) throw new \Exception("Can't create $dir");
-            @chmod($dir, 0777);
+            echo "</body></html>";
+            $output = ob_get_clean();
+    
+            $dir = "{$config->logfiles_location}/internals";
+            if( ! is_dir($dir) )
+            {
+                if( ! @mkdir($dir) ) throw new \Exception("Can't create $dir");
+                @chmod($dir, 0777);
+            }
+    
+            $userinfo = $account->_exists ? "{$account->user_name},{$account->level}" : "guest";
+            $date     = date("YmdHis") . sprintf("%03.0f", end(explode(".", microtime(true))));
+            $file     = $dir . "/" . urlencode($_SERVER["REQUEST_URI"]) . " - {$userinfo} - $date.html";
+            @file_put_contents($file, $output);
+            @chmod($file, 0777);
         }
-        
-        $date = date("YmdHis") . sprintf("%03.0f", end(explode(".", microtime(true))));
-        $file = $dir . "/" . urlencode($_SERVER["REQUEST_URI"]) . " - $date.html";
-        @file_put_contents($file, $output);
-        @chmod($file, 0777);
     }
     
     private static function render_globals()

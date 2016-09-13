@@ -37,6 +37,10 @@ $MEMCACHE_SERVERS = array(
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 
+# true:  shows a menu entry for internals.
+# false: saves internals to files.
+define("EMBED_INTERNALS", true);
+
 ini_set("register_globals",              "Off");
 ini_set("display_errors",                "On");
 ini_set("zlib.output_compression",       "On");
