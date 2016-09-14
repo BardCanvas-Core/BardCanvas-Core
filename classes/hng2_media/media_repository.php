@@ -253,7 +253,7 @@ class media_repository extends abstract_repository
     {
         global $database;
         
-        # TODO: Hide all attached media?
+        $database->exec("delete from media_tags where id_media = '$id_media'");
         
         $date = date("Y-m-d H:i:s");
         return $database->exec("
@@ -467,12 +467,13 @@ class media_repository extends abstract_repository
     }
     
     
-    public function get_grouped_tag_counts($since = "", $min_hits = 10)
+    public function get_grouped_tag_counts($since = "", $min_hits = 10, $limit = 0)
     {
         global $database, $settings;
         
         $min_hits = empty($min_hits) ? 10 : $min_hits;
         $having   = $min_hits == 1   ? "" : "having `count` >= '$min_hits'";
+        $limit    = empty($limit) ? "" : "limit $limit";
         
         if( empty($since) )
             $query = "
@@ -480,6 +481,7 @@ class media_repository extends abstract_repository
                 group by tag
                 $having
                 order by `count` desc
+                $limit
             ";
         else
             $query = "
@@ -488,6 +490,7 @@ class media_repository extends abstract_repository
                 group by tag
                 $having
                 order by `count` desc
+                $limit
             ";
         
         $res = $database->query($query);
@@ -636,7 +639,7 @@ class media_repository extends abstract_repository
             $item->description = str_replace("#$featured_posts_tag", $featured_posts_tag, $item->description);
         }
         
-        if( ! empty($tags) ) $this->set_tags($tags, $item->id_media);
+        $this->set_tags($tags, $item->id_media);
         
         $this->save($item);
         
