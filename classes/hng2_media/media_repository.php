@@ -47,6 +47,28 @@ class media_repository extends abstract_repository
     }
     
     /**
+     * @param array $ids
+     *
+     * @return media_record[]
+     */
+    public function get_multiple(array $ids)
+    {
+        if( count($ids) == 0 ) return array();
+        
+        $prepared_ids = array();
+        foreach($ids as $id) $prepared_ids[] = "'$id'";
+        $prepared_ids = implode(", ", $prepared_ids);
+        
+        $res = $this->find(array("id_media in ($prepared_ids)"), 0, 0, "");
+        if( count($res) == 0 ) return array();
+        
+        $return = array();
+        foreach($res as $item) $return[$item->id_media] = $item;
+        
+        return $return;
+    }
+    
+    /**
      * @param array  $where
      * @param int    $limit
      * @param int    $offset
