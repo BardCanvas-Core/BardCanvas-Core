@@ -207,6 +207,7 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .nav_table tr.sensitive td { color: maroon;  }
 .nav_table tr.enabled   td { color: #008000; }
 .nav_table tr.disabled  td { color: #585858; }
+.nav_table tr.deleted   td { color: #585858; background-color: silver; }
 
 .nav_table.vertical tr th             { border-top: 0; }
 .nav_table.vertical tr:first-child td { border-top: 1px solid #c2daea; }
