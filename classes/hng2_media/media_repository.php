@@ -538,7 +538,7 @@ class media_repository extends abstract_repository
                 $item->title = stripslashes($account->display_name . " - " . $file["name"]);
                 
                 if( $this->get_record_count(array("title" => $item->title)) )
-                    return $current_module->language->messages->item_exists;
+                    return trim($current_module->language->messages->item_exists);
             }
         }
         
@@ -554,13 +554,13 @@ class media_repository extends abstract_repository
         if( empty($data["id_media"]) && ! empty($file) )
         {
             if( ! is_uploaded_file($file["tmp_name"]) )
-                return $current_module->language->messages->invalid->upload;
+                return trim($current_module->language->messages->invalid->upload);
             
             $extension = strtolower(end(explode(".", $file["name"])));
-            if( empty($extension) ) return $current_module->language->messages->invalid->file;
+            if( empty($extension) ) return trim($current_module->language->messages->invalid->file);
             
             if( ! isset($config->upload_file_types[$extension]) )
-                return $current_module->language->messages->invalid->file;
+                return trim($current_module->language->messages->invalid->file);
             
             $media_manager_class = $config->upload_file_types[$extension];
             if( $media_manager_class == "system" )
@@ -777,5 +777,21 @@ class media_repository extends abstract_repository
             where
                 id_media = '$id_media'
         ");
+    }
+    
+    public function delete_multiple_if_unused(array $ids)
+    {
+        global $database;
+        
+        $prepared_ids = str_replace("''", "'", "'" . implode("', '", $ids) ."'");
+        $query = "
+            delete from {$this->table_name}
+            where id_media     in ({$prepared_ids})
+            and   id_media not in ( select id_media from post_media where id_media in({$prepared_ids}) )
+        ";
+        $res = $database->exec($query);
+        $this->last_query = $database->get_last_query();
+        
+        return $res;
     }
 }
