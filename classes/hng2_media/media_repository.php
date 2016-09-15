@@ -784,14 +784,22 @@ class media_repository extends abstract_repository
     
     public function delete_multiple_if_unused(array $ids)
     {
-        global $database;
+        global $database, $modules, $config;
         
         $prepared_ids = str_replace("''", "'", "'" . implode("', '", $ids) ."'");
         $query = "
             delete from {$this->table_name}
             where id_media     in ({$prepared_ids})
-            and   id_media not in ( select id_media from post_media where id_media in({$prepared_ids}) )
         ";
+        
+        $config->globals["media_repository/delete_multiple_if_unused:ids"] = $prepared_ids;
+        $config->globals["media_repository/delete_multiple_if_unused:query"] = $query;
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->media_repository_delete_multiple_if_unused) )
+                include "{$module->abspath}/{$module->php_includes->media_repository_delete_multiple_if_unused}";
+        $query = $config->globals["media_repository/delete_multiple_if_unused:query"];
+        unset( $config->globals["media_repository/delete_multiple_if_unused:query"] );
+        
         $res = $database->exec($query);
         $this->last_query = $database->get_last_query();
         
