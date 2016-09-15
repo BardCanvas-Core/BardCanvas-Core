@@ -316,8 +316,20 @@ class template
         
         $content = replace_escaped_vars(
             $content_template,
-            array('{$title}', '{$content}', '{$added_classes}'),
-            array(  $title,     $content,     trim($widget["added_classes"]))
+            array(
+                '{$title}',
+                '{$content}',
+                '{$type}',
+                '{$seed}',
+                '{$added_classes}'
+            ),
+            array(
+                $title,
+                $content,
+                $id,
+                $seed,
+                trim($widget["added_classes"])
+            )
         );
         
         return (object) array(
