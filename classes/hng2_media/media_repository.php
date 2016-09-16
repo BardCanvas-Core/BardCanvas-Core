@@ -538,7 +538,7 @@ class media_repository extends abstract_repository
             
             if( empty($item->title) )
             {
-                $item->title = stripslashes($account->display_name . " - " . $file["name"]);
+                $item->title = addslashes(stripslashes($account->display_name . " - " . $file["name"]));
                 
                 if( $this->get_record_count(array("title" => $item->title)) )
                     return trim($current_module->language->messages->item_exists);
