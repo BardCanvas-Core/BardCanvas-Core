@@ -916,12 +916,13 @@ function reset_mbstring_encoding()
 
 function make_excerpt_of($string, $length = 30, $with_ellipsis = true)
 {
-    if( strlen($string) <= $length )
-    {
-        $test = trim(strip_tags($string, "<img>"));
-        if( ! empty($test) ) return $test;
-        else                 return trim($string);
-    }
+    # Uncomment below to allow a single image go through (usual when posting reactions in comments)
+    # if( strlen($string) <= $length )
+    # {
+    #     $test = trim(strip_tags($string, "<img>"));
+    #     if( ! empty($test) ) return $test;
+    #     else                 return trim($string);
+    # }
     
     $excerpt = strip_tags($string);
     $excerpt = preg_replace('/\s+/', " ", $excerpt);
