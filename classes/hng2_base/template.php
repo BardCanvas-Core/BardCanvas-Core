@@ -437,9 +437,9 @@ class template
             $file  = "{$name}~v{$config->scripts_version}.{$ext}";
             
             if( strtolower($ext) == "js" )
-                echo "<script type='text/javascript' src='$file'></script>";
+                echo "<script type='text/javascript' src='$file'></script>\n";
             else
-                echo "<link rel='stylesheet' type='text/css' href='$file'>";
+                echo "<link rel='stylesheet' type='text/css' href='$file'>\n";
         }
     }
 }
