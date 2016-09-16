@@ -70,6 +70,13 @@
     <close>Close</close>
     <none>None</none>
     <any>Any</any>
+    <mine_m>Mine</mine_m>
+    <mine_f>Mine</mine_f>
+    <mine_sm>Mine</mine_sm>
+    <mine_sf>Mine</mine_sf>
+    <others>Others</others>
+    <all_m>All</all_m>
+    <all_f>All</all_f>
     <yes>Yes</yes>
     <no>No</no>
     <off>Off</off>

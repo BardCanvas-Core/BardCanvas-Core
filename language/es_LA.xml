@@ -70,6 +70,13 @@
     <close>Cerrar</close>
     <none>Ninguno</none>
     <any>Cualquiera</any>
+    <mine_m>Míos</mine_m>
+    <mine_f>Mías</mine_f>
+    <mine_sm>Mío</mine_sm>
+    <mine_sf>Mía</mine_sf>
+    <others>De otros</others>
+    <all_m>Todos</all_m>
+    <all_f>Todas</all_f>
     <yes>Sí</yes>
     <no>No</no>
     <off>Apagado</off>
