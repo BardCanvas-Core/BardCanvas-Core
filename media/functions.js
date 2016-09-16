@@ -287,12 +287,14 @@ function toggle_fa_pseudo_switch(src, toggle)
     
     if( is_on )
     {
+        $(src).attr('data-current-value', value_off);
         $(src).find('input').val( value_off );
         $(src).find('.toggle-on').hide();
         $(src).find('.toggle-off').show();
     }
     else
     {
+        $(src).attr('data-current-value', value_on);
         $(src).find('input').val( value_on );
         $(src).find('.toggle-on').show();
         $(src).find('.toggle-off').hide();
