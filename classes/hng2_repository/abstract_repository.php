@@ -189,4 +189,20 @@ abstract class abstract_repository
     {
         return $this->last_query;
     }
+    
+    public function get_counts_by_level()
+    {
+        global $database;
+        
+        $return = array();
+        $res = $database->query("
+            select level, count(id_account) as `count`
+            from account group by level
+        ");
+        
+        while($row = $database->fetch_object($res))
+            $return[$row->level] = $row->count;
+        
+        return $return;
+    }
 }
