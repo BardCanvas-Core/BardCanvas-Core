@@ -786,7 +786,8 @@ class media_repository extends abstract_repository
     {
         global $database, $modules, $config;
         
-        $prepared_ids = str_replace("''", "'", "'" . implode("', '", $ids) ."'");
+        foreach($ids as &$id) $id = "'$id'";
+        $prepared_ids = implode(", ", $ids);
         $query = "
             delete from {$this->table_name}
             where id_media     in ({$prepared_ids})
