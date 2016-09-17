@@ -1,4 +1,5 @@
-<FilesMatch "\.inc$|\.xml$">
+
+<FilesMatch "\.inc$|\.xml$|\.dat$|\.hidden$">
 deny from all
 </FilesMatch>
 

@@ -503,4 +503,15 @@
         
     </settings_data>
     
+    <file_ops>
+        <source_not_found>File {$source} doesn't exist. It cannot be moved.</source_not_found>
+        <target_exists>File {$target} exists, {$source} cannot be moved.</target_exists>
+        <cant_move>File {$source} cannot be moved/renamed to {$target}</cant_move>
+        <fails_notification><![CDATA[
+            There has been errors in the last file operations:<br>
+            {$errors}<br>
+            Please take the proper measures.
+        ]]></fails_notification>
+    </file_ops>
+    
 </language>

@@ -255,14 +255,20 @@ class media_repository extends abstract_repository
         
         $database->exec("delete from media_tags where id_media = '$id_media'");
         
-        $date = date("Y-m-d H:i:s");
-        return $database->exec("
+        $res  = $database->exec("
             update media set
-                status      = 'trashed',
-                last_update = '$date'
+                status   = 'trashed'
             where
                 id_media = '$id_media'
         ");
+        
+        if( $res > 0 )
+        {
+            $item = $this->get($id_media);
+            $this->hide_files(array($item->path, $item->thumbnail));
+        }
+        
+        return $res;
     }
     
     /**
@@ -811,11 +817,24 @@ class media_repository extends abstract_repository
     {
         global $database;
         
+        $res = $database->query("
+            select id_media, path, thumbnail from {$this->table_name}
+            where status = 'published' and id_author = '$id_author'
+        ");
+        $files = array();
+        while($row = $database->fetch_object($res))
+        {
+            $files[] = $row->path;
+            $files[] = $row->thumbnail;
+        }
+        
         $query = "
             update {$this->table_name} set status = 'hidden'
             where status = 'published' and id_author = '$id_author'
         ";
         $this->last_query = $database->get_last_query();
+        $this->hide_files($files);
+        
         return $database->exec($query);
     }
     
@@ -823,11 +842,96 @@ class media_repository extends abstract_repository
     {
         global $database;
         
+        $res = $database->query("
+            select id_media, path, thumbnail from {$this->table_name}
+            where status = 'hidden' and id_author = '$id_author'
+        ");
+        $files = array();
+        while($row = $database->fetch_object($res))
+        {
+            $files[] = $row->path;
+            $files[] = $row->thumbnail;
+        }
+        
         $query = "
             update {$this->table_name} set status = 'published'
             where status = 'hidden' and id_author = '$id_author'
         ";
         $this->last_query = $database->get_last_query();
+        $this->unhide_files($files);
+        
         return $database->exec($query);
+    }
+    
+    private function hide_files(array $list)
+    {
+        global $config, $language;
+        
+        if( count($list) == 0 ) return;
+        
+        $fails = array();
+        foreach($list as $file)
+        {
+            $source = "{$config->datafiles_location}/uploaded_media/{$file}";
+            $target = "{$config->datafiles_location}/uploaded_media/{$file}.hidden";
+            
+            $res = $this->do_hide_unhide($source, $target);
+            if( ! empty($res) ) $fails[] = $res;
+        }
+        
+        if( empty($fails) ) return;
+        
+        $message = replace_escaped_vars($language->file_ops->fails_notification, '{$errors}', implode("<br>\n", $fails));
+        broadcast_to_moderators("warning", $message);
+    }
+    
+    private function unhide_files(array $list)
+    {
+        global $config, $language;
+        
+        if( count($list) == 0 ) return;
+        
+        $fails = array();
+        foreach($list as $file)
+        {
+            $source = "{$config->datafiles_location}/uploaded_media/{$file}.hidden";
+            $target = "{$config->datafiles_location}/uploaded_media/{$file}";
+            
+            $res = $this->do_hide_unhide($source, $target);
+            if( ! empty($res) ) $fails[] = $res;
+        }
+        
+        if( empty($fails) ) return;
+        
+        $message = replace_escaped_vars($language->file_ops->fails_notification, '{$errors}', implode("<br>\n", $fails));
+        broadcast_to_moderators("warning", $message);
+    }
+    
+    private function do_hide_unhide($source, $target)
+    {
+        global $language;
+        
+        if( ! file_exists($source) )
+            return replace_escaped_vars(
+                $language->file_ops->source_not_found,
+                array('{$source}', '{$target}'),
+                array($source, $target)
+            );
+        
+        if( file_exists($target) )
+            return replace_escaped_vars(
+                $language->file_ops->target_exists,
+                array('{$source}', '{$target}'),
+                array($source, $target)
+            );
+        
+        if( ! @rename($source, $target) )
+            return replace_escaped_vars(
+                $language->file_ops->cant_move,
+                array('{$source}', '{$target}'),
+                array($source, $target)
+            );
+        
+        return "";
     }
 }

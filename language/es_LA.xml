@@ -509,5 +509,16 @@
         </specs>
         
     </settings_data>
-    
+
+    <file_ops>
+        <source_not_found>El archivo {$source} no existe. No se puede mover.</source_not_found>
+        <target_exists>El archivo {$target} existe, {$source} no se puede mover.</target_exists>
+        <cant_move>El archivo {$source} no se puede mover/renombrar a {$target}</cant_move>
+        <fails_notification><![CDATA[
+            Han habido errores en las últimas operaciones de archivos:<br>
+            {$errors}<br>
+            Favor de tomar las medidas pertinentes.
+        ]]></fails_notification>
+    </file_ops>
+
 </language>

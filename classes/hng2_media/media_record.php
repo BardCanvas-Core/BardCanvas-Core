@@ -292,6 +292,7 @@ class media_record extends abstract_record
         global $account;
         
         if( ! $account->_exists ) return false;
+        if( $this->status == "trashed" ) return false;
         if( $account->level >= config::MODERATOR_USER_LEVEL ) return true;
         if( $this->id_author != $account->id_account ) return false;
         if( $this->status == "draft" ) return true;
