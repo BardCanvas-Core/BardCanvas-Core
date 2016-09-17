@@ -806,4 +806,28 @@ class media_repository extends abstract_repository
         
         return $res;
     }
+    
+    public function hide_all_published_by_auhtor($id_author)
+    {
+        global $database;
+        
+        $query = "
+            update {$this->table_name} set status = 'hidden'
+            where status = 'published' and id_author = '$id_author'
+        ";
+        $this->last_query = $database->get_last_query();
+        return $database->exec($query);
+    }
+    
+    public function unhide_all_published_by_auhtor($id_author)
+    {
+        global $database;
+        
+        $query = "
+            update {$this->table_name} set status = 'published'
+            where status = 'hidden' and id_author = '$id_author'
+        ";
+        $this->last_query = $database->get_last_query();
+        return $database->exec($query);
+    }
 }
