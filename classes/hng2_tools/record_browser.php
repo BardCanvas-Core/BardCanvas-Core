@@ -50,22 +50,23 @@ class record_browser
         
         if( $_REQUEST["mode"] == "set_filter" )
         {
-            foreach($_REQUEST as $key => $val)
-            {
-                if(stristr($key, "search_") !== false)
-                {
-                    $value = is_array($val) ? implode(",", $val) : $val;
-                    
-                    if( $_COOKIE["{$this->data_vars_prefix}_nav_filter_{$key}"] != $value )
-                        setcookie(
-                            "{$this->data_vars_prefix}_nav_filter_{$key}",
-                            $value,
-                            time() + (86400 * 30),
-                            $config->full_root_path,
-                            $config->cookies_domain
-                        );
-                }
-            }
+            //foreach($_REQUEST as $key => $val)
+            //{
+            //    if(stristr($key, "search_") !== false)
+            //    {
+            //        $value = is_array($val) ? implode(",", $val) : $val;
+            //        
+            //        if( $_COOKIE["{$this->data_vars_prefix}_nav_filter_{$key}"] != $value )
+            //            setcookie(
+            //                "{$this->data_vars_prefix}_nav_filter_{$key}",
+            //                $value,
+            //                time() + (86400 * 30),
+            //                $config->full_root_path,
+            //                $config->cookies_domain
+            //            );
+            //    }
+            //}
+            
             if( ! is_numeric($_REQUEST["limit"]) ) $_REQUEST["limit"] = $default_limit;
             
             if( $_REQUEST["limit"] != $_COOKIE["{$this->data_vars_prefix}_nav_limit"])
@@ -87,14 +88,14 @@ class record_browser
                 );
         }
         
-        foreach($_COOKIE as $key => $val)
-        {
-            if(stristr($key, "{$this->data_vars_prefix}_nav_filter_") !== false)
-            {
-                $substracted_key = str_replace("{$this->data_vars_prefix}_nav_filter_", "", $key);
-                $return[$substracted_key] = $val;
-            }
-        }
+        //foreach($_COOKIE as $key => $val)
+        //{
+        //    if(stristr($key, "{$this->data_vars_prefix}_nav_filter_") !== false)
+        //    {
+        //        $substracted_key = str_replace("{$this->data_vars_prefix}_nav_filter_", "", $key);
+        //        $return[$substracted_key] = $val;
+        //    }
+        //}
         
         $saved_limit = $_COOKIE["{$this->data_vars_prefix}_nav_limit"];
         $saved_order = $_COOKIE["{$this->data_vars_prefix}_nav_order"];
@@ -102,6 +103,10 @@ class record_browser
         $return["offset"] = empty($_REQUEST["offset"]) ? 0 : $_REQUEST["offset"];
         $return["limit"]  = empty($saved_limit) ? $default_limit : $saved_limit;
         $return["order"]  = empty($saved_order) ? $default_order : $saved_order;
+        
+        foreach($_REQUEST as $key => $val)
+            if( substr($key, 0, 7) == "search_" )
+                $return[$key] = stripslashes($val);
         
         return $return;
     }
@@ -120,16 +125,17 @@ class record_browser
         
         if( $_REQUEST["mode"] == "set_filter" )
         {
-            foreach($_REQUEST as $key => $val)
-            {
-                if(stristr($key, "search_") !== false)
-                {
-                    $value = is_array($val) ? implode(",", $val) : $val;
-                    
-                    if( $account->engine_prefs["{$this->data_vars_prefix}_nav_filter_{$key}"] != $value )
-                        $account->set_engine_pref( "{$this->data_vars_prefix}_nav_filter_{$key}", $value );
-                }
-            }
+            //foreach($_REQUEST as $key => $val)
+            //{
+            //    if(stristr($key, "search_") !== false)
+            //    {
+            //        $value = is_array($val) ? implode(",", $val) : $val;
+            //        
+            //        if( $account->engine_prefs["{$this->data_vars_prefix}_nav_filter_{$key}"] != $value )
+            //            $account->set_engine_pref( "{$this->data_vars_prefix}_nav_filter_{$key}", $value );
+            //    }
+            //}
+            
             if( ! is_numeric($_REQUEST["limit"]) ) $_REQUEST["limit"] = $default_limit;
             
             if( $account->engine_prefs["{$this->data_vars_prefix}_nav_limit"] != $_REQUEST["limit"] )
@@ -139,14 +145,14 @@ class record_browser
                 $account->set_engine_pref( "{$this->data_vars_prefix}_nav_order", $_REQUEST["order"] );
         }
         
-        foreach($account->engine_prefs as $key => $val)
-        {
-            if(stristr($key, "{$this->data_vars_prefix}_nav_filter_") !== false)
-            {
-                $substracted_key = str_replace("{$this->data_vars_prefix}_nav_filter_", "", $key);
-                $return[$substracted_key] = $val;
-            }
-        }
+        //foreach($account->engine_prefs as $key => $val)
+        //{
+        //    if(stristr($key, "{$this->data_vars_prefix}_nav_filter_") !== false)
+        //    {
+        //        $substracted_key = str_replace("{$this->data_vars_prefix}_nav_filter_", "", $key);
+        //        $return[$substracted_key] = $val;
+        //    }
+        //}
         
         $saved_limit = $account->engine_prefs["{$this->data_vars_prefix}_nav_limit"];
         $saved_order = $account->engine_prefs["{$this->data_vars_prefix}_nav_order"];
@@ -154,6 +160,10 @@ class record_browser
         $return["offset"] = empty($_REQUEST["offset"]) ? 0 : $_REQUEST["offset"];
         $return["limit"]  = empty($saved_limit) ? $default_limit : $saved_limit;
         $return["order"]  = empty($saved_order) ? $default_order : $saved_order;
+        
+        foreach($_REQUEST as $key => $val)
+            if( substr($key, 0, 7) == "search_" )
+                $return[$key] = stripslashes($val);
         
         return $return;
     }
