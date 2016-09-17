@@ -136,6 +136,7 @@ function broadcast_to_moderators($type, $contents)
     $res = $repository->get_basics_above_level(config::MODERATOR_USER_LEVEL);
     $ids = array_keys($res);
     foreach($ids as $id) send_notification($id, $type, $contents);
+    sleep(1);
 }
 
 /**
