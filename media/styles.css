@@ -131,6 +131,12 @@ a.disabled,  .pseudo_link.disabled  { color: dimgrey; opacity: 0.5; cursor: auto
 .dropdown_menu .main_menu_item.current       { color: #990d0d; background-color: #f6f8f9; }
 .dropdown_menu .main_menu_item.current:hover { color: black;   background-color: hotpink; }
 
+.dropdown_menu .main_menu_item.highlighted               { color: greenyellow; background-color: greenyellow; }
+.dropdown_menu .main_menu_item.highlighted:link          { color: greenyellow; background-color: greenyellow; }
+.dropdown_menu .main_menu_item.highlighted:hover         { color: black; background-color: greenyellow;    }
+.dropdown_menu .main_menu_item.highlighted.current       { color: black; background-color: yellowgreen;    }
+.dropdown_menu .main_menu_item.highlighted.current:hover { color: black; background-color: lime; }
+
 /* Framed contents */
 
 .framed_content                 { margin: 20px 0; padding: 5px; border: 2px solid silver; border-radius: 5px; background-color: white; color: black; }
