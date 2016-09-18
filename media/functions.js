@@ -8,6 +8,11 @@
  * @var {string} $_FULL_ROOT_PATH
  */
 
+function wasuuup()
+{
+    return parseInt(Math.random() * 1000000000000000);
+}
+
 //noinspection JSUnusedGlobalSymbols
 /**
  * Get a document and show a dialog from it

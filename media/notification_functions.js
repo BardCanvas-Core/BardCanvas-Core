@@ -53,7 +53,7 @@ function get_notifications()
     
     var url = $_FULL_ROOT_PATH + '/scripts/get_notifications.php';
     var params = {
-        'wasuuup': parseInt(Math.random() * 1000000000000000)
+        'wasuuup': wasuuup()
     };
     
     if( notification_params_hooks.length > 0 )
@@ -92,7 +92,7 @@ function notification_clicked( $noty_object )
     var url = $_FULL_ROOT_PATH
             + '/scripts/delete_notification.php'
             + '?identifier=' + encodeURI(message_archive)
-            + '&wasuuup='    + parseInt(Math.random() * 1000000000000000)
+            + '&wasuuup='    + wasuuup()
         ;
     
     $.get(url, function(response)
