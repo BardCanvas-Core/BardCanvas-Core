@@ -46,7 +46,8 @@ class account_toolbox extends abstract_record
     
     public function set_new_id()
     {
-        $this->id_account = uniqid();
+        list($sec, $usec) = explode(".", microtime(true));
+        $this->id_account = "1000" . $sec . sprintf("%05.0f", $usec) . mt_rand(1000, 9999);
     }
     
     public function get_processed_display_name()

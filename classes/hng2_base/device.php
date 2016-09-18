@@ -38,7 +38,7 @@ class device
             $this->assign_from_object($id_account_or_id_device_or_object);
             $this->_exists = true;
             
-            return;
+            return $this;
         }
         
         if( ! empty($id_account_or_id_device_or_object) && empty($user_agent) )
@@ -77,6 +77,14 @@ class device
             $this->assign_from_object($row);
             $this->_exists = true;
         }
+        
+        return $this;
+    }
+    
+    public function set_new_id()
+    {
+        list($sec, $usec) = explode(".", microtime(true));
+        $this->id_device = "1001" . $sec . sprintf("%05.0f", $usec) . mt_rand(1000, 9999);;
     }
     
     /**
@@ -101,7 +109,7 @@ class device
      */
     function set_new($account)
     {
-        $this->id_device     = uniqid(true);
+        $this->set_new_id();
         $this->id_account    = $account->id_account;
         $this->device_label  = "N/A";
         $this->device_header = $_SERVER["HTTP_USER_AGENT"];

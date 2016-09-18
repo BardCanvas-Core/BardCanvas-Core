@@ -126,7 +126,7 @@ class account extends account_toolbox
     
     public function set_new_id()
     {
-        $this->id_account = uniqid();
+        parent::set_new_id();
     }
     
     /**
