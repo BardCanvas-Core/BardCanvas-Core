@@ -37,7 +37,7 @@ foreach($modules as $module)
     foreach($module->php_includes->notifications_getter as $getter)
     {
         $this_module = $module;
-        $include = ABSPATH . "/{$module->name}/$getter";
+        $include = ROOTPATH . "/{$module->name}/$getter";
         
         if( ! file_exists($include) ) continue;
         

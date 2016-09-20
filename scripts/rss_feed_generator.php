@@ -30,7 +30,7 @@ foreach($modules as $module)
     if( ! isset($module->php_includes) ) continue;
     if( ! isset($module->php_includes->rss_feed_generator) ) continue;
     
-    $include = ABSPATH . "/{$module->name}/{$module->php_includes->rss_feed_generator}";
+    $include = ROOTPATH . "/{$module->name}/{$module->php_includes->rss_feed_generator}";
     if( ! is_file($include) ) continue;
     
     if( empty($module->php_includes->rss_feed_generator["handle_pattern"]) ) continue;

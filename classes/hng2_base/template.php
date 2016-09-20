@@ -40,7 +40,7 @@ class template
         $this->name = $settings->get("engine.template");
         if( empty($this->name) ) $this->name = "base";
                 
-        $this->abspath = ABSPATH . "/templates/{$this->name}";
+        $this->abspath = ROOTPATH . "/templates/{$this->name}";
         
         if( ! is_dir($this->abspath) )
             throw new \RuntimeException("Template {$this->name} not found");

@@ -291,7 +291,7 @@ function remove_filesystem_invalid_chars($filename)
         chr(0),
     );
     $filename      = remove_quotation_marks($filename);
-    $filename      = remove_accents($filename);
+    $filename      = wp_remove_accents($filename);
     $filename      = preg_replace("#\x{00a0}#siu", ' ', $filename);
     $filename      = str_replace($special_chars, '', $filename);
     $filename      = str_replace(array('%20', '+'), ' ', $filename);
@@ -318,7 +318,7 @@ function remove_filesystem_invalid_chars($filename)
  *
  * @return string The sanitized filename
  */
-function sanitize_file_name($filename, $to_lower_case = true)
+function wp_sanitize_filename($filename, $to_lower_case = true)
 {
     $special_chars = array(
         "…",
@@ -351,7 +351,7 @@ function sanitize_file_name($filename, $to_lower_case = true)
     );
     $filename      = preg_replace('/\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]/', "", $filename);
     $filename      = remove_quotation_marks($filename);
-    $filename      = remove_accents($filename);
+    $filename      = wp_remove_accents($filename);
     $filename      = preg_replace("#\x{00a0}#siu", ' ', $filename);
     $filename      = str_replace($special_chars, '', $filename);
     $filename      = str_replace(array('%20', '+'), '-', $filename);
@@ -417,13 +417,13 @@ function remove_quotation_marks($str)
  *
  * @return string Filtered string with replaced "nice" characters.
  */
-function remove_accents($string)
+function wp_remove_accents($string)
 {
     global $config;
     if( ! preg_match('/[\x80-\xff]/', $string) )
         return $string;
     
-    if( seems_utf8($string) )
+    if( wp_seems_like_utf8($string) )
     {
         $chars = array(
             // Decompositions for Latin-1 Supplement
@@ -830,11 +830,11 @@ function remove_accents($string)
  *
  * @return bool True if $str fits a UTF-8 model, false otherwise.
  */
-function seems_utf8($str)
+function wp_seems_like_utf8($str)
 {
-    mbstring_binary_safe_encoding();
+    wp_mbstring_binary_safe_encoding();
     $length = strlen($str);
-    reset_mbstring_encoding();
+    wp_reset_mbstring_encoding();
     for( $i = 0; $i < $length; $i++ )
     {
         $c = ord($str[$i]);
@@ -872,12 +872,12 @@ function seems_utf8($str)
  * of `reset_mbstring_encoding()` calls.
  *
  * @see wordpress/formating.php
- * @see reset_mbstring_encoding()
+ * @see wp_reset_mbstring_encoding()
  *
  * @param bool $reset Optional. Whether to reset the encoding back to a previously-set encoding.
  *                    Default false.
  */
-function mbstring_binary_safe_encoding($reset = false)
+function wp_mbstring_binary_safe_encoding($reset = false)
 {
     static $encodings = array();
     static $overloaded = null;
@@ -905,13 +905,13 @@ function mbstring_binary_safe_encoding($reset = false)
 /**
  * Reset the mbstring internal encoding to a users previously set encoding.
  *
- * @see   mbstring_binary_safe_encoding()
+ * @see   wp_mbstring_binary_safe_encoding()
  *
  * @since 3.7.0
  */
-function reset_mbstring_encoding()
+function wp_reset_mbstring_encoding()
 {
-    mbstring_binary_safe_encoding(true);
+    wp_mbstring_binary_safe_encoding(true);
 }
 
 function make_excerpt_of($string, $length = 30, $with_ellipsis = true)

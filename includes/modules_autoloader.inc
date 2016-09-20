@@ -41,7 +41,7 @@ if( $modules_cache_enabled )
 if( $load_modules )
 {
     $always_on_files = array();
-    $module_dirs_pattern = ABSPATH . "/*";
+    $module_dirs_pattern = ROOTPATH . "/*";
     $available_modules   = glob($module_dirs_pattern, GLOB_ONLYDIR);
     
     # Part 1: loading per-se
@@ -122,7 +122,7 @@ $current_module = null;
 $script_dir     = dirname($_SERVER["SCRIPT_FILENAME"]) . "/";
 foreach($modules as $module_keyname => $this_module)
 {
-    $looking_dir = ABSPATH . "/{$module_keyname}/";
+    $looking_dir = ROOTPATH . "/{$module_keyname}/";
     
     if( stristr($script_dir, $looking_dir) !== false )
     {

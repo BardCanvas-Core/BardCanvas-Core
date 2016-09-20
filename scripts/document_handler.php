@@ -21,7 +21,7 @@ foreach($modules as $module)
     if( ! isset($module->php_includes) ) continue;
     if( ! isset($module->php_includes->document_handler) ) continue;
     
-    $include = ABSPATH . "/{$module->name}/{$module->php_includes->document_handler}";
+    $include = ROOTPATH . "/{$module->name}/{$module->php_includes->document_handler}";
     if( ! is_file($include) ) continue;
     
     $current_module = $this_module = $module;

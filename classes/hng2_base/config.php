@@ -76,7 +76,10 @@ class config
     );
     
     /**
-     * Generic usage
+     * Generic usage.
+     * Significant ones:
+     * (boolean) engine.notifications_disabled - When true, no notifications are sent whatsoever
+     * (boolean) engine.emails_disabled        - When true, no emails are sent whatsoever
      * 
      * @var array
      */
@@ -94,8 +97,8 @@ class config
         $this->cookies_domain      = "." . trim(str_replace("www", "", $_SERVER["HTTP_HOST"]), ".");
         $this->language_cookie_var = WEBSITE_ID . "_" . LANGUAGE_COOKIE_VAR;
         
-        $this->datafiles_location = ABSPATH . "/data";
-        $this->logfiles_location  = ABSPATH . "/logs";
+        $this->datafiles_location = ROOTPATH . "/data";
+        $this->logfiles_location  = ROOTPATH . "/logs";
         
         $this->set_versions();
         $this->set_paths();
@@ -103,23 +106,23 @@ class config
     
     private function set_versions()
     {
-        if( file_exists(ABSPATH . "/engine_version.dat") )
-            $this->engine_version = trim(file_get_contents(ABSPATH . "/engine_version.dat"));
+        if( file_exists(ROOTPATH . "/engine_version.dat") )
+            $this->engine_version = trim(file_get_contents(ROOTPATH . "/engine_version.dat"));
         else
             $this->engine_version = "1.0";
         
-        if( file_exists(ABSPATH . "/data/scripts_version.dat") )
-            $this->scripts_version = trim(file_get_contents(ABSPATH . "/data/scripts_version.dat"));
+        if( file_exists(ROOTPATH . "/data/scripts_version.dat") )
+            $this->scripts_version = trim(file_get_contents(ROOTPATH . "/data/scripts_version.dat"));
         else
             $this->scripts_version = "1.0";
         
-        if( file_exists(ABSPATH . "/data/memory_cache_version.dat") )
-            $this->memory_cache_version = trim(file_get_contents(ABSPATH . "/data/memory_cache_version.dat"));
+        if( file_exists(ROOTPATH . "/data/memory_cache_version.dat") )
+            $this->memory_cache_version = trim(file_get_contents(ROOTPATH . "/data/memory_cache_version.dat"));
         else
             $this->memory_cache_version = "1";
         
-        if( file_exists(ABSPATH . "/data/disk_cache_version.dat") )
-            $this->disk_cache_version = trim(file_get_contents(ABSPATH . "/data/disk_cache_version.dat"));
+        if( file_exists(ROOTPATH . "/data/disk_cache_version.dat") )
+            $this->disk_cache_version = trim(file_get_contents(ROOTPATH . "/data/disk_cache_version.dat"));
         else
             $this->disk_cache_version = "1";
     }
@@ -132,12 +135,12 @@ class config
         }
         else
         {
-            # ABSPATH = /home/user/public_html/some_folder/some_subfolder
-            # DOCROOT = /home/user/public_html
+            # ROOTPATH = /home/user/public_html/some_folder/some_subfolder
+            # DOCROOT  = /home/user/public_html
             # then.....                       /some_folder/some_subfolder
             
-            $docroot = empty($_SERVER["DOCUMENT_ROOT"]) ? ABSPATH : $_SERVER["DOCUMENT_ROOT"];
-            $this->full_root_path = preg_replace("#{$docroot}#i", "", ABSPATH);
+            $docroot = empty($_SERVER["DOCUMENT_ROOT"]) ? ROOTPATH : $_SERVER["DOCUMENT_ROOT"];
+            $this->full_root_path = preg_replace("#{$docroot}#i", "", ROOTPATH);
             $this->full_root_path = "/" . trim($this->full_root_path, "/");
             
             if( $this->full_root_path == "/" ) $this->full_root_path = "";

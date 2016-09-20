@@ -547,7 +547,7 @@ class account extends account_toolbox
             @chmod($target_dir, 0777);
         }
         
-        $tmp_file = "/tmp/avatar-" . sanitize_file_name($_FILES["uploaded_avatar"]["name"]);
+        $tmp_file = "/tmp/avatar-" . wp_sanitize_filename($_FILES["uploaded_avatar"]["name"]);
         if( ! @move_uploaded_file($_FILES["uploaded_avatar"]["tmp_name"], $tmp_file) )
         {
             $errors[] = $current_module->language->user_account_form->messages->cant_move_uploaded_file;
@@ -615,7 +615,7 @@ class account extends account_toolbox
             @chmod($target_dir, 0777);
         }
         
-        $tmp_file = "/tmp/banner-" . sanitize_file_name($_FILES["uploaded_profile_banner"]["name"]);
+        $tmp_file = "/tmp/banner-" . wp_sanitize_filename($_FILES["uploaded_profile_banner"]["name"]);
         if( ! @move_uploaded_file($_FILES["uploaded_profile_banner"]["tmp_name"], $tmp_file) )
         {
             $errors[] = $current_module->language->user_account_form->messages->cant_move_uploaded_file;

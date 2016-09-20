@@ -170,7 +170,7 @@ class module
         #     
         #     /** @noinspection PhpUnusedLocalVariableInspection */
         #     $this_module = $modules[$module_name];
-        #     include ABSPATH . "/$module_name/".trim($sections[$hook_area]->{$hook_marker});
+        #     include ROOTPATH . "/$module_name/".trim($sections[$hook_area]->{$hook_marker});
         # }
         
         $config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"] = array();
@@ -184,7 +184,7 @@ class module
             else                  $priority = sprintf("%03.0f", $priority);
     
             $config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"]["$priority - $module_name"]
-                = ABSPATH . "/$module_name/".trim($sections[$hook_area]->{$hook_marker});
+                = ROOTPATH . "/$module_name/".trim($sections[$hook_area]->{$hook_marker});
         }
         
         if( empty($config->globals["modules:{$this->name}-includes_for:$hook_area/$hook_marker"]) )

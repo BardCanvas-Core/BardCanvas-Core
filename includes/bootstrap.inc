@@ -41,11 +41,11 @@ if( empty($_COOKIE[$config->language_cookie_var]) )
     @setcookie($config->language_cookie_var, $language_cookie_val, 0, "/", $config->cookies_domain );
     $_COOKIE[$config->language_cookie_var] = $language_cookie_val;
 }
-$language = simplexml_load_file( ABSPATH . "/language/".$_COOKIE[$config->language_cookie_var].".xml" );
+$language = simplexml_load_file( ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".xml" );
 
 # Localization
-if( file_exists(ABSPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc") )
-    include ABSPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc";
+if( file_exists(ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc") )
+    include ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc";
     
 /** @var module $this_module */
 $this_module    = null;

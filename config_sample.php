@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
-define("ABSPATH", __DIR__);
+define("ROOTPATH", __DIR__);
 
 # The next aren't neccesary unless specifically needed:
 # define("FULL_ROOT_URL",  "https://www.domain.com:8080/dir/subdir");

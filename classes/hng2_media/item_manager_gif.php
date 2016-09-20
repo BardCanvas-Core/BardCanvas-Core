@@ -8,7 +8,7 @@ class item_manager_gif extends abstract_image_manager
     public function __construct($file_name, $mime_type, $file_path)
     {
         if( ! function_exists("gfuncs_getmakePNGthumbnail") )
-            include_once ABSPATH . "/includes/guncs.php";
+            include_once ROOTPATH . "/includes/guncs.php";
         
         parent::__construct($file_name, $mime_type, $file_path);
     }
