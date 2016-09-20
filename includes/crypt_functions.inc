@@ -70,3 +70,13 @@ function randomPassword($length = 12)
     
     return implode($pass); //turn the array into a string
 }
+
+function make_unique_id($prefix)
+{
+    global $config;
+    
+    $server_id = $config->numeric_server_id;
+    list($sec, $usec) = explode(".", round(microtime(true), 3));
+    $return = $prefix . $server_id . $sec . sprintf("%03.0f", $usec);
+    return  $return;
+}
