@@ -105,6 +105,8 @@ function send_notification($id_account, $type, $contents)
 {
     global $config;
     
+    if($config->globals["engine.notifications_disabled"]) return;
+    
     $notifications_dir = "{$config->datafiles_location}/notifications/$id_account";
     $usec              = end(explode(" ", microtime()));
     $now               = date("Ymd.His.") . $usec;
@@ -177,7 +179,7 @@ function convert_emojis($input)
     
     if( empty($emojione) )
     {
-        require_once ABSPATH . "/lib/emojione-2.2.5/lib/php/autoload.php";
+        require_once ROOTPATH . "/lib/emojione-2.2.5/lib/php/autoload.php";
         $emojione = new Emojione\Client(new Emojione\Ruleset());
         
         $emojione->imageType    = "png";
@@ -338,6 +340,8 @@ function send_mail($subject, $body, $recipients, $sender = null)
 {
     global $settings, $modules, $config;
     
+    if($config->globals["engine.emails_disabled"]) return "OK";
+    
     foreach($modules as $module)
     {
         if( empty($module->php_includes->web_helper_before_send_mail) ) continue;
@@ -353,8 +357,8 @@ function send_mail($subject, $body, $recipients, $sender = null)
     
     if( ! class_exists("PHPMailer") )
     {
-        include_once ABSPATH . "/lib/PHPMailer/class.phpmailer.php";
-        include_once ABSPATH . "/lib/PHPMailer/class.smtp.php";
+        include_once ROOTPATH . "/lib/PHPMailer/class.phpmailer.php";
+        include_once ROOTPATH . "/lib/PHPMailer/class.smtp.php";
     }
     
     $mail = new PHPMailer();
