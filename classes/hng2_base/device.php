@@ -83,8 +83,7 @@ class device
     
     public function set_new_id()
     {
-        list($sec, $usec) = explode(".", microtime(true));
-        $this->id_device = "1001" . $sec . sprintf("%05.0f", $usec) . mt_rand(1000, 9999);;
+        $this->id_device = make_unique_id("11");
     }
     
     /**

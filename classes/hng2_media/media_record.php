@@ -106,8 +106,7 @@ class media_record extends abstract_record
     
     public function set_new_id()
     {
-        list($sec, $usec) = explode(".", microtime(true));
-        $this->id_media = "1010" . $sec . sprintf("%05.0f", $usec) . mt_rand(1000, 9999);;
+        $this->id_media = make_unique_id("20");
     }
     
     /**
