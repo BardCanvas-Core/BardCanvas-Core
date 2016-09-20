@@ -117,7 +117,7 @@ class media_record extends abstract_record
     
     public function set_new_id()
     {
-        $this->id_media = make_unique_id("20");
+        $this->id_media = make_unique_id("M");
     }
     
     /**

@@ -46,7 +46,7 @@ class account_toolbox extends abstract_record
     
     public function set_new_id()
     {
-        $this->id_account = make_unique_id("10");
+        $this->id_account = make_unique_id("A");
     }
     
     public function get_processed_display_name()
