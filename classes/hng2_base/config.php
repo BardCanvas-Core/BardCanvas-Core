@@ -13,6 +13,7 @@ class config
 {
     public $encryption_key;
     public $website_key;
+    public $numeric_server_id;
     public $cookies_domain;
     public $language_cookie_var;
     
@@ -92,6 +93,8 @@ class config
     
     public function __construct()
     {
+        global $NUMERIC_SERVER_ID;
+        
         $this->encryption_key      = ENCRYPTION_KEY;
         $this->website_key         = WEBSITE_ID;
         $this->cookies_domain      = "." . trim(str_replace("www", "", $_SERVER["HTTP_HOST"]), ".");
@@ -99,6 +102,8 @@ class config
         
         $this->datafiles_location = ROOTPATH . "/data";
         $this->logfiles_location  = ROOTPATH . "/logs";
+        
+        $this->numeric_server_id = empty($NUMERIC_SERVER_ID) ? "1" : $NUMERIC_SERVER_ID;
         
         $this->set_versions();
         $this->set_paths();

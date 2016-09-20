@@ -13,6 +13,15 @@ define("ROOTPATH", __DIR__);
 # define("FULL_ROOT_URL",  "https://www.domain.com:8080/dir/subdir");
 # define("FULL_ROOT_PATH", "/dir/subdir");
 
+#--------------------------------------------
+# Cluster node identification - use if needed
+# The next variable has to be set STATICALLY for every server in the cluster.
+#----------------------------------------------------------------------------
+# Uncomment and adapt this one if the node ID is set in the environment:
+#    $NUMERIC_SERVER_ID = getenv("BARDCANVAS_SERVER_ID");
+# Use this one if you will place the ID into a static file_
+#    $NUMERIC_SERVER_ID = trim(file_get_contents("/etc/bardcanvas_server_id"));
+
 define("ENCRYPTION_KEY",       "BIG_RANDOM_SRING_HERE");
 define("WEBSITE_ID",          "hng2site");
 define("LANGUAGE_COOKIE_VAR", "ULANG");
