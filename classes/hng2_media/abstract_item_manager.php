@@ -46,10 +46,11 @@ abstract class abstract_item_manager
         }
         else
         {
-            if( ! @rename($source_file, $target_file) )
+            if( ! @copy($source_file, $target_file) )
                 throw new \Exception(sprintf(
                     "Cannot move $source_file into $target_file"
                 ));
+            @unlink($source_file);
         }
         
         @chmod($target_file, 0777);
@@ -129,6 +130,7 @@ abstract class abstract_item_manager
             ? gfuncs_resample_jpg($temp_file, $target_dir, $th_width, $th_height, $dimension, false, $jpeg_quality,        true, $th_width, $th_height)
             : gfuncs_resample_png($temp_file, $target_dir, $th_width, $th_height, $dimension, false, $png_quality,  false, true, $th_width, $th_height)
         ;
+        @unlink($temp_file);
         
         return $res;
     }
