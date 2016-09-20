@@ -16,6 +16,10 @@ class media_repository extends abstract_repository
     protected $table_name      = "media";
     protected $key_column_name = "id_media";
     protected $additional_select_fields = array(
+        # Views
+        "( select concat(views, '\\t', last_viewed)
+           from media_views where media_views.id_media = media.id_media
+           ) as _views_data",
         # Author data
         "( select concat(user_name, '\\t', display_name, '\\t', email, '\\t', level)
            from account where account.id_account = media.id_author )
@@ -125,11 +129,9 @@ class media_repository extends abstract_repository
                 creation_location,
                 
                 publishing_date  ,
-                views            ,
                 comments_count   ,
                 
                 last_update      ,
-                last_viewed      ,
                 last_commented
             ) values (
                 '{$obj->id_media         }',
@@ -157,11 +159,9 @@ class media_repository extends abstract_repository
                 '{$obj->creation_location}',
                 
                 '{$obj->publishing_date  }',
-                '{$obj->views            }',
                 '{$obj->comments_count   }',
                 
                 '{$obj->last_update      }',
-                '{$obj->last_viewed      }',
                 '{$obj->last_commented   }'
             ) on duplicate key update
                 title             = '{$obj->title            }',
@@ -796,11 +796,17 @@ class media_repository extends abstract_repository
         
         $now = date("Y-m-d H:i:s");
         return $database->exec("
-            update {$this->table_name} set
+            insert into media_views (
+                id_media,
+                views,
+                last_viewed
+            ) values (
+                '$id_media',
+                1,
+                '$now'
+            ) on duplicate key update
                 views       = views + 1,
                 last_viewed = '$now'
-            where
-                id_media = '$id_media'
         ");
     }
     

@@ -36,11 +36,9 @@ class media_record extends abstract_record
     public $creation_location ; #varchar(255) not null default '',
     
     public $publishing_date   ; #datetime default null,
-    public $views             ; #int unsigned not null default 0,
     public $comments_count    ; #int unsigned not null default 0,
     
     public $last_update       ; #datetime default null,
-    public $last_viewed       ; #datetime default null,
     public $last_commented    ; #datetime default null,
     
     # TODO:                                                                                                  
@@ -48,6 +46,10 @@ class media_record extends abstract_record
     # TODO:                                                                                                  
     
     # Dynamically added:
+    
+    public $views;
+    public $last_viewed;
+    
     public $author_user_name;
     public $author_display_name;
     public $author_email;
@@ -68,6 +70,15 @@ class media_record extends abstract_record
     protected function set_from_object($object_or_array)
     {
         parent::set_from_object($object_or_array);
+        
+        if( ! empty($this->_views_data) )
+        {
+            $parts = explode("\t", $this->_views_data);
+            $this->views       = $parts[0];
+            $this->last_viewed = $parts[1];
+            
+            unset( $this->_views_data );
+        }
         
         if( ! empty($this->_author_data) )
         {
@@ -117,6 +128,9 @@ class media_record extends abstract_record
         $return = (array) $this;
         
         unset(
+            $return["views"],
+            $return["last_view"],
+            
             $return["author_user_name"],
             $return["author_display_name"],
             $return["author_email"],
