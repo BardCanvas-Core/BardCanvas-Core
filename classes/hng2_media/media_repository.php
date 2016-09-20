@@ -1,6 +1,8 @@
 <?php
 namespace hng2_media;
 
+use hng2_base\account;
+use hng2_base\account_record;
 use hng2_base\accounts_repository;
 use hng2_base\config;
 use hng2_repository\abstract_repository;
@@ -516,17 +518,26 @@ class media_repository extends abstract_repository
     }
     
     /**
-     * Receives an uploaded media item and process it for saving
+     * Receives an uploaded media item and process it for saving.
      *
-     * @param array $data                   actual or forged $_POST array
-     * @param array $file                   an item from $_FILES
-     * @param bool  $return_item_on_success If true, the item object will be returned instead of "OK".
+     * @param array                       $data                   actual or forged $_POST array
+     * @param array                       $file                   an item from $_FILES
+     * @param bool                        $return_item_on_success If true, the item object will be returned instead of "OK".
+     * @param bool                        $fake_file_upload       If true, the file will be treated as if it was uploaded.
+     *                                                            Useful for programmatic imports.
+     * @param null|account|account_record $owner                  If not specified, it will default to the current user
+     *                                                            Useful for programmatic imports.
+     * @param bool                        $do_save                Usually set to true. Set to false if you're saving it elsewhere.
+     *                                                            Useful for programmatic imports.
      *
-     * @return string|media_record "OK" or error message or object
+     * @return media_record|string "OK" or error message or object
      */
-    public function receive_and_save($data, $file, $return_item_on_success = false)
-    {
-        global $modules, $config, $account, $settings;
+    public function receive_and_save(
+        $data, $file, $return_item_on_success = false, $fake_file_upload = false, $owner = null, $do_save = true
+    ) {
+        global $modules, $config, $settings, $account;
+        
+        if( is_null($owner) ) $owner = $account;
         
         $current_module = $modules["gallery"];
         
@@ -544,7 +555,7 @@ class media_repository extends abstract_repository
             
             if( empty($item->title) )
             {
-                $item->title = stripslashes($account->display_name . " - " . $file["name"]);
+                $item->title = stripslashes($owner->display_name . " - " . $file["name"]);
                 
                 if( $this->get_record_count(array("title" => addslashes($item->title))) )
                     return trim($current_module->language->messages->item_exists);
@@ -562,8 +573,9 @@ class media_repository extends abstract_repository
         
         if( empty($data["id_media"]) && ! empty($file) )
         {
-            if( ! is_uploaded_file($file["tmp_name"]) )
-                return trim($current_module->language->messages->invalid->upload);
+            if( ! $fake_file_upload )
+                if( ! is_uploaded_file($file["tmp_name"]) )
+                    return trim($current_module->language->messages->invalid->upload);
             
             $extension = strtolower(end(explode(".", $file["name"])));
             if( empty($extension) ) return trim($current_module->language->messages->invalid->file);
@@ -584,9 +596,9 @@ class media_repository extends abstract_repository
                 );
                 
                 $parts         = explode(".", $file["name"]); array_pop($parts);
-                $file_name     = sanitize_file_name(implode(".", $parts));
+                $file_name     = wp_sanitize_filename(implode(".", $parts));
                 $date          = date("dHis");
-                $new_file_name = "{$account->user_name}-{$date}-{$file_name}.{$extension}";
+                $new_file_name = "{$owner->user_name}-{$date}-{$file_name}.{$extension}";
                 
                 $media_manager->move_to_repository($new_file_name);
                 $media_path = $media_manager->get_relative_path();
@@ -595,6 +607,7 @@ class media_repository extends abstract_repository
                 $mime_type  = $media_manager->get_final_mime_type();
                 $dimensions = $media_manager->get_dimensions();
                 $size       = $media_manager->get_size();
+                if( file_exists($file["tmp_name"]) ) @unlink($file["tmp_name"]);
             }
             catch(\Exception $e)
             {
@@ -617,12 +630,16 @@ class media_repository extends abstract_repository
             $item->size              = $size;
             $item->path              = $media_path;
             $item->thumbnail         = $thumbnail;
-            $item->id_author         = $account->id_account;
+            $item->id_author         = $owner->id_account;
             $item->creation_date     = date("Y-m-d H:i:s");
-            $item->creation_ip       = get_remote_address();
-            $item->creation_host     = gethostbyaddr($item->creation_ip);
-            $item->creation_location = forge_geoip_location($item->creation_ip);
             $item->last_update       = date("Y-m-d H:i:s");
+            
+            if( ! $fake_file_upload )
+            {
+                $item->creation_ip       = get_remote_address();
+                $item->creation_host     = gethostbyaddr($item->creation_ip);
+                $item->creation_location = forge_geoip_location($item->creation_ip);
+            }
         }
         
         # if( $item->main_category != $old_item->main_category )
@@ -635,7 +652,7 @@ class media_repository extends abstract_repository
         $tags = extract_hash_tags($item->title . " " . $item->description);
         $featured_posts_tag = $settings->get("modules:posts.featured_posts_tag");
         if(
-            $account->level < config::MODERATOR_USER_LEVEL
+            $owner->level < config::MODERATOR_USER_LEVEL
             && $settings->get("modules:posts.show_featured_posts_tag_everywhere") != "true"
             && ! empty($featured_posts_tag)
             && in_array($featured_posts_tag, $tags)
@@ -645,9 +662,8 @@ class media_repository extends abstract_repository
             $item->description = str_replace("#$featured_posts_tag", $featured_posts_tag, $item->description);
         }
         
-        $this->set_tags($tags, $item->id_media);
-        
-        $this->save($item);
+        if( $do_save ) $this->set_tags($tags, $item->id_media);
+        if( $do_save ) $this->save($item);
         
         if( $return_item_on_success )
             return $item;
