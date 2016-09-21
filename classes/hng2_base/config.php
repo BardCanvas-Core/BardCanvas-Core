@@ -255,6 +255,22 @@ class config
         }
     }
     
+    public function bump_disk_cache()
+    {
+        $this->memory_cache_version++;
+        $file = ROOTPATH . "/data/memory_cache_version.dat";
+        if( ! @file_put_contents($file, "{$this->memory_cache_version}\n") )
+            throw new \Exception("Can't write to {$file}");
+    }
+    
+    public function bump_mem_cache()
+    {
+        $this->disk_cache_version++;
+        $file = ROOTPATH . "/data/disk_cache_version.dat";
+        if( ! @file_put_contents($file, "{$this->disk_cache_version}\n") )
+            throw new \Exception("Can't write to {$file}");
+    }
+    
     public function fill_upload_types()
     {
         global $settings;
