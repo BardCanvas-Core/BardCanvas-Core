@@ -47,7 +47,7 @@ abstract class abstract_video_manager extends abstract_item_manager
     {
         $source  = $this->file_path;
         $target  = "/tmp/convert-" . basename($this->file_path) . ".mp4";
-        $res     = shell_exec("{$this->ffmpeg_bin} -i '{$source}' '{$target}'");
+        $res     = shell_exec("{$this->ffmpeg_bin} -i '{$source}' '{$target}' > /dev/null 2>&1");
         
         if( ! file_exists($target) )
             throw new \Exception("Can't convert {$this->file_name} to mp4! ffmepg output: {$res}");
@@ -77,7 +77,7 @@ abstract class abstract_video_manager extends abstract_item_manager
         $source = $this->file_path;
         $target = dirname($source) . "/" . basename($source) . ".jpg";
         
-        shell_exec("{$this->ffmpeg_bin} -i '{$source}' -vframes 1 -f image2 '{$target}'");
+        shell_exec("{$this->ffmpeg_bin} -i '{$source}' -vframes 1 -f image2 '{$target}' > /dev/null 2>&1");
         
         if( ! file_exists($target) ) return "";
         
