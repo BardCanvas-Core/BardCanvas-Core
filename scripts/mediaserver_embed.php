@@ -22,4 +22,4 @@ $style = "";
 $width  = empty($_GET["width"])  ? "" : "width='{$_GET["width"]}'";
 $height = empty($_GET["height"]) ? "" : "height='{$_GET["height"]}'";
 
-echo "<video {$width} {$height} controls><source src='{$file}'></video>";
+echo "<video {$width} {$height} controls><source src='{$file}' /></video>";
