@@ -72,7 +72,7 @@ function time_elapsed_string($date)
     
     $a = array(
         12 * 30 * 24 * 60 * 60 => $language->time->years,
-        30 * 24 * 60 * 60      => $language->time->monts,
+        30 * 24 * 60 * 60      => $language->time->months,
         24 * 60 * 60           => $language->time->days,
         60 * 60                => $language->time->hours,
         60                     => $language->time->minutes,
@@ -120,7 +120,7 @@ function time_elapsed_string_alternate($date)
     
     $a = array(
         12 * 30 * 24 * 60 * 60 => $language->time->short->years,
-        30 * 24 * 60 * 60      => $language->time->short->monts,
+        30 * 24 * 60 * 60      => $language->time->short->months,
         24 * 60 * 60           => $language->time->short->days,
         60 * 60                => $language->time->short->hours,
         60                     => $language->time->short->minutes,

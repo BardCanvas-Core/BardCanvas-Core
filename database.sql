@@ -69,7 +69,7 @@ CREATE TABLE `account` (
 
 delete from account;
 insert into account set
-  `id_account`      = '1',
+  `id_account`      = 'A0000000000001',
   `user_name`       = 'admin',
   `password`        = '21232f297a57a5a743894a0e4a801fc3', -- admin
   `display_name`    = 'System Administrator',
