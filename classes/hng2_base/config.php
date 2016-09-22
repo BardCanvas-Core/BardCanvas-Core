@@ -60,6 +60,7 @@ class config
         "png"  => "system",
         "gif"  => "system",
         "jpg"  => "system",
+        "jpe"  => "system",
         "jpeg" => "system",
         
         "mpg"  => "system",
