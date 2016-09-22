@@ -45,7 +45,7 @@ insert into settings set name='engine.recaptcha_private_key', value='';
 -- -----------------------------------------------------
 drop table if exists `account`;
 CREATE TABLE `account` (
-  `id_account`      VARCHAR(32) NOT NULL DEFAULT '',
+  `id_account`      bigint unsigned not null default 0,
   `user_name`       VARCHAR(64) NOT NULL DEFAULT '',
   `password`        VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'MD5 hash of password',
   `display_name`    VARCHAR(255) NOT NULL DEFAULT '',
@@ -64,12 +64,15 @@ CREATE TABLE `account` (
   `creation_date`   DATETIME NOT NULL,
   `last_update`     DATETIME NOT NULL,
   `changelog`       TEXT,
-  PRIMARY KEY (`id_account`)
+  PRIMARY KEY (`id_account`),
+  INDEX   user_name ( user_name(5) ),
+  INDEX   email     ( email(5)  ),
+  INDEX   alt_email ( alt_email(5) )
 ) DEFAULT CHARSET = utf8mb4 COLLATE='utf8mb4_unicode_ci' ENGINE=InnoDB;
 
 delete from account;
 insert into account set
-  `id_account`      = 'A0000000000001',
+  `id_account`      = concat('10', '0000000000', '000'),
   `user_name`       = 'admin',
   `password`        = '21232f297a57a5a743894a0e4a801fc3', -- admin
   `display_name`    = 'System Administrator',
@@ -79,28 +82,18 @@ insert into account set
   `level`           = 255,
   `state`           = 'enabled',
   `creation_host`   = '127.0.0.1; localhost',
-  `creation_date`   = '2014-01-01 00:00:00',
-  `last_update`     = '2014-01-01 00:00:00',
+  `creation_date`   = now(),
+  `last_update`     = now(),
   `changelog`       = 'Created on installation\n\n'
 ;
--- Protected user names
--- insert into account set `id_account` = '00000000000001', `user_name` = 'administrator', `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
--- insert into account set `id_account` = '00000000000002', `user_name` = 'webmaster',     `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
--- insert into account set `id_account` = '00000000000003', `user_name` = 'web_master',    `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
--- insert into account set `id_account` = '00000000000004', `user_name` = 'hostmaster',    `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
--- insert into account set `id_account` = '00000000000005', `user_name` = 'host_master',   `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
--- insert into account set `id_account` = '00000000000006', `user_name` = 'postmaster',    `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
--- insert into account set `id_account` = '00000000000007', `user_name` = 'post_master',   `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
--- insert into account set `id_account` = '00000000000008', `user_name` = 'root',          `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
--- insert into account set `id_account` = '00000000000009', `user_name` = 'root_user',     `password` = '[-this is a non-valid password-]', `display_name` = 'System Administrator', `email` = 'nobody@localhost', `alt_email` = 'nobody2@localhost', `country` = 'us', `level` = 0, `state` = 'disabled', `creation_host` = '127.0.0.1; localhost', `creation_date` = '2014-01-01 00:00:00', `last_update` = '2014-01-01 00:00:00';
 
 -- -----------------------------------------------------
 -- Table `account_devices`
 -- -----------------------------------------------------
 drop table if exists account_devices;
 CREATE TABLE IF NOT EXISTS `account_devices` (
-  `id_device`      VARCHAR(32) NOT NULL DEFAULT '',
-  `id_account`     VARCHAR(32) NOT NULL,
+  `id_device`      bigint unsigned not null default 0,
+  `id_account`     bigint unsigned not null default 0,
   `device_label`   VARCHAR(255) NOT NULL DEFAULT '',
   `device_header`  VARCHAR(255) NOT NULL DEFAULT '',
   `creation_date`  DATETIME NOT NULL,
@@ -108,9 +101,9 @@ CREATE TABLE IF NOT EXISTS `account_devices` (
   `last_activity`  DATETIME NOT NULL,
 
   PRIMARY KEY            (`id_device`),
-  INDEX `id_account`     (`id_account`(8) ASC),
-  INDEX `account_device` (`id_account`(8) ASC, `id_device`(8) ASC),
-  INDEX `account_agent`  (`id_account`(8) ASC, `device_header`(8) ASC)
+  INDEX `id_account`     (`id_account` ASC),
+  INDEX `account_device` (`id_account` ASC, `id_device` ASC),
+  INDEX `account_agent`  (`id_account` ASC, `device_header`(8) ASC)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE='utf8mb4_unicode_ci';
 
 -- -----------------------------------------------------
@@ -118,8 +111,8 @@ CREATE TABLE IF NOT EXISTS `account_devices` (
 -- -----------------------------------------------------
 drop table if exists account_logins;
 CREATE TABLE IF NOT EXISTS `account_logins` (
-  `id_account` VARCHAR(32) NOT NULL,
-  `id_device`  VARCHAR(32) NOT NULL,
+  `id_account` bigint unsigned not null default 0,
+  `id_device`  bigint unsigned not null default 0,
   `login_date` DATETIME NOT NULL,
   `ip`         VARCHAR(255) NOT NULL DEFAULT '',
   `hostname`   VARCHAR(255) NOT NULL DEFAULT '',
@@ -133,10 +126,10 @@ CREATE TABLE IF NOT EXISTS `account_logins` (
 -- -----------------------------------------------------
 drop table if exists account_engine_prefs;
 CREATE TABLE IF NOT EXISTS `account_engine_prefs` (
-  `id_account`     VARCHAR(32) NOT NULL,
-  `name`                VARCHAR(128) NOT NULL DEFAULT '',
-  `value`               TEXT NOT NULL DEFAULT '',
-  PRIMARY KEY            (`id_account`, `name`)
+  `id_account`     bigint unsigned not null default 0,
+  `name`           VARCHAR(128) NOT NULL DEFAULT '',
+  `value`          TEXT,
+  PRIMARY KEY      (`id_account`, `name`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE='utf8mb4_unicode_ci';
 
 --

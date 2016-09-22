@@ -83,7 +83,7 @@ class device
     
     public function set_new_id()
     {
-        $this->id_device = make_unique_id("D");
+        $this->id_device = make_unique_id("11");
     }
     
     /**

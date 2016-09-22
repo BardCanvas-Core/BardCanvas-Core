@@ -7,8 +7,8 @@ use hng2_repository\abstract_record;
 
 class media_record extends abstract_record
 {
-    public $id_media          ; #varchar(32) not null default '',
-    public $id_author         ; #varchar(32) not null default '',
+    public $id_media          ; #bigint unsigned not null default 0,
+    public $id_author         ; #bigint unsigned not null default 0,
     
     # Path is relative to the /media_server directory, E.G.:
     # Relative> /year/month/username_mediatitle_randomseed.png
@@ -117,7 +117,7 @@ class media_record extends abstract_record
     
     public function set_new_id()
     {
-        $this->id_media = make_unique_id("M");
+        $this->id_media = make_unique_id("30");
     }
     
     /**
