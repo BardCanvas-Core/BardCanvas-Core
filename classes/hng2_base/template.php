@@ -33,6 +33,8 @@ class template
     
     protected $vars = array();
     
+    protected $includes = array();
+    
     public function __construct()
     {
         global $config, $settings;
@@ -46,6 +48,49 @@ class template
             throw new \RuntimeException("Template {$this->name} not found");
         
         $this->url = "{$config->full_root_path}/templates/{$this->name}";
+    }
+    
+    public function build_includes()
+    {
+        global $modules;
+        
+        $includes = array();
+        foreach($modules as $module)
+        {
+            $module_includes = array();
+            if( empty($module->template_includes) ) continue;
+            
+            /** @var \SimpleXMLElement $include */
+            foreach($module->template_includes->children() as $include)
+            {
+                $name = trim($include->getName());
+                $priority = $include["priority"];
+                if( empty($priority) ) $priority = "500";
+                else                   $priority = sprintf("%03.0f", $priority);
+    
+                $includes[$name]["$priority/$module->name"] = $include;
+            }
+        }
+        
+        $final_includes = array();
+        foreach($includes as $name => $name_includes)
+        {
+            ksort($name_includes);
+            foreach($name_includes as $key => $val)
+            {
+                list($priority, $module) = explode("/", $key);
+                $final_includes[$name][$module] = trim($val);
+            }
+        }
+        
+        $this->includes = $final_includes;
+        # echo "<pre>" . print_r($includes, true) . "</pre>";
+    }
+    
+    public function get_includes($hook_area)
+    {
+        if( empty($this->includes[$hook_area]) ) return array();
+        else return $this->includes[$hook_area];
     }
     
     public function init($calling_layout)
@@ -321,14 +366,14 @@ class template
                 '{$content}',
                 '{$type}',
                 '{$seed}',
-                '{$added_classes}'
+                '{$added_classes}',
             ),
             array(
                 $title,
                 $content,
                 $id,
                 $seed,
-                trim($widget["added_classes"])
+                trim($widget["added_classes"]),
             )
         );
         

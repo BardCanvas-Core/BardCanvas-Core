@@ -60,5 +60,7 @@ $modules = array();
 include dirname(__FILE__) . "/modules_autoloader.inc";
 load_tinymce_addons();
 
+$template->build_includes();
+
 $account = new account();
 $account->load_session();
