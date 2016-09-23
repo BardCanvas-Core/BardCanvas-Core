@@ -49,6 +49,9 @@ class account extends account_toolbox
         }
         
         $input = addslashes(trim(stripslashes($input)));
+        
+        $where = is_numeric($input) ? "id_account = '$input'" : "user_name = '$input'";
+        
         $res   = $database->query("
             select
                 account.*,
@@ -56,7 +59,7 @@ class account extends account_toolbox
             from
                 account
             where
-                id_account = '$input' or user_name = '$input'
+                $where
         ");
         
         if( ! $res ) return;
@@ -366,17 +369,43 @@ class account extends account_toolbox
         if( ! empty($this->alt_email) ) $recipients["$this->display_name (2)"] = $this->alt_email;
         
         $request_location = forge_geoip_location($ip);
-        
+    
         $mail_subject = replace_escaped_vars(
-                            $current_module->language->email_templates->confirm_account->subject,
-                            array('{$user_name}', '{$website_name}'),
-                            array($this->user_name, $settings->get("engine.website_name"))
-                        );
+            $current_module->language->email_templates->confirm_account->subject,
+            array('{$user_name}', '{$website_name}'),
+            array($this->user_name, $settings->get("engine.website_name"))
+        );
         $mail_body = replace_escaped_vars(
-                         $current_module->language->email_templates->confirm_account->body,
-                         array('{$website_name}',                       '{$display_name}',     '{$token_url}', '{$main_email}', '{$alt_email}',     '{$date_sent}', '{$request_ip}', '{$request_hostname}', '{$request_location}', '{$request_user_agent}'      ),
-                         array(  $settings->get("engine.website_name"),   $this->display_name,   $token_url,     $this->email,    $this->alt_email,   $fecha_envio,   $ip,             $hostname,             $request_location,     $_SERVER["HTTP_USER_AGENT"])
-                     );
+            $current_module->language->email_templates->confirm_account->body,
+            array(
+                '{$website_name}',
+                '{$display_name}',
+                '{$token_url}',
+                '{$main_email}',
+                '{$alt_email}',
+                '{$date_sent}',
+                '{$request_ip}',
+                '{$request_hostname}',
+                '{$request_location}',
+                '{$request_user_agent}',
+                '{$user_name}',
+                '{$password}',
+            ),
+            array(
+                $settings->get("engine.website_name"),
+                $this->display_name,
+                $token_url,
+                $this->email,
+                $this->alt_email,
+                $fecha_envio,
+                $ip,
+                $hostname,
+                $request_location,
+                $_SERVER["HTTP_USER_AGENT"],
+                $this->user_name,
+                $current_module->language->password_encrypted
+            )
+        );
         $mail_body = unindent($mail_body);
         
         return send_mail($mail_subject, nl2br($mail_body), $recipients);
