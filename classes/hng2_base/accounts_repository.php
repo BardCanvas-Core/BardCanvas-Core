@@ -85,6 +85,7 @@ class accounts_repository extends abstract_repository
      */
     public function get_multiple(array $ids)
     {
+        global $mem_cache;
         global $object_cache;
         
         if( empty($ids) ) return array();
@@ -106,12 +107,20 @@ class accounts_repository extends abstract_repository
         foreach($ids as $id) $prepared_ids[] = "'$id'";
         $prepared_ids = implode(", ", $prepared_ids);
         
+        $mem_key = "accounts_repository/get_multiple/hash:" . md5($prepared_ids);
+        $res     = $mem_cache->get($mem_key);
+        if( is_array($res) ) return $res;
+        if( $res == "none" ) return array();
+        
         $rows = $this->find(array("id_account in ($prepared_ids)"), 0, 0, "");
         foreach($rows as $row)
         {
             $object_cache->set($this->table_name, $row->id_account, $row);
             $return[$row->id_account] = $row;
         }
+        
+        if( empty($return) ) $mem_cache->set($mem_key, "none",  0, 60*5);
+        else                 $mem_cache->set($mem_key, $return, 0, 60*5);
         
         return $return;
     }
