@@ -131,11 +131,11 @@ a.disabled,  .pseudo_link.disabled  { color: dimgrey; opacity: 0.5; cursor: auto
 .dropdown_menu .main_menu_item.current       { color: #990d0d; background-color: #f6f8f9; }
 .dropdown_menu .main_menu_item.current:hover { color: black;   background-color: hotpink; }
 
-.dropdown_menu .main_menu_item.highlighted               { color: greenyellow; background-color: greenyellow; }
-.dropdown_menu .main_menu_item.highlighted:link          { color: greenyellow; background-color: greenyellow; }
-.dropdown_menu .main_menu_item.highlighted:hover         { color: black; background-color: greenyellow;    }
+.dropdown_menu .main_menu_item.highlighted               { color: black; background-color: greenyellow; }
+.dropdown_menu .main_menu_item.highlighted:link          { color: black; background-color: greenyellow; }
+.dropdown_menu .main_menu_item.highlighted:hover         { color: green; background-color: greenyellow;    }
 .dropdown_menu .main_menu_item.highlighted.current       { color: black; background-color: yellowgreen;    }
-.dropdown_menu .main_menu_item.highlighted.current:hover { color: black; background-color: lime; }
+.dropdown_menu .main_menu_item.highlighted.current:hover { color: green; background-color: lime; }
 
 /* Framed contents */
 
