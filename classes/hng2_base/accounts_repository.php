@@ -23,7 +23,8 @@ class accounts_repository extends abstract_repository
         if( $object_cache->exists($this->table_name, $id_or_slug) )
             return $object_cache->get($this->table_name, $id_or_slug);
         
-        $where = array("id_account = '$id_or_slug' or user_name = '$id_or_slug'");
+        if( is_numeric($id_or_slug) ) $where = array("id_account" => $id_or_slug);
+        else                          $where = array("user_name" => $id_or_slug);
         
         $res = $this->find($where, 1, 0, "");
         
