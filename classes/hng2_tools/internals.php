@@ -17,19 +17,57 @@ class internals
 {
     public static function render($referer)
     {
-        global $database, $global_start_time, $config, $account;
+        global $database, $global_start_time, $config, $account, $template;
         
         if( ! $config->display_performance_details ) return;
         
         if( ! EMBED_INTERNALS )
         {
             ob_start();
+            
+            $USER_DATA
+                = "<span class='framed_content inlined'>" 
+                . get_user_ip() 
+                . "</span> <span class='framed_content inlined'>"
+                . gethostbyaddr(get_user_ip())
+                . "</span> <span class='framed_content inlined'>"
+                . forge_geoip_location()
+                . "</span> <span class='framed_content inlined'>"
+                . ($account->_exists ? "{$account->display_name} (#{$account->id_account})" : "Guest")
+                . "</span>"
+            ;
+            
+            $wasuuup = md5(mt_rand(1, 65535));
             echo "<!DOCTYPE html>
                 <html>
                 <head>
-                    <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/media/styles~v{$config->scripts_version}.css\">
+                <!-- Common -->
+                <script type=\"text/javascript\" src=\"{$config->full_root_path}/lib/jquery-1.11.0.min.js\"></script>
+                <script type=\"text/javascript\" src=\"{$config->full_root_path}/lib/jquery-migrate-1.2.1.js\"></script>
+                <script type=\"text/javascript\"          src=\"{$config->full_root_path}/lib/jquery-ui-1.10.4.custom.min.js\"></script>
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/lib/jquery-ui-themes-1.10.4/blitzer/jquery-ui.css\">
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/lib/font-awesome-4.6.3/css/font-awesome.css\">
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/lib/emojione-2.2.5/css/emojione-awesome.css\">
+                
+                <!-- Core functions and styles -->
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/media/styles~v{$config->scripts_version}.css\">
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"{$config->full_root_path}/media/admin~v{$config->scripts_version}.css\">
+                <script type=\"text/javascript\"          src=\"{$config->full_root_path}/media/functions~v{$config->scripts_version}.js\"></script>
+                
+                <!-- This template -->
+                <link rel=\"stylesheet\" type=\"text/css\" href=\"{$template->url}/media/styles~v{$config->scripts_version}.css\">
                 </head>
-                <body>
+                <body class=\"popup\">
+                <div id=\"body_wrapper\">
+                    <div id=\"content\">
+                        <h1 align='center'>
+                            Internals report for \"{$template->get_page_title()}\"
+                            &nbsp;•&nbsp;
+                            <a href='./?wasuuup=$wasuuup'><span class='fa fa-reply fa-fw'></span>Go back to index</a>
+                        </h1>
+                        <div class='framed_content' align='center'>
+                            {$USER_DATA}
+                        </div>
             ";
         }
         
@@ -73,19 +111,37 @@ class internals
         
         if( ! EMBED_INTERNALS )
         {
-            echo "</body></html>";
+            echo "
+                </div><!-- /#content -->
+                </div><!-- /#body_wrapper -->
+                </body>
+                </html>
+            ";
             $output = ob_get_clean();
-    
+            
             $dir = "{$config->logfiles_location}/internals";
             if( ! is_dir($dir) )
             {
                 if( ! @mkdir($dir) ) throw new \Exception("Can't create $dir");
                 @chmod($dir, 0777);
             }
-    
+            
+            $x = array(
+                "/" => "•",
+                "*" => "☼",
+                "?" => "≈",
+                "&" => "│",
+                "|" => "",
+                "[" => "(",
+                "]" => ")",
+                "{" => "(",
+                "}" => ")",
+                " " => ".",
+            );
+            
             $userinfo = $account->_exists ? "{$account->user_name},{$account->level}" : "guest";
-            $date     = date("YmdHis") . sprintf("%03.0f", end(explode(".", microtime(true))));
-            $file     = $dir . "/" . urlencode($_SERVER["REQUEST_URI"]) . " - {$userinfo} - $date.html";
+            $date     = date("YmdHis.") . sprintf("%03.0f", end(explode(".", microtime(true))));
+            $file     = $dir . "/$date - " . str_replace(array_keys($x), $x, $_SERVER["REQUEST_URI"]) . " - {$userinfo}.html";
             @file_put_contents($file, $output);
             @chmod($file, 0777);
         }
