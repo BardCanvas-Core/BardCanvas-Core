@@ -17,9 +17,12 @@ class media_repository extends abstract_repository
     protected $key_column_name = "id_media";
     protected $additional_select_fields = array(
         # Views
-        "( select concat(views, '\\t', last_viewed)
+        "( select views
            from media_views where media_views.id_media = media.id_media
-           ) as _views_data",
+           ) as views",
+        "( select last_viewed
+           from media_views where media_views.id_media = media.id_media
+           ) as last_viewed",
         # Author data
         "( select concat(user_name, '\\t', display_name, '\\t', email, '\\t', level)
            from account where account.id_account = media.id_author )

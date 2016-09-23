@@ -71,15 +71,6 @@ class media_record extends abstract_record
     {
         parent::set_from_object($object_or_array);
         
-        if( ! empty($this->_views_data) )
-        {
-            $parts = explode("\t", $this->_views_data);
-            $this->views       = $parts[0];
-            $this->last_viewed = $parts[1];
-            
-            unset( $this->_views_data );
-        }
-        
         if( ! empty($this->_author_data) )
         {
             $parts = explode("\t", $this->_author_data);
