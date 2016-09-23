@@ -50,7 +50,7 @@ class account extends account_toolbox
         
         $input = addslashes(trim(stripslashes($input)));
         
-        $where = is_numeric($input) ? "id_account = '$input'" : "user_name = '$input'";
+        $where = is_numeric($input) ? "id_account = '$input'" : "user_name = '$input' or display_name = '$input'";
         
         $res   = $database->query("
             select
