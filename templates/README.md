@@ -81,7 +81,7 @@ In the module's `module_info.xml` file, the `<template_includes>` node should in
     header_top            |   √  |   √  |   √   |            |
     header_menu           |   √  |   √  |   √   |            |
     header_bottom         |   √  |   √  |   √   |            |
-    pre_content           |      |   √  |       |            |
+    pre_content           |   √  |   √  |   √   |            |
     content_top           |   √  |   √  |       |            |
     home_content          |   √  |      |       |            |
     content_bottom        |   √  |   √  |       |            |
