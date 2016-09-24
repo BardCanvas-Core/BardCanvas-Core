@@ -438,8 +438,11 @@ class template
         {
             if( empty($module->tinymce_additions) ) continue;
             $min_level = trim($module->tinymce_additions["minimum_user_level"]);
+            $useragent_exclussions = trim($module->tinymce_additions["useragent_exclussions"]);
             if( ! empty($min_level) && ! $account->_exists ) continue;
             if( ! empty($min_level) && $account->level < $min_level ) continue;
+            if( ! empty($useragent_exclussions) 
+                && preg_match($useragent_exclussions, $_SERVER["HTTP_USER_AGENT"]) ) continue;
             
             foreach($module->tinymce_additions->plugin as $plugin)
                 echo "
