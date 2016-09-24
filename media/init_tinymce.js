@@ -10,9 +10,10 @@ var tinymce_defaults = {
     convert_urls:             false,
     selector:                 '.tinymce',
     plugins:                  'placeholder advlist contextmenu autolink lists link anchor searchreplace paste codemirror '
-                              + 'textcolor fullscreen autoresize hr',
+                              + 'textcolor fullscreen autoresize image imagetools hr',
     toolbar:                  tinymce_standard_toolbar,
-    contextmenu:              'cut copy paste | link',
+    imagetools_toolbar:       'imageoptions',
+    contextmenu:              'cut copy paste | image | link',
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
     content_css:              tinymce_default_css_files.join(','),
     autoresize_bottom_margin: 0,
