@@ -32,6 +32,10 @@ class item
         if( ! empty($this->link)         ) $node->addChild("link",         $this->link);
         if( ! empty($this->description)  ) $node->addChild("description",  $this->description);
         
+        if( ! empty($this->author)   ) $node->addChild("author",    $this->author);
+        if( ! empty($this->category) ) $node->addChild("category",  $this->category);
+        if( ! empty($this->comments) ) $node->addChild("comments",  $this->link); // Yes, the same as link
+        
         if( ! empty($this->enclosure) )
         {
             $enclosure = $node->addChild("enclosure");
@@ -40,6 +44,7 @@ class item
             $enclosure->addChild("url",    $this->enclosure->url);
         }
         
-        if( ! empty($this->guid) ) $node->addChild("guid",  $this->guid);
+        if( ! empty($this->guid)    ) $node->addChild("guid",    $this->guid);
+        if( ! empty($this->pubDate) ) $node->addChild("pubDate", $this->pubDate);
     }
 }
