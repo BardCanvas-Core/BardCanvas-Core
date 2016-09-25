@@ -192,4 +192,55 @@ class accounts_repository extends abstract_repository
         
         return $return;
     }
+    
+    public function get_online_users_list($boundary_minutes = 10, $exclude_self = true)
+    {
+        global $database, $account, $config;
+        
+        $self_id = $exclude_self ? $account->id_account : 0;
+        
+        $date = date("Y-m-d H:i:s", strtotime("now - $boundary_minutes minutes"));
+        $query = "
+            select
+                account.id_account,
+                account.user_name,
+                account.level,
+                account.display_name,
+                account.avatar,
+                account_devices.last_activity
+            from
+                account,
+                account_devices
+            where
+                account.id_account <> '$self_id' and
+                account_devices.id_account = account.id_account and
+                account_devices.last_activity >= '$date'
+            order by
+                display_name
+        ";
+        
+        $res = $database->query($query);
+        if( $database->num_rows($res) == 0 ) return array();
+        
+        $return = array();
+        $added  = array();
+        while($row = $database->fetch_object($res))
+        {
+            if( empty($added[$row->id_account]) )
+            {
+                $return[] = (object) array(
+                    "id_account"    => $row->id_account,
+                    "user_name"     => $row->user_name,
+                    "level"         => $row->level,
+                    "display_name"  => convert_emojis($row->display_name),
+                    "avatar"        => $row->avatar == '' ? '' : "{$config->full_root_path}/user/{$row->user_name}/avatar",
+                    "last_activity" => $row->last_activity,
+                );
+    
+                $added[$row->id_account] = true;
+            }
+        }
+        
+        return $return;
+    }
 }
