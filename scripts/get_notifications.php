@@ -15,6 +15,7 @@ include "../config.php";
 include "../includes/bootstrap.inc";
 
 if( ! $account->_exists ) throw_fake_401();
+$account->ping();
 
 $start_from = "";
 if( ! empty($_REQUEST["last_read"]) )
