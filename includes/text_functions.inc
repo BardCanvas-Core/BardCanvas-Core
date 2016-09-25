@@ -161,6 +161,16 @@ function get_minimized_date($input)
         return strftime("%b %e", $timestamp);
 }
 
+function render_datetime($input)
+{
+    global $language;
+    
+    $timestamp = strtotime($input);
+    
+    return strftime("%b %e, %G %l:%M ", $timestamp) 
+        . ( date("H", $timestamp) < 12 ? $language->time->am : $language->time->pm );
+}
+
 /**
  * Depending on the input:
  * - if today, returns hour
