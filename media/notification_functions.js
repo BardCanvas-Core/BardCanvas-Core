@@ -8,7 +8,7 @@
  * @var {string} $_FULL_ROOT_PATH
  */
 
-var notification_getter_heartbeat = 3000;
+var notification_getter_heartbeat = 5000;
 
 var notifications_sent = [];
 var getting_notifications = false;
@@ -128,6 +128,34 @@ function throw_notification(message, message_type)
 {
     if( typeof message_type == 'undefined' ) message_type = $.noty.defaults.type;
     noty({text: message, type: message_type});
+    play_notification_sound();
+}
+
+ion.sound({
+    sounds: [
+        { name: "glass" },      // message
+        { name: "button_tiny" } // default
+    ],
+    volume:  1,
+    path:    $_FULL_ROOT_PATH + "/lib/ion.sound-3.0.7/sounds/",
+    preload: true
+});
+
+/**
+ * Plays a notification sound
+ * 
+ * @param name nothing | message
+ */
+function play_notification_sound(name)
+{
+    if( typeof name == 'undefined' ) name = 'default';
+    
+    switch(name)
+    {
+        case 'message': ion.sound.play("glass");       break;
+        default:        ion.sound.play("button_tiny"); break;
+    }
+    
 }
 
 $(document).ready(function()
