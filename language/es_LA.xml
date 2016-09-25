@@ -524,5 +524,7 @@
             Favor de tomar las medidas pertinentes.
         ]]></fails_notification>
     </file_ops>
-
+    
+    <confirm_action>Por favor confirma que quieres llevar a cabo la acción elegida.</confirm_action>
+    
 </language>

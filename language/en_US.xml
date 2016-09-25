@@ -518,4 +518,6 @@
         ]]></fails_notification>
     </file_ops>
     
+    <confirm_action>Please confirm that you want to proceed with the selected action.</confirm_action>
+    
 </language>
