@@ -275,6 +275,12 @@ class record_browser
             $offset_start_point = $pagination_vars["offset_start_point"];
             for( $cpage = $pagination_vars["start_offset"]; $cpage <= $pagination_vars["end_offset"]; $cpage++ )
             {
+                if( $cpage <= 0)
+                {
+                    $offset_start_point += $pagination_vars["limit"];
+                    continue;
+                }
+    
                 $disabled = $cpage == $pagination_vars["this_page_number"] ? "disabled" : "";
                 $middle_buttons .= "
                     <button {$disabled} onclick='{$pagination_function_name}({$offset_start_point})'>{$cpage}</button>
@@ -322,6 +328,12 @@ class record_browser
             $offset_start_point = $pagination_vars["offset_start_point"];
             for( $cpage = $pagination_vars["start_offset"]; $cpage <= $pagination_vars["end_offset"]; $cpage++ )
             {
+                if( $cpage <= 0)
+                {
+                    $offset_start_point += $pagination_vars["limit"];
+                    continue;
+                }
+                
                 $disabled = $cpage == $pagination_vars["this_page_number"] ? "disabled" : "";
                 $middle_buttons .= "
                     <a {$disabled} href='{$url_prefix}{$query}offset={$offset_start_point}'>{$cpage}</a>
