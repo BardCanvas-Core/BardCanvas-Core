@@ -104,6 +104,8 @@
     ]]></failed_to_create_cron_job>
     
     <time>
+        <today>today</today>
+        <yesterday>yesterday</yesterday>
         <am>AM</am>
         <pm>PM</pm>
         <years>years</years>

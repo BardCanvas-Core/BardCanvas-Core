@@ -149,7 +149,7 @@ function time_elapsed_string_alternate($date)
  *
  * @return string
  */
-function get_minimized_date($input)
+function time_mini_string($input)
 {
     $timestamp = strtotime($input);
     
@@ -161,7 +161,26 @@ function get_minimized_date($input)
         return strftime("%b %e", $timestamp);
 }
 
-function render_datetime($input)
+function time_today_string($input)
+{
+    global $language;
+    
+    $timestamp = strtotime($input);
+    
+    $prefix = "";
+    $ampm   = date("H", $timestamp) < 12 ? $language->time->am : $language->time->pm;
+    
+    if( substr($input, 0, 10) == date("Y-m-d") )
+        $prefix = $language->time->today;        # today
+    elseif( substr($input, 0, 10) == date("Y-m-d", strtotime("yesterday")) )
+        $prefix = $language->time->yesterday;    # yesterday
+    else
+        $prefix = strftime("%b %e", $timestamp); # other day
+    
+    return $prefix . " " . strftime("%l:%M", $timestamp) . " " . $ampm;
+}
+
+function time_complete_string($input)
 {
     global $language;
     
