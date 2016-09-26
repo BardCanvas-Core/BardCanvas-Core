@@ -795,7 +795,7 @@ class media_repository extends abstract_repository
         
         $cookie_key = "{$config->website_key}_lvm_{$id_media}";
         if( ! empty($_COOKIE[$cookie_key]) ) return 0;
-        setcookie($cookie_key, $id_media, time() + 300, "/", $config->cookies_domain);
+        setcookie($cookie_key, $id_media, time() + 60, "/", $config->cookies_domain);
         
         $now = date("Y-m-d H:i:s");
         return $database->exec("
