@@ -28,9 +28,9 @@ class item
         /** @var \SimpleXMLElement $node */
         $node = $parent->addChild("item");
         
-        if( ! empty($this->title)        ) $node->addChild("title",        $this->title);
+        if( ! empty($this->title)        ) add_cdata_node("title", $this->title, $node);
         if( ! empty($this->link)         ) $node->addChild("link",         $this->link);
-        if( ! empty($this->description)  ) $node->addChild("description",  $this->description);
+        if( ! empty($this->description)  ) add_cdata_node("description", $this->description, $node);
         
         if( ! empty($this->author)   ) $node->addChild("author",    $this->author);
         if( ! empty($this->category) ) $node->addChild("category",  $this->category);
