@@ -174,6 +174,8 @@ function toggle_dropdown_menu($trigger)
     var left            = offset.left;
     if( (offset.left + width + 12) > window_boundary ) left = offset.left + $trigger.width() - width + 12;
     
+    if( left < 0 ) left = 0;
+    
     $trigger.toggleClass('submenu_visible');
     $menu.toggle().css('left', left + 'px').css('top',  top + 'px');
     // TODO: Fix this fucking toggle!
