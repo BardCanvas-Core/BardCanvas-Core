@@ -322,4 +322,16 @@ class media_record extends abstract_record
         
         return $list;
     }
+    
+    public function can_be_deleted()
+    {
+        global $account;
+        
+        if( $account->level >= config::MODERATOR_USER_LEVEL ) return true;
+        if( $account->level <= config::NEWCOMER_USER_LEVEL ) return false;
+        if( $account->id_account != $this->id_author ) return false;
+        if( $this->status == "trashed" ) return false;
+        
+        return true;
+    }
 }
