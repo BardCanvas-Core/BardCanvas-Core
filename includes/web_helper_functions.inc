@@ -488,3 +488,11 @@ function externalize_urls($text)
     
     return $text;
 }
+
+function is_mobile()
+{
+    return preg_match(
+        "/iphone|ipad|ios|mobile|phone|android|blackberry|kindle|opera mini|opera mobi/i",
+        $_SERVER["HTTP_USER_AGENT"]
+    );
+}
