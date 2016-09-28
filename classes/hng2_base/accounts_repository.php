@@ -207,6 +207,7 @@ class accounts_repository extends abstract_repository
                 account.level,
                 account.display_name,
                 account.avatar,
+                account.email,
                 account_devices.last_activity
             from
                 account,
@@ -228,15 +229,25 @@ class accounts_repository extends abstract_repository
         {
             if( empty($added[$row->id_account]) )
             {
+                if( $row->avatar == "@gravatar" )
+                {
+                    $avatar = "https://www.gravatar.com/avatar/" . md5(trim(strtolower($row->email)));
+                }
+                else
+                {
+                    $file   = empty($row->avatar) ? "media/default_avatar.jpg" : "user/{$this->user_name}/avatar";
+                    $avatar = "{$config->full_root_path}/{$file}";
+                }
+                
                 $return[] = (object) array(
                     "id_account"    => $row->id_account,
                     "user_name"     => $row->user_name,
                     "level"         => $row->level,
                     "display_name"  => $row->display_name,
-                    "avatar"        => $row->avatar == '' ? '' : "{$config->full_root_path}/user/{$row->user_name}/avatar",
+                    "avatar"        => $avatar,
                     "last_activity" => $row->last_activity,
                 );
-    
+                
                 $added[$row->id_account] = true;
             }
         }
