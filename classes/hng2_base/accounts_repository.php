@@ -232,7 +232,7 @@ class accounts_repository extends abstract_repository
                     "id_account"    => $row->id_account,
                     "user_name"     => $row->user_name,
                     "level"         => $row->level,
-                    "display_name"  => convert_emojis($row->display_name),
+                    "display_name"  => $row->display_name,
                     "avatar"        => $row->avatar == '' ? '' : "{$config->full_root_path}/user/{$row->user_name}/avatar",
                     "last_activity" => $row->last_activity,
                 );
