@@ -154,11 +154,11 @@ function time_mini_string($input)
     $timestamp = strtotime($input);
     
     if( date("Y") > substr($input, 0, 4) )        # Another year = full date
-        return strftime("%b %e, %G", $timestamp);
+        return utf8_encode(strftime("%b %e, %G", $timestamp));
     if( date("Y-m-d") == substr($input, 0, 10) )  # Today = time
-        return strftime("%H:%M", $timestamp);
+        return utf8_encode(strftime("%H:%M", $timestamp));
     else                                          # Other day = day
-        return strftime("%b %e", $timestamp);
+        return utf8_encode(strftime("%b %e", $timestamp));
 }
 
 function time_today_string($input)
@@ -175,9 +175,9 @@ function time_today_string($input)
     elseif( substr($input, 0, 10) == date("Y-m-d", strtotime("yesterday")) )
         $prefix = $language->time->yesterday;    # yesterday
     else
-        $prefix = strftime("%b %e", $timestamp); # other day
+        $prefix = utf8_encode(strftime("%b %e", $timestamp)); # other day
     
-    return $prefix . " " . strftime("%l:%M", $timestamp) . " " . $ampm;
+    return $prefix . " " . utf8_encode(strftime("%l:%M", $timestamp)) . " " . $ampm;
 }
 
 function time_complete_string($input)
@@ -186,7 +186,7 @@ function time_complete_string($input)
     
     $timestamp = strtotime($input);
     
-    return strftime("%b %e, %G %l:%M ", $timestamp) 
+    return utf8_encode(strftime("%b %e, %G %l:%M ", $timestamp)) 
         . ( date("H", $timestamp) < 12 ? $language->time->am : $language->time->pm );
 }
 
@@ -208,11 +208,11 @@ function get_selective_date($input, $time_elapsed_if_today = false)
     if( date("Y-m-d") == substr($input, 0, 10) )        # Today = time
         return $time_elapsed_if_today
             ? time_elapsed_string($input)
-            : strftime("%H:%M", $timestamp);
+            : utf8_encode(strftime("%H:%M", $timestamp));
     if( date("Y-m") == substr($input, 0, 7) )           # This month = weekday, time 
-        return strftime("%A %e, %H:%M", $timestamp);
+        return utf8_encode(strftime("%a %e, %H:%M", $timestamp));
     else                                                # Other day = full time
-        return strftime("%b %e %G, %H:%M", $timestamp);
+        return utf8_encode(strftime("%b %e %G, %H:%M", $timestamp));
 }
 
 /**
