@@ -57,6 +57,13 @@ abstract class abstract_item_manager
         $this->file_name = $new_file_name;
         $this->file_path = $target_file;
         $this->size      = filesize($target_file);
+        
+        $this->post_relocation_fixes();
+    }
+    
+    protected function post_relocation_fixes()
+    {
+        // Override this function with file fixes after moving it into the repository
     }
     
     private function check_target_directory()

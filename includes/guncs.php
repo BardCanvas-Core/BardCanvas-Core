@@ -387,3 +387,23 @@ function gfuncs_resample_png(
     
     return $return;
 }
+
+function gfuncs_fix_jpeg_orientation($file, $compression = 90)
+{
+    $exif = @exif_read_data($file);
+    if( empty($exif) ) return false;
+    
+    $orientation = $exif['IFD0']['Orientation'];
+    if( empty($orientation) ) $orientation = $exif['Orientation'];
+    if( empty($orientation) ) return false;
+    
+    $image = imagecreatefromjpeg($file);
+    switch($orientation) {
+        case 3: $image = imagerotate($image, 180, 0); break;
+        case 6: $image = imagerotate($image, -90, 0); break;
+        case 8: $image = imagerotate($image,  90, 0); break;
+    }
+    
+    imagejpeg($image, $file, $compression);
+    return true;
+}

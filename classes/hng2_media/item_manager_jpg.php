@@ -11,6 +11,13 @@ class item_manager_jpg extends abstract_image_manager
         parent::__construct($file_name, $mime_type, $file_path);
     }
     
+    public function post_relocation_fixes()
+    {
+        $this->fix_orientation();
+        
+        parent::post_relocation_fixes();
+    }
+    
     public function get_thumbnail()
     {
         /*
