@@ -205,7 +205,7 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .nav_table .right_bordered { border-right: 1px solid #c2daea; }
 
 .nav_table div.actions      { margin-top: 5px; }
-.nav_table .actions .action { margin: 5px; }
+.nav_table .actions .action { display: inline-block; margin: 0 5px 5px 0; }
 
 .nav_table tr.master td { padding-top:    12px; border-bottom: none; }
 .nav_table tr.child  td { padding-bottom: 12px; }
