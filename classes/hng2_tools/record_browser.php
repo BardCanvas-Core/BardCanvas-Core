@@ -221,9 +221,19 @@ class record_browser
     public function build_pagination($record_count, $limit, $offset)
     {
         $total_records    = $record_count;
-        $total_pages      = floor($total_records / $limit);
-        $this_page_number = ($total_pages+1)-floor(($total_records-$offset) / $limit);
-        if($total_records % $limit > 0) $total_pages++;
+        
+        if( $limit == 0 )
+        {
+            $total_pages      = 1;
+            $this_page_number = 1;
+        }
+        else
+        {
+            $total_pages      = floor($total_records / $limit);
+            $this_page_number = ($total_pages+1)-floor(($total_records-$offset) / $limit);
+            if($total_records % $limit > 0) $total_pages++;
+        }
+        
         $pagina_anterior    = $offset - $limit;
         $pagina_siguiente   = $offset + $limit;
         $ultima_pagina      = $limit * ($total_pages-1);

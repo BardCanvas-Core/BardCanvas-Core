@@ -419,6 +419,7 @@ class media_repository extends abstract_repository
     public function get_for_tag($tag)
     {
         $find_params = $this->build_find_params_for_tag($tag);
+        $find_params->limit = 30;
         
         return $this->get_items_data($find_params);
     }
