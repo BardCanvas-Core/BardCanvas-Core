@@ -513,6 +513,7 @@
         <source_not_found>File {$source} doesn't exist. It cannot be moved.</source_not_found>
         <target_exists>File {$target} exists, {$source} cannot be moved.</target_exists>
         <cant_move>File {$source} cannot be moved/renamed to {$target}</cant_move>
+        <fails_subject>[{$website_name}] Failed file operations</fails_subject>
         <fails_notification><![CDATA[
             There has been errors in the last file operations:<br>
             {$errors}<br>

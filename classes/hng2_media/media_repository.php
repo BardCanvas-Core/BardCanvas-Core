@@ -254,6 +254,11 @@ class media_repository extends abstract_repository
         return $return;
     }
     
+    public function delete($key)
+    {
+        return $this->trash($key);
+    }
+    
     public function trash($id_media)
     {
         global $database;
@@ -817,11 +822,13 @@ class media_repository extends abstract_repository
     {
         global $database, $modules, $config;
         
+        $rows = $this->get_multiple($ids);
+        
         foreach($ids as &$id) $id = "'$id'";
         $prepared_ids = implode(", ", $ids);
         $query = "
-            delete from {$this->table_name}
-            where id_media     in ({$prepared_ids})
+            update media set status = 'trashed'
+            where id_media in ({$prepared_ids})
         ";
         
         $config->globals["media_repository/delete_multiple_if_unused:ids"] = $prepared_ids;
@@ -834,6 +841,17 @@ class media_repository extends abstract_repository
         
         $res = $database->exec($query);
         $this->last_query = $database->get_last_query();
+        
+        if( ! empty($rows) )
+        {
+            $files = array();
+            foreach($rows as $row)
+            {
+                $files[] = $row->path;
+                $files[] = $row->thumbnail;
+            }
+            $this->hide_files($files);
+        }
         
         return $res;
     }
@@ -890,7 +908,7 @@ class media_repository extends abstract_repository
     
     private function hide_files(array $list)
     {
-        global $config, $language;
+        global $config, $language, $settings;
         
         if( count($list) == 0 ) return;
         
@@ -906,8 +924,14 @@ class media_repository extends abstract_repository
         
         if( empty($fails) ) return;
         
-        $message = replace_escaped_vars($language->file_ops->fails_notification, '{$errors}', implode("<br>\n", $fails));
-        broadcast_to_moderators("warning", $message);
+        $subject = replace_escaped_vars( $language->file_ops->fails_subject, '{$website_name}', $settings->get("engine.website_name") );
+        $message = replace_escaped_vars( $language->file_ops->fails_notification, '{$errors}', implode("<br>\n", $fails) );
+        
+        $webmaster_mail = ucwords($settings->get("engine.webmaster_address"));
+        $webmaster_name = current(explode("@", $webmaster_mail));
+        $recipients     = array($webmaster_name => $webmaster_mail);
+        
+        send_mail($subject, $message, $recipients);
     }
     
     private function unhide_files(array $list)
