@@ -58,6 +58,7 @@ ReWriteRule ^date/([0-9]{4})/$                   posts/by_date.php?date=$1 [QSA,
 ReWriteRule ^date/([0-9]{4})$                    posts/by_date.php?date=$1 [QSA,L]
 
 # Media server
+ReWriteRule ^media_toolbox/(.*)$     scripts/media_toolbox.php?method=$1   [QSA,L]
 ReWriteRule ^mediaserver/(.*)$       data/uploaded_media/$1                [QSA,L]
 ReWriteRule ^mediaserver-embed/(.*)$ scripts/mediaserver_embed.php?file=$1 [QSA,L]
 ReWriteRule ^pm_attachments/(.*)$    data/pm_attachments/$1                [QSA,L]
