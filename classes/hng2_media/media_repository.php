@@ -909,7 +909,7 @@ class media_repository extends abstract_repository
     
     private function hide_files(array $list)
     {
-        global $config, $language, $settings;
+        global $config;
         
         if( count($list) == 0 ) return;
         
@@ -925,19 +925,16 @@ class media_repository extends abstract_repository
         
         if( empty($fails) ) return;
         
-        $subject = replace_escaped_vars( $language->file_ops->fails_subject, '{$website_name}', $settings->get("engine.website_name") );
-        $message = replace_escaped_vars( $language->file_ops->fails_notification, '{$errors}', implode("<br>\n", $fails) );
+        $backtrace = debug_backtrace();
+        foreach($backtrace as &$backtrace_item)
+            $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
         
-        $webmaster_mail = ucwords($settings->get("engine.webmaster_address"));
-        $webmaster_name = current(explode("@", $webmaster_mail));
-        $recipients     = array($webmaster_name => $webmaster_mail);
-        
-        send_mail($subject, $message, $recipients);
+        # $this->notify_fileops_errors($fails, $backtrace);
     }
     
     private function unhide_files(array $list)
     {
-        global $config, $language;
+        global $config;
         
         if( count($list) == 0 ) return;
         
@@ -953,8 +950,29 @@ class media_repository extends abstract_repository
         
         if( empty($fails) ) return;
         
-        $message = replace_escaped_vars($language->file_ops->fails_notification, '{$errors}', implode("<br>\n", $fails));
-        broadcast_to_moderators("warning", $message);
+        $backtrace = debug_backtrace();
+        foreach($backtrace as &$backtrace_item)
+            $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        
+        # $this->notify_fileops_errors($fails, $backtrace);
+    }
+    
+    private function notify_fileops_errors($fails, $backtrace = array())
+    {
+        global $language, $settings;
+        
+        $subject = replace_escaped_vars( $language->file_ops->fails_subject, '{$website_name}', $settings->get("engine.website_name") );
+        $message = replace_escaped_vars( $language->file_ops->fails_notification, '{$errors}', implode("<br>\n", $fails) );
+        
+        $webmaster_mail = ucwords($settings->get("engine.webmaster_address"));
+        $webmaster_name = current(explode("@", $webmaster_mail));
+        $recipients     = array($webmaster_name => $webmaster_mail);
+        
+        if( empty($backtrace) ) $backtrace = "N/A";
+        else                    $backtrace = implode("<br>\n", $backtrace);
+        $message = replace_escaped_vars( $message, '{$stack_trace}', $backtrace );
+        
+        send_mail($subject, $message, $recipients);
     }
     
     private function do_hide_unhide($source, $target)

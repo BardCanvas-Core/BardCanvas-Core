@@ -517,7 +517,9 @@
         <fails_notification><![CDATA[
             There has been errors in the last file operations:<br>
             {$errors}<br>
-            Please take the proper measures.
+            Please take the proper measures.<br><br>
+            Stack trace:<br>
+            {$stack_trace}
         ]]></fails_notification>
     </file_ops>
     

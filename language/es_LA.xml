@@ -524,7 +524,9 @@
         <fails_notification><![CDATA[
             Han habido errores en las últimas operaciones de archivos:<br>
             {$errors}<br>
-            Favor de tomar las medidas pertinentes.
+            Favor de tomar las medidas pertinentes.<br><br>
+            Trazado de pila:<br>
+            {$stack_trace}
         ]]></fails_notification>
     </file_ops>
     
