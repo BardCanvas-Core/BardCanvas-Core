@@ -171,6 +171,11 @@ class template
         return count($this->right_sidebar_items);
     }
     
+    public function clear_right_sidebar_items()
+    {
+        $this->right_sidebar_items = array();
+    }
+    
     /**
      * @param        $collection
      * @param string $sort_by (nothing)|title|priority
