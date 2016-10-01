@@ -51,6 +51,7 @@ a.critical,  .pseudo_link.critical  { color: red;     text-shadow: 1px 1px 1px d
 a.disabled,  .pseudo_link.disabled  { color: dimgrey; opacity: 0.5; cursor: auto; }
 
 .inline-block { display: inline-block; }
+.nowrap       { white-space: nowrap; }
 
 .pseudo_link.fa, .pseudo_link .fa, .fa .pseudo_link { text-decoration: none; }
 
