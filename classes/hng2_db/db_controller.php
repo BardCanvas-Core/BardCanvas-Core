@@ -158,11 +158,18 @@ class db_controller
         $res = $this->current_read_db->query($query);
         $error_info = $this->current_read_db->handler->errorInfo();
         
-        if( ! empty($error_info[2]) ) throw new \Exception(
-            "Error while executing query:\n" .
-             "{$error_info[2]}\n\n" .
-            "Query:\n" . $query
-        );
+        if( ! empty($error_info[2]) )
+        {
+            $backtrace = debug_backtrace();
+            foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+            
+            throw new \Exception(
+                "Error while executing query:\n" .
+                "{$error_info[2]}\n\n" .
+                "Query:\n" . $query . "\n\n" .
+                "Stack Trace:\n" . implode("\n", $backtrace) . "\n"
+            );
+        }
         
         if( $config->query_tracking_enabled )
             $this->tracked_queries[] = new tracked_query(
