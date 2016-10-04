@@ -103,7 +103,7 @@ function get_user_ip()
  */
 function send_notification($id_account, $type, $contents)
 {
-    global $config;
+    global $config, $settings;
     
     if($config->globals["engine.notifications_disabled"]) return;
     
@@ -121,7 +121,44 @@ function send_notification($id_account, $type, $contents)
         = "<span data-message-archive='{$id_account}/{$now}'>"
         . trim($contents)
         . "</span>";
-    file_put_contents($target_file, json_encode(array("message_type" => $type, "message" => $message_contents)));
+    
+    $contents = json_encode(array("message_type" => $type, "message" => $message_contents));
+    if( empty($contents) )
+    {
+        $accounts_repository = new accounts_repository();
+        $account             = $accounts_repository->get($id_account);
+        $webmaster_mail      = ucwords($settings->get("engine.webmaster_address"));
+        $webmaster_name      = current(explode("@", $webmaster_mail));
+        $recipients          = array($webmaster_name => $webmaster_mail);
+        $subject             = "[{$settings->get("engine.website_name")}/notifications_sender] Malformed notification detected!";
+        $contents            = htmlspecialchars($message_contents);
+        
+        $backtrace = debug_backtrace();
+        foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        $backtrace = implode("\n                ", $backtrace);
+        
+        $body = unindent("
+            <p><b>Error while attempting to send notification for {$account->display_name}</b>!</p>
+            
+            <p>The notification has malformed contents. Please review them
+            and double check with the engine tech support staff about the module that is
+            generating it:</p>
+            
+            <blockquote>{$contents}</blockquote>
+            
+            <p>The notification has wont be delivered.</p>
+            
+            <p><b>Stack Trace:</b></p>
+            <pre>
+                $backtrace
+            </pre>
+        ");
+        send_mail($subject, $body, $recipients);
+        
+        return;
+    }
+    
+    file_put_contents($target_file, $contents);
     @chmod($target_file, 0777);
     usleep(10000);
 }
@@ -151,7 +188,10 @@ function broadcast_to_moderators($type, $contents)
  */
 function get_notifications($id_account)
 {
-    global $config;
+    global $config, $settings;
+    
+    $accounts_repository = new accounts_repository();
+    $account = $accounts_repository->get($id_account);
     
     $notifications_dir = "{$config->datafiles_location}/notifications/$id_account";
     $return            = array();
@@ -166,7 +206,39 @@ function get_notifications($id_account)
             $id = str_replace(".json", "", $id);
             $id = str_replace(".", "_", $id);
             
-            $return["n_$id"] = json_decode(file_get_contents($file));
+            $contents = file_get_contents($file);
+            if( empty($contents) )
+            {
+                @unlink($file);
+                continue;
+            }
+            
+            $contents = json_decode($contents);
+            if( empty($contents) )
+            {
+                $webmaster_mail = ucwords($settings->get("engine.webmaster_address"));
+                $webmaster_name = current(explode("@", $webmaster_mail));
+                $recipients     = array($webmaster_name => $webmaster_mail);
+                $subject        = "[{$settings->get("engine.website_name")}/notifications_getter] Malformed notification detected!";
+                $contents       = htmlspecialchars(file_get_contents($file));
+                $body = unindent("
+                    <p><b>Error while reading notification for {$account->display_name}</b>!</p>
+                    
+                    <p>The notification file  {$file} has malformed contents. Please review them
+                    and double check with the engine tech support staff about the module that is
+                    generating it:</p>
+                    
+                    <blockquote>{$contents}</blockquote>
+                    
+                    <p>The notification has been deleted before delivering it.</p>
+                ");
+                send_mail($subject, $body, $recipients);
+                @unlink($file);
+                
+                continue;
+            }
+            
+            $return["n_$id"] = $contents;
         }
     }
     
