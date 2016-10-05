@@ -173,7 +173,7 @@
         Captcha keys aren't configured! Please get into the settings admin page and specify them.
     ]]></captcha_not_configured>
     
-    <search_placeholder>Words or "phrase" to find</search_placeholder>
+    <search_placeholder>Find text or #tags</search_placeholder>
     
     <install_messages>
         <table_created_ok>Table {$table_name} successfully created.</table_created_ok>

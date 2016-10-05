@@ -173,7 +173,7 @@
         Las llaves de Captcha no están configuradas! Favor de ir a la página de configuración y especificarlas.
     ]]></captcha_not_configured>
     
-    <search_placeholder>Palabras o "frase" a buscar</search_placeholder>
+    <search_placeholder>Buscar texto o #etiquetas</search_placeholder>
     
     <install_messages>
         <table_created_ok>Tabla {$table_name} creada con éxito.</table_created_ok>
