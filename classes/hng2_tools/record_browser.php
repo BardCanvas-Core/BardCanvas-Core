@@ -205,7 +205,8 @@ class record_browser
                     "alt"     => trim($node->order_desc)
                 );
             
-            $return[] = $item;
+            $name          = $node->getName();
+            $return[$name] = $item;
         }
         
         return $return;
