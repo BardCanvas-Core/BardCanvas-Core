@@ -469,6 +469,8 @@ class media_repository extends abstract_repository
     
     private function preload_authors(items_data &$items_data)
     {
+        global $modules, $config;
+        
         $author_ids = array();
         foreach( $items_data->items as $item ) $author_ids[] = $item->id_author;
         
@@ -481,8 +483,10 @@ class media_repository extends abstract_repository
             foreach( $items_data->items as $index => &$item )
                 $item->set_author($authors[$item->id_author]);
         }
+        
+        $config->globals["author_ids"] = $author_ids;
+        $modules["gallery"]->load_extensions("posts_repository_class", "preload_authors");
     }
-    
     
     public function get_grouped_tag_counts($since = "", $min_hits = 10, $limit = 0)
     {

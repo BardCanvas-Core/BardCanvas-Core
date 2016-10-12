@@ -219,10 +219,16 @@ class media_record extends abstract_record
      */
     public function get_processed_author_display_name()
     {
+        global $config, $modules;
+        
         $contents = $this->author_display_name;
         $contents = convert_emojis($contents);
         
-        # TODO: Add get_processed_author_display_name() extension point
+        $config->globals["processing_id_account"]  = $this->id_author;
+        $config->globals["processing_contents"] = $contents;
+        $modules["gallery"]->load_extensions("media_record_class", "get_processed_author_display_name");
+        $contents = $config->globals["processing_contents"];
+        unset( $config->globals["processing_contents"] );
         
         return $contents;
     }

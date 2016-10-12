@@ -51,8 +51,16 @@ class account_toolbox extends abstract_record
     
     public function get_processed_display_name()
     {
+        global $config, $modules;
+        
         $contents = $this->display_name;
         $contents = convert_emojis($contents);
+        
+        $config->globals["processing_id_account"]  = $this->id_account;
+        $config->globals["processing_contents"] = $contents;
+        $modules["accounts"]->load_extensions("account_record_class", "get_processed_display_name");
+        $contents = $config->globals["processing_contents"];
+        unset( $config->globals["processing_contents"] );
         
         return $contents;
     }
