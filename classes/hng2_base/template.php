@@ -209,13 +209,12 @@ class template
     
     public function get_page_title()
     {
-        global $settings, $config;
+        global $settings;
         
         return $this->page_title
             . " - "
             . $settings->get("engine.website_name")
-            . " - "
-            . "v" . $config->engine_version;
+            ;
     }
     
     /**
