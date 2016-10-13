@@ -208,7 +208,7 @@ class account_toolbox extends abstract_record
         $res = $database->query("
             select * from account_engine_prefs
             where id_account = '{$this->id_account}'
-            and   name like '@%'
+            and   (name like '@%' or name like '!%')
         ");
         
         if( $database->num_rows($res) == 0 ) return array();

@@ -532,4 +532,18 @@
     
     <confirm_action>Por favor confirma que quieres llevar a cabo la acción elegida.</confirm_action>
     
+    <engine_prefs>
+        
+        <title>Núcleo de notificaciones</title>
+        
+        <specs key="silent_notifications">
+            <title>¿Silenciar notificaciones?</title>
+            <description><![CDATA[
+                Desactivar sonidos de notificaciones.
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
+        
+    </engine_prefs>
+    
 </language>

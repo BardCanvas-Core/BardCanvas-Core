@@ -107,7 +107,7 @@ if( $load_modules )
 }
 
 # Versions hash preload
-$module_versions = array();
+$module_versions = array($config->engine_version);
 foreach($modules as $module)
     $module_versions[] = trim($module->version);
 $config->module_versions_hash = md5(implode(", ", $module_versions));

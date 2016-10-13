@@ -525,4 +525,18 @@
     
     <confirm_action>Please confirm that you want to proceed with the selected action.</confirm_action>
     
+    <engine_prefs>
+        
+        <title>Notifications core</title>
+        
+        <specs key="silent_notifications">
+            <title>Silent notifications?</title>
+            <description><![CDATA[
+                Disable notification sounds.
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
+        
+    </engine_prefs>
+    
 </language>

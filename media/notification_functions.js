@@ -149,6 +149,7 @@ ion.sound({
 function play_notification_sound(name)
 {
     if( typeof name == 'undefined' ) name = 'default';
+    if( $_SILENT_NOTIFICATIONS ) return;
     
     switch(name)
     {
