@@ -395,7 +395,7 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
         $tags[$key]->size   = round($min_font_size + (($tags[$key]->weight - 1) * $font_size_factor));
     }
     
-    ksort($tags);
+    # ksort($tags);
     return $tags;
 }
 
