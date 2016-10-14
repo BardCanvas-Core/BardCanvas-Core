@@ -952,13 +952,13 @@ class media_repository extends abstract_repository
             if( ! empty($res) ) $fails[] = $res;
         }
         
-        if( empty($fails) ) return;
-        
-        $backtrace = debug_backtrace();
-        foreach($backtrace as &$backtrace_item)
-            $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
-        
-        # $this->notify_fileops_errors($fails, $backtrace);
+        //if( empty($fails) ) return;
+        //
+        //$backtrace = debug_backtrace();
+        //foreach($backtrace as &$backtrace_item)
+        //    $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        //
+        //$this->notify_fileops_errors($fails, $backtrace);
     }
     
     private function notify_fileops_errors($fails, $backtrace = array())
@@ -1005,5 +1005,91 @@ class media_repository extends abstract_repository
             );
         
         return "";
+    }
+    
+    public function empty_trash()
+    {
+        global $database, $modules;
+        
+        $boundary = date("Y-m-d 00:00:00", strtotime("today - 7 days"));
+        
+        $database->exec("
+          delete from media_categories where id_media in (
+            select id_media from media where status = 'trashed'
+            and creation_date < '$boundary'
+          )
+        ");
+        
+        $database->exec("
+          delete from media_mentions where id_media in (
+            select id_media from media where status = 'trashed'
+            and creation_date < '$boundary'
+          )
+        ");
+        
+        $database->exec("
+          delete from media_tags where id_media in (
+            select id_media from media where status = 'trashed'
+            and creation_date < '$boundary'
+          )
+        ");
+        
+        $database->exec("
+          delete from media_views where id_media in (
+            select id_media from media where status = 'trashed'
+            and creation_date < '$boundary'
+          )
+        ");
+        
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->media_repository_empty_trash) )
+                include "{$module->abspath}/{$module->php_includes->media_repository_empty_trash}";
+        
+        $res = $database->query("
+            select path, thumbnail from {$this->table_name}
+            where status = 'trashed' and creation_date < '$boundary'
+        ");
+        if( $database->num_rows($res) == 0 ) return;
+        
+        $files = array();
+        while( $row = $database->fetch_object($res) )
+        {
+            $files[] = $row->path;
+            $files[] = $row->thumbnail;
+        }
+        $this->delete_files($files);
+        
+        $database->exec("
+          delete from media where status = 'trashed'
+          and creation_date < '$boundary'
+        ");
+    }
+    
+    private function delete_files(array $list)
+    {
+        global $config;
+        
+        if( count($list) == 0 ) return;
+        
+        $fails = array();
+        foreach($list as $file)
+        {
+            $normal = "{$config->datafiles_location}/uploaded_media/{$file}";
+            $hidden = "{$config->datafiles_location}/uploaded_media/{$file}.hidden";
+            
+            if( is_file($normal) )
+                if( ! @unlink($normal) ) $fails[] = $normal;
+            
+            if( is_file($hidden) )
+                if( ! @unlink($hidden) ) $fails[] = $hidden;
+        }
+        
+        //if( empty($fails) ) return;
+        //
+        //$backtrace = debug_backtrace();
+        //foreach($backtrace as &$backtrace_item)
+        //    $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+        //
+        //$this->notify_fileops_errors($fails, $backtrace);
     }
 }
