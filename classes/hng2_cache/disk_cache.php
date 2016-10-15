@@ -12,7 +12,7 @@ class disk_cache
     
     private static $cache_hits = array();
     
-    public function __construct($target_file_path = "")
+    public function __construct($target_file_path = "", $preload_data = true)
     {
         global $config;
         
@@ -26,7 +26,7 @@ class disk_cache
         
         $this->disk_cache_file = "$name~v{$config->disk_cache_version}.$ext";
         
-        $this->load();
+        if( $preload_data ) $this->load();
     }
     
     private function load()
