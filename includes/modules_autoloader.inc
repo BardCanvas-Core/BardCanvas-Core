@@ -9,12 +9,15 @@
  * @var module   $module
  * @var module[] $modules
  * @var settings $settings
+ * @var bool     $force_regeneration
+ * @var bool     $avoid_postinits
  */
 
 use hng2_base\module;
 use hng2_base\settings;
 use hng2_cache\disk_cache;
 
+$modules      = array();
 $load_modules = true;
 $modules_cache_enabled = $settings->get("modules:modules_manager.disable_cache") != "true";
 # echo "\$modules_cache_enabled = [$modules_cache_enabled]<br>";
@@ -22,15 +25,22 @@ $modules_cache_enabled = $settings->get("modules:modules_manager.disable_cache")
 
 if( $modules_cache_enabled )
 {
-    $modules_cache = new disk_cache("{$config->datafiles_location}/cache/modules.dat");
+    $preload       = ! $force_regeneration;
+    $modules_cache = new disk_cache("{$config->datafiles_location}/cache/modules.dat", $preload);
+    
     if( $modules_cache->loaded )
     {
-        $modules = $modules_cache->get_all();
-        foreach($modules as &$module) $module->unserialize();
+        $serialized_modules = $modules_cache->get_all();
+        foreach($serialized_modules as $keyname => $module)
+        {
+            $module->unserialize();
+            $modules[$keyname] = clone $module;
+        }
+        unset( $serialized_modules );
         $load_modules = false;
     }
     
-    $always_on_cache = new disk_cache("{$config->datafiles_location}/cache/always_on.dat");
+    $always_on_cache = new disk_cache("{$config->datafiles_location}/cache/always_on.dat", $preload);
     if( $modules_cache->loaded )
     {
         $files = $always_on_cache->get_all();
@@ -87,17 +97,23 @@ if( $load_modules )
         $caching_modules = array();
         foreach($modules as $key => $module)
         {
+            $instance   = clone $module;
+            $serialized = null;
             try
             {
-                $caching_modules[$key] = $module->serialize();
+                $serialized = $instance->serialize();
             }
             catch( \Exception $e )
             {
                 echo "Warning: cannot serialize module $key for caching!";
-                echo "<pre>" . print_r($module, true) . "</pre>";
+                echo "<pre>" . print_r($instance, true) . "</pre>";
                 die();
             }
+            
+            if( ! is_null($serialized) )
+                $caching_modules[$key] = $serialized;
         }
+        
         $modules_cache->prefill($caching_modules);
         unset( $caching_modules );
         
@@ -105,6 +121,8 @@ if( $load_modules )
         unset( $always_on_files );
     }
 }
+
+if( $avoid_postinits ) return;
 
 # Versions hash preload
 $module_versions = array($config->engine_version);
