@@ -64,7 +64,7 @@ a.disabled,  .pseudo_link.disabled  { color: dimgrey;   opacity: 0.5; cursor: au
 #footer       { padding: 20px 10px; }
 #content      { padding: 20px 10px; }
 
-#header a, #footer a { color: white;   }
+#header a, #header .pseudo_link, #footer a, #footer .pseudo_link { color: white;   }
 
 /* Header items */
 
