@@ -76,8 +76,6 @@ class account extends account_toolbox
      * Assigns the current class properties from an incoming database query
      *
      * @param object $object
-     *
-     * @return $this
      */ 
     protected function assign_from_object($object)
     {
@@ -217,7 +215,7 @@ class account extends account_toolbox
             );
             
             $database->exec("
-                insert into account_logins set
+                insert ignore into account_logins set
                 `id_account` = '$this->id_account',
                 `id_device`  = '$device->id_device',
                 `login_date` = '".date("Y-m-d H:i:s")."',
