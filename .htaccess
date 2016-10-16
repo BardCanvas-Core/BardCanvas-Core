@@ -7,11 +7,25 @@ Options -Indexes
 
 ReWriteEngine On
 
-# Versioned resources
+##################
+# CUSTOM RULESET #
+##################################################
+# Add your custom configuration directives below #
+##################################################
+
+
+
+####################
+# OFF-TIER RULESET #
+##############################################################
+# These rules are hardcoded and must go above editable tiers #
+##############################################################
+
+# Core: Versioned resources
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
 
-# Account utilities
+# Core: Account utilities
 RewriteRule ^confirm_account/$ accounts/confirm_account.php [QSA,L] 
 RewriteRule ^confirm_account$  accounts/confirm_account.php [QSA,L] 
 RewriteRule ^confirm_device/$  accounts/confirm_device.php  [QSA,L] 
@@ -19,90 +33,126 @@ RewriteRule ^confirm_device$   accounts/confirm_device.php  [QSA,L]
 RewriteRule ^reset_password/$  accounts/reset_password.php  [QSA,L] 
 RewriteRule ^reset_password$   accounts/reset_password.php  [QSA,L] 
 
-# User profile resources
+# Core: User profile resources
 ReWriteRule ^user/(.*)/avatar/$         scripts/get_user_profile_resource.php?slug=$1&type=avatar         [QSA,L]
 ReWriteRule ^user/(.*)/avatar$          scripts/get_user_profile_resource.php?slug=$1&type=avatar         [QSA,L]
 ReWriteRule ^user/(.*)/profile_banner/$ scripts/get_user_profile_resource.php?slug=$1&type=profile_banner [QSA,L]
 ReWriteRule ^user/(.*)/profile_banner$  scripts/get_user_profile_resource.php?slug=$1&type=profile_banner [QSA,L]
 
-# Author archives
-ReWriteRule ^author/(.*)/media/$    gallery/by_author.php?slug=$1            [QSA,L]
-ReWriteRule ^author/(.*)/media$     gallery/by_author.php?slug=$1            [QSA,L]
-ReWriteRule ^author/(.*)/videos/$   gallery/by_author.php?slug=$1&type=video [QSA,L]
-ReWriteRule ^author/(.*)/videos$    gallery/by_author.php?slug=$1&type=video [QSA,L]
-ReWriteRule ^author/(.*)/images/$   gallery/by_author.php?slug=$1&type=image [QSA,L]
-ReWriteRule ^author/(.*)/images$    gallery/by_author.php?slug=$1&type=image [QSA,L]
-ReWriteRule ^author/(.*)/posts/$    posts/by_author.php?slug=$1              [QSA,L]
-ReWriteRule ^author/(.*)/posts$     posts/by_author.php?slug=$1              [QSA,L]
-
-# TODO: Mentions
-# ReWriteRule ^user/(.*)/mentions/$   accounts/profile_mentions.php?slug=$1    [QSA,L]
-# ReWriteRule ^user/(.*)/mentions$    accounts/profile_mentions.php?slug=$1    [QSA,L]
-# ReWriteRule ^author/(.*)/mentions/$ accounts/profile_mentions.php?slug=$1    [QSA,L]
-# ReWriteRule ^author/(.*)/mentions$  accounts/profile_mentions.php?slug=$1    [QSA,L]
-
-# Media archives
-ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/media/$ gallery/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/media$  gallery/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4}/[0-9]{2})/media/$          gallery/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4}/[0-9]{2})/media$           gallery/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4})/media/$                   gallery/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4})/media$                    gallery/by_date.php?date=$1 [QSA,L]
-
-# Post archives
-ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/$ posts/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})$  posts/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4}/[0-9]{2})/$          posts/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4}/[0-9]{2})$           posts/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4})/$                   posts/by_date.php?date=$1 [QSA,L]
-ReWriteRule ^date/([0-9]{4})$                    posts/by_date.php?date=$1 [QSA,L]
-
-# Media server
+# Core: Media server
 ReWriteRule ^media_toolbox/(.*)$     scripts/media_toolbox.php?method=$1   [QSA,L]
 ReWriteRule ^mediaserver/(.*)$       data/uploaded_media/$1                [QSA,L]
 ReWriteRule ^mediaserver-embed/(.*)$ scripts/mediaserver_embed.php?file=$1 [QSA,L]
 ReWriteRule ^pm_attachments/(.*)$    data/pm_attachments/$1                [QSA,L]
 
-# Search
-RewriteCond %{QUERY_STRING} ^s=(.*)$
-RewriteRule .* search/index.php [QSA,L]
-
-# TODO: Feeds --- WARNING: THESE MUST GO ABOVE EVERYTHING!
+# Core: Feeds --- WARNING: THESE MUST GO ABOVE EVERYTHING!
 ReWriteRule ^feed/$               scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
 ReWriteRule ^feed$                scripts/rss_feed_generator.php?handle=_none_ [QSA,L]
 ReWriteRule ^(.+)/feed/$          scripts/rss_feed_generator.php?handle=$1     [QSA,L]
 ReWriteRule ^(.+)/feed$           scripts/rss_feed_generator.php?handle=$1     [QSA,L]
 
-# Post indexes by category
-ReWriteRule ^category/(.*)/media/$ gallery/by_category.php?slug=$1 [QSA,L]
-ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
-ReWriteRule ^category/(.*)/$       posts/by_category.php?slug=$1   [QSA,L]
-ReWriteRule ^category/(.*)$        posts/by_category.php?slug=$1   [QSA,L]
+########################################################
+# RULESET TIERS - DO NOT EDIT ANYTHING BELOW THIS LINE #
+########################################################
 
-# Indexes by tag
-ReWriteRule ^tag/(.*)/media/$    gallery/by_tag.php?tag=$1  [QSA,L]
-ReWriteRule ^tag/(.*)/media$     gallery/by_tag.php?tag=$1  [QSA,L]
-ReWriteRule ^tag/(.*)/posts/$    posts/by_tag.php?tag=$1    [QSA,L]
-ReWriteRule ^tag/(.*)/posts$     posts/by_tag.php?tag=$1    [QSA,L]
-# ReWriteRule ^tag/(.*)/comments/$ comments/by_tag.php?tag=$1 [QSA,L]
-# ReWriteRule ^tag/(.*)/comments$  comments/by_tag.php?tag=$1 [QSA,L]
-ReWriteRule ^tag/(.*)/$          search/by_tag.php?tag=$1   [QSA,L]
-ReWriteRule ^tag/(.*)$           search/by_tag.php?tag=$1   [QSA,L]
+# [+] TIER 1
+    
+    # Search
+    RewriteCond %{QUERY_STRING} ^s=(.*)$
+    RewriteRule .* search/index.php [QSA,L]
+    
+# [-] TIER 1
 
-# Author profile itself
+# [+] TIER 2
+    
+    # Gallery: Author archives
+    ReWriteRule ^author/(.*)/media/$    gallery/by_author.php?slug=$1            [QSA,L]
+    ReWriteRule ^author/(.*)/media$     gallery/by_author.php?slug=$1            [QSA,L]
+    ReWriteRule ^author/(.*)/videos/$   gallery/by_author.php?slug=$1&type=video [QSA,L]
+    ReWriteRule ^author/(.*)/videos$    gallery/by_author.php?slug=$1&type=video [QSA,L]
+    ReWriteRule ^author/(.*)/images/$   gallery/by_author.php?slug=$1&type=image [QSA,L]
+    ReWriteRule ^author/(.*)/images$    gallery/by_author.php?slug=$1&type=image [QSA,L]
+    
+    # Gallery: Media archives
+    ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/media/$ gallery/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/media$  gallery/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4}/[0-9]{2})/media/$          gallery/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4}/[0-9]{2})/media$           gallery/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4})/media/$                   gallery/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4})/media$                    gallery/by_date.php?date=$1 [QSA,L]
+    
+    # Gallery: Indexes
+    ReWriteRule ^category/(.*)/media/$ gallery/by_category.php?slug=$1 [QSA,L]
+    ReWriteRule ^category/(.*)/media$  gallery/by_category.php?slug=$1 [QSA,L]
+    ReWriteRule ^tag/(.*)/media/$      gallery/by_tag.php?tag=$1  [QSA,L]
+    ReWriteRule ^tag/(.*)/media$       gallery/by_tag.php?tag=$1  [QSA,L]
+    
+# [-] TIER 2
+
+# [+] TIER 3
+    
+    # Posts: Author archives
+    ReWriteRule ^author/(.*)/posts/$ posts/by_author.php?slug=$1 [QSA,L]
+    ReWriteRule ^author/(.*)/posts$  posts/by_author.php?slug=$1 [QSA,L]
+    
+    # Posts: Post archives
+    ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})/$ posts/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4}/[0-9]{2}/[0-9]{2})$  posts/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4}/[0-9]{2})/$          posts/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4}/[0-9]{2})$           posts/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4})/$                   posts/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^date/([0-9]{4})$                    posts/by_date.php?date=$1 [QSA,L]
+    
+    # Posts: Indexes
+    ReWriteRule ^category/(.*)/$  posts/by_category.php?slug=$1 [QSA,L]
+    ReWriteRule ^category/(.*)$   posts/by_category.php?slug=$1 [QSA,L]
+    ReWriteRule ^tag/(.*)/posts/$ posts/by_tag.php?tag=$1       [QSA,L]
+    ReWriteRule ^tag/(.*)/posts$  posts/by_tag.php?tag=$1       [QSA,L]
+    
+# [-] TIER 3
+    
+# [+] TIER 4
+    # Search: results
+    ReWriteRule ^tag/(.*)/$ search/by_tag.php?tag=$1   [QSA,L]
+    ReWriteRule ^tag/(.*)$  search/by_tag.php?tag=$1   [QSA,L]
+# [-] TIER 4
+    
+# [+] TIER 5
+    # To be filled automatically
+# [-] TIER 5
+
+# [+] TIER 6
+    # To be filled automatically
+# [-] TIER 6
+
+# [+] TIER 7
+    # To be filled automatically
+# [-] TIER 7
+
+# [+] TIER 8
+    # To be filled automatically
+# [-] TIER 8
+
+# [+] TIER 9
+    # To be filled automatically
+# [-] TIER 9
+
+##################
+# BOTTOM RULESET #
+##################
+
+# Accounts: author profile itself - Must go before the document handler ruleset
 ReWriteRule ^user/(.*)/$   accounts/public_profile.php?slug=$1 [QSA,L]
 ReWriteRule ^user/(.*)$    accounts/public_profile.php?slug=$1 [QSA,L]
 ReWriteRule ^author/(.*)/$ accounts/public_profile.php?slug=$1 [QSA,L]
 ReWriteRule ^author/(.*)$  accounts/public_profile.php?slug=$1 [QSA,L]
 
-#
-# Document handler - for all those that support single documents
+# Document handler - for all those that support single documents.
 # This ruleset must be the last in the .htaccess file
-#
 
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 ReWriteRule .* - [L]
- 
+
 ReWriteRule ^(.+)/$ scripts/document_handler.php?REQUEST_FILENAME=%{REQUEST_FILENAME}&handle=$1 [QSA,L]
 ReWriteRule ^(.+)$  scripts/document_handler.php?REQUEST_FILENAME=%{REQUEST_FILENAME}&handle=$1 [QSA,L]
