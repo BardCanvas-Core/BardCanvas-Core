@@ -150,17 +150,22 @@ class accounts_repository extends abstract_repository
     }
     
     /**
-     * @param $key
+     * @param int $id_account
      *
      * @return int
      */
-    public function delete($key)
+    public function delete($id_account)
     {
-        global $object_cache;
+        global $object_cache, $modules, $database;
         
-        $object_cache->delete($this->table_name, $key);
+        $database->exec("delete from account_devices      where id_account = '$id_account'");
+        $database->exec("delete from account_engine_prefs where id_account = '$id_account'");
+        $database->exec("delete from account_logins       where id_account = '$id_account'");
+        $object_cache->delete($this->table_name, $id_account);
         
-        return parent::delete($key);
+        $modules["accounts"]->load_extensions("accounts_repository", "delete");
+        
+        return parent::delete($id_account);
     }
     
     /**
