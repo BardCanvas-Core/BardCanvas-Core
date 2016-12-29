@@ -390,6 +390,7 @@ function gfuncs_resample_png(
 
 function gfuncs_fix_jpeg_orientation($file, $compression = 90)
 {
+    if( ! function_exists("exif_read_data") ) return false;
     $exif = @exif_read_data($file);
     if( empty($exif) ) return false;
     
