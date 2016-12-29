@@ -586,8 +586,11 @@ class DOMDocumentWrapper {
 		if (is_array($source) || $source instanceof DOMNODELIST) {
 			// dom nodes
 			self::debug('Importing nodes to document');
-			foreach($source as $node)
-				$return[] = $this->document->importNode($node, true);
+			foreach($source as $node) {
+			    
+				$instance = @$this->document->importNode($node, true);
+				if( $instance ) $return[] = $instance;
+            }
 		} else {
 			// string markup
 			$fake = $this->documentFragmentCreate($source, $sourceCharset);
