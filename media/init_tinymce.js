@@ -55,6 +55,8 @@ var tinymce_defaults = {
     }
 };
 
+if( $_CURRENT_USER_IS_MOD || $_CURRENT_USER_IS_ADMIN )
+    tinymce_defaults.extended_valid_elements = 'script[type|src|async],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder]';
 
 if( tinymce_custom_plugins.length > 0 )
     tinymce_defaults.plugins = tinymce_defaults.plugins + ' ' + tinymce_custom_plugins.join(' ');
