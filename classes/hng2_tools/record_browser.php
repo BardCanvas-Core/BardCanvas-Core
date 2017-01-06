@@ -189,7 +189,7 @@ class record_browser
             if( $node->layout["xalign"] )  $item->xalign  = trim($node->layout["xalign"]);
             if( $node->layout["xwidth"] )  $item->xwidth  = trim($node->layout["xwidth"]);
             if( $node->layout["xnowrap"] ) $item->xnowrap = trim($node->layout["xnowrap"]) == "true";
-            if( $node->layout["xclass"] )  $item->xnowrap = trim($node->layout["xclass"]);
+            if( $node->layout["xclass"] )  $item->xclass  = trim($node->layout["xclass"]);
             
             if( $node->order_asc )
                 $item->sort_asc = (object) array(
