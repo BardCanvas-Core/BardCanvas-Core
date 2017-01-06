@@ -45,11 +45,11 @@ h1 a, h1 .pseudo_link, h2 a, h2 .pseudo_link, h3 a, h3 .pseudo_link { color: #99
 .pseudo_link.fa  { text-decoration: none; }
 .pseudo_link .fa { text-decoration: none; }
 
-a.greengo  , .pseudo_link.greengo   { color: green;     text-shadow: 1px 1px 1px dimgrey; }
-a.alternate, .pseudo_link.alternate { color: royalblue; text-shadow: 1px 1px 1px dimgrey; }
-a.important, .pseudo_link.important { color: orange;    text-shadow: 1px 1px 1px dimgrey; }
-a.critical,  .pseudo_link.critical  { color: red;       text-shadow: 1px 1px 1px dimgrey; }
-a.disabled,  .pseudo_link.disabled  { color: dimgrey;   opacity: 0.5; cursor: auto; }
+a.greengo  , .pseudo_link.greengo  , .greengo   { color: green;     text-shadow: 1px 1px 1px dimgrey; }
+a.alternate, .pseudo_link.alternate, .alternate { color: royalblue; text-shadow: 1px 1px 1px dimgrey; }
+a.important, .pseudo_link.important, .important { color: orange;    text-shadow: 1px 1px 1px dimgrey; }
+a.critical,  .pseudo_link.critical , .critical  { color: red;       text-shadow: 1px 1px 1px dimgrey; }
+a.disabled,  .pseudo_link.disabled , .disabled  { color: dimgrey;   opacity: 0.5; cursor: auto; }
 
 .inline-block { display: inline-block; }
 .nowrap       { white-space: nowrap; }
@@ -295,7 +295,8 @@ form .field .input                        { margin: 5px 0 5px 25px; }
 form .field input[type="text"]     ,
 form .field input[type="email"]    ,
 form .field input[type="password"] ,
-form .field select                 { width: 100%; }
+form .field select                 ,
+form .field textarea               { width: 100%; }
 
 form .field .input.info_handler { font-style: italic; color: dimgrey;
                                   padding-left: 10px; border-left: 5px solid silver; }
@@ -362,20 +363,18 @@ img.alignright  { float: right; margin: 10px; }
 
 @media all and (min-width: 710px)
 {
-    .multicol.cols-3 .col {
+    .multicol .col {
+        vertical-align: top;
         display:       inline-block;
-        width:         calc(33% - 10px);
         padding-right: 10px;
         margin-right:  10px;
     }
     
-    .multicol .col {
-        vertical-align: top;
-    }
+    .multicol.cols-2 .col         { width: calc(50% - 15px); }
+    .multicol.cols-2 .biggest-col { width: calc(50% - 15px); }
     
-    .multicol .biggest-col {
-        width: calc(33% - 20px);
-    }
+    .multicol.cols-3 .col         { width: calc(33% - 10px); }
+    .multicol.cols-3 .biggest-col { width: calc(33% - 20px); }
     
     .multicol .col:last-child {
         padding-right: 0;
