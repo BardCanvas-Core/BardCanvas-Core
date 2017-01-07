@@ -256,7 +256,10 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
     height: 19px; max-height: 190px; padding-bottom: 2px; width: 100%;
 }
 
-input[type="text"][readonly], textarea[readonly] { background-color: whitesmoke; color: gray; border-width: 1px; }
+input[type="text"][readonly]   ,
+input[type="number"][readonly] ,
+input[type="email"][readonly]  ,
+textarea[readonly]             { background-color: whitesmoke; color: gray; border-width: 1px; }
 
 /* Noty additions */
 
