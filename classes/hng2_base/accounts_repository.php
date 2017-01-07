@@ -126,16 +126,24 @@ class accounts_repository extends abstract_repository
     }
     
     /**
-     * @param $level
+     * @param int  $level
+     * @param int  $end_level
+     * @param bool $enabled_only
      *
      * @return array [id_account => {id_account, user_name, display_name, email}, ...]
      * @throws \Exception
      */
-    public function get_basics_above_level($level)
+    public function get_basics_above_level($level, $end_level = 255, $enabled_only = true)
     {
         global $database;
         
-        $res = $database->query("select id_account, user_name, display_name, email from account where level >= '$level'");
+        $query = "
+            select id_account, user_name, display_name, email from account
+            where level >= '$level' and level <= '$end_level'
+        ";
+        if( $enabled_only ) $query .= " and state = 'enabled'";
+        
+        $res = $database->query($query);
         if( $database->num_rows($res) == 0 ) return array();
         
         $return = array();
@@ -194,6 +202,25 @@ class accounts_repository extends abstract_repository
         $return = array();
         while($row = $database->fetch_object($res))
             $return[$row->id_account] = json_decode($row->value);
+        
+        return $return;
+    }
+    
+    public function find_user_prefs($id_account, $filter)
+    {
+        global $database;
+    
+        $res = $database->query("
+            select name, value from account_engine_prefs
+            where id_account = '$id_account'
+            and name like '$filter'
+        ");
+        
+        if( $database->num_rows($res) == 0 ) return array();
+        
+        $return = array();
+        while($row = $database->fetch_object($res))
+            $return[$row->name] = json_decode($row->value);
         
         return $return;
     }
