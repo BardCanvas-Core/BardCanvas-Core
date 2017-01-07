@@ -525,6 +525,8 @@ function broadcast_mail_to_moderators($subject, $body, $prefs_key = "", $exclude
 function broadcast_mail_between_levels(
     $start_level, $end_level, $subject, $body, $prefs_key = "", $exclude_mod_ids = array()
 ) {
+    if( $start_level == 0 || $end_level == 0 ) return;
+    
     $repository = new accounts_repository();
     $targets    = $repository->get_basics_above_level($start_level, $end_level, true);
     
