@@ -498,7 +498,7 @@ function send_mail($subject, $body, $recipients, $sender = null)
 function broadcast_mail_to_moderators($subject, $body, $prefs_key = "", $exclude_mod_ids = array())
 {
     $repository = new accounts_repository();
-    $mods       = $repository->get_basics_above_level(config::MODERATOR_USER_LEVEL);
+    $mods       = $repository->get_basics_above_level(config::MODERATOR_USER_LEVEL, 255, true);
     
     if( ! empty($exclude_mod_ids) )
         foreach($exclude_mod_ids as $id_account)
@@ -519,6 +519,34 @@ function broadcast_mail_to_moderators($subject, $body, $prefs_key = "", $exclude
     
     $recipients = array();
     foreach($mods as $mod) $recipients[$mod->display_name] = $mod->email;
+    send_mail($subject, $body, $recipients);
+}
+
+function broadcast_mail_between_levels(
+    $start_level, $end_level, $subject, $body, $prefs_key = "", $exclude_mod_ids = array()
+) {
+    $repository = new accounts_repository();
+    $targets    = $repository->get_basics_above_level($start_level, $end_level, true);
+    
+    if( ! empty($exclude_mod_ids) )
+        foreach($exclude_mod_ids as $id_account)
+            unset( $targets[$id_account] );
+    
+    if( empty($targets) ) return;
+    
+    if( ! empty($prefs_key) )
+    {
+        $prefs = $repository->get_multiple_engine_prefs(array_keys($targets), $prefs_key);
+        if( ! empty($prefs) )
+            foreach($prefs as $id_account => $value)
+                if( $value == "false" )
+                    unset( $targets[$id_account] );
+    }
+    
+    if( empty($targets) ) return;
+    
+    $recipients = array();
+    foreach($targets as $target) $recipients[$target->display_name] = $target->email;
     send_mail($subject, $body, $recipients);
 }
 
