@@ -404,11 +404,12 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
  * @param       $body
  * @param       $recipients [name => address, name => address, ...]
  * @param array $sender     [name => address, name => address, ...] If empty, default sender will be used
+ * @param array $attachments
  *
  * @return string
  * @throws phpmailerException
  */
-function send_mail($subject, $body, $recipients, $sender = null)
+function send_mail($subject, $body, $recipients, $sender = null, $attachments = array())
 {
     global $settings, $modules, $config;
     
@@ -482,6 +483,17 @@ function send_mail($subject, $body, $recipients, $sender = null)
     # $mail->Sender   = $settings->get("engine.mail_sender_email");
     $mail->From     = $settings->get("engine.mail_sender_email");
     $mail->FromName = $settings->get("engine.mail_sender_name");
+    
+    if( ! empty($attachments) )
+    {
+        foreach($attachments as $path)
+        {
+            if( ! is_file($path) ) continue;
+            
+            $filename = basename($path);
+            $mail->addAttachment($path, $filename);
+        }
+    }
     
     if( ! is_null($sender) )
         $mail->addReplyTo(current($sender), key($sender));
