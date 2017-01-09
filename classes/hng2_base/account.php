@@ -301,7 +301,10 @@ class account extends account_toolbox
         $now = date("Y-m-d H:i:s");
         if( ! $this->_exists )
         {
-            $this->creation_host    = get_remote_address() . "; " . gethostbyaddr(get_remote_address());
+            $address = get_remote_address();
+            if( ! empty($address) ) $address .= "; " . gethostbyaddr($address);
+            
+            $this->creation_host    = $address;
             $this->creation_date    =
             $this->last_update      =
             $this->last_activity    = $now;
@@ -672,23 +675,5 @@ class account extends account_toolbox
         
         $this->profile_banner = $new_banner;
         $messages[]           = $current_module->language->user_account_form->messages->banner_set_ok;
-    }
-    
-    /**
-     * @param $module
-     *
-     * @return bool
-     */
-    public function has_admin_rights_to_module($module)
-    {
-        if( ! $this->_exists ) return false;
-        if( $this->_is_admin ) return true;
-        
-        $granted = $this->engine_prefs["granted_admin_to_modules"];
-        if( empty($granted) ) return false;
-        
-        if( is_string($granted) ) $granted = preg_split('/,\s*/', $granted);
-        
-        return in_array($module, $granted);
     }
 }
