@@ -402,7 +402,7 @@
                 using the following syntax: <code>type - manager_class</code>.<br>
                 By default, allowed upload types are:
                 <code>png</code>, <code>gif</code>, <code>jpg/jpe/jpeg</code>, <code>mpg</code>,
-                <code>mp4</code>, <code>m4v</code>, <code>3gp</code>, <code>mov</code>, <code>3gp</code>,
+                <code>mp4</code>, <code>m4v</code>, <code>3gp</code>, <code>mov</code>, 
                 <code>flv</code>, <code>mkv</code>, <code>wmv</code>, <code>ogg</code>, <code>ogv</code>
                 and <code>avi</code>.<br>
                 <span class="fa fa-warning"></span>

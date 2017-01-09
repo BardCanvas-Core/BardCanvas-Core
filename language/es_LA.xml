@@ -405,7 +405,7 @@
                 usando la siguiente sintaxis: <code>tipo - clase_manejadora</code>.<br>
                 Por defecto, los tipos de archivo permitidos son:
                 <code>png</code>, <code>gif</code>, <code>jpg/jpe/jpeg</code>, <code>mpg</code>,
-                <code>mp4</code>, <code>m4v</code>, <code>3gp</code>, <code>mov</code>, <code>3gp</code>,
+                <code>mp4</code>, <code>m4v</code>, <code>3gp</code>, <code>mov</code>, 
                 <code>flv</code>, <code>mkv</code>, <code>wmv</code>, <code>ogg</code>, <code>ogv</code>
                 y <code>avi</code>.<br>
                 <span class="fa fa-warning"></span>
