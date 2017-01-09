@@ -304,6 +304,7 @@ class media_record extends abstract_record
         
         if( ! $account->_exists ) return false;
         if( $this->status == "trashed" ) return false;
+        if( $account->has_admin_rights_to_module("gallery") ) return true;
         if( $account->level >= config::MODERATOR_USER_LEVEL ) return true;
         if( $this->id_author != $account->id_account ) return false;
         if( $this->status == "draft" ) return true;
@@ -333,8 +334,9 @@ class media_record extends abstract_record
     {
         global $account;
         
+        if( $account->has_admin_rights_to_module("gallery") ) return true;
         if( $account->level >= config::MODERATOR_USER_LEVEL ) return true;
-        if( $account->level <= config::NEWCOMER_USER_LEVEL ) return false;
+        if( $account->level < config::AUTHOR_USER_LEVEL ) return false;
         if( $account->id_account != $this->id_author ) return false;
         if( $this->status == "trashed" ) return false;
         

@@ -665,7 +665,7 @@ class media_repository extends abstract_repository
         $tags = extract_hash_tags($item->title . " " . $item->description);
         $featured_posts_tag = $settings->get("modules:posts.featured_posts_tag");
         if(
-            $owner->level < config::MODERATOR_USER_LEVEL
+            ($owner->level < config::MODERATOR_USER_LEVEL && ! $owner->has_admin_rights_to_module("gallery") )
             && $settings->get("modules:posts.show_featured_posts_tag_everywhere") != "true"
             && ! empty($featured_posts_tag)
             && in_array($featured_posts_tag, $tags)
