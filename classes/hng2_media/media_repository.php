@@ -554,6 +554,9 @@ class media_repository extends abstract_repository
         
         $current_module = $modules["gallery"];
         
+        $res = $this->check_directories();
+        if( ! empty($res) ) return $res;
+        
         $item = new media_record();
         # We don't use set_from_post because actual data may not come from $_POST but from $data
         # $item->set_from_post();
@@ -682,6 +685,33 @@ class media_repository extends abstract_repository
             return $item;
         else
             return "OK";
+    }
+    
+    private function check_directories()
+    {
+        global $config, $modules;
+        
+        $current_module = $modules["gallery"];
+        
+        $dirs = array(
+            "{$config->datafiles_location}/uploaded_media/",
+            "{$config->datafiles_location}/uploaded_media/" . date("Y"),
+            "{$config->datafiles_location}/uploaded_media/" . date("Y/m"),
+            "{$config->datafiles_location}/uploaded_media/" . date("Y/m/d"),
+        );
+        
+        foreach($dirs as $dir)
+        {
+            if( ! is_dir($dir) )
+            {
+                if( ! @mkdir($dir, 0777, true) )
+                    return $current_module->language->messages->cannot_create_directory;
+                
+                @chmod($dir, 0777);
+            }
+        }
+        
+        return "";
     }
     
     /**
