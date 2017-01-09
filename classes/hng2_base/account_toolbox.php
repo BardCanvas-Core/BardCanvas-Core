@@ -269,4 +269,23 @@ class account_toolbox extends abstract_record
                 id_device        = '$id_device'
         ");
     }
+    
+    /**
+     * @param $module
+     *
+     * @return bool
+     */
+    public function has_admin_rights_to_module($module)
+    {
+        if( ! $this->_exists ) return false;
+        if( $this->_is_admin ) return true;
+        
+        $granted = $this->engine_prefs["granted_admin_to_modules"];
+        if( empty($granted) ) $granted = $this->get_engine_pref("granted_admin_to_modules");
+        if( empty($granted) ) return false;
+        
+        if( is_string($granted) ) $granted = preg_split('/,\s*/', $granted);
+        
+        return in_array($module, $granted);
+    }
 }
