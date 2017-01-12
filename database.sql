@@ -9,7 +9,7 @@ drop table if exists settings;
 CREATE TABLE IF NOT EXISTS `settings` (
 
   name  varchar(128) not null default '',
-  value text,
+  value mediumtext,
 
   primary key ( name )
 
