@@ -267,7 +267,7 @@ class accounts_repository extends abstract_repository
                 }
                 else
                 {
-                    $file   = empty($row->avatar) ? "media/default_avatar.jpg" : "user/{$this->user_name}/avatar";
+                    $file   = empty($row->avatar) ? "media/default_avatar.jpg" : "user/{$row->user_name}/avatar";
                     $avatar = "{$config->full_root_path}/{$file}";
                 }
                 
