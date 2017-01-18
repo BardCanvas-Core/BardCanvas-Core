@@ -98,8 +98,18 @@ class config
         
         $this->encryption_key      = ENCRYPTION_KEY;
         $this->website_key         = WEBSITE_ID;
-        $this->cookies_domain      = "." . trim(str_replace("www", "", $_SERVER["HTTP_HOST"]), ".");
         $this->language_cookie_var = WEBSITE_ID . "_" . LANGUAGE_COOKIE_VAR;
+        
+        if( defined("COOKIES_DOMAIN") )
+        {
+            $this->cookies_domain = COOKIES_DOMAIN;
+        }
+        else
+        {
+            $this->cookies_domain = strtolower($_SERVER["HTTP_HOST"]);
+            $this->cookies_domain = str_replace("www", "", $this->cookies_domain);
+            $this->cookies_domain = "." . trim($this->cookies_domain, ".");
+        }
         
         $this->datafiles_location = ROOTPATH . "/data";
         $this->logfiles_location  = ROOTPATH . "/logs";
