@@ -16,6 +16,7 @@ var tinymce_defaults = {
     contextmenu:              'cut copy paste | image | link',
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
     content_css:              tinymce_default_css_files.join(','),
+    content_style:            'body {overflow-y: hidden !important;}',
     autoresize_bottom_margin: 0,
     autoresize_min_height:    100,
     autoresize_max_height:    max_height,
