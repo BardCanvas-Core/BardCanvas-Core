@@ -20,6 +20,8 @@ define("THUMBNAILER_NO_CREATION_DESTINATION", false);
 
 $thumbnailer_avoid_modifying_file_names = false;
 
+ini_set ('gd.jpeg_ignore_warning', 1);
+
 function gfuncs_getmakethumbnail(
     $sourcefile, $savepath, $xwidth, $xheight, $dimension_to_use,
     $force_overwrite = false, $jpeg_quality = 100, $crop = true,
