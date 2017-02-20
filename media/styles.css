@@ -152,6 +152,8 @@ a.disabled,  .pseudo_link.disabled , .disabled  { color: dimgrey;   opacity: 0.5
 .framed_content.state_active    { background-color: #BBDDFF; border-color: #42A0FF; color: black;   }
 .framed_content.state_hover     { background-color: #42A0FF; border-color: #000080; color: white;   }
 
+.framed_content.state_hover:hover { background-color: #42A0FF; border-color: #000080; color: white;   }
+
 .framed_content h1:first-child, .framed_content h2:first-child, .framed_content h3:first-child { margin-top: 0; }
 
 a.framed_content        , span.framed_content        , label.framed_content         { display: inline-block; margin: 0; }
