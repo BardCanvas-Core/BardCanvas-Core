@@ -12,6 +12,7 @@ namespace hng2_base;
 class template
 {
     public $name;
+    public $version = "0";
     
     public $abspath;
     
@@ -48,6 +49,16 @@ class template
             throw new \RuntimeException("Template {$this->name} not found");
         
         $this->url = "{$config->full_root_path}/templates/{$this->name}";
+        $this->load_xml_vars();
+    }
+    
+    private function load_xml_vars()
+    {
+        $file = "{$this->abspath}/template_info.xml";
+        if( ! file_exists($file) ) return;
+        
+        $xml = simplexml_load_file($file);
+        $this->version = $xml->version;
     }
     
     public function build_includes()
@@ -57,7 +68,9 @@ class template
         $includes = array();
         foreach($modules as $module)
         {
+            /** @noinspection PhpUnusedLocalVariableInspection */
             $module_includes = array();
+            
             if( empty($module->template_includes) ) continue;
             
             /** @var \SimpleXMLElement $include */
@@ -78,6 +91,7 @@ class template
             ksort($name_includes);
             foreach($name_includes as $key => $val)
             {
+                /** @noinspection PhpUnusedLocalVariableInspection */
                 list($priority, $module) = explode("/", $key);
                 $final_includes[$name][$module] = trim($val);
             }
