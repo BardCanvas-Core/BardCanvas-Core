@@ -221,9 +221,11 @@ class template
         $this->page_title = $title;
     }
     
-    public function get_page_title()
+    public function get_page_title($suffixed = true)
     {
         global $settings;
+        
+        if( ! $suffixed ) return $this->page_title;
         
         return $this->page_title
             . " - "
