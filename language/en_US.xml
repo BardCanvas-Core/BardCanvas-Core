@@ -130,6 +130,7 @@
     
     <view>View</view>
     <lookup>Lookup</lookup>
+    <search_results>Search results</search_results>
     <return>Return</return>
     <refresh>Refresh</refresh>
     <reload>Reload</reload>
