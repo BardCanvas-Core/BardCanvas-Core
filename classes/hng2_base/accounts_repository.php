@@ -164,16 +164,44 @@ class accounts_repository extends abstract_repository
      */
     public function delete($id_account)
     {
-        global $object_cache, $modules, $database;
+        global $modules, $database, $config;
         
         $database->exec("delete from account_devices      where id_account = '$id_account'");
         $database->exec("delete from account_engine_prefs where id_account = '$id_account'");
         $database->exec("delete from account_logins       where id_account = '$id_account'");
-        $object_cache->delete($this->table_name, $id_account);
+        $this->delete_user_files($id_account);
         
+        $config->globals["deleting_id_account"] = $id_account;
         $modules["accounts"]->load_extensions("accounts_repository", "delete");
+        unset( $config->globals["deleting_id_account"] );
         
         return parent::delete($id_account);
+    }
+    
+    private function delete_user_files($id_account)
+    {
+        global $config;
+        
+        if( empty($config->globals["deletions_log"]) ) $config->globals["deletions_log"] = array();
+        
+        $account = $this->get($id_account);
+        
+        $dirs = array(
+            "{$config->datafiles_location}/user_avatars/{$account->user_name}",
+            "{$config->datafiles_location}/user_profile_banners/{$account->user_name}",
+        );
+        
+        foreach($dirs as $dir)
+        {
+            $files = glob("$dir/*");
+            if( empty($files) ) continue;
+            
+            foreach($files as $file)
+                if( @unlink($file) )
+                    $config->globals["deletions_log"][] = "User file <b>$file</b> deleted.";
+            
+            if( @unlink($dir) ) $config->globals["deletions_log"][] = "User directory <b>$dir</b> deleted.";
+        }
     }
     
     /**
