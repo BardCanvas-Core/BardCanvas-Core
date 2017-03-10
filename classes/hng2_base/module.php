@@ -262,4 +262,12 @@ class module
                 foreach($extending_areas as &$area)
                     $area = simplexml_load_string($area);
     }
+    
+    public function get_url($fully_qualified = false)
+    {
+        global $config;
+        
+        if( $fully_qualified ) return rtrim("{$config->full_root_path}/{$this->name}", "/");
+        else                   return rtrim("{$config->full_root_url}/{$this->name}", "/");
+    }
 }
