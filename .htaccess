@@ -102,6 +102,10 @@ ReWriteRule ^(.+)/feed$           scripts/rss_feed_generator.php?handle=$1     [
     ReWriteRule ^date/([0-9]{4}/[0-9]{2})$           posts/by_date.php?date=$1 [QSA,L]
     ReWriteRule ^date/([0-9]{4})/$                   posts/by_date.php?date=$1 [QSA,L]
     ReWriteRule ^date/([0-9]{4})$                    posts/by_date.php?date=$1 [QSA,L]
+    ReWriteRule ^blog/$                              posts/by_date.php         [QSA,L]
+    ReWriteRule ^blog$                               posts/by_date.php         [QSA,L]
+    ReWriteRule ^articles/$                          posts/by_date.php         [QSA,L]
+    ReWriteRule ^articles$                           posts/by_date.php         [QSA,L]
     
     # Posts: Indexes
     ReWriteRule ^category/(.*)/$  posts/by_category.php?slug=$1 [QSA,L]
