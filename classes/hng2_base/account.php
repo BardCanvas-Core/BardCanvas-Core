@@ -205,13 +205,13 @@ class account extends account_toolbox
             setcookie(
                 $settings->get("engine.user_online_cookie"),
                 encrypt( $this->id_account, $config->encryption_key ),
-                0, "/"
+                0, "/", $config->cookies_domain
             );
             
             setcookie(
                 $device_cookie_key,
                 encrypt( $device->id_device, $config->encryption_key ),
-                0, "/"
+                0, "/", $config->cookies_domain
             );
             
             $database->exec("
@@ -249,7 +249,7 @@ class account extends account_toolbox
         setcookie(
             $settings->get("engine.user_online_cookie"),
             encrypt( $this->id_account, $config->encryption_key ),
-            0, "/"
+            0, "/", $config->cookies_domain
         );
         
         # Now we insert the record in the logins table
@@ -277,16 +277,16 @@ class account extends account_toolbox
         setcookie(
             $settings->get("engine.user_session_cookie"),
             encrypt( $this->id_account, $config->encryption_key ),
-            $session_time, "/"
+            $session_time, "/", $config->cookies_domain
         );
     }
     
     public function close_session()
     {
-        global $settings, $mem_cache, $account;
+        global $settings, $mem_cache, $account, $config;
         
-        setcookie( $settings->get("engine.user_session_cookie"), "", 0, "/" );
-        setcookie( $settings->get("engine.user_online_cookie"), "", 0, "/" );
+        setcookie( $settings->get("engine.user_session_cookie"), "", 0, "/", $config->cookies_domain );
+        setcookie( $settings->get("engine.user_online_cookie"),  "", 0, "/", $config->cookies_domain );
         unset( $_COOKIE[$settings->get("engine.user_session_cookie")], $_COOKIE[$settings->get("engine.user_online_cookie")] );
         $mem_cache->delete("account:{$account->id_account}");
     }
