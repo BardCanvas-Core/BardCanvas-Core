@@ -77,7 +77,7 @@ insert into account set
   `password`        = '21232f297a57a5a743894a0e4a801fc3', -- admin
   `display_name`    = 'System Administrator',
   `email`           = 'nobody@localhost',
-  `alt_email`       = 'nobody2@localhost',
+  `alt_email`       = '',
   `country`         = 'us',
   `level`           = 255,
   `state`           = 'enabled',
