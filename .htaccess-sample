@@ -1,3 +1,6 @@
+#
+# .htaccess Sample
+#
 
 <FilesMatch "\.inc$|\.xml$|\.dat$|\.hidden$">
 deny from all
