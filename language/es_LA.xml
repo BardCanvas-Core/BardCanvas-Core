@@ -14,7 +14,7 @@
         </errors>
     </bootstrap>
     
-    <powered_by>usa BardCanvas v{$version}</powered_by>
+    <powered_by><![CDATA[ usa <a href="https://www.bardcanvas.com" target="_blank">BardCanvas v{$version}</a> ]]></powered_by>
     
     <admin>
         <bar_title>Versión del motor:</bar_title>
