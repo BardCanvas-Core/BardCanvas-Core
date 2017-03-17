@@ -18,14 +18,20 @@ ini_set("zlib.output_compression_level", "5");
 chdir(__DIR__);
 header("Content-Type: text/html; charset=utf-8");
 
+$bundle_name    = "BardCanvas";
+$support_text   = "";
+$preinit_bundle = true;
+if( file_exists(__DIR__ . "/setup_bundle.inc") ) include __DIR__ . "/setup_bundle.inc";
+$preinit_bundle = false;
+
 #
 # Already installed?
 #
 
 if( file_exists(__DIR__ . "/data/installed") ) die("<!DOCTYPE html>
-    <html><head><title>BardCanvas Setup</title></head><body>
+    <html><head><title>{$bundle_name} Setup</title></head><body>
         <h1>Already installed</h1>
-        <p>Your BardCanvas installation is already installed and configured. There's no need to run this script again.</p>
+        <p>Your {$bundle_name} installation is already installed and configured. There's no need to run this script again.</p>
         <p><a href='index.php'>Click here to open the home page</a></p>
     </body></html>");
 
@@ -41,7 +47,7 @@ if($_GET["go"] == "true")
     catch(\Exception $e)
     {
         die("<!DOCTYPE html>
-            <html><head><title>BardCanvas Setup</title></head><body>
+            <html><head><title>{$bundle_name} Setup</title></head><body>
                 <h1>Error connecting to the database</h1>
                 <p>There's been a problem connecting to the database:</p>
                 <div class='framed_content state_ko'>
@@ -442,7 +448,7 @@ if($_GET["go"] == "true")
     ?><!DOCTYPE html>
     <html>
     <head>
-        <title>BardCanvas Setup completed!</title>
+        <title><?=$bundle_name ?> Setup completed!</title>
         <script type="text/javascript"          src="lib/jquery-1.11.0.min.js"></script>
         <script type="text/javascript"          src="lib/jquery-migrate-1.2.1.js"></script>
         <script type="text/javascript"          src="lib/jquery-ui-1.10.4.custom.min.js"></script>
@@ -459,14 +465,17 @@ if($_GET["go"] == "true")
     </head>
     <body>
     
-    <h1>BardCanvas Setup completed!</h1>
+    <h1><?=$bundle_name ?> Setup completed!</h1>
     
     <p>Now you can login as administrator using <span class="framed_content">admin</span> as username and password.</p>
     
-    <p>If you experience any problem, take a look at the forums on the
-       <a href="http://bardcanvas.com" target="_blank">BardCanvas Website</a>.</p>
+    <?php
+    if( ! empty($support_text) ) echo $support_text;
+    else echo "<p>If you experience any problem, take a look at the forums on the
+               <a href=\"http://bardcanvas.com\" target=\"_blank\">BardCanvas Website</a>.</p>";
+    ?>
     
-    <p><a href="index.php">Click here to open your new BardCanvas powered website</a></p>
+    <p><a href="index.php">Click here to open your new <?=$bundle_name ?> powered website</a></p>
     
     </body>
     </html>
@@ -480,7 +489,7 @@ $errors_found = 0;
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BardCanvas Setup</title>
+    <title><?=$bundle_name ?> Setup</title>
     <script type="text/javascript"          src="lib/jquery-1.11.0.min.js"></script>
     <script type="text/javascript"          src="lib/jquery-migrate-1.2.1.js"></script>
     <script type="text/javascript"          src="lib/jquery-ui-1.10.4.custom.min.js"></script>
@@ -497,9 +506,9 @@ $errors_found = 0;
 </head>
 <body>
 
-<h1>BardCanvas Setup</h1>
+<h1><?=$bundle_name ?> Setup</h1>
 
-<p>This page runs a set of tests to ensure that BardCanvas can run in your system. Please scroll down to the bottom while
+<p>This page runs a set of tests to ensure that <?=$bundle_name ?> can run in your system. Please scroll down to the bottom while
 reviewing any warnings or errors before attempting to run the setup operations.</p>
 
 <section>
