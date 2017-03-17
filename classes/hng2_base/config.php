@@ -108,7 +108,9 @@ class config
         {
             $this->cookies_domain = strtolower($_SERVER["HTTP_HOST"]);
             $this->cookies_domain = str_replace("www", "", $this->cookies_domain);
-            $this->cookies_domain = "." . trim($this->cookies_domain, ".");
+            
+            if( stristr($this->cookies_domain, ".") )
+                $this->cookies_domain = "." . trim($this->cookies_domain, ".");
         }
         
         $this->datafiles_location = ROOTPATH . "/data";
