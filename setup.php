@@ -481,6 +481,7 @@ if($_GET["go"] == "true")
     if( ! empty($ffmpeg_path) )
         $db->exec("insert ignore into settings set value = '$ffmpeg_path' , name = 'engine.ffmpeg_path'");
     
+    $messages = array();
     if( file_exists(__DIR__ . "/setup_bundle.inc") ) include __DIR__ . "/setup_bundle.inc";
     ?><!DOCTYPE html>
     <html>
@@ -503,6 +504,25 @@ if($_GET["go"] == "true")
     <body>
     
     <h1><?php echo $bundle_name ?> Setup completed!</h1>
+    
+    <p><i class="fa fa-warning"></i> <b>Important, don't dismiss:</b> in order to get automatic maintenance,
+    you're going to need the next cron jobs:</p>
+    
+    <pre># m h d m w command
+  0 * * * * php -q <?php echo __DIR__; ?>/accounts/scripts/cli_autopurge.php     > /dev/null
+  0 4 * * * php -q <?php echo __DIR__; ?>/updates_client/cli_check.php -u        > <?php echo __DIR__; ?>/logs/updates_checker-$(date +\%Y\%m\%d).log 2>&1
+  0 4 * * * cd <?php echo __DIR__; ?>/data/cache && find . -mtime +1 -ls -delete > /dev/null
+</pre>
+    
+    <p>Please go into your <code>crontab</code> and add the lines above.</p>
+    
+    <p><i>Note: you may change the updates checked and cache cleaner to run at a time other than 4:00 AM if you want.</i></p>
+    
+    <?php if( ! empty($messages) )
+        foreach($messages as $message)
+            echo $message; ?>
+    
+    <hr>
     
     <p>Now you can login as administrator using <span class="framed_content">admin</span> as username and password.</p>
     
