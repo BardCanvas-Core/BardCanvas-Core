@@ -37,6 +37,40 @@ if( file_exists(__DIR__ . "/data/installed") ) die("<!DOCTYPE html>
 
 if( file_exists("config.php") ) include "config.php";
 
+#
+# FFMPEG preload
+#
+
+$ffmpeg_path    = "";
+$ffmpeg_version = "";
+
+if( function_exists("shell_exec") )
+{
+    $res = shell_exec("locate ffmpeg");
+    if( ! empty($res) )
+    {
+        foreach(explode("\n", $res) as $line)
+        {
+            $line = trim($line);
+            $path = dirname($line);
+            $file = basename($line);
+            if( $file != "ffmpeg" ) continue;
+            
+            $res = shell_exec("$line -version");
+            if( ! empty($res) )
+            {
+                $ffmpeg_version = $res;
+                $ffmpeg_path    = $path;
+                break;
+            }
+        }
+    }
+}
+
+#
+# Start
+#
+
 if($_GET["go"] == "true")
 {
     $db = current($DATABASES);
@@ -443,12 +477,15 @@ if($_GET["go"] == "true")
         ('Zambia', 'zm', 'zmb'),
         ('Zimbabwe', 'zw', 'zwe')
     ");
+        
+    if( ! empty($ffmpeg_path) )
+        $db->exec("insert ignore into settings set value = '$ffmpeg_path' , name = 'engine.ffmpeg_path'");
     
     if( file_exists(__DIR__ . "/setup_bundle.inc") ) include __DIR__ . "/setup_bundle.inc";
     ?><!DOCTYPE html>
     <html>
     <head>
-        <title><?=$bundle_name ?> Setup completed!</title>
+        <title><?php echo $bundle_name ?> Setup completed!</title>
         <script type="text/javascript"          src="lib/jquery-1.11.0.min.js"></script>
         <script type="text/javascript"          src="lib/jquery-migrate-1.2.1.js"></script>
         <script type="text/javascript"          src="lib/jquery-ui-1.10.4.custom.min.js"></script>
@@ -465,7 +502,7 @@ if($_GET["go"] == "true")
     </head>
     <body>
     
-    <h1><?=$bundle_name ?> Setup completed!</h1>
+    <h1><?php echo $bundle_name ?> Setup completed!</h1>
     
     <p>Now you can login as administrator using <span class="framed_content">admin</span> as username and password.</p>
     
@@ -475,7 +512,7 @@ if($_GET["go"] == "true")
                <a href=\"http://bardcanvas.com\" target=\"_blank\">BardCanvas Website</a>.</p>";
     ?>
     
-    <p><a href="index.php">Click here to open your new <?=$bundle_name ?> powered website</a></p>
+    <p><a href="index.php">Click here to open your new <?php echo $bundle_name ?> powered website</a></p>
     
     </body>
     </html>
@@ -489,7 +526,7 @@ $errors_found = 0;
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?=$bundle_name ?> Setup</title>
+    <title><?php echo $bundle_name ?> Setup</title>
     <script type="text/javascript"          src="lib/jquery-1.11.0.min.js"></script>
     <script type="text/javascript"          src="lib/jquery-migrate-1.2.1.js"></script>
     <script type="text/javascript"          src="lib/jquery-ui-1.10.4.custom.min.js"></script>
@@ -506,9 +543,9 @@ $errors_found = 0;
 </head>
 <body>
 
-<h1><?=$bundle_name ?> Setup</h1>
+<h1><?php echo $bundle_name ?> Setup</h1>
 
-<p>This page runs a set of tests to ensure that <?=$bundle_name ?> can run in your system. Please scroll down to the bottom while
+<p>This page runs a set of tests to ensure that <?php echo $bundle_name ?> can run in your system. Please scroll down to the bottom while
 reviewing any warnings or errors before attempting to run the setup operations.</p>
 
 <section>
@@ -600,6 +637,95 @@ reviewing any warnings or errors before attempting to run the setup operations.<
                 </div>
             <?php endif ?>
         </div>
+        
+    </div>
+</section>
+
+<section>
+    <h2>System binaries</h2>
+    <div class="framed_content">
+        
+        <?php if( ! function_exists("shell_exec")): ?>
+            
+            <div class="row clearfix">
+                <div class="framed_content state_highlight">
+                    <i class="fa fa-warning"></i>
+                    Can't check for binaries since <code>shell_exec</code> is disabled!<br>
+                    <br><br>
+                    You'll manually have to make sure that your system account is able to run all of the next programs:
+                    
+                    <ul>
+                        <li>
+                            <code>rsync</code> - for syncing downloaded updates
+                        </li>
+                        <li>
+                            <code>ffmpeg</code> - for converting uploaded videos into mp4<br>
+                            <b>Note:</b> this can be avoided by downloading and installing an static version of ffmpeg from
+                            <a href="https://www.johnvansickle.com/ffmpeg/" target="_blank">https://www.johnvansickle.com/ffmpeg/</a>
+                            and then specifying it in the configuration.
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+            
+        <?php else: ?>
+            
+            <?php $res = shell_exec("rsync --version"); ?>
+            <div class="row clearfix">
+                <?php if( ! empty($res) ): ?>
+                    <span class="framed_content inlined pull-right">Pass</span>
+                <?php else: ?>
+                    <span class="framed_content inlined state_ko pull-right"><i class="fa fa-warning"></i> Unknown</span>
+                <?php endif; ?>
+                
+                RSYNC for engine and module updates
+                
+                <?php if( ! empty($res)): ?>
+                    
+                    <blockquote>
+                        <pre><?php echo $res ?></pre>
+                    </blockquote>
+                    
+                <?php else: ?>
+                    
+                    <div class="framed_content state_highlight">
+                        <i class="fa fa-warning"></i>
+                        You wont be able to run automatic updates. Please ask your hostmaster to enable rsync for you.
+                    </div>
+                    
+                <?php endif ?>
+            </div>
+            
+            <div class="row clearfix">
+                <?php if( ! empty($ffmpeg_version) ): ?>
+                    <span class="framed_content inlined pull-right">Pass</span>
+                <?php else: ?>
+                    <span class="framed_content inlined state_ko pull-right"><i class="fa fa-warning"></i> Unknown</span>
+                <?php endif; ?>
+                
+                FFMPEG for converting video files
+                
+                <?php if( ! empty($ffmpeg_version)): ?>
+                    
+                    <blockquote>
+                        <pre style="white-space: pre-wrap">Found at <?php echo $ffmpeg_path ?><br><br><?php echo $ffmpeg_version ?></pre>
+                    </blockquote>
+                    
+                <?php else: ?>
+                    
+                    <div class="framed_content state_highlight">
+                        <i class="fa fa-warning"></i>
+                        You wont be able to use automatic conversion of videos from the media gallery unless you ask
+                        your hostmaster to install ffmpeg on the system or manually download a static version from
+                        <a href="https://www.johnvansickle.com/ffmpeg/" target="_blank">https://www.johnvansickle.com/ffmpeg/</a>
+                        into your system account and specify the path on the system configuration.
+                    </div>
+                    
+                <?php endif ?>
+            </div>
+            
+        <?php endif; ?>
         
     </div>
 </section>
@@ -787,7 +913,7 @@ reviewing any warnings or errors before attempting to run the setup operations.<
                     <div class="framed_content state_highlight">
                         <i class="fa fa-warning"></i>
                         There has been an error while accessing the database:<br>
-                        <div class="framed_content state_ko"><?= $db_error ?></div>
+                        <div class="framed_content state_ko"><?php echo $db_error ?></div>
                         <p>Please check your config.php file and make sure the database connection info is correct.</p>
                     </div>
                 <?php endif ?>
