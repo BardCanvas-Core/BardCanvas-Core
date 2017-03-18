@@ -33,7 +33,8 @@ $config->set_metering_toggles();
 $config->fill_upload_types();
 
 # Engine Language loader
-if( empty($_COOKIE[$config->language_cookie_var]) )
+$language_cookie_val = $settings->get("engine.default_language");
+if( $_COOKIE[$config->language_cookie_var] != $language_cookie_val )
 {
     $language_cookie_val = $settings->get("engine.default_language");
     if( empty($language_cookie_val) ) $language_cookie_val = "en_US";
