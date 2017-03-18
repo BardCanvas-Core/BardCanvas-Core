@@ -24,6 +24,14 @@ ReWriteEngine On
 # These rules are hardcoded and must go above editable tiers #
 ##############################################################
 
+# Login helpers
+RewriteRule ^wp-admin/$  /?show_login_form=true  [R,L]
+RewriteRule ^wp-admin$   /?show_login_form=true  [R,L]
+RewriteRule ^admin/$     /?show_login_form=true  [R,L]
+RewriteRule ^admin$      /?show_login_form=true  [R,L]
+RewriteRule ^login/$     /?show_login_form=true  [R,L]
+RewriteRule ^login$      /?show_login_form=true  [R,L]
+
 # Core: Versioned resources
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
 ReWriteRule ^(.*)\~v.*\.css$ $1.css [QSA,L]
