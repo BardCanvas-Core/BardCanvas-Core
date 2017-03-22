@@ -51,6 +51,10 @@ body.admin h1 a, body.admin h1 .pseudo_link { color: white;   }
 body.admin h2 a, body.admin h2 .pseudo_link { color: white;   }
 body.admin h3 a, body.admin h3 .pseudo_link { color: #830606; }
 
+body.admin h1 a.framed_content, body.admin h1 .pseudo_link.framed_content { color: #830606; text-decoration: none; }
+body.admin h2 a.framed_content, body.admin h2 .pseudo_link.framed_content { color: #830606; text-decoration: none; }
+body.admin h3 a.framed_content, body.admin h3 .pseudo_link.framed_content { color: #830606; text-decoration: none; }
+
 body.admin section > h1, body.admin section > h2, body.admin section > h3 {
     padding: 5px 10px;
     border-bottom-left-radius:  0;
