@@ -204,6 +204,63 @@
             <type>text</type>
         </specs>
         
+        <!-- Meta tags -->
+        <specs is_separator="true">Meta tags</specs>
+        <specs key="meta_description">
+            <title>Meta Descripción</title>
+            <description><![CDATA[
+                Texto a usar como descripción predeterminada en todas las páginas.<br>
+                <i class="fa fa-info-circle"></i>
+                Puede ser sobreescrito por módulos.
+            ]]></description>
+            <type>locale_list</type>
+        </specs>
+        <specs key="meta_keywords">
+            <title>Meta Palabras Clave</title>
+            <description><![CDATA[
+                Lista aseparada por comas de las palabras clave a usar en todas las páginas.<br>
+                <i class="fa fa-info-circle"></i>
+                Puede ser sobreescrito por módulos.
+            ]]></description>
+            <type>locale_list</type>
+        </specs>
+        <specs key="meta_keywords">
+            <title>Meta Rating</title>
+            <description><![CDATA[
+                Rating del website.<br>
+                <i class="fa fa-info-circle"></i>
+                Puede ser sobreescrito por módulos.
+            ]]></description>
+            <type>list</type>
+            <options>
+                <option value="">General</option>
+                <option value="mature">Maduro</option>
+                <option value="restricted">Restringido</option>
+                <option value="14 years">14 años</option>
+                <option value="safe for kids">Seguro para chicos</option>
+            </options>
+        </specs>
+        <specs key="meta_robots">
+            <title>Meta Robots</title>
+            <description><![CDATA[
+                Directivas para robots. <a href="http://www.robotstxt.org/meta.html" target="_blank">Referencia aquí</a>.<br>
+                <i class="fa fa-info-circle"></i>
+                Puede ser sobreescrito por módulos.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        <specs key="meta_revisit_after">
+            <title>Meta Revisit-After</title>
+            <description><![CDATA[
+                Expresión sencilla <b>en inglés</b> de un periodo para que los motores de búsqueda revisiten esta página, P.E.
+                <code>3 days</code>, <code>1 month</code>.<br>
+                Predeterminado a <code>7 days</code><br>
+                <i class="fa fa-info-circle"></i>
+                It may be overriden by modules.
+            ]]></description>
+            <type>text</type>
+        </specs>
+        
         <!-- Display -->
         <specs is_separator="true">Despliegue y distribución</specs>
         
