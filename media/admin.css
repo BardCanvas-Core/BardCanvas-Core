@@ -22,6 +22,8 @@
 #admin_menu .item.current       { color: darkgreen; background-color: white; }
 #admin_menu .item.current:hover { color: black; background-color: lime; }
 
+#admin_menu .admin_bar_title .current_server { display: none; }
+
 /* Mobile devices triggering menu */
 
 #admin_menu_trigger      { line-height: 30px; padding: 0 10px; float: right; cursor: pointer; }
