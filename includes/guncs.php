@@ -281,8 +281,8 @@ function gfuncs_getmakePNGthumbnail(
     imagealphablending($dest, true);
     
     # Resampleamos
-    imageantialias($src, true);
-    imageantialias($dest, true);
+    if( function_exists("imageantialias") ) imageantialias($src, true);
+    if( function_exists("imageantialias") ) imageantialias($dest, true);
     imagecopyresampled(
         $dest,
         $src,
@@ -333,8 +333,8 @@ function gfuncs_resample_in_window($src, $source_w, $source_h, $window_w = 0, $w
     if( $source_w - $window_w != 0 ) $xpos = (($source_w - $window_w) / 2);
     if( $source_h - $window_h != 0 ) $ypos = (($source_h - $window_h) / 2);
     
-    imageantialias($src, true);
-    imageantialias($dest, true);
+    if( function_exists("imageantialias") ) imageantialias($src, true);
+    if( function_exists("imageantialias") ) imageantialias($dest, true);
     imagecopyresampled(
         $dest,
         $src,
