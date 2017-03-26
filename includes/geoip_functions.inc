@@ -48,7 +48,7 @@ function forge_geoip_location($ip = "", $skip_isp = false)
  * Returns explicit GeoIP info
  *
  * @param string $ip
- * @param string $what country_code, country_name, region_name, city, ISP
+ * @param string $what country_code, country_name, region_name, city, isp
  *
  * @returns string
  */
