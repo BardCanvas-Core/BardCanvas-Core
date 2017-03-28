@@ -158,7 +158,7 @@ function send_notification($id_account, $type, $contents)
         return;
     }
     
-    file_put_contents($target_file, $contents);
+    @file_put_contents($target_file, $contents);
     @chmod($target_file, 0777);
     usleep(10000);
 }
