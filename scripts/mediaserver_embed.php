@@ -16,7 +16,9 @@ include "../includes/bootstrap.inc";
 
 if( empty($_GET["file"]) ) throw_fake_404();
 
-$file  = $config->full_root_url . "/mediaserver/" . stripslashes($_GET["file"]);
+# Note: for an unknown reason, URL rewrites on video files stopped working on chrome.
+# Thus, the /mediaserver rewrite was skipped.
+$file  = $config->full_root_url . "/data/uploaded_media/" . stripslashes($_GET["file"]);
 $style = "";
 
 $width  = empty($_GET["width"])  ? "" : "width='{$_GET["width"]}'";
