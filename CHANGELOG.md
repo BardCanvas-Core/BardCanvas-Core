@@ -1,7 +1,7 @@
 
 # BardCanvas Core Changelog 
 
-## [Unreleased]
+## [1.6.40.9] - 2017-03-28
 
 - Added changelog.
 - Added https://github.com/erusev/parsedown to libraries.
