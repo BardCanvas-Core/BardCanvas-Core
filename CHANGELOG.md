@@ -5,6 +5,7 @@
 
 - Added changelog.
 - Added https://github.com/erusev/parsedown to libraries.
+- Refactored readme and license files.
 
 ## [1.6.40.8] - 2017-03-27
 

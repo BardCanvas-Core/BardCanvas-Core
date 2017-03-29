@@ -1,6 +1,3 @@
-# About
-
-This document explains basic details about the Web Content Management System.
 
 # License
 
@@ -16,3 +13,10 @@ GNU General Public License for more details.
 THE SOFTWARE.
 
 For more information, see https://www.gnu.org/licenses/gpl-3.0.txt
+
+# License exceptions
+
+This software may be part of a bundle that may contain non open source,
+licensed modules, templates or files. Please take this in consideration,
+since the GPL license allows you to redistribute the BardCanvas Core but
+those additions may be excluded.
