@@ -20,7 +20,9 @@ To have an instance of BardCanvas running, you need, at least:
 If you want to try BardCanvas, you should, instead of cloning this repository,
 download the BardCanvas bundle from [bardcanvas.com/download](http://bardcanvas.com/download).
 
-# Changes
+# Version
+
+Current version is **1.6.40.10**
 
 Please check the changelog [here](CHANGELOG.md).
 
