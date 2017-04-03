@@ -63,15 +63,16 @@ class mem_cache
     }
     
     /**
-     * @param $key
+     * @param      $key
+     * @param bool $raw_key
      *
      * @return mixed|null
      */
-    public function get($key)
+    public function get($key, $raw_key = false)
     {
         global $config;
         
-        $key = $this->var_prefix . $key . "~v" . $this->suffix;
+        if( $raw_key === false ) $key = $this->var_prefix . $key . "~v" . $this->suffix;
         
         if( isset($this->data[$key]) ) return $this->data[$key];
         
