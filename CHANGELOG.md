@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [Unreleased]
+
+- classes/mem_cache: Added support for raw keys.
+- classes/internals: Added values of memcached keys.
+
 ## [1.6.40.9] - 2017-03-28
 
 - Added changelog.
