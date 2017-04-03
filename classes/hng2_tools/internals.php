@@ -363,6 +363,14 @@ class internals
         $collapse_style = $account->engine_prefs["internals_memcache_keys_hidden"] == "true" ? "display: none" : "";
         $wasuuup        = md5(mt_rand(1, 65535));
         
+        $lis = "";
+        foreach($keys as $key)
+        {
+            $val = $mem_cache->get($key, true);
+            if( ! is_string($val) ) $val = "(object|array)";
+            $lis .= "<li>$key := <span class='framed_content inlined'>$val</span></li>\n";
+        }
+        
         echo "
             <a name='mem_keys'></a>
             <div class='internals'>
@@ -376,7 +384,7 @@ class internals
                     </h2>
                     <div class='framed_content hideable' style='{$table_style}'>
                         <ul>
-                            <li>" . implode("</li>\n                            <li>", $keys) . "</li>
+                            $lis
                         </ul>
                     </div>
                 </section>
