@@ -36,20 +36,20 @@ else
 
 if( ! is_file($file) ) throw_fake_404();
 
-$size = filesize($file);
-$time = filemtime($file);
-$specs = getimagesize($file);
-
+$size            = filesize($file);
+$specs           = getimagesize($file);
 $lastModified    = filemtime($file);
 $etagFile        = md5_file($file);
 $ifModifiedSince = (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE']   : false);
 $etagHeader      = (isset($_SERVER['HTTP_IF_NONE_MATCH'])     ? trim($_SERVER['HTTP_IF_NONE_MATCH']) : false);
 
 header("Last-Modified: ".gmdate("D, d M Y H:i:s", $lastModified)." GMT");
+header("Expires: ".gmdate("D, d M Y H:i:s", $lastModified + 3600)." GMT");
 header("Etag: $etagFile");
-header('Cache-Control: public');
+header("Content-Length: $size");
+header('Cache-Control: public, max-age=3600');
 
-if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE'])==$lastModified || $etagHeader == $etagFile)
+if( @strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified || $etagHeader == $etagFile )
 {
     header("HTTP/1.1 304 Not Modified");
     exit;
