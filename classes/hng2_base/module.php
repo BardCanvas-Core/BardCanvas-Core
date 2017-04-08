@@ -90,6 +90,11 @@ class module
     var $tinymce_additions;
     
     /**
+     * @var \SimpleXMLElement
+     */
+    var $shortcode_handlers;
+    
+    /**
      * Module template
      *
      * @param string $module_info_file
@@ -233,6 +238,7 @@ class module
         $self->extends_to           = empty($self->extends_to)           ? "" : $self->extends_to->asXML();
         $self->widgets              = empty($self->widgets)              ? "" : $self->widgets->asXML();
         $self->tinymce_additions    = empty($self->tinymce_additions)    ? "" : $self->tinymce_additions->asXML();
+        $self->shortcode_handlers   = empty($self->shortcode_handlers)   ? "" : $self->shortcode_handlers->asXML();
         
         /** @var \SimpleXMLElement $area */
         if( ! empty($self->extended_by) )
@@ -255,6 +261,7 @@ class module
         $this->extends_to           = simplexml_load_string($this->extends_to);
         $this->widgets              = simplexml_load_string($this->widgets);
         $this->tinymce_additions    = simplexml_load_string($this->tinymce_additions);
+        $this->shortcode_handlers   = simplexml_load_string($this->shortcode_handlers);
         
         /** @var \SimpleXMLElement $area */
         if( ! empty($this->extended_by) )
