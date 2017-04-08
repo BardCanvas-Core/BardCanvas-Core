@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.7.0.0] - 2017-04-08
+
+- Added complementary headers to the user profile resource delivering script.
+- Adjustments on crontab template for setup.
+- Added globally available shortcode functions.
+- Added shortcode_handlers node in modules class to have a unified shortcodes registry.
+
 ## [1.6.40.10] - 2017-04-03
 
 - classes/mem_cache: Added support for raw keys.
