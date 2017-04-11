@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.7.0.1] - 2017-04-10
+
+- Added memory cache helper for disk cache saves to avoid massive hangups on clustered setups.
+- Added a clarification in doc for send_mail function in web_helper_functions.inc.
+
 ## [1.7.0.0] - 2017-04-08
 
 - Added complementary headers to the user profile resource delivering script.
