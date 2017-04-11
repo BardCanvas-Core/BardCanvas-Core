@@ -135,14 +135,19 @@ class disk_cache
     
     private function save()
     {
-        global $config;
+        global $config, $mem_cache;
         
+        $mem_cache_key = "saving_disk_cache:{$this->disk_cache_file}";
+        if( $mem_cache->get($mem_cache_key) ) return;
+        
+        $mem_cache->set($mem_cache_key, "true", 0, 120);
         $data = serialize($this->data);
         
         if( ! @file_put_contents($this->disk_cache_file, $data) )
             throw new \RuntimeException("Can't write cache file {$this->disk_cache_file}");
         
         @chmod($this->disk_cache_file, 0777);
+        $mem_cache->delete($mem_cache_key);
         
         $backtrace = "N/A";
         if( $config->query_backtrace_enabled )
