@@ -403,7 +403,7 @@ function build_cloud(array $items, $steps = 10, $min_font_size = 10, $max_font_s
  * @param       $subject
  * @param       $body
  * @param       $recipients [name => address, name => address, ...]
- * @param array $sender     [name => address, name => address, ...] If empty, default sender will be used
+ * @param array $sender     [name => address] (One single item.) If empty, default sender will be used
  * @param array $attachments
  *
  * @return string
