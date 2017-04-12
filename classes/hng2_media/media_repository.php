@@ -705,7 +705,7 @@ class media_repository extends abstract_repository
             if( ! is_dir($dir) )
             {
                 if( ! @mkdir($dir, 0777, true) )
-                    return $current_module->language->messages->cannot_create_directory;
+                    return trim($current_module->language->messages->cannot_create_directory);
                 
                 @chmod($dir, 0777);
             }
