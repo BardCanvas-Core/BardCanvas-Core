@@ -139,4 +139,15 @@ class settings
         
         return $found;
     }
+    
+    public function prepare_batch()
+    {
+        $this->cache->enable_batchmode();
+    }
+    
+    public function commit_batch()
+    {
+        $this->cache->disable_batchmode();
+        $this->cache->save();
+    }
 }
