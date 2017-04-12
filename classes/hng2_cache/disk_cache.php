@@ -133,9 +133,23 @@ class disk_cache
         );
     }
     
-    private function save()
+    public function enable_batchmode()
+    {
+        global $config;
+        $config->globals["disk_cache_batchmode:{$this->disk_cache_file}"] = true;
+    }
+    
+    public function disable_batchmode()
+    {
+        global $config;
+        $config->globals["disk_cache_batchmode:{$this->disk_cache_file}"] = false;
+    }
+    
+    public function save()
     {
         global $config, $mem_cache;
+        
+        if( $config->globals["disk_cache_batchmode:{$this->disk_cache_file}"] ) return;
         
         $mem_cache_key = "saving_disk_cache:{$this->disk_cache_file}";
         if( $mem_cache->get($mem_cache_key) ) return;
