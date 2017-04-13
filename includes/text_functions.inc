@@ -47,6 +47,26 @@ function replace_escaped_vars($text, $search, $replace)
 } # end function
 
 /**
+ * Replaces all instances of the key elements of the passed array
+ * with their corresponding values.
+ *
+ * @param string $text
+ * @param array  $collection
+ *
+ * @returns string
+ */
+function replace_escaped_objects($text, array $collection)
+{
+    $replaced_text = trim($text);
+    if( empty($replaced_text) ) return "";
+    
+    foreach($collection as $search => $replace)
+        $replaced_text = str_replace($search, $replace, $replaced_text);
+    
+    return $replaced_text;
+}
+
+/**
  * Convert date to "time ago" string
  *
  * @see http://stackoverflow.com/questions/1416697/converting-timestamp-to-time-ago-in-php-e-g-1-day-ago-2-days-ago
