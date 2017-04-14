@@ -25,9 +25,9 @@ include dirname(__FILE__) . "/web_helper_functions.inc";
 # Inits
 $config       = new config();
 $database     = new db_controller();
-$settings     = new settings();
-$object_cache = new object_cache("system");
 $mem_cache    = new mem_cache();
+$object_cache = new object_cache("system");
+$settings     = new settings();
 $config->fill_user_levels();
 $config->set_metering_toggles();
 $config->fill_upload_types();
