@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.7.1.0] - 2017-04-13
+
+- Added a check on the media repository to prevent empty errors being thrown by internal calls.
+- Added batch mode for settings saves.
+- Added a helper function for text replacements.
+- Changed class instantiations on the bootstrap to avoid fatal errors.
+
 ## [1.7.0.1] - 2017-04-10
 
 - Added memory cache helper for disk cache saves to avoid massive hangups on clustered setups.
