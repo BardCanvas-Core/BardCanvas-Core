@@ -480,7 +480,6 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
     foreach($recipients as $name => $address)
         $mail->addAddress($address, $name);
     
-    # $mail->Sender   = $settings->get("engine.mail_sender_email");
     $mail->From     = $settings->get("engine.mail_sender_email");
     $mail->FromName = $settings->get("engine.mail_sender_name");
     
@@ -496,7 +495,12 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
     }
     
     if( ! is_null($sender) )
-        $mail->addReplyTo(current($sender), key($sender));
+    {
+        $mail->Sender   = $settings->get("engine.mail_sender_email");
+        $mail->From     = current($sender);
+        $mail->FromName = key($sender);
+        # $mail->addReplyTo(current($sender), key($sender));
+    }
     
     if( $config->globals["phpmailer_debug_mode_enabled"] )
         echo "Init complete. Sending now.\n"
