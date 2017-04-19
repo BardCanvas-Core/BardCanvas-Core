@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.7.1.1] - 2017-04-19
+
+- Changed mail sender override method on send_mail web helper function.
+
 ## [1.7.1.0] - 2017-04-13
 
 - Added a check on the media repository to prevent empty errors being thrown by internal calls.
