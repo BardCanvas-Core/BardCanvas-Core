@@ -183,6 +183,8 @@
         <table_deleted_ko>Table {$table_name} can't be deleted! Error: {$error}</table_deleted_ko>
     </install_messages>
     
+    <dismiss_all_notifications>Dismiss all notifications</dismiss_all_notifications>
+    
     <settings_data>
         <title>Engine behavior, presentation and defaults</title>
         

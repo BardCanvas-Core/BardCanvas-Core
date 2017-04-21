@@ -97,7 +97,9 @@ function notification_clicked( $noty_object )
     
     $.get(url, function(response)
     {
-        if( response != 'OK' ) alert(response);
+        if( response != 'OK' ) console.log(response);
+        
+        hide_notifications_killer();
     });
 }
 
@@ -127,8 +129,56 @@ function stop_notifications_getter()
 function throw_notification(message, message_type)
 {
     if( typeof message_type == 'undefined' ) message_type = $.noty.defaults.type;
+    show_notifications_killer();
     noty({text: message, type: message_type});
     play_notification_sound();
+}
+
+function show_notifications_killer()
+{
+    var $killer = $('#notifications_killer');
+    if( $killer.is(':visible') ) return;
+    
+    $killer.attr('onclick', 'kill_all_notifications()');
+    $killer.fadeIn('fast');
+}
+
+function hide_notifications_killer()
+{
+    $('#notifications_killer').fadeOut('fast');
+}
+
+function kill_all_notifications()
+{
+    var $elements = $('.noty_message');
+    if( $elements.length == 0 ) return;
+    
+    var ids = [];
+    $elements.each(function()
+    {
+        var $span = $(this).find('span[data-message-archive]');
+        if( $span.length == 0 ) return;
+        
+        ids[ids.length] = $span.attr('data-message-archive');
+    });
+    
+    if( ids.length > 0 )
+    {
+        for(var i in ids)
+        {
+            var url = $_FULL_ROOT_PATH
+                + '/scripts/delete_notification.php'
+                + '?identifier=' + encodeURI(ids[i])
+                + '&wasuuup='    + wasuuup()
+            ;
+            
+            $.get(url, function(response) { if( response != 'OK' ) console.log(response); });
+            
+        }
+    }
+    
+    $.noty.closeAll();
+    hide_notifications_killer();
 }
 
 ion.sound({

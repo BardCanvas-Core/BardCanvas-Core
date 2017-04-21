@@ -183,6 +183,8 @@
         <table_deleted_ko>¡La tabla {$table_name} no se puede eliminar! Error: {$error}</table_deleted_ko>
     </install_messages>
     
+    <dismiss_all_notifications>Desechar todas las notificaciones</dismiss_all_notifications>
+    
     <settings_data>
         <title>Comportamiento, presentación y valores del motor</title>
         
