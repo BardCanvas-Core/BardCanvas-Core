@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.7.2.0] - 2017-04-21
+
+- Added support for one-click on-screen notifications dismissal.
+- Fixed wrong tag in RSS feeds builder.
+
 ## [1.7.1.1] - 2017-04-19
 
 - Changed mail sender override method on send_mail web helper function.
