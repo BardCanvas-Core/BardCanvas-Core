@@ -39,9 +39,9 @@ class item
         if( ! empty($this->enclosure) )
         {
             $enclosure = $node->addChild("enclosure");
-            $enclosure->addChild("type",   $this->enclosure->type);
-            $enclosure->addChild("length", $this->enclosure->length);
-            $enclosure->addChild("url",    $this->enclosure->url);
+            $enclosure->addAttribute("type",   $this->enclosure->type);
+            $enclosure->addAttribute("length", $this->enclosure->length);
+            $enclosure->addAttribute("url",    $this->enclosure->url);
         }
         
         if( ! empty($this->guid)    ) $node->addChild("guid",    $this->guid);
