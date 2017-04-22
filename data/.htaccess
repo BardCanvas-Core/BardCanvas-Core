@@ -1,0 +1,5 @@
+
+<FilesMatch "\.inc$\.php$|\.sh|\.xml$|\.dat$|\.hidden$">
+deny from all
+</FilesMatch>
+
