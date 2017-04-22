@@ -1,0 +1,5 @@
+
+# Do not index search results
+User-Agent: *
+Disallow: /?s=*
+
