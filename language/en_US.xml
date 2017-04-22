@@ -215,7 +215,7 @@
                 <i class="fa fa-info-circle"></i>
                 It may be overriden by modules.
             ]]></description>
-            <type>text</type>
+            <type>textarea</type>
         </specs>
         <specs key="meta_keywords">
             <title>Meta Keywords</title>
@@ -224,9 +224,9 @@
                 <i class="fa fa-info-circle"></i>
                 It may be overriden by modules.
             ]]></description>
-            <type>text</type>
+            <type>textarea</type>
         </specs>
-        <specs key="meta_keywords">
+        <specs key="meta_rating">
             <title>Meta Rating</title>
             <description><![CDATA[
                 Rating of the website.<br>

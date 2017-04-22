@@ -215,7 +215,7 @@
                 <i class="fa fa-info-circle"></i>
                 Puede ser sobreescrito por módulos.
             ]]></description>
-            <type>locale_list</type>
+            <type>textarea</type>
         </specs>
         <specs key="meta_keywords">
             <title>Meta Palabras Clave</title>
@@ -224,9 +224,9 @@
                 <i class="fa fa-info-circle"></i>
                 Puede ser sobreescrito por módulos.
             ]]></description>
-            <type>locale_list</type>
+            <type>textarea</type>
         </specs>
-        <specs key="meta_keywords">
+        <specs key="meta_rating">
             <title>Meta Rating</title>
             <description><![CDATA[
                 Rating del website.<br>
@@ -258,7 +258,7 @@
                 <code>3 days</code>, <code>1 month</code>.<br>
                 Predeterminado a <code>7 days</code><br>
                 <i class="fa fa-info-circle"></i>
-                It may be overriden by modules.
+                Puede ser sobreescrito por módulos.
             ]]></description>
             <type>text</type>
         </specs>
