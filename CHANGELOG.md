@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.7.3.0] - 2017-04-23
+
+- Added .htaccess to data dir.
+- Added robots.txt to avoid indexing searches.
+- Fixed issues in meta tag language specs.
+- Added meta tags treatment on the template class.
+
 ## [1.7.2.0] - 2017-04-21
 
 - Added support for one-click on-screen notifications dismissal.
