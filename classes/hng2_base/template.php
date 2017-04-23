@@ -20,6 +20,14 @@ class template
     
     private $page_title;
     
+    public $page_meta_description;
+    public $page_meta_keywords;
+    public $page_meta_rating;
+    public $page_meta_revisit_after;
+    public $page_meta_robots;
+    public $page_meta_url;
+    public $page_meta_image;
+    
     public $page_requires_login = false;
     
     public $page_contents_include;
@@ -50,6 +58,33 @@ class template
         
         $this->url = "{$config->full_root_path}/templates/{$this->name}";
         $this->load_xml_vars();
+        
+        $this->set_meta_tags();
+    }
+    
+    private function set_meta_tags()
+    {
+        global $settings;
+        
+        $this->page_meta_description   = $settings->get("engine.meta_description");
+        $this->page_meta_keywords      = $settings->get("engine.meta_keywords");
+        $this->page_meta_rating        = $settings->get("engine.meta_rating");
+        $this->page_meta_revisit_after = $settings->get("engine.meta_revisit_after");
+        $this->page_meta_robots        = $settings->get("engine.meta_robots");
+        $this->page_meta_url           = "";
+        $this->page_meta_image         = "";
+        
+        if( empty($this->page_meta_rating) ) $this->page_meta_rating = "general";
+        if( empty($this->page_meta_revisit_after) ) $this->page_meta_revisit_after = "7 days";
+    }
+    
+    public function sanitize_meta_var($input)
+    {
+        return str_replace(
+            array('"', "\n"),
+            array("", " "),
+            $input
+        );
     }
     
     private function load_xml_vars()
