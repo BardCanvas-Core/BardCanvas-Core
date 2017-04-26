@@ -1,0 +1,67 @@
+/**
+ * Modal pseudo-dialog helper class
+ * For usage in places where jQuery UI dialog is not a good solution.
+ * 
+ * Usage example:
+ * 
+ * <div id="some_id" class="pseudo_dialog">
+ *     <div class="frame">
+ *          <h1 class="title">Some title</h1>
+ *          <div class="content">
+ *              (The contents)
+ *          </div>
+ *          <div class="buttons" align="right">
+ *              <button onclick="$('#some_id').hide()">Close</button>
+ *          </div>
+ *     </div>
+ * </div>
+ *  
+ * Notes:
+ *  • It will not work fine on very small displays.
+ *  • You can set a maximum width to the frame using E.G. style="max-width: 200px".
+ *  • Height is automatically calculated.
+ * 
+ * @package    HNG2
+ * @subpackage core
+ * @author     Alejandro Caballero - lava.caballero@gmail.com
+ */
+
+.pseudo_dialog {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, .25);
+    text-align: center;
+    z-index: 100;
+    line-height: 100vh;
+}
+
+.pseudo_dialog .frame {
+    line-height: normal;
+    vertical-align: middle;
+    width: calc(100vw - 10px);
+    display: inline-block; text-align: left;
+    background-color: white; border: 1px solid silver;
+    overflow: hidden;
+    -webkit-box-shadow: 5px 5px 30px black;
+    -moz-box-shadow:    5px 5px 30px black;
+    box-shadow:         5px 5px 30px black;
+}
+
+.pseudo_dialog .title {
+    margin: 0; padding: 0 0 0 10px; margin-bottom: 10px; border: none; border-radius: 0;
+    height: 40px; line-height: 40px; font-size: 16px; overflow: hidden; white-space: nowrap;
+}
+
+.pseudo_dialog .content {
+    max-height: calc(100vh - 110px);
+    margin: 0; padding: 0 10px;
+    overflow: auto;
+}
+
+.pseudo_dialog .buttons {
+    margin-top: 10px; padding-right: 10px;
+    height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+}
