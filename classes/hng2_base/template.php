@@ -351,7 +351,7 @@ class template
     private function get_widget_contents(
         $id, $seed, $title, $user_scope, $page_scope, $pages_list, $template_file, $use_case
     ) {
-        global $modules, $account;
+        global $modules, $account, $config;
         
         $current_page_tag = $this->get("page_tag");
         $template_file    = "{$this->abspath}/segments/{$template_file}";
@@ -410,7 +410,10 @@ class template
             if( $page_scope == "hide" &&   in_array($current_page_tag, $pages_list) ) return null;
         }
         
+        $config->globals["building_widget_title"] = $title;
         $content = $this->build_widget_contents($module, $widget, $seed);
+        $title = $config->globals["building_widget_title"];
+        unset( $config->globals["building_widget_title"] );
         
         if( empty($content) ) return null;
         
