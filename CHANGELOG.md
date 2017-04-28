@@ -1,6 +1,14 @@
 
 # BardCanvas Core Changelog 
 
+## [1.7.4.0]
+
+- Added jQuery Table Sorter 2.0.5b to lib.
+- Added CSS pseudo dialog helper in media directory.
+- Added possibility of title overriding on sidebar widgets.
+- Updated setup to remove a deprecated argument from the updates checker on the crontab proposal.
+- Tuned notifications killer.
+
 ## [1.7.3.0] - 2017-04-23
 
 - Added .htaccess to data dir.
