@@ -275,6 +275,7 @@ textarea[readonly]             { background-color: whitesmoke; color: gray; bord
 .noty_text { font-size: 10pt; }
 
 #notifications_killer {
+    z-index: 100;
     position: fixed; bottom: 0; left: 20px; width: 310px;
     height: 25px; padding: 6px 6px 6px 1px;
     overflow: hidden; background-color: black; color: silver; cursor: pointer;

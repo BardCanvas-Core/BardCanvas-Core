@@ -99,7 +99,7 @@ function notification_clicked( $noty_object )
     {
         if( response != 'OK' ) console.log(response);
         
-        hide_notifications_killer();
+        setTimeout('check_notifications_killer()', 200);
     });
 }
 
@@ -146,6 +146,12 @@ function show_notifications_killer()
 function hide_notifications_killer()
 {
     $('#notifications_killer').fadeOut('fast');
+}
+
+function check_notifications_killer()
+{
+    var $elements = $('.noty_message');
+    if( $elements.length == 0 ) hide_notifications_killer();
 }
 
 function kill_all_notifications()
