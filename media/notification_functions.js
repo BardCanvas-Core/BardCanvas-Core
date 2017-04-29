@@ -99,7 +99,7 @@ function notification_clicked( $noty_object )
     {
         if( response != 'OK' ) console.log(response);
         
-        setTimeout('check_notifications_killer()', 200);
+        setTimeout('check_notifications_killer()', 120);
     });
 }
 
