@@ -25,6 +25,12 @@ function show_ajax_dialog(title, url, full_sized)
 {
     if( typeof full_sized == 'undefined' ) full_sized = false;
     
+    var width = $(window).width() - 20;
+    if( ! full_sized && width > 480 ) width = 480;
+    
+    var height = 'auto';
+    if( full_sized ) height = $(window).height() - 20;
+    
     $.get(url, function(response)
     {
         var html = '<div id="ajax_temporary_dialog" style="display: none;">' + response + '</div>';
@@ -33,10 +39,11 @@ function show_ajax_dialog(title, url, full_sized)
         $('#ajax_temporary_dialog').dialog({
             modal:     true,
             title:     title,
-            width:     full_sized ? $(window).width()  - 20 : 440,
-            height:    full_sized ? $(window).height() - 20 : 'auto',
+            width:     width,
+            height:    height,
             maxHeight: $(window).height() - 20,
-            close:     function() { $('#ajax_temporary_dialog').dialog('destroy').remove(); }
+            open:      function() { $('body').css('overflow', 'hidden'); },
+            close:     function() { $('#ajax_temporary_dialog').dialog('destroy').remove(); $('body').css('overflow', 'auto'); }
         });
     });
 }
@@ -60,13 +67,20 @@ function show_discardable_dialog(selector, full_sized)
     var title = $(selector).attr('title');
     if( typeof title == 'undefined' ) title = '';
     
+    var width = $(window).width() - 20;
+    if( ! full_sized && width > 480 ) width = 480;
+    
+    var height = 'auto';
+    if( full_sized ) height = $(window).height() - 20;
+    
     $(selector).dialog({
         modal:     true,
         title:     $(selector).attr('title'),
-        width:     full_sized ? $(window).width()  - 20 : 440,
-        height:    full_sized ? $(window).height() - 20 : 'auto',
+        width:     width,
+        height:    height,
         maxHeight: $(window).height() - 20,
-        close:     function() { $(this).dialog('destroy'); }
+        open:      function() { $('body').css('overflow', 'hidden'); },
+        close:     function() { $(this).dialog('destroy'); $('body').css('overflow', 'auto'); }
     });
 }
 
