@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.7.4.1]
+
+- Added common header (to be removed from all templates).
+- Fadeout timing adjustment for notifications killer.
+
 ## [1.7.4.0]
 
 - Added jQuery Table Sorter 2.0.5b to lib.
