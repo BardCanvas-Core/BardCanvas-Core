@@ -60,8 +60,12 @@
 }
 
 .pseudo_dialog .buttons {
-    margin-top: 10px; padding-right: 10px;
-    height: 30px;
+    border-top: 1px solid silver;
+    /* padding-top: 10px; */
+    /* padding-bottom: 10px; */
+    padding-right: 10px;
     white-space: nowrap;
     overflow: hidden;
+    height: 40px;
+    line-height: 40px;
 }
