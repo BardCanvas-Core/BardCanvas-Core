@@ -16,12 +16,13 @@ function wasuuup()
 //noinspection JSUnusedGlobalSymbols
 /**
  * Get a document and show a dialog from it
- * 
- * @param {string}  title
- * @param {string}  url
- * @param {boolean} full_sized
+ *
+ * @param {string}   title
+ * @param {string}   url
+ * @param {boolean}  full_sized
+ * @param {function} callback
  */
-function show_ajax_dialog(title, url, full_sized)
+function show_ajax_dialog(title, url, full_sized, callback)
 {
     if( typeof full_sized == 'undefined' ) full_sized = false;
     
@@ -45,6 +46,8 @@ function show_ajax_dialog(title, url, full_sized)
             open:      function() { $('body').css('overflow', 'hidden'); },
             close:     function() { $('#ajax_temporary_dialog').dialog('destroy').remove(); $('body').css('overflow', 'auto'); }
         });
+        
+        if( callback ) callback();
     });
 }
 
