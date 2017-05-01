@@ -1,12 +1,21 @@
 
 # BardCanvas Core Changelog 
 
-## [1.7.4.1]
+## [1.8.0.0] - 2017-05-01
+
+- Improved "discardable" and "ajax" temporary dialogs.
+- CSS fixes to pseudo dialog.
+- Limited notifications area to avoid them surpassing the display height.
+- Minor adjustments to language files.
+- Detached libraries to a different package to reduce the size of the core.
+- Updated setup file to check against the lib directory.
+
+## [1.7.4.1] - 2017-04-29
 
 - Added common header (to be removed from all templates).
 - Fadeout timing adjustment for notifications killer.
 
-## [1.7.4.0]
+## [1.7.4.0] - 2017-04-28
 
 - Added jQuery Table Sorter 2.0.5b to lib.
 - Added CSS pseudo dialog helper in media directory.

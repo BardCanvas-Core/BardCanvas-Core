@@ -572,6 +572,31 @@ reviewing any warnings or errors before attempting to run the setup operations.<
     <h2>Bare neccessities</h2>
     <div class="framed_content">
         
+        <?php if( ! is_dir("lib") ): $errors_found++; ?>
+            
+            <div class="row clearfix">
+                <span class="framed_content inlined state_ko pull-right"><i class="fa fa-warning"></i> Missing</span>
+                
+                Library directory
+                
+                <div class="framed_content state_highlight">
+                    <i class="fa fa-warning"></i>
+                    The core required libraries aren't found. You may need to re-download the bundle or fetch the
+                    <code>core/bardcanvas_lib</code> package
+                </div>
+            </div>
+            
+        <?php else: ?>
+            
+            <div class="row clearfix">
+                <span class="framed_content inlined pull-right">Present</span>
+                
+                Library directory
+                
+            </div>
+            
+        <?php endif; ?>
+        
         <?php if( ! file_exists("config.php") ): $errors_found++; ?>
             
             <div class="row clearfix">
@@ -592,6 +617,7 @@ reviewing any warnings or errors before attempting to run the setup operations.<
                 <span class="framed_content inlined pull-right">Present</span>
                 
                 Configuration file
+                
             </div>
             
         <?php endif; ?>
