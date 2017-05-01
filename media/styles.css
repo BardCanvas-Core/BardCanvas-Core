@@ -270,6 +270,7 @@ textarea[readonly]             { background-color: whitesmoke; color: gray; bord
     -moz-box-shadow:    4px 4px 15px 0 rgba(50, 50, 50, 0.75);
     box-shadow:         4px 4px 15px 0 rgba(50, 50, 50, 0.75);
     border-radius: 5px;
+    max-height: 90vh; overflow: auto;
 }
 
 .noty_text { font-size: 10pt; }

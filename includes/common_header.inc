@@ -131,7 +131,7 @@ if( empty($jquery_ui_theme) ) $jquery_ui_theme = "blitzer";
     <!-- Core UI stuff -->
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>.css">
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>.css">
-    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-6.js"></script>
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-7.js"></script>
     
     <? if( $template->get("include_notification_functions") ): ?>
         <!-- Notifications -->
