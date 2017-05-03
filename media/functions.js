@@ -228,11 +228,11 @@ function refresh_record_browser($target)
         target:       target_id,
         beforeSubmit: function()
                       {
-                          $target.block(blockUI_medium_params);
+                          if( ! $target.hasClass('no_refresh_blocking') ) $target.block(blockUI_medium_params);
                       },
         success:      function()
                       {
-                          $target.unblock();
+                          if( ! $target.hasClass('no_refresh_blocking') ) $target.unblock();
                           refresh_record_browser($target);
                       }
     });
