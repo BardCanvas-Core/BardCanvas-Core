@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+# [1.8.1.0] - 2017-05-05
+
+- Replaced Font Awesome with version 4.7.0 on the common header.
+- Added support to prevent blocking ajax record browsers (when refreshing) on JS global functions.
+
 ## [1.8.0.0] - 2017-05-01
 
 - Improved "discardable" and "ajax" temporary dialogs.
