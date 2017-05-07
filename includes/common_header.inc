@@ -135,10 +135,12 @@ if( empty($jquery_ui_theme) ) $jquery_ui_theme = "blitzer";
     
     <? if( $template->get("include_notification_functions") ): ?>
         <!-- Notifications -->
+        <script type="text/javascript"> var notifications_killer_caption = '<?= trim(addslashes($language->dismiss_all_notifications)) ?>'; </script>
         <script type="text/javascript" src="<?= $config->full_root_path ?>/lib/noty-2.3.7/js/noty/packaged/jquery.noty.packaged.min.js"></script>
         <script type="text/javascript" src="<?= $config->full_root_path ?>/lib/noty-2.3.7/js/noty/themes/default.js"></script>
         <script type="text/javascript" src="<?= $config->full_root_path ?>/media/noty_defaults~v<?=$config->engine_version?>.js"></script>
-        <script type="text/javascript" src="<?= $config->full_root_path ?>/media/notification_functions~v<?=$config->engine_version?>-1.js"></script>
+        <script type="text/javascript" src="<?= $config->full_root_path ?>/media/notification_functions~v<?=$config->engine_version?>-13.js"></script>
+        <script type="text/javascript"> $.noty.layouts.bottomLeft.css.width = 'auto'; </script>
     <? endif; ?>
     
     <!-- ================= -->

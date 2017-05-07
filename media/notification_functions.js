@@ -99,7 +99,7 @@ function notification_clicked( $noty_object )
     {
         if( response != 'OK' ) console.log(response);
         
-        setTimeout('check_notifications_killer()', 120);
+        check_notifications_killer();
     });
 }
 
@@ -136,22 +136,29 @@ function throw_notification(message, message_type)
 
 function show_notifications_killer()
 {
+    //noinspection JSJQueryEfficiency
     var $killer = $('#notifications_killer');
-    if( $killer.is(':visible') ) return;
     
-    $killer.attr('onclick', 'kill_all_notifications()');
-    $killer.fadeIn('fast');
+    if( $killer.length == 0 )
+    {
+        $('body').append(sprintf(
+            '<div id="notifications_killer" style="display: none" onclick="kill_all_notifications()">%s</div>',
+            notifications_killer_caption
+        ));
+        
+        $killer = $('#notifications_killer');
+        $killer.fadeIn('fast');
+    }
 }
 
 function hide_notifications_killer()
 {
-    $('#notifications_killer').fadeOut('fast');
+    $('#notifications_killer').fadeOut(50, function() { $(this).remove(); });
 }
 
 function check_notifications_killer()
 {
-    var $elements = $('.noty_message');
-    if( $elements.length == 0 ) hide_notifications_killer();
+    if( $('.noty_message').length == 0 ) hide_notifications_killer();
 }
 
 function kill_all_notifications()
@@ -179,7 +186,6 @@ function kill_all_notifications()
             ;
             
             $.get(url, function(response) { if( response != 'OK' ) console.log(response); });
-            
         }
     }
     
