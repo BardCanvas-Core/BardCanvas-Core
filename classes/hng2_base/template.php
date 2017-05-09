@@ -311,7 +311,10 @@ class template
         
         foreach( explode("\n", $layout) as $entry )
         {
-            list($id, $seed, $title, $user_scope, $page_scope, $pages_list) = explode("|", trim($entry));
+            $entry = trim($entry);
+            if( substr($entry, 0, 1) == "#" ) continue;
+            
+            list($id, $seed, $title, $user_scope, $page_scope, $pages_list) = explode("|", $entry);
             $id         = trim($id);
             $seed       = trim($seed);
             $title      = trim($title);
