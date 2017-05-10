@@ -456,7 +456,7 @@ class template
         global $modules;
         
         /** @noinspection PhpUnusedLocalVariableInspection */
-        $data_key = "{{$widget["for"]}}-{$this_module->name}.{$widget["id"]}" . (empty($seed) ? "" : "-{$seed}");
+        $data_key = "{$widget["for"]}-{$this_module->name}.{$widget["id"]}" . (empty($seed) ? "" : "-{$seed}");
         
         if( $widget["type"] == "php" )
         {
