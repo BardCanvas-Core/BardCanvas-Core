@@ -50,6 +50,20 @@
         <invalid_call>Has invocado este script de una manera incorrecta</invalid_call>
         <recaptcha_not_configured>ReCaptcha no está configurado! Favor de notificar al webmaster, ya que se requiere de un juego de llaves ReCaptcha en el módulo de configuración de este sitio web.</recaptcha_not_configured>
         <webmaster_address_empty>La dirección de correo del webmaster no se ha configurado. No se pueden enviar correos al personal de este website.</webmaster_address_empty>
+        <ajax>
+            <title>Fallo en llamada en segundo plano</title>
+            <info><![CDATA[
+                Se ha encontrado un problema en una llamada a un documento
+                en segundo plano:
+                 
+                URL:       {$url}
+                Respuesta: {$response}
+                 
+                Por favor copia este mensaje o realiza una captura de pantalla
+                y envíalo al staff de soporte con una descripción de lo que estabas
+                haciendo para que tomen las medidas pertinentes.
+            ]]></info>
+        </ajax>
     </errors>
     
     <click_here_to_continue>Da click aquí para continuar...</click_here_to_continue>

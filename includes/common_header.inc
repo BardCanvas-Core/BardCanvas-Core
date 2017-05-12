@@ -67,6 +67,8 @@ if( empty($jquery_ui_theme) ) $jquery_ui_theme = "blitzer";
         var $_IS_MOBILE               = <?= is_mobile() ? "true" : "false" ?>;
         var $_GENERIC_CONFIRMATION    = '<?= $language->confirm_action ?>';
         var $_SILENT_NOTIFICATIONS    = '<?= $account->engine_prefs["!core:silent_notifications"] ?>' == 'true';
+        var $_AJAX_ERROR_DIALOG_TITLE = '<?= trim($language->errors->ajax->title) ?>';
+        var $_AJAX_ERROR_CONTENTS     = '<?= str_replace(array("\r", "\n"), "\\n", addslashes(unindent($language->errors->ajax->info))) ?>';
         
         var $_MAIN_MENU_AUTO_COLLAPSE_WIDTH = parseInt('<?= (int) $settings->get("engine.main_menu_auto_collapse_width", 700) ?>');
         
@@ -131,7 +133,7 @@ if( empty($jquery_ui_theme) ) $jquery_ui_theme = "blitzer";
     <!-- Core UI stuff -->
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>.css">
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>.css">
-    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-9.js"></script>
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-21.js"></script>
     
     <? if( $template->get("include_notification_functions") ): ?>
         <!-- Notifications -->

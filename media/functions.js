@@ -8,6 +8,24 @@
  * @var {string} $_FULL_ROOT_PATH
  */
 
+$(document).ajaxError(function( event, jqxhr, settings, thrownError )
+{
+    console.log('>>> AJAX ERROR DETECTED');
+    console.log('>>> URL:      ', settings.url);
+    console.log('>>> jqXHR:    ', jqxhr);
+    console.log('>>> Response: ', jqxhr.status + ' ' + jqxhr.statusText);
+    
+    var title    = $_AJAX_ERROR_DIALOG_TITLE;
+    var contents = $_AJAX_ERROR_CONTENTS;
+    
+    contents = contents.replace('{$url}',      settings.url);
+    contents = contents.replace('{$response}', jqxhr.status + ' ' + jqxhr.statusText);
+    
+    alert(contents);
+    $('body').find('.blockUI').remove();
+});
+
+
 function wasuuup()
 {
     return parseInt(Math.random() * 1000000000000000);

@@ -50,6 +50,19 @@
         <invalid_call>You've called this script the wrong way</invalid_call>
         <recaptcha_not_configured>ReCaptcha isn't configured! Please notify the webmaster that a ReCaptcha keypair must be added on the Website Settings Module.</recaptcha_not_configured>
         <webmaster_address_empty>The Webmaster address is empty. No emails can be delivered to the staff.</webmaster_address_empty>
+        <ajax>
+            <title>Failure on a background call</title>
+            <info><![CDATA[
+                A failure has been detected on a call to a document in the background:
+                 
+                URL:      {$url}
+                Response: {$response}
+                 
+                Please copy this message or capture the screen and send it to
+                the tech support staff with a description of what you were doing
+                so they can fix the issue as soon as possible.
+            ]]></info>
+        </ajax>
     </errors>
     
     <click_here_to_continue>Click here to continue...</click_here_to_continue>
