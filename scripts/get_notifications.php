@@ -13,9 +13,7 @@ use hng2_base\module;
 
 include "../config.php";
 include "../includes/bootstrap.inc";
-
-if( ! $account->_exists ) throw_fake_401();
-# $account->ping();
+header("Content-Type: application/json; charset=utf-8");
 
 $start_from = "";
 if( ! empty($_REQUEST["last_read"]) )
@@ -27,6 +25,8 @@ if( ! empty($_REQUEST["last_read"]) )
 $notifications_return_collection = array(
     "notifications" => array(),
 );
+
+if( ! $account->_exists ) die( json_encode($notifications_return_collection) );
 
 $notifications_return_collection["notifications"] = get_notifications($account->id_account);
 
@@ -46,5 +46,4 @@ foreach($modules as $module)
     }
 }
 
-header("Content-Type: application/json; charset=utf-8");
 echo json_encode($notifications_return_collection);
