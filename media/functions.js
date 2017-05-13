@@ -361,6 +361,100 @@ function check_main_menu_auto_collapse()
         $('body').attr('data-main-menu-collapsed', null);
 }
 
+/**
+ * Initializes blockUI prgress updater
+ */
+function blockUI_progress_init()
+{
+    var $contanier = $('#blockui_progress_container');
+    if( $contanier.length == 0 ) return;
+    
+    var $bar       = $contanier.find('.bar');
+    var $percent   = $contanier.find('.percent');
+    var $numbers   = $contanier.find('.numbers');
+    
+    var percentVal = '0%';
+    $bar.css('width', percentVal);
+    $percent.html(percentVal);
+    if( $numbers.length > 0 ) $numbers.text('? / ? KB');
+}
+
+/**
+ * Updates upload progress on blockUI element
+ * 
+ * @param event
+ * @param {int} position
+ * @param {int} total
+ * @param {int} percentComplete
+ */
+function blockUI_progress_update(event, position, total, percentComplete)
+{
+    var $contanier = $('#blockui_progress_container');
+    var $bar       = $contanier.find('.bar');
+    var $percent   = $contanier.find('.percent');
+    var $numbers   = $contanier.find('.numbers');
+    
+    var percentVal = percentComplete + '%';
+    $bar.css('width', percentVal);
+    $percent.html(percentVal);
+    
+    if( $numbers.length > 0 )
+    {
+        if( typeof $numbers.attr('data-max') == 'undefined' )
+            $numbers.attr('data-max', total);
+        
+        var kbmb = "KB";
+        if( total >= 1000000 )
+        {
+            kbmb     = "MB";
+            total    = total    / 1000000;
+            position = position / 1000000;
+        }
+        else
+        {
+            total    = total    / 1000;
+            position = position / 1000;
+        }
+        
+        total    = total.toFixed(1);
+        position = position.toFixed(1);
+        $numbers.text(sprintf('%s / %s %s', position, total, kbmb));
+    }
+}
+
+/**
+ * Finalizes upload progress on blockUI element
+ */
+function blockUI_progress_complete()
+{
+    var $contanier = $('#blockui_progress_container');
+    var $bar       = $contanier.find('.bar');
+    var $percent   = $contanier.find('.percent');
+    var $numbers   = $contanier.find('.numbers');
+    
+    var percentVal = '100%';
+    $bar.css('width', percentVal);
+    $percent.html(percentVal);
+    
+    if( $numbers.length > 0 )
+    {
+        var total = parseInt($numbers.attr('data-max'));
+        var kbmb  = "KB";
+        if( total >= 1000000 )
+        {
+            kbmb  = "MB";
+            total = total / 1000000;
+        }
+        else
+        {
+            total = total / 1000;
+        }
+        
+        total = total.toFixed(1);
+        $numbers.text(sprintf('%s / %1$s %s', total, kbmb));
+    }
+}
+
 $(document).ready(function()
 {
     // adjust_top_dimensions();
