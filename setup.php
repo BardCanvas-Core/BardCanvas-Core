@@ -511,7 +511,6 @@ if($_GET["go"] == "true")
     <pre># m h d m w command
   0 * * * * php -q <?php echo __DIR__; ?>/accounts/scripts/cli_autopurge.php > /dev/null
   0 4 * * * php -q <?php echo __DIR__; ?>/updates_client/cli_check.php       > <?php echo __DIR__; ?>/logs/updates_checker-$(date +\%Y\%m\%d).log 2>&1
-  0 4 * * 1 cd <?php echo __DIR__; ?>/data/cache && find . -atime +7 -delete > /dev/null
 </pre>
     
     <p>Please go into your <code>crontab</code> and add the lines above.</p>
