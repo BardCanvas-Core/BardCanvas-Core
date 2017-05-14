@@ -14,6 +14,7 @@ $(document).ajaxError(function( event, jqxhr, settings, thrownError )
     console.log('>>> URL:      ', settings.url);
     console.log('>>> jqXHR:    ', jqxhr);
     console.log('>>> Response: ', jqxhr.status + ' ' + jqxhr.statusText);
+    if( parseInt(jqxhr.status) == 0 ) return;
     
     var title    = $_AJAX_ERROR_DIALOG_TITLE;
     var contents = $_AJAX_ERROR_CONTENTS;
