@@ -1,7 +1,21 @@
 
 # BardCanvas Core Changelog 
 
-# [1.8.1.0] - 2017-05-05
+## [1.9.0.0] - 2017-05-13
+
+- Tuned notifications killer.
+  Note: the container div no longer needs to be present in the template, so it has been deprecated.
+- Tuned IP address retriever funciton.
+- Added AJAX calls error handler.
+- Tuned notifications getter to return an valid empty result when called without a session
+  to avoid unneeded AJAX errors popping up.
+- Added blockUI elements and functions to support AJAXified upload progress indicators.
+- Removed unneeded line from crontab proposition after setup.
+- Modified the data key on template class to suit v2 of the templates manager.
+  **IMPORTANT:** This will render ALL widgets that require settings obsolete.
+  All of them will have to be edited with the new editor.
+
+## [1.8.1.0] - 2017-05-05
 
 - Replaced Font Awesome with version 4.7.0 on the common header.
 - Added support to prevent blocking ajax record browsers (when refreshing) on JS global functions.
