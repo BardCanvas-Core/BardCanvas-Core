@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.9.0.1] - 2017-05-16
+
+- Relocated notifications killer to the top of the notifications list.
+
 ## [1.9.0.0] - 2017-05-13
 
 - Tuned notifications killer.
