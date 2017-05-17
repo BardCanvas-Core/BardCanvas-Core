@@ -140,20 +140,15 @@ function show_notifications_killer()
     var $killer = $('#notifications_killer');
     
     if( $killer.length == 0 )
-    {
-        $('body').append(sprintf(
-            '<div id="notifications_killer" style="display: none" onclick="kill_all_notifications()">%s</div>',
+        $('#noty_bottomLeft_layout_container').prepend(sprintf(
+            '<li id="notifications_killer" onclick="kill_all_notifications()">%s</li>',
             notifications_killer_caption
         ));
-        
-        $killer = $('#notifications_killer');
-        $killer.fadeIn('fast');
-    }
 }
 
 function hide_notifications_killer()
 {
-    $('#notifications_killer').fadeOut(50, function() { $(this).remove(); });
+    $('#notifications_killer').remove();
 }
 
 function check_notifications_killer()
