@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.9.1.0] - 2017-05-23
+
+- Tuning account classes and added methods to simplfy some areas on the templates.
+
 ## [1.9.0.1] - 2017-05-16
 
 - Relocated notifications killer to the top of the notifications list.
