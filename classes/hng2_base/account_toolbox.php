@@ -10,6 +10,7 @@
 namespace hng2_base;
 
 use hng2_cache\disk_cache;
+use hng2_modules\messaging\toolbox;
 use hng2_repository\abstract_record;
 
 class account_toolbox extends abstract_record
@@ -36,6 +37,8 @@ class account_toolbox extends abstract_record
     public $changelog;
     
     # Dynamically loaded
+    public $engine_prefs = array();
+    public $country_name;
     public $_exists    = false;
     public $_is_admin  = false;
     
@@ -287,5 +290,79 @@ class account_toolbox extends abstract_record
         if( is_string($granted) ) $granted = preg_split('/,\s*/', $granted);
         
         return in_array($module, $granted);
+    }
+    
+    /**
+     * Renders a "send pm to user" link
+     *
+     * @param string $caption
+     * @param string $classes
+     * @param string $style
+     *
+     * @return string
+     */
+    public function get_pm_sending_link($caption, $classes = "", $style = "")
+    {
+        global $language, $settings;
+        
+        if( ! $this->can_interact_in_pms() ) return "";
+        
+        $user_name    = $this->user_name;
+        $display_name = htmlspecialchars($this->display_name);
+        $title        = htmlspecialchars(replace_escaped_vars(
+            $language->contact->pm->title, '{$website_name}', $settings->get("engine.website_name")
+        ));
+        
+        return "<span class=\"$classes\" style=\"$style\" onclick=\"send_pm(this, '{$user_name}', '{$display_name}')\"
+                    title=\"$title\"><i class=\"fa fa-inbox fa-fw\"></i>
+                    {$caption}</span>";
+    }
+    
+    /**
+     * Check if this account can interact with the current user in PMs
+     * 
+     * @return bool
+     */
+    public function can_interact_in_pms()
+    {
+        global $modules, $account, $config;
+        
+        #
+        # Initial checks
+        #
+        
+        if( ! $modules["messaging"]->enabled ) return false;
+        if( $account->level < $config::NEWCOMER_USER_LEVEL ) return false;
+        if( $this->state != "enabled" ) return false;
+        if( $this->id_account == $account->id_account ) return false;
+        
+        #
+        # Check if the target user is the current user blocklist
+        #
+        
+        /** @var toolbox $toolbox */
+        $toolbox = $config->globals["messaging_toolbox"];
+        if( empty($toolbox) )
+        {
+            $toolbox = new toolbox();
+            $config->globals["messaging_toolbox"] = $toolbox;
+        }
+        
+        $blocklist = $toolbox->get_account_blocklist($account);
+        if( in_array($this->user_name, $blocklist) )
+            return false;
+        
+        #
+        # Check if we are in someone else's blocklist
+        #
+        
+        if( ! empty($account->engine_prefs["user_blocking.pms/{$this->user_name}"]) )
+            return false;
+        
+        #
+        # All checks passed.
+        #
+        
+        return true;
     }
 }
