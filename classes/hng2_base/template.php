@@ -336,7 +336,7 @@ class template
     }
     
     /**
-     * @param        $id            module.id
+     * @param string $id            module.id
      * @param        $seed
      * @param        $title
      * @param string $user_scope    all|online|offline
