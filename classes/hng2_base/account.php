@@ -14,10 +14,6 @@ class account extends account_toolbox
     public $level = 1;
     public $state = "new";
     
-    # Dynamically loaded
-    public $engine_prefs = array();
-    public $country_name;
-    
     # Temporary and control
     public $_raw_password;
     public $_is_locked = false;
