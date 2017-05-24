@@ -782,6 +782,12 @@ class media_repository extends abstract_repository
         $res = $database->exec("update {$this->table_name} set status = '$new_status' where  id_media = '$id_media'");
         $this->last_query = $database->get_last_query();
         
+        if( in_array($new_status, array("published", "reviewing")) &&  $res > 0 )
+        {
+            $item = $this->get($id_media);
+            $this->unhide_files(array($item->path, $item->thumbnail));
+        }
+        
         return $res;
     }
     
