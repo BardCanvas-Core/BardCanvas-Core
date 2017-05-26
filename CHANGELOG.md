@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.9.1.1] - 2017-05-25
+
+- Added restoration of hidden files from the media repository when taken out from the trash.
+
 ## [1.9.1.0] - 2017-05-23
 
 - Tuning account classes and added methods to simplfy some areas on the templates.
