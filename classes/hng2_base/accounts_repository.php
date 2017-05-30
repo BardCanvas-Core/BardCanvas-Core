@@ -253,13 +253,21 @@ class accounts_repository extends abstract_repository
         return $return;
     }
     
-    public function get_online_users_list($boundary_minutes = 10, $exclude_self = true)
+    public function get_online_users_list($boundary_minutes = 10, $exclude_self = true, $extra_filter = array())
     {
         global $database, $account, $config;
         
         $self_id = $exclude_self ? $account->id_account : 0;
+        $date    = date("Y-m-d H:i:s", strtotime("now - $boundary_minutes minutes"));
+        $where   = array(
+            "account.id_account            <> '$self_id'",
+            "account_devices.last_activity >= '$date'",
+            "account_devices.id_account     = account.id_account",
+            "account.state                  = 'enabled'",
+        );
+        if( ! empty($extra_filter) ) $where = array_merge($where, $extra_filter);
+        $where = implode(" and\n                ", $where);
         
-        $date = date("Y-m-d H:i:s", strtotime("now - $boundary_minutes minutes"));
         $query = "
             select
                 account.id_account,
@@ -273,9 +281,7 @@ class accounts_repository extends abstract_repository
                 account,
                 account_devices
             where
-                account.id_account <> '$self_id' and
-                account_devices.id_account = account.id_account and
-                account_devices.last_activity >= '$date'
+                $where
             order by
                 display_name
         ";
