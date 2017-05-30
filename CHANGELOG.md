@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.9.1.2] - 2017-05-29
+
+- Added support for global messaging blockages.
+- Added filtering support on online users list forger.
+
 ## [1.9.1.1] - 2017-05-25
 
 - Added restoration of hidden files from the media repository when taken out from the trash.
