@@ -90,11 +90,11 @@ if( $_CURRENT_USER_IS_ADMIN )
 if( $_CURRENT_USER_LANGUAGE != "en" && $_CURRENT_USER_LANGUAGE != "en_US" )
 {
     tinymce_defaults.language     = $_CURRENT_USER_LANGUAGE;
-    tinymce_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.4.0/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=5';
+    tinymce_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.6.3/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=5';
     
     tinymce_full_defaults.language     = $_CURRENT_USER_LANGUAGE;
-    tinymce_full_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.4.0/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=5';
+    tinymce_full_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.6.3/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=5';
     
     tinymce_minimal_defaults.language     = $_CURRENT_USER_LANGUAGE;
-    tinymce_minimal_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.4.0/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=5';
+    tinymce_minimal_defaults.language_url = $_FULL_ROOT_PATH + '/lib/tinymce-4.6.3/langs/' + $_CURRENT_USER_LANGUAGE + '.js?v=5';
 }
