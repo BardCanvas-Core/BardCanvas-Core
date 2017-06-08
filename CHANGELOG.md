@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.10.0.1] - 2017-06-08
+
+- Updated TinyMCE init script.
+
 ## [1.10.0.0] - 2017-06-08
 
 - Added missing check for account interaction in PMs.
