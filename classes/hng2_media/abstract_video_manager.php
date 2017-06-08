@@ -22,25 +22,26 @@ abstract class abstract_video_manager extends abstract_item_manager
         parent::__construct($file_name, $mime_type, $file_path);
         
         if( $settings->get("engine.ffmpeg_path") == "" )
-            $this->ffmpeg_bin = "ffmpeg";
+            $this->ffmpeg_bin = "";
         else
             $this->ffmpeg_bin = rtrim($settings->get("engine.ffmpeg_path"), "/") . "/ffmpeg";
         
-        $this->check_ffmpeg();
+        if( empty($this->ffmpeg_bin) )
+        {
+            $this->mime_type = mime_content_type($this->file_name);
+            if( empty($this->mime_type) )
+            {
+                $parts = explode(".", $this->file_name);
+                $ext   = array_pop($parts);
+                if( empty($ext) ) $this->mime_type = "application/octet-stream";
+                else              $this->mime_type = "video/$ext";
+            }
+            
+            $this->enforced_mime_type = $this->mime_type;
+            $this->needs_conversion   = false;
+        }
         
         if( $this->needs_conversion ) $this->convert();
-    }
-    
-    private function check_ffmpeg()
-    {
-        $res = shell_exec("{$this->ffmpeg_bin} -version");
-        
-        if( ! stristr($res, "libavcodec") )
-            throw new \Exception(
-                "Can't get ffmpeg version! It is possible that ffmpeg is not installed or configured, " .
-                "or the binary is not executable. " .
-                "Shell call result: $res"
-            );
     }
     
     private function convert()
@@ -74,6 +75,8 @@ abstract class abstract_video_manager extends abstract_item_manager
      */
     public function get_thumbnail()
     {
+        if( empty($this->ffmpeg_bin) ) return "";
+        
         $source = $this->file_path;
         $target = dirname($source) . "/" . basename($source) . ".jpg";
         
