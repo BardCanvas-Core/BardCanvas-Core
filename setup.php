@@ -867,16 +867,17 @@ reviewing any warnings or errors before attempting to run the setup operations.<
         <div class="row clearfix">
             <?php if( class_exists("Memcache") ): ?>
                 <span class="framed_content inlined pull-right">Enabled</span>
-            <?php else: $errors_found++; ?>
-                <span class="framed_content inlined state_ko pull-right"><i class="fa fa-warning"></i> Disabled</span>
+            <?php else: ?>
+                <span class="framed_content inlined state_highlight pull-right"><i class="fa fa-info-circle"></i> Disabled</span>
             <?php endif; ?>
             
             Memcache
             
             <?php if( ! class_exists("Memcache") ): ?>
                 <div class="framed_content state_highlight">
-                    <i class="fa fa-warning"></i>
-                    Please install or enable <code>php-pecl-memcache</code> extension.
+                    <i class="fa fa-info-circle"></i>
+                    Memcached wasn't found. If you want to get a  fast website and you have control of your host,
+                    you should install <code>memcached</code> and PHP <code>memcache</code> extension.
                 </div>
             <?php endif ?>
         </div>

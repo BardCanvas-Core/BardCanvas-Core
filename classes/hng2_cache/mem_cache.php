@@ -16,6 +16,8 @@ class mem_cache
     
     private $cache_hits = array();
     
+    private $enabled = true;
+    
     public function __construct($var_prefix = "")
     {
         global $MEMCACHE_SERVERS, $config;
@@ -24,17 +26,57 @@ class mem_cache
         
         if( ! empty($var_prefix) ) $this->var_prefix .= $var_prefix . "_";
         
-        $this->server = new \Memcache();
-        
-        foreach($MEMCACHE_SERVERS as $server)
-            $this->server->addserver($server["host"], $server["port"]);
-        
         $this->suffix = $config->memory_cache_version;
+        
+        if( empty($MEMCACHE_SERVERS) )
+        {
+            $this->enabled = false;
+        }
+        elseif( ! class_exists("Memcache") )
+        {
+            $this->enabled = false;
+        }
+        else
+        {
+            $this->server = new \Memcache();
+            
+            foreach($MEMCACHE_SERVERS as $server)
+                $this->server->addserver($server["host"], $server["port"]);
+            
+            $this->probe();
+        }
+    }
+    
+    /**
+     * Checks if memcached is available. TTL for availability is one hour.
+     */
+    private function probe()
+    {
+        global $config;
+        
+        $flag_file = "{$config->datafiles_location}/memcache_disabled";
+        if( file_exists($flag_file) )
+        {
+            if( filemtime($flag_file) < time() - 3600 )
+            {
+                $this->enabled = false;
+                
+                return;
+            }
+        }
+        
+        $res = $this->set("_dummy_test", "true");
+        if( $res !== false ) return;
+        
+        $this->enabled = false;
+        @touch($flag_file);
     }
     
     public function set($key, $value, $flag = 0, $expiration = 0)
     {
         global $config;
+        
+        if( ! $this->enabled ) return false;
         
         $key = $this->var_prefix . $key . "~v" . $this->suffix;
         
@@ -42,10 +84,10 @@ class mem_cache
         {
             $this->delete($key);
             
-            return;
+            return true;
         }
         
-        $this->server->set($key, $value, $flag, $expiration);
+        $res = $this->server->set($key, $value, $flag, $expiration);
         $this->data[$key] = $value;
         
         $backtrace = "N/A";
@@ -60,6 +102,8 @@ class mem_cache
             "timestamp" => microtime(true),
             "backtrace" => $backtrace,
         );
+        
+        return $res;
     }
     
     /**
@@ -71,6 +115,8 @@ class mem_cache
     public function get($key, $raw_key = false)
     {
         global $config;
+        
+        if( ! $this->enabled ) return null;
         
         if( $raw_key === false ) $key = $this->var_prefix . $key . "~v" . $this->suffix;
         
@@ -102,6 +148,8 @@ class mem_cache
     public function delete($key)
     {
         global $config;
+        
+        if( ! $this->enabled ) return;
         
         $key = $this->var_prefix . $key . "~v" . $this->suffix;
         unset( $this->data[$key] );
@@ -138,6 +186,8 @@ class mem_cache
     public function get_all_keys($limit = 10000)
     {
         $keys = array();
+        
+        if( ! $this->enabled ) return $keys;
         
         $slabs = $this->server->getextendedstats('slabs');
         foreach( $slabs as $serverSlabs )
@@ -176,6 +226,8 @@ class mem_cache
     
     public function purge_by_prefix($prefix)
     {
+        if( ! $this->enabled ) return;
+        
         $all_keys = $this->get_all_keys();
         $key      = $this->var_prefix . $prefix;
         
