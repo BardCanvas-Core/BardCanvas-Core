@@ -333,6 +333,7 @@ class account_toolbox extends abstract_record
         
         if( ! $modules["messaging"]->enabled ) return false;
         if( $account->level < $config::NEWCOMER_USER_LEVEL ) return false;
+        if( $this->level < $config::NEWCOMER_USER_LEVEL ) return false;
         if( $this->state != "enabled" ) return false;
         if( $this->id_account == $account->id_account ) return false;
         if( $this->engine_prefs["user_blocking.pms/*"] == "true" ) return false;
