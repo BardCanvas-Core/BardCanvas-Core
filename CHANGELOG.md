@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.10.0.0] - 2017-06-08
+
+- Added missing check for account interaction in PMs.
+- Removed dependency on Memcache.
+- Changed ffmpeg detection function to avoid issues.
+- Removed ffmpeg requirement.
+
 ## [1.9.1.2] - 2017-05-29
 
 - Added support for global messaging blockages.
