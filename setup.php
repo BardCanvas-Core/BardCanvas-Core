@@ -46,7 +46,7 @@ $ffmpeg_version = "";
 
 if( function_exists("shell_exec") )
 {
-    $res = shell_exec("locate ffmpeg");
+    $res = shell_exec("which ffmpeg");
     if( ! empty($res) )
     {
         foreach(explode("\n", $res) as $line)
