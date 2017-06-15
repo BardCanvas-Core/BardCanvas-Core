@@ -107,7 +107,7 @@ class accounts_repository extends abstract_repository
         foreach($ids as $id) $prepared_ids[] = "'$id'";
         $prepared_ids = implode(", ", $prepared_ids);
         
-        $mem_key = "accounts_repository/get_multiple/hash:" . md5($prepared_ids);
+        $mem_key = "accounts_repository/get_multiple/hash:" . md5(implode(",", $ids));
         $res     = $mem_cache->get($mem_key);
         if( is_array($res) ) return $res;
         if( $res == "none" ) return array();
@@ -215,7 +215,14 @@ class accounts_repository extends abstract_repository
      */
     public function get_multiple_engine_prefs(array $account_ids, $pref_name)
     {
-        global $database;
+        global $database, $mem_cache;
+        
+        $key_hash      = md5($pref_name . ":" . implode(",", $account_ids));
+        $mem_cache_key = "accounts_repository/get_multiple_engine_prefs/hash:$key_hash";
+        $mem_cache_ttl = 300;
+        $cached_value  = $mem_cache->get($mem_cache_key);
+        if( is_array($cached_value) ) return $cached_value;
+        if( $cached_value == "none" ) return array();
         
         foreach($account_ids as &$id) $id = "'$id'";
         $account_ids = implode(", ", $account_ids);
@@ -225,11 +232,18 @@ class accounts_repository extends abstract_repository
             and id_account in ($account_ids)
         ");
         
-        if( $database->num_rows($res) == 0 ) return array();
+        if( $database->num_rows($res) == 0 )
+        {
+            $mem_cache->set($mem_cache_key, "none", 0, $mem_cache_ttl);
+            
+            return array();
+        }
         
         $return = array();
         while($row = $database->fetch_object($res))
             $return[$row->id_account] = json_decode($row->value);
+        
+        $mem_cache->set($mem_cache_key, $return, 0, $mem_cache_ttl);
         
         return $return;
     }
