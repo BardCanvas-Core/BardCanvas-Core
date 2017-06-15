@@ -400,7 +400,7 @@ class internals
         foreach($hits as $hit)
         {
             if( $config->query_backtrace_enabled )
-                $backtrace = "<td><pre style='margin: 0'>" . implode("\n", $hit->backtrace) . "</pre></td>";
+                $backtrace = "<td><pre style='margin: 0'>" . (is_array($hit->backtrace) ? implode("\n", $hit->backtrace) : "&mdash;") . "</pre></td>";
             
             $output .= "
                 <tr>
