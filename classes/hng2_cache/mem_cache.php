@@ -41,7 +41,7 @@ class mem_cache
             $this->server = new \Memcache();
             
             foreach($MEMCACHE_SERVERS as $server)
-                $this->server->addserver($server["host"], $server["port"]);
+                $this->server->addserver($server["host"], $server["port"], true, 1, 3);
             
             $this->probe();
         }
