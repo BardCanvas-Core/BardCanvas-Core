@@ -48,16 +48,29 @@ class mem_cache
     }
     
     /**
-     * Checks if memcached is available. TTL for availability is one hour.
+     * Checks if memcached is available. TTL for availability is 1 minute.
      */
     private function probe()
     {
         global $config;
         
+        $today     = date("Ymd");
+        $now       = date("Y-m-d H:i:s");
+        $ip        = get_remote_address();
         $flag_file = "{$config->datafiles_location}/memcache_disabled";
+        
         if( file_exists($flag_file) )
         {
-            if( filemtime($flag_file) < time() - 3600 )
+            if( time() - 60 >= filemtime($flag_file) )
+            {
+                @unlink($flag_file);
+                @file_put_contents(
+                    "{$config->logfiles_location}/memcache_fails_$today.log",
+                    "{$now} - Failover TTL flag removed - $ip - {$_SERVER["REQUEST_URI"]}",
+                    FILE_APPEND
+                );
+            }
+            else
             {
                 $this->enabled = false;
                 
@@ -70,6 +83,12 @@ class mem_cache
         
         $this->enabled = false;
         @touch($flag_file);
+    
+        @file_put_contents(
+            "{$config->logfiles_location}/memcache_fails_$today.log",
+            "{$now} - Failed probing to memcached server/s - $ip - {$_SERVER["REQUEST_URI"]}",
+            FILE_APPEND
+        );
     }
     
     public function set($key, $value, $flag = 0, $expiration = 0)
