@@ -41,55 +41,8 @@ class mem_cache
             $this->server = new \Memcache();
             
             foreach($MEMCACHE_SERVERS as $server)
-                $this->server->addserver($server["host"], $server["port"], true, 1, 3);
-            
-            $this->probe();
+                $this->server->addserver($server["host"], $server["port"]);
         }
-    }
-    
-    /**
-     * Checks if memcached is available. TTL for availability is 1 minute.
-     */
-    private function probe()
-    {
-        global $config;
-        
-        $today     = date("Ymd");
-        $now       = date("Y-m-d H:i:s");
-        $ip        = get_remote_address();
-        $hostname  = current(explode(".", gethostname()));
-        $flag_file = "{$config->datafiles_location}/memcache_disabled";
-        
-        if( file_exists($flag_file) )
-        {
-            if( time() - 60 >= filemtime($flag_file) )
-            {
-                @unlink($flag_file);
-                @file_put_contents(
-                    "{$config->logfiles_location}/memcache_fails_$today.log",
-                    "{$now} - {$hostname} - Failover TTL flag removed - $ip - {$_SERVER["REQUEST_URI"]}\n",
-                    FILE_APPEND
-                );
-            }
-            else
-            {
-                $this->enabled = false;
-                
-                return;
-            }
-        }
-        
-        $res = $this->set("_dummy_test", "true");
-        if( $res !== false ) return;
-        
-        $this->enabled = false;
-        @touch($flag_file);
-        
-        @file_put_contents(
-            "{$config->logfiles_location}/memcache_fails_$today.log",
-            "{$now} - {$hostname} - Failed probing to memcached server/s - $ip - {$_SERVER["REQUEST_URI"]}\n",
-            FILE_APPEND
-        );
     }
     
     public function set($key, $value, $flag = 0, $expiration = 0)
