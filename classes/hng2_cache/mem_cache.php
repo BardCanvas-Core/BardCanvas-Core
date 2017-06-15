@@ -57,6 +57,7 @@ class mem_cache
         $today     = date("Ymd");
         $now       = date("Y-m-d H:i:s");
         $ip        = get_remote_address();
+        $hostname  = current(explode(".", gethostname()));
         $flag_file = "{$config->datafiles_location}/memcache_disabled";
         
         if( file_exists($flag_file) )
@@ -66,7 +67,7 @@ class mem_cache
                 @unlink($flag_file);
                 @file_put_contents(
                     "{$config->logfiles_location}/memcache_fails_$today.log",
-                    "{$now} - Failover TTL flag removed - $ip - {$_SERVER["REQUEST_URI"]}",
+                    "{$now} - {$hostname} - Failover TTL flag removed - $ip - {$_SERVER["REQUEST_URI"]}\n",
                     FILE_APPEND
                 );
             }
@@ -83,10 +84,10 @@ class mem_cache
         
         $this->enabled = false;
         @touch($flag_file);
-    
+        
         @file_put_contents(
             "{$config->logfiles_location}/memcache_fails_$today.log",
-            "{$now} - Failed probing to memcached server/s - $ip - {$_SERVER["REQUEST_URI"]}",
+            "{$now} - {$hostname} - Failed probing to memcached server/s - $ip - {$_SERVER["REQUEST_URI"]}\n",
             FILE_APPEND
         );
     }
