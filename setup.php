@@ -701,9 +701,6 @@ reviewing any warnings or errors before attempting to run the setup operations.<
                     
                     <ul>
                         <li>
-                            <code>rsync</code> - for syncing downloaded updates
-                        </li>
-                        <li>
                             <code>ffmpeg</code> - for converting uploaded videos into mp4<br>
                             <b>Note:</b> this can be avoided by downloading and installing an static version of ffmpeg from
                             <a href="https://www.johnvansickle.com/ffmpeg/" target="_blank">https://www.johnvansickle.com/ffmpeg/</a>
@@ -715,32 +712,6 @@ reviewing any warnings or errors before attempting to run the setup operations.<
             </div>
             
         <?php else: ?>
-            
-            <?php $res = shell_exec("rsync --version"); ?>
-            <div class="row clearfix">
-                <?php if( ! empty($res) ): ?>
-                    <span class="framed_content inlined pull-right">Pass</span>
-                <?php else: ?>
-                    <span class="framed_content inlined state_ko pull-right"><i class="fa fa-warning"></i> Unknown</span>
-                <?php endif; ?>
-                
-                RSYNC for engine and module updates
-                
-                <?php if( ! empty($res)): ?>
-                    
-                    <blockquote>
-                        <pre><?php echo $res ?></pre>
-                    </blockquote>
-                    
-                <?php else: ?>
-                    
-                    <div class="framed_content state_highlight">
-                        <i class="fa fa-warning"></i>
-                        You wont be able to run automatic updates. Please ask your hostmaster to enable rsync for you.
-                    </div>
-                    
-                <?php endif ?>
-            </div>
             
             <div class="row clearfix">
                 <?php if( ! empty($ffmpeg_version) ): ?>
