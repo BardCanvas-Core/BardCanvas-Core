@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.0.1] - 2017-06-16
+
+- Changed memcache purging method to avoid issues.
+
 ## [1.11.0.0] - 2017-06-16
 
 - Removed memcache probing.
