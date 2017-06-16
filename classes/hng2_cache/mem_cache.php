@@ -206,7 +206,7 @@ class mem_cache
         
         foreach($all_keys as $existing_key)
         {
-            if( preg_match("/^{$key}.*/", $existing_key) == 0 ) continue;
+            if( ! @preg_match("#^{$key}.*#", $existing_key) ) continue;
             
             unset( $this->data[$key] );
             $this->server->delete($key);
