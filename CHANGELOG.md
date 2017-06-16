@@ -1,6 +1,14 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.0.0] - 2017-06-16
+
+- Removed memcache probing.
+- Added some checks to avoid errors.
+- Added caching on missing places.
+- Removed rsync as requirement for setup.
+- Other minor changes.
+
 ## [1.10.0.1] - 2017-06-08
 
 - Updated TinyMCE init script.
