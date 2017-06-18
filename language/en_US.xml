@@ -275,6 +275,19 @@
             ]]></description>
             <type>text</type>
         </specs>
+        <specs key="meta_default_image">
+            <title>Default image</title>
+            <description><![CDATA[
+                Specify an image to use when the page doesn't have a thumbnail set.<br>
+                <i class="fa fa-info-circle"></i>
+                A good standard for an image on this case would be
+                <code>1100x575</code>.
+            ]]></description>
+            <type>@gallery:specs_renderer/image_selector</type>
+            <options>
+                <image_size>full</image_size>
+            </options>
+        </specs>
         
         <!-- Display -->
         <specs is_separator="true">Display and layout</specs>

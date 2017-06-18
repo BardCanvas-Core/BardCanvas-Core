@@ -276,6 +276,19 @@
             ]]></description>
             <type>text</type>
         </specs>
+        <specs key="meta_default_image">
+            <title>Imagen predeterminada</title>
+            <description><![CDATA[
+                Especifica una imagen a usar cuando la página no tenga una miniatura.<br>
+                <i class="fa fa-info-circle"></i>
+                Un estándar recomendado para una imagen en este caso podría ser
+                <code>1100x575</code>.
+            ]]></description>
+            <type>@gallery:specs_renderer/image_selector</type>
+            <options>
+                <image_size>full</image_size>
+            </options>
+        </specs>
         
         <!-- Display -->
         <specs is_separator="true">Despliegue y distribución</specs>
