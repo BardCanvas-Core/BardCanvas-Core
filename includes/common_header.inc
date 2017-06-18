@@ -22,6 +22,10 @@ if( empty($favicon) ) $favicon = "{$template->url}/media/favicon.ico";
 
 $jquery_ui_theme = $template->get("jquery_ui_theme");
 if( empty($jquery_ui_theme) ) $jquery_ui_theme = "blitzer";
+
+$page_meta_image = $template->page_meta_image;
+if( empty($page_meta_image) ) $page_meta_image = $settings->get("engine.meta_default_image");
+if( ! empty($page_meta_image) && substr($page_meta_image, 0, 4) != "http" ) $page_meta_image = "{$config->full_root_url}{$page_meta_image}";
 ?>
 
     <!-- =================== -->
@@ -41,12 +45,12 @@ if( empty($jquery_ui_theme) ) $jquery_ui_theme = "blitzer";
     <meta name="robots"             content="<?= $template->sanitize_meta_var($template->page_meta_robots) ?>">
     <meta itemprop="name"           content="<?= $template->sanitize_meta_var($template->get_page_title(false)) ?>">
     <meta itemprop="description"    content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>">
-    <meta itemprop="image"          content="<?= $template->page_meta_image ?>">
-    <meta property="og:site_name"   content="<?= $template->sanitize_meta_var($settings->get("engine.website_name")) ?>" />
-    <meta property="og:title"       content="<?= $template->sanitize_meta_var($template->get_page_title(false)) ?>" />
-    <meta property="og:description" content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>" />
-    <meta property="og:url"         content="<?= $template->page_meta_url ?>" />
-    <meta property="og:image"       content="<?= $template->page_meta_image ?>" />
+    <? if( ! empty($page_meta_image) ) echo "<meta itemprop='image'          content='{$page_meta_image}'>\n" ?>
+    <meta property="og:site_name"   content="<?= $template->sanitize_meta_var($settings->get("engine.website_name")) ?>">
+    <meta property="og:title"       content="<?= $template->sanitize_meta_var($template->get_page_title(false)) ?>">
+    <meta property="og:description" content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>">
+    <meta property="og:url"         content="<?= empty($template->page_meta_url) ? $config->full_root_url : $template->page_meta_url ?>">
+    <? if( ! empty($page_meta_image) ) echo "<meta property='og:image'       content='{$page_meta_image}'>\n" ?>
     
     <link rel="icon"          type="image/x-icon" href="<?= $favicon ?>">
     <link rel="shortcut icon" type="image/x-icon" href="<?= $favicon ?>">
