@@ -1158,13 +1158,13 @@ function convert_shortcodes($contents)
             if( ! preg_match_all("@$pattern@", $contents, $matches) ) continue;
             # echo "<pre>" . print_r($matches, true) . "</pre>";
             
-            /** @noinspection PhpUnusedLocalVariableInspection */
-            $matched_str = $matches[0][0];
-            
-            /** @noinspection PhpUnusedLocalVariableInspection */
-            $attributes = wp_parse_shortcode_attributes($matches[3][0]);
-            # echo "<pre>" . print_r($attributes, true) . "</pre>";
-            include $file;
+            foreach($matches[0] as $index => $matched_str)
+            {
+                /** @noinspection PhpUnusedLocalVariableInspection */
+                $attributes = wp_parse_shortcode_attributes($matches[3][$index]);
+                # echo "<pre>" . print_r($attributes, true) . "</pre>";
+                include $file;
+            }
         }
     }
     
