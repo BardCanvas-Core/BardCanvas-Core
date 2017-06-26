@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.1.1] - 2017-06-26
+
+- Allowed parsing of multiple shortcodes instances on the same source.
+
 ## [1.11.1.0] - 2017-06-19
 
 - Added settings for default image.
