@@ -65,3 +65,9 @@ $template->build_includes();
 
 $account = new account();
 $account->load_session();
+
+if( $account->_is_admin && ! empty($_GET["preview_template"]) )
+{
+    $template = new template($_GET["preview_template"]);
+    $template->build_includes();
+}

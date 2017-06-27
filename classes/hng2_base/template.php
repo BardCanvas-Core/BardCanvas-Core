@@ -44,11 +44,12 @@ class template
     
     protected $includes = array();
     
-    public function __construct()
+    public function __construct($name = "")
     {
         global $config, $settings;
         
-        $this->name = $settings->get("engine.template");
+        if( empty($name) ) $this->name = $settings->get("engine.template");
+        else               $this->name = $name;
         if( empty($this->name) ) $this->name = "base";
                 
         $this->abspath = ROOTPATH . "/templates/{$this->name}";
