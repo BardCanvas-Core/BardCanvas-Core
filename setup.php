@@ -528,7 +528,7 @@ if($_GET["go"] == "true")
     <?php
     if( ! empty($support_text) ) echo $support_text;
     else echo "<p>If you experience any problem, take a look at the forums on the
-               <a href=\"http://bardcanvas.com\" target=\"_blank\">BardCanvas Website</a>.</p>";
+               <a href=\"https://bardcanvas.com\" target=\"_blank\">BardCanvas Website</a>.</p>";
     ?>
     
     <p><a href="index.php">Click here to open your new <?php echo $bundle_name ?> powered website</a></p>

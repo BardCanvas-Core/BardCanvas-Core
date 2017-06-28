@@ -4,7 +4,7 @@ BardCanvas is a Web Applications engine and Content Management System.
 Created by [LAVA SoftWorks](http://lavasoftworks.com) and released to the
 global development community at GitHub under the GPL license.
 
-You can learn about BardCanvas at [bardcanvas.com](http://bardcanvas.com).
+You can learn about BardCanvas at [bardcanvas.com](https://bardcanvas.com).
 There you can see all information about how BardCanvas works and find end-user downloads.
 
 This package, the BardCanvas Core, contains part of the neccesary files to allow
@@ -17,10 +17,10 @@ To have an instance of BardCanvas running, you need, at least:
 - The [BardCanvas Core Library](https://github.com/BardCanvas-Core/BardCanvas-Lib) package.
 - All [BardCanvas Core Modules](https://github.com/BardCanvas-Core-Modules).
 - The [BardCanvas Base template](https://github.com/BardCanvas-Templates/base)
-  or any other that you can download from [The BardCanvas Templates Library](http://bardcanvas.com/category/templates).
+  or any other that you can download from [The BardCanvas Templates Library](https://bardcanvas.com/category/templates).
 
 If you want to try BardCanvas, you should, instead of cloning this repository,
-download the BardCanvas bundle from [bardcanvas.com/download](http://bardcanvas.com/download).
+download the BardCanvas bundle from [bardcanvas.com/download](https://bardcanvas.com/download).
 
 # Version
 
