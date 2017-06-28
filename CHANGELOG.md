@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.2.0] - 2017-06-27
+
+- Added support for template previews.
+- Switched calls to bardcanvas.com through HTTPS instead of HTTP.
+
 ## [1.11.1.1] - 2017-06-26
 
 - Allowed parsing of multiple shortcodes instances on the same source.
