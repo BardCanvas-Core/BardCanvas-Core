@@ -542,6 +542,10 @@ class account extends account_toolbox
             
             return;
         }
+        else
+        {
+            if( $this->avatar == "@gravatar" ) $this->avatar = "";
+        }
         
         if( empty($_FILES["uploaded_avatar"]) ) return;
         if( empty($_FILES["uploaded_avatar"]["tmp_name"]) ) return;
