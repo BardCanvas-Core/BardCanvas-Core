@@ -408,9 +408,25 @@ img.alignright  { float: right; margin: 10px; }
 .settings_group.nav_table.no_highlight tbody tr:hover       { background-color: white; }
 .settings_group.nav_table.no_highlight tbody tr.highlighted { background-color: white; }
 
+.settings_group td.details  { width: 60%; }
+.settings_group td.control  { width: 40%; }
+
 .settings_group td.control select              { width: 100%; }
 .settings_group td.control input[type="text"]  { width: 100%; }
 .settings_group td.control input[type="email"] { width: 100%; }
+
+@media all and (max-width: 700px) {
+    .settings_group            ,
+    .settings_group thead      ,
+    .settings_group tbody      ,
+    .settings_group tr         ,
+    .settings_group th         ,
+    .settings_group td         { display: block; width: 100%; }
+    .settings_group td.details { width: 100%; border-bottom: none !important; padding-top: 10px; }
+    .settings_group td.control { width: 100%; padding-left: 59px; padding-bottom: 10px; }
+}
+
+.settings_group .separator button { font-size: 8pt }
 
 /* ETC */
 
