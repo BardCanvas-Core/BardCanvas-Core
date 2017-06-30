@@ -208,8 +208,8 @@ class mem_cache
         {
             if( ! @preg_match("#^{$key}.*#", $existing_key) ) continue;
             
-            unset( $this->data[$key] );
-            $this->server->delete($key);
+            unset( $this->data[$key], $this->data[$existing_key] );
+            $this->server->delete($existing_key);
         }
     }
 }
