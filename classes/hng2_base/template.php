@@ -27,6 +27,7 @@ class template
     public $page_meta_robots;
     public $page_meta_url;
     public $page_meta_image;
+    public $page_extra_metas = array();
     
     public $page_requires_login = false;
     
