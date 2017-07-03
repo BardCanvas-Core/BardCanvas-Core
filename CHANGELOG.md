@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.3.0] - 2017-07-03
+
+- Fixed issue that prevented Gravatar removal on the user account.
+- Added responsiveness to settings editors (config/preferences).
+- Added support for extra meta tags (to facilitate SEO extenders).
+- Fixed issue on memcache purging method.
+
 ## [1.11.2.0] - 2017-06-27
 
 - Added support for template previews.
