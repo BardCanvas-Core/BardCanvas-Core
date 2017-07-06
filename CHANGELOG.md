@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.3.3] - 2017-07-06
+
+- Changed mail method from sendmail to PHP mail() function to avoid errors on highly restricted hosts.
+
 ## [1.11.3.2] - 2017-07-06
 
 - Added resetting of SQL mode to avoid global strict warnings.
