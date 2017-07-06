@@ -25,12 +25,12 @@ ReWriteEngine On
 ##############################################################
 
 # Login helpers
-RewriteRule ^wp-admin/$  /?show_login_form=true  [R,L]
-RewriteRule ^wp-admin$   /?show_login_form=true  [R,L]
-RewriteRule ^admin/$     /?show_login_form=true  [R,L]
-RewriteRule ^admin$      /?show_login_form=true  [R,L]
-RewriteRule ^login/$     /?show_login_form=true  [R,L]
-RewriteRule ^login$      /?show_login_form=true  [R,L]
+RewriteRule ^wp-admin/$  index.php?show_login_form=true  [R,L]
+RewriteRule ^wp-admin$   index.php?show_login_form=true  [R,L]
+RewriteRule ^admin/$     index.php?show_login_form=true  [R,L]
+RewriteRule ^admin$      index.php?show_login_form=true  [R,L]
+RewriteRule ^login/$     index.php?show_login_form=true  [R,L]
+RewriteRule ^login$      index.php?show_login_form=true  [R,L]
 
 # Core: Versioned resources
 ReWriteRule ^(.*)\~v.*\.js$  $1.js  [QSA,L]
