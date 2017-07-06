@@ -64,7 +64,7 @@ $MEMCACHE_SERVERS = array(
 #    $NUMERIC_SERVER_ID = trim(file_get_contents("/etc/bardcanvas_server_id"));
 
 # Set this to "On" if you want to show PHP errors.
-ini_set("display_errors", "Off");
+ini_set("display_errors", "On");
 
 # If you set display_errors to "On", you might want to limit error scopes below. 
 # Otherwise, just comment the line below.
