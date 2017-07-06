@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.3.2] - 2017-07-06
+
+- Added resetting of SQL mode to avoid global strict warnings.
+
 ## [1.11.3.1] - 2017-07-05
 
 - Fixed login helper paths in .htaccess (may require manual edition on deployed websites).
