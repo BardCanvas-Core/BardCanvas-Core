@@ -38,6 +38,8 @@ class db_settings
             $this->user,
             $this->password
         );
+        
+        if( $this->handler ) $this->exec("SET SESSION sql_mode = ''");
     }
     
     /**
