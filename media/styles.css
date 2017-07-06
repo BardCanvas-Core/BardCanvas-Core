@@ -377,6 +377,9 @@ img.alignright  { float: right; margin: 10px; }
 .tinymce_addons_bar .addon          { font-size: 24pt; }
 .tinymce_addons_bar .addon .caption { display: none; }
 
+.mce-content-body .multicol      { border: 1px dotted grey; }
+.mce-content-body .multicol .col { border: 1px dotted silver; }
+
 /* Multiple columns */
 
 @media all and (min-width: 710px)
