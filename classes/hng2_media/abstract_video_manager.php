@@ -28,7 +28,11 @@ abstract class abstract_video_manager extends abstract_item_manager
         
         if( empty($this->ffmpeg_bin) )
         {
-            $this->mime_type = mime_content_type($this->file_name);
+            $this->mime_type  = "";
+            
+            if( function_exists("mime_content_type") )
+                $this->mime_type = mime_content_type($this->file_name);
+            
             if( empty($this->mime_type) )
             {
                 $parts = explode(".", $this->file_name);
