@@ -357,7 +357,7 @@ class account extends account_toolbox
         
         $limit        = date("Y-m-d H:i:s", strtotime("now + 70 minutes"));
         $token        = encrypt( $this->id_account."\t".$limit, $config->encryption_key );
-        $token_url    = (empty($_SERVER["HTTPS"]) ? "http://" : "https://").$_SERVER["HTTP_HOST"]."/confirm_account?token=".urlencode($token);
+        $token_url    = "{$config->full_root_url}/confirm_account?token=".urlencode($token);
         $ip           = get_remote_address();
         $hostname     = gethostbyaddr(get_remote_address());
         $fecha_envio  = date("Y-m-d H:i:s");
@@ -366,7 +366,7 @@ class account extends account_toolbox
         if( ! empty($this->alt_email) ) $recipients["$this->display_name (2)"] = $this->alt_email;
         
         $request_location = forge_geoip_location($ip);
-    
+        
         $mail_subject = replace_escaped_vars(
             $current_module->language->email_templates->confirm_account->subject,
             array('{$user_name}', '{$website_name}'),
