@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.3.1] - 2017-07-05
+
+- Fixed login helper paths in .htaccess (may require manual edition on deployed websites).
+- Showing display errors changed to "On" by default on config-sample.php
+- Added styles for responsive grids into TinyMCE.
+- Fixed path issue on account validation email.
+
 ## [1.11.3.0] - 2017-07-03
 
 - Fixed issue that prevented Gravatar removal on the user account.
