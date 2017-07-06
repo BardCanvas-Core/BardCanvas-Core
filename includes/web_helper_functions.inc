@@ -454,9 +454,9 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
     
     if( $smtp_enabled != "true" || empty($smtp_host) || empty($smtp_port) || empty($smtp_user) || empty($smtp_password) )
     {
-        $mail->isSendmail();
+        $mail->isMail();
         if( $config->globals["phpmailer_debug_mode_enabled"] )
-            echo "Sending using sendmail.\n";
+            echo "Sending using PHP mail() function.\n";
     }
     else
     {
