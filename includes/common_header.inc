@@ -89,7 +89,7 @@ if( ! isset($template->page_extra_metas["og:type"]) )
         var tinymce_minimal_toolbar  = 'bold italic underline strikethrough | forecolor backcolor removeformat | hr link unlink';
         
         var tinymce_default_css_files = [
-            $_FULL_ROOT_PATH  + '/media/styles~v' + $_SCRIPTS_VERSION + '.css',
+            $_FULL_ROOT_PATH  + '/media/styles~v' + $_SCRIPTS_VERSION + '-6.css',
             $_TEMPLATE_URL    + '/media/styles~v' + $_SCRIPTS_VERSION + '.css',
             $_TEMPLATE_URL    + '/media/post_styles~v' + $_SCRIPTS_VERSION + '.css'
         ];
@@ -139,7 +139,7 @@ if( ! isset($template->page_extra_metas["og:type"]) )
     <script type="text/javascript"> $(document).ready(function() { $('.lazyload').lazyload({effect: 'fadeIn', failure_limit : 99999}); }); </script>
     
     <!-- Core UI stuff -->
-    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>-4.css">
+    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>-6.css">
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>.css">
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-29.js"></script>
     
