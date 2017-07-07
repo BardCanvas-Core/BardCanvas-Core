@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.3.4] - 2017-07-06
+
+- Chaged MIME detection method for video files to avoid warnings.
+
 ## [1.11.3.3] - 2017-07-06
 
 - Changed mail method from sendmail to PHP mail() function to avoid errors on highly restricted hosts.
