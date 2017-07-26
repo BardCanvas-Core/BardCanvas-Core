@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.4.0] - 2017-07-26
+
+- Added support for language files on templates.
+
 ## [1.11.3.4] - 2017-07-06
 
 - Chaged MIME detection method for video files to avoid warnings.
