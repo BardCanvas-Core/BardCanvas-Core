@@ -43,6 +43,9 @@ class template
     
     protected $vars = array();
     
+    /** @var  \SimpleXMLElement */
+    public $language = null;
+    
     protected $includes = array();
     
     public function __construct($name = "")
@@ -91,11 +94,27 @@ class template
     
     private function load_xml_vars()
     {
+        global $config;
+        
         $file = "{$this->abspath}/template_info.xml";
         if( ! file_exists($file) ) return;
         
         $xml = simplexml_load_file($file);
         $this->version = $xml->version;
+        
+        $dir  = "{$this->abspath}/language";
+        if( ! is_dir($dir) ) return;
+        
+        $file = "{$dir}/{$_COOKIE[$config->language_cookie_var]}.xml";
+        if( file_exists($file) )
+        {
+            $this->language = simplexml_load_file($file);
+            
+            return;
+        }
+        
+        $file = "{$dir}/en_US.xml";
+        if( file_exists($file) ) $this->language = simplexml_load_file($file);
     }
     
     public function build_includes()
