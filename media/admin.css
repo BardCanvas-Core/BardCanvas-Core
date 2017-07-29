@@ -12,9 +12,9 @@
     padding-left: 5px; color: white; background-color: darkgreen;
 }
 
-#admin_menu .item { padding: 0 10px; margin: 0; text-align: center; }
+#admin_menu .item { padding: 0 10px; margin: 0; text-align: center; vertical-align: top; }
 
-#admin_menu .admin_bar_title { float: left; font-size: 10pt; color: white; }
+#admin_menu .admin_bar_title { float: left; font-size: 10pt; color: white; vertical-align: top; }
 
 #admin_menu .item       { text-decoration: none; font-variant: small-caps; color: rgba(255, 255, 255, 0.75); font-weight: bold; }
 #admin_menu .item:hover { color: black; background-color: mediumspringgreen; }
@@ -26,7 +26,7 @@
 
 /* Mobile devices triggering menu */
 
-#admin_menu_trigger      { line-height: 30px; padding: 0 10px; float: right; cursor: pointer; }
+#admin_menu_trigger      { line-height: 30px; padding: 0 10px; float: right; cursor: pointer; vertical-align: top; }
 #admin_menu_trigger.open { color: #990d0d; background-color: #f6f8f9; }
 
 #admin_menu_trigger { display: none; }
