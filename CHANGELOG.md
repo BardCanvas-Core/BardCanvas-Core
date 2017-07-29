@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.4.1] - 2017-07-29
+
+- Added class autoloader for templates.
+- Minor CSS fixes.
+
 ## [1.11.4.0] - 2017-07-26
 
 - Added support for language files on templates.
