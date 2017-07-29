@@ -49,6 +49,20 @@ function hng2_class_autoloader($class_name)
         
         return;
     }
+    
+    # Class path: /templates/<module_name>/classes
+    # Class name: \hng2_templates\<module_name>\class_file
+    $namespace_parts = explode("\\", str_replace("hng2_templates\\", "", $class_name));
+    $this_class      = array_pop($namespace_parts);
+    $template_name   = array_shift($namespace_parts);
+    $class_path      = implode("/", $namespace_parts) . "/$this_class";
+    $class_file      = str_replace("//", "/", ROOTPATH . "/templates/$template_name/classes/$class_path.php");
+    if( file_exists($class_file) )
+    {
+        include_once $class_file;
+        
+        return;
+    }
 }
 
 spl_autoload_register('hng2_class_autoloader');
