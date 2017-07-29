@@ -140,7 +140,7 @@ if( ! isset($template->page_extra_metas["og:type"]) )
     
     <!-- Core UI stuff -->
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>-6.css">
-    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>.css">
+    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>-4.css">
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-29.js"></script>
     
     <? if( $template->get("include_notification_functions") ): ?>
