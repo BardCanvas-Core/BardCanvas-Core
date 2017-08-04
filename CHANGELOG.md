@@ -1,6 +1,15 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.5.3] - 2017-08-04
+
+- Tuned TinyMCE defaults:
+  - Enabled browser-based spell checking.
+  - Removed custom context menu to allow using the browser default context menu and the spell checker.
+  - Added table button.
+  - Allowed editors to access the source code view.
+  - Removed full screen and code view from minimalistic editor.
+
 ## [1.11.5.2] - 2017-08-03
 
 - Further style corrections.
