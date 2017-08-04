@@ -81,7 +81,7 @@ if( ! isset($template->page_extra_metas["og:type"]) )
         var $_MAIN_MENU_AUTO_COLLAPSE_WIDTH = parseInt('<?= (int) $settings->get("engine.main_menu_auto_collapse_width", 700) ?>');
         
         var tinymce_full_toolbar     = 'bold italic underline strikethrough | forecolor backcolor | styleselect fontsizeselect removeformat | undo redo | '
-                                     + 'blockquote alignleft aligncenter alignright alignjustify | outdent indent bullist numlist | hr link unlink anchor ';
+                                     + 'blockquote alignleft aligncenter alignright alignjustify | outdent indent bullist numlist | hr link unlink anchor table ';
         
         var tinymce_standard_toolbar = 'bold italic underline strikethrough | forecolor backcolor | fontsizeselect removeformat | '
                                      + 'blockquote outdent indent | hr link unlink';

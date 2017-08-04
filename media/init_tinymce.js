@@ -3,17 +3,17 @@ var max_height = Math.round( $(window).height() * .50 );
 if( max_height < 100 ) max_height = 100;
 
 var tinymce_defaults = {
+    browser_spellcheck:       true,
     menubar:                  false,
     statusbar:                false,
     relative_urls:            false,
     remove_script_host:       false,
     convert_urls:             false,
     selector:                 '.tinymce',
-    plugins:                  'placeholder advlist contextmenu autolink lists link anchor searchreplace paste codemirror '
-                              + 'textcolor fullscreen autoresize image imagetools hr',
+    plugins:                  'placeholder advlist autolink lists link anchor searchreplace paste codemirror '
+                              + 'textcolor fullscreen autoresize image imagetools hr table',
     toolbar:                  tinymce_standard_toolbar,
     imagetools_toolbar:       'imageoptions',
-    contextmenu:              'cut copy paste | image | link',
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
     content_css:              tinymce_default_css_files.join(','),
     content_style:            'body {overflow-y: hidden !important;}',
@@ -72,19 +72,17 @@ if( tinymce_custom_toolbar_buttons.length > 0 )
 {
     tinymce_defaults.toolbar         = tinymce_standard_toolbar + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
     tinymce_full_defaults.toolbar    = tinymce_full_toolbar     + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
-    // tinymce_minimal_defaults.toolbar = tinymce_minimal_toolbar  + ' | ' + tinymce_custom_toolbar_buttons.join(' ');
-    
 }
-tinymce_defaults.toolbar         = tinymce_defaults.toolbar          + ' | fullscreen';
-tinymce_full_defaults.toolbar    = tinymce_full_defaults.toolbar     + ' | fullscreen';
-tinymce_minimal_defaults.toolbar = tinymce_minimal_defaults.toolbar  + ' | fullscreen';
 
-if( $_CURRENT_USER_IS_ADMIN )
+if( $_CURRENT_USER_LEVEL >= 200 )
 {
-    tinymce_defaults.toolbar         = tinymce_defaults.toolbar          + ' | code';
-    tinymce_full_defaults.toolbar    = tinymce_full_defaults.toolbar     + ' | code';
-    tinymce_minimal_defaults.toolbar = tinymce_minimal_defaults.toolbar  + ' | code';
-    
+    tinymce_defaults.toolbar      = tinymce_defaults.toolbar          + ' | code fullscreen';
+    tinymce_full_defaults.toolbar = tinymce_full_defaults.toolbar     + ' | code fullscreen';
+}
+else
+{
+    tinymce_defaults.toolbar      = tinymce_defaults.toolbar          + ' | fullscreen';
+    tinymce_full_defaults.toolbar = tinymce_full_defaults.toolbar     + ' | fullscreen';
 }
 
 if( $_CURRENT_USER_LANGUAGE != "en" && $_CURRENT_USER_LANGUAGE != "en_US" )
