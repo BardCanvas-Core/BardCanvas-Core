@@ -447,6 +447,5 @@ video, embed { background-color: black; }
 .video_container               { display: inline-block; position: relative; max-width: 100%; }
 .video_container .play_trigger { display: inline-block; position: absolute; 
                                  left: 0; top: 0; width: 100%; height: 100%; font-size: 50px; max-height: 90vh;
-                                 background: rgba(0, 0, 0, .5) url('video-play-3-xxl-off.png') center center no-repeat;
+                                 background: rgba(0, 0, 0, .5) url('video-play-3-xxl-on.png') center center no-repeat;
                                  text-align: center; z-index: 1; }
-.video_container .play_trigger:hover { background-image: url('video-play-3-xxl-on.png'); } 
