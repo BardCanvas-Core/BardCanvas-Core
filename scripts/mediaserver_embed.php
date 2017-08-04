@@ -24,4 +24,8 @@ $style = "";
 $width  = empty($_GET["width"])  ? "" : "width='{$_GET["width"]}'";
 $height = empty($_GET["height"]) ? "" : "height='{$_GET["height"]}'";
 
-echo "<video {$width} {$height} controls><source src='{$file}' /></video>";
+echo "<div class='video_container'><div class='play_trigger pseudo_link' 
+           onclick=\"$(this).closest('.video_container').find('video')[0].play(); $(this).remove();\"><span
+           class=\"play_icon fa-stack fa-lg\"><i class=\"fa fa-circle fa-stack-2x\"></i><i
+           class=\"fa fa-play fa-stack-1x fa-inverse\"></i></span></div><video {$width} {$height}
+           controls><source src='{$file}' /></video></div>";
