@@ -8,8 +8,8 @@ You can learn about BardCanvas at [bardcanvas.com](https://bardcanvas.com).
 There you can see all information about how BardCanvas works and find end-user downloads.
 
 This package, the BardCanvas Core, contains part of the neccesary files to allow
-BardCanvas modules and templates running on top. **As of May 1st, 2017, dependencies were
-detached from the core** and stored on a different repository.
+BardCanvas modules and templates running on top. **Note:** dependencies are
+detached from the core and stored on a different repository.
 
 To have an instance of BardCanvas running, you need, at least:
 
@@ -24,7 +24,7 @@ download the BardCanvas bundle from [bardcanvas.com/download](https://bardcanvas
 
 # Version
 
-Current version is **1.11.4.1**, released on July 29, 2017.
+Current version is **1.11.5.2**, released on July 29, 2017.
 
 Please check the changelog [here](CHANGELOG.md).
 

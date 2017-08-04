@@ -1,6 +1,18 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.5.2] - 2017-08-03
+
+- Further style corrections.
+
+## [1.11.5.1] - 2017-08-03
+
+- Changed overlay icon rendering method.
+
+## [1.11.5.0] - 2017-08-03
+
+- Added support for "play" icon overlay on videos.
+
 ## [1.11.4.1] - 2017-07-29
 
 - Added class autoloader for templates.
