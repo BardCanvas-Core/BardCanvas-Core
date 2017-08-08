@@ -29,6 +29,8 @@ if( ! empty($page_meta_image) && substr($page_meta_image, 0, 4) != "http" ) $pag
 
 if( ! isset($template->page_extra_metas["og:type"]) )
     $template->page_extra_metas["og:type"] = "<meta property='og:type' content='website'>";
+
+$page_title = $template->layout == "home" ? $settings->get("engine.website_name") : $template->get_page_title();
 ?>
 
     <!-- =================== -->
@@ -40,7 +42,7 @@ if( ! isset($template->page_extra_metas["og:type"]) )
     <meta http-equiv="Content-Type"    content="text/html; charset=utf-8">
     <meta charset="UTF-8">
     
-    <title><?= $template->get_page_title() ?></title>
+    <title><?= $page_title ?></title>
     <meta name="description"        content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>">
     <meta name="keywords"           content="<?= $template->sanitize_meta_var($template->page_meta_keywords) ?>">
     <meta name="rating"             content="<?= $template->sanitize_meta_var($template->page_meta_rating) ?>">
@@ -50,7 +52,7 @@ if( ! isset($template->page_extra_metas["og:type"]) )
     <meta itemprop="description"    content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>">
     <? if( ! empty($page_meta_image) ) echo "<meta itemprop='image'          content='{$page_meta_image}'>\n" ?>
     <meta property="og:site_name"   content="<?= $template->sanitize_meta_var($settings->get("engine.website_name")) ?>">
-    <meta property="og:title"       content="<?= $template->sanitize_meta_var($template->get_page_title(false)) ?>">
+    <meta property="og:title"       content="<?= $template->sanitize_meta_var($page_title) ?>">
     <meta property="og:description" content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>">
     <meta property="og:url"         content="<?= empty($template->page_meta_url) ? $config->full_root_url : $template->page_meta_url ?>">
     <? if( ! empty($page_meta_image) ) echo "<meta property='og:image'       content='{$page_meta_image}'>\n" ?>
