@@ -52,7 +52,7 @@ class device
                 $this->assign_from_object($row);
                 $this->_exists = true;
                 
-                return;
+                return $this;
             }
         }
         
@@ -62,7 +62,7 @@ class device
         {
             $this->_exists = false;
             
-            return;
+            return $this;
         }
         
         $id_account = addslashes(trim(stripslashes($id_account_or_id_device_or_object)));
@@ -90,8 +90,6 @@ class device
      * Assigns the current class properties from an incoming database query
      *
      * @param object $object
-     *
-     * @return $this
      */
     function assign_from_object($object)
     {
@@ -141,15 +139,39 @@ class device
         # header("X-Auth-Token: $token_url");
         
         $mail_subject = replace_escaped_vars(
-                            $current_module->language->email_templates->confirm_new_device->subject,
-                            array('{$user_name}', '{$website_name}'),
-                            array($account->user_name, $settings->get("engine.website_name"))
-                        );
+            $current_module->language->email_templates->confirm_new_device->subject,
+            array('{$user_name}', '{$website_name}'),
+            array($account->user_name, $settings->get("engine.website_name"))
+        );
         $mail_body = replace_escaped_vars(
-                         $current_module->language->email_templates->confirm_new_device->body,
-                         array('{$website_name}',                       '{$display_name}',        '{$device_info}',       '{$token_url}', '{$main_email}',    '{$alt_email}',        '{$date_sent}', '{$request_ip}', '{$request_hostname}', '{$request_location}', '{$request_user_agent}'      ),
-                         array(  $settings->get("engine.website_name"),   $account->display_name,   $this->device_header,   $token_url,     $account->email,    $account->alt_email,   $fecha_envio,   $ip,             $hostname,             $request_location,     $_SERVER["HTTP_USER_AGENT"])
-                     );
+            $current_module->language->email_templates->confirm_new_device->body,
+            array(
+                '{$website_name}',
+                '{$display_name}',
+                '{$device_info}',
+                '{$token_url}',
+                '{$main_email}',
+                '{$alt_email}',
+                '{$date_sent}',
+                '{$request_ip}',
+                '{$request_hostname}',
+                '{$request_location}',
+                '{$request_user_agent}',
+            ),
+            array(
+                $settings->get("engine.website_name"),
+                $account->display_name,
+                $this->device_header,
+                $token_url,
+                $account->email,
+                $account->alt_email,
+                $fecha_envio,
+                $ip,
+                $hostname,
+                $request_location,
+                $_SERVER["HTTP_USER_AGENT"],
+            )
+        );
         $mail_body = unindent($mail_body);
         
         return send_mail($mail_subject, nl2br($mail_body), $recipients);
