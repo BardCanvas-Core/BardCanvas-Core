@@ -391,7 +391,7 @@ class account extends account_toolbox
             array(
                 $settings->get("engine.website_name"),
                 $this->display_name,
-                $token_url,
+                "<a href=\"$token_url\">$token_url</a>",
                 $this->email,
                 $this->alt_email,
                 $fecha_envio,

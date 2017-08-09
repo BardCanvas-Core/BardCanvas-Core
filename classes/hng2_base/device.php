@@ -162,7 +162,7 @@ class device
                 $settings->get("engine.website_name"),
                 $account->display_name,
                 $this->device_header,
-                $token_url,
+                "<a href=\"$token_url\">$token_url</a>",
                 $account->email,
                 $account->alt_email,
                 $fecha_envio,
