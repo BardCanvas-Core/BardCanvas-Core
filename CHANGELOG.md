@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.5.5] - 2017-08-11
+
+- Added pre-generated links for account and device registration emails
+  (they were sent as plain text).
+
 ## [1.11.5.4] - 2017-08-08
 
 - Removed suffix from the home page, now it shows the website name only.
