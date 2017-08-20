@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.5.6] - 2017-08-19
+
+- Improved styles for nav tables.
+
 ## [1.11.5.5] - 2017-08-11
 
 - Added pre-generated links for account and device registration emails
