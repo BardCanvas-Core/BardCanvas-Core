@@ -74,6 +74,7 @@ $page_title = $template->layout == "home" ? $settings->get("engine.website_name"
         var $_CURRENT_USER_IS_MOD     = <?= $account->level >= config::MODERATOR_USER_LEVEL ? "true" : "false" ?>;
         var $_TEMPLATE_URL            = '<?= $template->url ?>';
         var $_SCRIPTS_VERSION         = '<?= $config->scripts_version ?>';
+        var $_ENGINE_VERSION          = '<?= $config->engine_version ?>';
         var $_IS_MOBILE               = <?= is_mobile() ? "true" : "false" ?>;
         var $_GENERIC_CONFIRMATION    = '<?= $language->confirm_action ?>';
         var $_SILENT_NOTIFICATIONS    = '<?= $account->engine_prefs["!core:silent_notifications"] ?>' == 'true';
@@ -91,9 +92,9 @@ $page_title = $template->layout == "home" ? $settings->get("engine.website_name"
         var tinymce_minimal_toolbar  = 'bold italic underline strikethrough | forecolor backcolor removeformat | hr link unlink';
         
         var tinymce_default_css_files = [
-            $_FULL_ROOT_PATH  + '/media/styles~v' + $_SCRIPTS_VERSION + '-6.css',
-            $_TEMPLATE_URL    + '/media/styles~v' + $_SCRIPTS_VERSION + '.css',
-            $_TEMPLATE_URL    + '/media/post_styles~v' + $_SCRIPTS_VERSION + '.css'
+            $_FULL_ROOT_PATH  + '/media/styles~v' + $_ENGINE_VERSION + 'tmce-16.css',
+            $_TEMPLATE_URL    + '/media/styles~v' + $_ENGINE_VERSION + 'tmce-1.css',
+            $_TEMPLATE_URL    + '/media/post_styles~v' + $_ENGINE_VERSION + 'tmce-1.css'
         ];
         var tinymce_custom_plugins = [];
         var tinymce_custom_toolbar_buttons = [];
@@ -141,7 +142,7 @@ $page_title = $template->layout == "home" ? $settings->get("engine.website_name"
     <script type="text/javascript"> $(document).ready(function() { $('.lazyload').lazyload({effect: 'fadeIn', failure_limit : 99999}); }); </script>
     
     <!-- Core UI stuff -->
-    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>-11.css">
+    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>-16.css">
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>-4.css">
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-29.js"></script>
     
