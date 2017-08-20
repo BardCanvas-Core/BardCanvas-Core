@@ -206,6 +206,13 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .nav_table tr.clicked:hover               { background-color: #7dbf27; }
 .nav_table tr.clicked.highlighted:hover   { background-color: #7dbf27; }
 
+.nav_table.evened tbody tr:nth-child(even).clicked                   ,
+.nav_table tr.even.clicked                                           { color: black; background-color: #dfcca8; }
+.nav_table.evened tbody tr:nth-child(even).clicked:hover             ,
+.nav_table tr.even.clicked:hover                                     { color: black; background-color: #629f27; }
+.nav_table.evened tbody tr:nth-child(even).clicked.highlighted:hover ,
+.nav_table tr.even.clicked.highlighted:hover                         { color: black; background-color: #629f27; }
+
 .nav_table.no_highlight tbody tr:hover       { color: inherit; background-color: transparent; }
 .nav_table.no_highlight tbody tr.highlighted { color: inherit; background-color: transparent; }
 
@@ -224,6 +231,10 @@ section > .framed_content { margin-top: 0; border-top-left-radius: 0; border-top
 .nav_table tr.enabled   td { color: #008000; }
 .nav_table tr.disabled  td { color: #585858; }
 .nav_table tr.deleted   td { color: #585858; background-color: silver; }
+
+.nav_table tr.deleted:hover         td { color: #585858; background-color: #a4c0b0; }
+.nav_table tr.deleted.clicked       td { color: #585858; background-color: #c0b297; }
+.nav_table tr.deleted.clicked:hover td { color: #585858; background-color: #8c9f2b; }
 
 .nav_table.vertical tr th             { border-top: 0; }
 .nav_table.vertical tr:first-child td { border-top: 1px solid #c2daea; }
