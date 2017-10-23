@@ -274,7 +274,7 @@ class module
     {
         global $config;
         
-        if( $fully_qualified ) return rtrim("{$config->full_root_path}/{$this->name}", "/");
-        else                   return rtrim("{$config->full_root_url}/{$this->name}", "/");
+        if( $fully_qualified ) return rtrim("{$config->full_root_url}/{$this->name}", "/");
+        else                   return rtrim("{$config->full_root_path}/{$this->name}", "/");
     }
 }
