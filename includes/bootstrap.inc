@@ -64,6 +64,9 @@ load_tinymce_addons();
 $template->build_includes();
 
 $account = new account();
+foreach($modules as $module)
+    if( ! empty($module->php_includes->before_loading_session) )
+        include "{$module->abspath}/{$module->php_includes->before_loading_session}";
 $account->load_session();
 
 if( $account->_is_admin && ! empty($_GET["preview_template"]) )
