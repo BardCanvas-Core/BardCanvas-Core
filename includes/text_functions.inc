@@ -372,6 +372,8 @@ function wp_sanitize_filename($filename, $to_lower_case = true)
 {
     $special_chars = array(
         "…",
+        "¿",
+        "¡",
         "?",
         "[",
         "]",
@@ -397,17 +399,18 @@ function wp_sanitize_filename($filename, $to_lower_case = true)
         "!",
         "{",
         "}",
-        chr(0),
     );
+    $filename      = str_replace($special_chars, '', $filename);
     $filename      = preg_replace('/\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]/', "", $filename);
     $filename      = remove_quotation_marks($filename);
     $filename      = wp_remove_accents($filename);
     $filename      = preg_replace("#\x{00a0}#siu", ' ', $filename);
-    $filename      = str_replace($special_chars, '', $filename);
     $filename      = str_replace(array('%20', '+'), '-', $filename);
     $filename      = preg_replace('/[\r\n\t -]+/', '-', $filename);
     $filename      = str_replace("-", "_", $filename);
     $filename      = trim($filename, '.-_ ');
+    $filename      = preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', $filename);
+    $filename      = preg_replace("/[^a-zA-Z0-9_\.\-]/", "", $filename);
     
     if( $to_lower_case ) $filename = strtolower($filename);
     
