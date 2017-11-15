@@ -14,6 +14,7 @@ var tinymce_defaults = {
                               + 'textcolor fullscreen autoresize image imagetools hr table',
     toolbar:                  tinymce_standard_toolbar,
     imagetools_toolbar:       'imageoptions',
+    paste_data_images:        true,
     fontsize_formats:         '10pt 12pt 14pt 18pt 24pt 36pt',
     content_css:              tinymce_default_css_files.join(','),
     content_style:            'body {overflow-y: hidden !important;}',
