@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.11.6.0] - 2017-11-18
+
+- Fixed wrong logic on URL forging of the module class.
+- Added extension point before loading user session.
+- Tuned filename sanitization function.
+- Added support to paste data images in TinyMCE.
+
 ## [1.11.5.6] - 2017-08-19
 
 - Improved styles for nav tables.
