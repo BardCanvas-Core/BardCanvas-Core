@@ -52,7 +52,7 @@ $page_title = $template->layout == "home" ? $settings->get("engine.website_name"
     <meta itemprop="description"    content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>">
     <? if( ! empty($page_meta_image) ) echo "<meta itemprop='image'          content='{$page_meta_image}'>\n" ?>
     <meta property="og:site_name"   content="<?= $template->sanitize_meta_var($settings->get("engine.website_name")) ?>">
-    <meta property="og:title"       content="<?= $template->sanitize_meta_var($page_title) ?>">
+    <meta property="og:title"       content="<?= $template->sanitize_meta_var($template->get_page_title(false)) ?>">
     <meta property="og:description" content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>">
     <meta property="og:url"         content="<?= empty($template->page_meta_url) ? $config->full_root_url : $template->page_meta_url ?>">
     <? if( ! empty($page_meta_image) ) echo "<meta property='og:image'       content='{$page_meta_image}'>\n" ?>
