@@ -211,6 +211,7 @@ function get_notifications($id_account)
             if( empty($contents) )
             {
                 @unlink($file);
+                
                 continue;
             }
             
@@ -234,6 +235,13 @@ function get_notifications($id_account)
                     <p>The notification has been deleted before delivering it.</p>
                 ");
                 send_mail($subject, $body, $recipients);
+                @unlink($file);
+                
+                continue;
+            }
+            
+            if( empty($contents->message) )
+            {
                 @unlink($file);
                 
                 continue;
