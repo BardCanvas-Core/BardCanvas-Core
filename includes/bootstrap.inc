@@ -67,7 +67,12 @@ $account = new account();
 foreach($modules as $module)
     if( ! empty($module->php_includes->before_loading_session) )
         include "{$module->abspath}/{$module->php_includes->before_loading_session}";
+
 $account->load_session();
+
+foreach($modules as $module)
+    if( ! empty($module->php_includes->after_loading_session) )
+        include "{$module->abspath}/{$module->php_includes->after_loading_session}";
 
 if( $account->_is_admin && ! empty($_GET["preview_template"]) )
 {
