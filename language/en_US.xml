@@ -58,9 +58,9 @@
                 URL:      {$url}
                 Response: {$response}
                  
-                Please copy this message or capture the screen and send it to
-                the tech support staff with a description of what you were doing
-                so they can fix the issue as soon as possible.
+                If the problem persists, please copy this message or capture the
+                screen and send it to the tech support staff with a description of
+                what you were doing so they can fix the issue as soon as possible.
             ]]></info>
         </ajax>
     </errors>

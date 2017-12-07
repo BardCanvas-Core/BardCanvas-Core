@@ -59,9 +59,9 @@
                 URL:       {$url}
                 Respuesta: {$response}
                  
-                Por favor copia este mensaje o realiza una captura de pantalla
-                y envíalo al staff de soporte con una descripción de lo que estabas
-                haciendo para que tomen las medidas pertinentes.
+                Si el problema persiste, por favor copia este mensaje o realiza una
+                captura de pantalla y envíalo al staff de soporte con una descripción
+                de lo que estabas haciendo para que tomen las medidas pertinentes.
             ]]></info>
         </ajax>
     </errors>

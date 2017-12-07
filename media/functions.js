@@ -23,10 +23,9 @@ $(document).ajaxError(function( event, jqxhr, settings, thrownError )
     contents = contents.replace('{$url}',      settings.url);
     contents = contents.replace('{$response}', jqxhr.status + ' ' + jqxhr.statusText);
     
-    alert(contents);
+    throw_notification(contents, 'warning');
     $('body').find('.blockUI').remove();
 });
-
 
 function wasuuup()
 {
