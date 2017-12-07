@@ -246,6 +246,11 @@ class template
         $this->right_sidebar_items = array();
     }
     
+    public function clear_left_sidebar_groups()
+    {
+        $this->left_sidebar_groups = array();
+    }
+    
     /**
      * @param        $collection
      * @param string $sort_by (nothing)|title|priority
