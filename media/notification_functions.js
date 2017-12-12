@@ -46,7 +46,9 @@ function prepare_notifications_hooks()
 
 function get_notifications()
 {
-    if( $_NOTIFICATIONS_SYSTEM_DISABLED ) return;
+    if( typeof $_NOTIFICATIONS_SYSTEM_DISABLED !== 'undefined' )
+        if( $_NOTIFICATIONS_SYSTEM_DISABLED ) return;
+    
     if( $_CURRENT_USER_ID_ACCOUNT == '' ) return;
     if( getting_notifications ) return;
     
