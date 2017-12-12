@@ -391,6 +391,8 @@ img.alignright  { float: right; margin: 10px; }
 .mce-content-body .multicol      { border: 1px dotted grey; }
 .mce-content-body .multicol .col { border: 1px dotted silver; }
 
+.mce-content-body img[data-media-type="image"] { max-width: 100%; }
+
 /* Multiple columns */
 
 @media all and (min-width: 710px)
