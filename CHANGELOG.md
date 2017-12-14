@@ -1,6 +1,15 @@
 
 # BardCanvas Core Changelog 
 
+## [1.12.0.0] - 2017-12-14
+
+- Removed website name suffix from `og:title` meta tag.
+- Added check to avoid throwing empty notifications.
+- Added extension point after loading user session.
+- Changed ajax error alerts for notifications to avoid locking up the browser.
+- Added helper method to the template class.
+- Added directives to TinyMCE styles.
+
 ## [1.11.6.0] - 2017-11-18
 
 - Fixed wrong logic on URL forging of the module class.
