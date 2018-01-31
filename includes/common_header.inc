@@ -31,6 +31,8 @@ if( ! isset($template->page_extra_metas["og:type"]) )
     $template->page_extra_metas["og:type"] = "<meta property='og:type' content='website'>";
 
 $page_title = $template->layout == "home" ? $settings->get("engine.website_name") : $template->get_page_title();
+$og_url     = empty($template->page_meta_url) ? $config->full_root_url : $template->page_meta_url;
+$og_aux_url = preg_match('/^http:/i', $og_url) ? preg_replace('/^http:/i', 'https:', $og_url) : preg_replace('/^https:/i', 'http:', $og_url);
 ?>
 
     <!-- =================== -->
@@ -54,7 +56,8 @@ $page_title = $template->layout == "home" ? $settings->get("engine.website_name"
     <meta property="og:site_name"   content="<?= $template->sanitize_meta_var($settings->get("engine.website_name")) ?>">
     <meta property="og:title"       content="<?= $template->sanitize_meta_var($template->get_page_title(false)) ?>">
     <meta property="og:description" content="<?= $template->sanitize_meta_var($template->page_meta_description) ?>">
-    <meta property="og:url"         content="<?= empty($template->page_meta_url) ? $config->full_root_url : $template->page_meta_url ?>">
+    <meta property="og:url"         content="<?= $og_url ?>">
+    <meta property="og:url"         content="<?= $og_aux_url ?>">
     <? if( ! empty($page_meta_image) ) echo "<meta property='og:image'       content='{$page_meta_image}'>\n" ?>
     <?= implode("\n    ", $template->page_extra_metas) ?> 
     
