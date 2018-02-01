@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.12.0.2] - 2018-01-31
+
+- Rolled back previous addition due to conflicts with Facebook scrappers.
+
 ## [1.12.0.1] - 2018-01-31
 
 - Added extra og:url tag on the header to improve SEO.
