@@ -78,6 +78,6 @@ function make_unique_id($prefix)
     $server_id = $config->numeric_server_id;
     list($sec, $usec) = explode(".", round(microtime(true), 3));
     $return = $prefix . $server_id . $sec . sprintf("%03.0f", $usec);
-    usleep(1000);
+    usleep(10000);
     return  $return;
 }
