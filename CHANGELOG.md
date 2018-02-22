@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.12.0.3] - 2018-02-21
+
+- Fixed issue in unique id maker that caused issues in fast consecutive calls.
+
 ## [1.12.0.2] - 2018-01-31
 
 - Rolled back previous addition due to conflicts with Facebook scrappers.
