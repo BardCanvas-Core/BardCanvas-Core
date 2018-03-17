@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.12.0.4] - 2018-03-16
+
+- Added methods to the record browsers helper.
+
 ## [1.12.0.3] - 2018-02-21
 
 - Fixed issue in unique id maker that caused issues in fast consecutive calls.
