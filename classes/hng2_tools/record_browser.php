@@ -168,6 +168,39 @@ class record_browser
         return $return;
     }
     
+    public function get_nav_filters()
+    {
+        global $account;
+        
+        $return = array();
+        foreach($account->engine_prefs as $key => $val)
+        {
+           if(stristr($key, "{$this->data_vars_prefix}_nav_filter_") !== false)
+           {
+               $substracted_key = str_replace("{$this->data_vars_prefix}_nav_filter_", "", $key);
+               $return[$substracted_key] = $val;
+           }
+        }
+        
+        return $return;
+    }
+    
+    public function save_nav_filters()
+    {
+        global $account;
+        
+        foreach($_REQUEST as $key => $val)
+        {
+           if(stristr($key, "search_") !== false)
+           {
+               $value = is_array($val) ? implode(",", $val) : $val;
+               
+               if( $account->engine_prefs["{$this->data_vars_prefix}_nav_filter_{$key}"] != $value )
+                   $account->set_engine_pref( "{$this->data_vars_prefix}_nav_filter_{$key}", $value );
+           }
+        }
+    }
+    
     /**
      * @param \SimpleXMLElement $source_language_node
      *
