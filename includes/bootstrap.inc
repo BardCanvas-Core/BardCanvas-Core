@@ -34,6 +34,16 @@ $config->fill_upload_types();
 
 # Engine Language loader
 $language_cookie_val = $settings->get("engine.default_language");
+if( ! empty($_GET["lang"]) )
+{
+    $specified_language = trim(stripslashes($_GET["lang"]));
+    if( file_exists(ROOTPATH . "/language/{$specified_language}.xml") )
+    {
+        $language_cookie_val = $specified_language;
+        @setcookie($config->language_cookie_var, $language_cookie_val, 0, "/", $config->cookies_domain );
+        $_COOKIE[$config->language_cookie_var] = $language_cookie_val;
+    }
+}
 if( $_COOKIE[$config->language_cookie_var] != $language_cookie_val )
 {
     $language_cookie_val = $settings->get("engine.default_language");
