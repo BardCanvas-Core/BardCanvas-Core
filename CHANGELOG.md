@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.12.1.0] - 2018-03-16
+
+- Added extension point on the web helper's mail sender.
+- Added a language pre-setter on the bootstrap.
+
 ## [1.12.0.4] - 2018-03-16
 
 - Added methods to the record browsers helper.
