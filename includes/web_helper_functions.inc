@@ -463,18 +463,31 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
     if( $smtp_enabled != "true" || empty($smtp_host) || empty($smtp_port) || empty($smtp_user) || empty($smtp_password) )
     {
         $mail->isMail();
+        
         if( $config->globals["phpmailer_debug_mode_enabled"] )
             echo "Sending using PHP mail() function.\n";
     }
     else
     {
         $mail->isSMTP();
+        
         $mail->SMTPSecure = $smtp_security;
         $mail->Host       = $smtp_host;
         $mail->Port       = $smtp_port;
         $mail->SMTPAuth   = true;
         $mail->Username   = $smtp_user;
         $mail->Password   = $smtp_password;
+        
+        foreach($modules as $module)
+        {
+            if( empty($module->php_includes->web_helper_after_initializing_smtp_auth) ) continue;
+            
+            $include = "{$module->abspath}/{$module->php_includes->web_helper_after_initializing_smtp_auth}";
+            if( ! file_exists($include) ) continue;
+            
+            include $include;
+        }
+        
         if( $config->globals["phpmailer_debug_mode_enabled"] )
             echo "Sending using SMTP. Details:\n"
             .    " • SMTPSecure = $smtp_security\n"
