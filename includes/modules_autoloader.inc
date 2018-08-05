@@ -23,10 +23,16 @@ $modules_cache_enabled = $settings->get("modules:modules_manager.disable_cache")
 # echo "\$modules_cache_enabled = [$modules_cache_enabled]<br>";
 # echo "\$load_modules = [$load_modules]<br>";
 
+$language_cookie_val = trim(stripslashes($_COOKIE[$config->language_cookie_var]));
+if( empty($language_cookie_val) ) $language_cookie_val = $settings->get("engine.default_language");
+if( empty($language_cookie_val) ) $language_cookie_val = "en_US";
+
+$version = $config->module_versions_hash;
+
 if( $modules_cache_enabled )
 {
     $preload       = ! $force_regeneration;
-    $modules_cache = new disk_cache("{$config->datafiles_location}/cache/modules.dat", $preload);
+    $modules_cache = new disk_cache("{$config->datafiles_location}/cache/modules_{$version}_{$language_cookie_val}.dat", $preload);
     
     if( $modules_cache->loaded )
     {
@@ -40,7 +46,7 @@ if( $modules_cache_enabled )
         $load_modules = false;
     }
     
-    $always_on_cache = new disk_cache("{$config->datafiles_location}/cache/always_on.dat", $preload);
+    $always_on_cache = new disk_cache("{$config->datafiles_location}/cache/always_on_{$version}_{$language_cookie_val}.dat", $preload);
     if( $modules_cache->loaded )
     {
         $files = $always_on_cache->get_all();
@@ -50,7 +56,7 @@ if( $modules_cache_enabled )
 
 if( $load_modules )
 {
-    $always_on_files = array();
+    $always_on_files     = array();
     $module_dirs_pattern = ROOTPATH . "/*";
     $available_modules   = glob($module_dirs_pattern, GLOB_ONLYDIR);
     
