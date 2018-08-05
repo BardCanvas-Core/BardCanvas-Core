@@ -33,26 +33,38 @@ $config->set_metering_toggles();
 $config->fill_upload_types();
 
 # Engine Language loader
-$language_cookie_val = $settings->get("engine.default_language");
-if( ! empty($_GET["lang"]) )
+$language_cookie_val  = "";
+$set_account_language = false;
+if( ! empty($_REQUEST["lang"]) )
 {
-    $specified_language = trim(stripslashes($_GET["lang"]));
+    $specified_language = trim(stripslashes($_REQUEST["lang"]));
     if( file_exists(ROOTPATH . "/language/{$specified_language}.xml") )
     {
-        $language_cookie_val = $specified_language;
-        @setcookie($config->language_cookie_var, $language_cookie_val, 0, "/", $config->cookies_domain );
+        $language_cookie_val  = $specified_language;
+        @setcookie($config->language_cookie_var, $language_cookie_val, time() + (60*60*24*365), "/", $config->cookies_domain );
         $_COOKIE[$config->language_cookie_var] = $language_cookie_val;
+        
+        $set_account_language = true;
     }
 }
-if( $_COOKIE[$config->language_cookie_var] != $language_cookie_val )
+if( empty($language_cookie_val) )
+{
+    $specified_language = trim(stripslashes($_COOKIE[$config->language_cookie_var]));
+    if( file_exists(ROOTPATH . "/language/{$specified_language}.xml") )
+        $language_cookie_val = $specified_language;
+}
+if( empty($language_cookie_val) )
 {
     $language_cookie_val = $settings->get("engine.default_language");
     if( empty($language_cookie_val) ) $language_cookie_val = "en_US";
     
-    @setcookie($config->language_cookie_var, $language_cookie_val, 0, "/", $config->cookies_domain );
+    @setcookie($config->language_cookie_var, $language_cookie_val, time() + (60*60*24*365), "/", $config->cookies_domain );
     $_COOKIE[$config->language_cookie_var] = $language_cookie_val;
+    
+    $set_account_language = true;
 }
 $language = simplexml_load_file( ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".xml" );
+header("Content-language: {$language->info->iso}");
 
 # Localization
 if( file_exists(ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc") )
@@ -79,6 +91,22 @@ foreach($modules as $module)
         include "{$module->abspath}/{$module->php_includes->before_loading_session}";
 
 $account->load_session();
+
+if( $account->_exists )
+{
+    if( $set_account_language )
+    {
+        $account->set_engine_pref("!core:user_language", $_COOKIE[$config->language_cookie_var]);
+    }
+    // else
+    // {
+    //     $language_cookie_val = $account->engine_prefs["!core:user_language"];
+    //     if( empty($language_cookie_val) ) $language_cookie_val = "en_US";
+    //    
+    //     @setcookie($config->language_cookie_var, $language_cookie_val, time() + (60*60*24*365), "/", $config->cookies_domain );
+    //     $_COOKIE[$config->language_cookie_var] = $language_cookie_val;
+    // }
+}
 
 foreach($modules as $module)
     if( ! empty($module->php_includes->after_loading_session) )
