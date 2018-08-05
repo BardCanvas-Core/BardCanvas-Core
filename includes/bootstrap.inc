@@ -66,10 +66,36 @@ if( empty($language_cookie_val) )
 $language = simplexml_load_file( ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".xml" );
 header("Content-language: {$language->info->iso}");
 
+# All languages and locales construction
+$all_languages = array();
+$all_locales   = array();
+foreach( glob(ROOTPATH . "/language/*.xml") as $language_file )
+{
+    $tmp_lang   = simplexml_load_file( $language_file );
+    $tmp_locale = trim($tmp_lang->info->locale);
+    
+    if( trim($language->info->locale) == $tmp_locale )
+        $all_languages[$tmp_locale] = $language;
+    else
+        $all_languages[$tmp_locale] = $tmp_lang;
+    
+    $locale_file = str_replace(".xml", ".inc", $language_file);
+    if( ! file_exists($locale_file) )
+    {
+        $all_locales[$tmp_locale] = $tmp_locale;
+    }
+    else
+    {
+        include $locale_file;
+        $all_locales[$tmp_locale] = setlocale(LC_ALL, 0);
+    }
+}
+unset($tmp_lang, $tmp_locale);
+
 # Localization
 if( file_exists(ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc") )
     include ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".inc";
-    
+
 /** @var module $this_module */
 $this_module    = null;
 
