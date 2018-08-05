@@ -65,6 +65,10 @@ $og_aux_url = preg_match('/^http:/i', $og_url) ? preg_replace('/^http:/i', 'http
     
     <!-- Defaults -->
     <script type="text/javascript">
+        var $_LANGUAGE_NAME           = '<?= addslashes($language->info->full_name) ?>';
+        var $_LANGUAGE_LOCALE         = '<?= $language->info->locale ?>';
+        var $_LANGUAGE_ISO            = '<?= $language->info->iso ?>';
+        var $_LANGUAGE_COUNTRY        = '<?= $language->info->country ?>';
         var $_FULL_ROOT_PATH          = '<?= $config->full_root_path ?>';
         var $_COOKIES_DOMAIN          = '<?= $config->cookies_domain ?>';
         var $_PHP_SELF                = '<?= $_SERVER["PHP_SELF"] ?>';
@@ -157,6 +161,11 @@ $og_aux_url = preg_match('/^http:/i', $og_url) ? preg_replace('/^http:/i', 'http
         <script type="text/javascript" src="<?= $config->full_root_path ?>/media/notification_functions~v<?=$config->engine_version?>-19.js"></script>
         <script type="text/javascript"> $.noty.layouts.bottomLeft.css.width = 'auto'; </script>
     <? endif; ?>
+    
+    <!-- Language-based elements visibility -->
+    <style type="text/css">
+        *[langsense]:not([lang="<?= $language->info->iso ?>"]) { display: none; }
+    </style>
     
     <!-- ================= -->
     <!-- Common header end -->
