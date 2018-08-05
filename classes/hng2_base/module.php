@@ -58,6 +58,11 @@ class module
     var $language;
     
     /**
+     * @var \SimpleXMLElement[]
+     */
+    var $all_languages = array();
+    
+    /**
      * Information to show in the modules manager on how this module can be extended. 
      * @var \SimpleXMLElement
      */
@@ -146,6 +151,14 @@ class module
         # Functionality flags
         $this->installed = $settings->get("modules:$this->name.installed") == "true";
         $this->enabled   = $settings->get("modules:$this->name.enabled")   == "true";
+        
+        # All languages collection
+        foreach( glob("{$this->abspath}/language/*.xml") as $language_file )
+        {
+            $locale = current(explode(".", basename($language_file)));
+            
+            $this->all_languages[$locale] = simplexml_load_file($language_file);
+        }
     }
     
     /**
@@ -240,6 +253,10 @@ class module
         $self->tinymce_additions    = empty($self->tinymce_additions)    ? "" : $self->tinymce_additions->asXML();
         $self->shortcode_handlers   = empty($self->shortcode_handlers)   ? "" : $self->shortcode_handlers->asXML();
         
+        $self->all_languages = array();
+        foreach($this->all_languages as $locale => $language)
+            $self->all_languages[$locale] = empty($language) ? "" : $language->asXML();
+        
         /** @var \SimpleXMLElement $area */
         if( ! empty($self->extended_by) )
             foreach($self->extended_by as &$extending_areas)
@@ -262,6 +279,9 @@ class module
         $this->widgets              = simplexml_load_string($this->widgets);
         $this->tinymce_additions    = simplexml_load_string($this->tinymce_additions);
         $this->shortcode_handlers   = simplexml_load_string($this->shortcode_handlers);
+        
+        foreach($this->all_languages as $locale => $language)
+            $this->all_languages[$locale] = simplexml_load_string($language);
         
         /** @var \SimpleXMLElement $area */
         if( ! empty($this->extended_by) )
