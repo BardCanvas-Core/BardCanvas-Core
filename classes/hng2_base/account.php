@@ -216,8 +216,8 @@ class account extends account_toolbox
                 `id_device`  = '$device->id_device',
                 `login_date` = '".date("Y-m-d H:i:s")."',
                 `ip`         = '".get_remote_address()."',
-                `hostname`   = '".gethostbyaddr(get_remote_address())."',
-                `location`   = '".forge_geoip_location(get_remote_address())."'
+                `hostname`   = '".addslashes(gethostbyaddr(get_remote_address()))."',
+                `location`   = '".addslashes(forge_geoip_location(get_remote_address()))."'
             ");
             
             $this->extend_session_cookie($device);
@@ -255,8 +255,8 @@ class account extends account_toolbox
             `id_device`  = '$device->id_device',
             `login_date` = '$now',
             `ip`         = '".get_remote_address()."',
-            `hostname`   = '".gethostbyaddr(get_remote_address())."',
-            `location`   = '".forge_geoip_location(get_remote_address())."'
+            `hostname`   = '".addslashes(gethostbyaddr(get_remote_address()))."',
+            `location`   = '".addslashes(forge_geoip_location(get_remote_address()))."'
         ");
         
         # Let's ping the device
