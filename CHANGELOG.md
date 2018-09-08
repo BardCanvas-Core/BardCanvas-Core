@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.0.1] - 2018-09-07
+
+- Fixed exception caused by registering devices where country names had quotes.
+
 ## [1.13.0.0] - 2018-08-04
 
 - Refactored user language setting.
