@@ -233,7 +233,7 @@ class account extends account_toolbox
      */
     public function open_session($device)
     {
-        global $config, $settings, $database;
+        global $config, $settings, $database, $modules;
         
         # Inits
         $now = date("Y-m-d H:i:s");
@@ -261,6 +261,10 @@ class account extends account_toolbox
         
         # Let's ping the device
         $device->ping();
+        
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->after_opening_session) )
+                include "{$module->abspath}/{$module->php_includes->after_opening_session}";
     }
     
     protected function extend_session_cookie(device $device)
@@ -279,12 +283,16 @@ class account extends account_toolbox
     
     public function close_session()
     {
-        global $settings, $mem_cache, $account, $config;
+        global $settings, $mem_cache, $account, $config, $modules;
         
         setcookie( $settings->get("engine.user_session_cookie"), "", 0, "/", $config->cookies_domain );
         setcookie( $settings->get("engine.user_online_cookie"),  "", 0, "/", $config->cookies_domain );
         unset( $_COOKIE[$settings->get("engine.user_session_cookie")], $_COOKIE[$settings->get("engine.user_online_cookie")] );
         $mem_cache->delete("account:{$account->id_account}");
+        
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->after_closing_session) )
+                include "{$module->abspath}/{$module->php_includes->after_closing_session}";
     }
     
     /**
@@ -292,7 +300,7 @@ class account extends account_toolbox
      */
     public function save()
     {
-        global $database, $mem_cache;
+        global $database, $mem_cache, $modules;
         
         $now = date("Y-m-d H:i:s");
         if( ! $this->_exists )
@@ -344,6 +352,10 @@ class account extends account_toolbox
         
         $res = $database->exec($query);
         if( $res ) $mem_cache->delete("account:{$this->id_account}");
+        
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->after_saving_account) )
+                include "{$module->abspath}/{$module->php_includes->after_saving_account}";
         
         return $res;
     }
@@ -418,7 +430,7 @@ class account extends account_toolbox
      */
     public function activate($set_user_level = false)
     {
-        global $database;
+        global $database, $modules;
         
         $now         = date("Y-m-d H:i:s");
         $this->state = "enabled";
@@ -441,12 +453,16 @@ class account extends account_toolbox
                     id_account  = '".addslashes($this->id_account)."'
             ";
         
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->after_activating_account) )
+                include "{$module->abspath}/{$module->php_includes->after_activating_account}";
+        
         return $database->exec($query);
     }
     
     public function enable()
     {
-        global $database;
+        global $database, $modules;
         
         $now              = date("Y-m-d H:i:s");
         $this->state      = "enabled";
@@ -457,13 +473,17 @@ class account extends account_toolbox
             where
                 id_account  = '".addslashes($this->id_account)."'
         ";
-    
+        
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->after_enabling_account) )
+                include "{$module->abspath}/{$module->php_includes->after_enabling_account}";
+        
         return $database->exec($query);
     }
     
     public function disable()
     {
-        global $database;
+        global $database, $modules;
         
         $now              = date("Y-m-d H:i:s");
         $this->state      = "disabled";
@@ -474,10 +494,22 @@ class account extends account_toolbox
             where
                 id_account  = '".addslashes($this->id_account)."'
         ";
-    
+        
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->after_disabling_account) )
+                include "{$module->abspath}/{$module->php_includes->after_disabling_account}";
+        
         return $database->exec($query);
     }
     
+    /**
+     * NO LONGER USED
+     * @deprecated
+     * 
+     * @return int
+     * 
+     * @throws \Exception
+     */
     public function set_admin()
     {
         global $database;
@@ -495,6 +527,14 @@ class account extends account_toolbox
         return $database->exec($query);
     }
     
+    /**
+     * NO LONGER USED
+     * @deprecated
+     * 
+     * @return int
+     * 
+     * @throws \Exception
+     */
     public function unset_admin()
     {
         global $database;
@@ -515,7 +555,7 @@ class account extends account_toolbox
     
     public function set_level($new_level)
     {
-        global $database, $config;
+        global $database, $config, $modules;
         
         if( $new_level >= $config::COADMIN_USER_LEVEL )
             $this->_is_admin = true;
@@ -523,13 +563,19 @@ class account extends account_toolbox
         $now              = date("Y-m-d H:i:s");
         $this->level      = $new_level;
         
-        return $database->exec("
+        $return = $database->exec("
             update account set
                 level       = '$new_level',
                 last_update = '$now'
             where
                 id_account  = '$this->id_account'
         ");
+        
+        foreach($modules as $module)
+            if( ! empty($module->php_includes->after_changing_account_level) )
+                include "{$module->abspath}/{$module->php_includes->after_changing_account_level}";
+        
+        return $return;
     }
     
     public function set_avatar_from_post()
