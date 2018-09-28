@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.0.2] - 2018-09-28
+
+- Added extension points on the account class.
+- Added page favicon support directly into the settings editor.
+- Added encryption algorithm to help migrating from Rijndael algorithm.
+
 ## [1.13.0.1] - 2018-09-07
 
 - Fixed exception caused by registering devices where country names had quotes.
