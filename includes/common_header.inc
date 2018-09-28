@@ -17,8 +17,11 @@ use hng2_base\config;
 use hng2_base\settings;
 use hng2_base\template;
 
-$favicon = $template->get("favicon");
+$favicon = $settings->get("engine.favicon");
+if( empty($favicon) ) $favicon = $template->get("favicon");
 if( empty($favicon) ) $favicon = "{$template->url}/media/favicon.ico";
+$favicon_extension = strtolower(end(explode(".", $favicon)));
+$favicon_type      = $favicon_extension == "ico" ? "image/x-icon" : "image/$favicon_extension";
 
 $jquery_ui_theme = $template->get("jquery_ui_theme");
 if( empty($jquery_ui_theme) ) $jquery_ui_theme = "blitzer";
@@ -60,8 +63,8 @@ $og_aux_url = preg_match('/^http:/i', $og_url) ? preg_replace('/^http:/i', 'http
     <? if( ! empty($page_meta_image) ) echo "<meta property='og:image'       content='{$page_meta_image}'>\n" ?>
     <?= implode("\n    ", $template->page_extra_metas) ?> 
     
-    <link rel="icon"          type="image/x-icon" href="<?= $favicon ?>">
-    <link rel="shortcut icon" type="image/x-icon" href="<?= $favicon ?>">
+    <link rel="icon"          type="<?= $favicon_type ?>" href="<?= $favicon ?>">
+    <link rel="shortcut icon" type="<?= $favicon_type ?>" href="<?= $favicon ?>">
     
     <!-- Defaults -->
     <script type="text/javascript">

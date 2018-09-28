@@ -292,6 +292,19 @@
         <!-- Display -->
         <specs is_separator="true">Display and layout</specs>
         
+        <specs key="favicon">
+            <title>Page icon</title>
+            <description><![CDATA[
+                Set a "favicon" for your website.
+                Use a PNG or GIF file, with transparent background, in any of the next sizes:
+                <code>64x64</code>, <code>32x32</code> or <code>16x16</code>.
+                Larger file sizes can be used, but they may not be supported by all browsers.
+            ]]></description>
+            <type>@gallery:specs_renderer/image_selector</type>
+            <options>
+                <image_size>full</image_size>
+            </options>
+        </specs>
         <specs key="default_language">
             <title>Default language</title>
             <description><![CDATA[

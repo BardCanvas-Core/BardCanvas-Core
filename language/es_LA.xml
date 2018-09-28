@@ -292,7 +292,20 @@
         
         <!-- Display -->
         <specs is_separator="true">Despliegue y distribución</specs>
-        
+
+        <specs key="favicon">
+            <title>Icono de la página</title>
+            <description><![CDATA[
+                Especifica un icono para tu sitio web.
+                Usa un archivo PNG o GIF, con fondo transparente, en cualquiera de los siguientes tamaños:
+                <code>64x64</code>, <code>32x32</code> o <code>16x16</code>.
+                Archivos de mayor tamaño pueden ser usados, pero pudieran no ser soportados por todos los navegadores.
+            ]]></description>
+            <type>@gallery:specs_renderer/image_selector</type>
+            <options>
+                <image_size>full</image_size>
+            </options>
+        </specs>
         <specs key="default_language">
             <title>Lenguaje predeterminado</title>
             <description><![CDATA[
