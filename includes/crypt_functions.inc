@@ -15,7 +15,7 @@
  * @param string $string_to_decrypt
  * @param string $key
  *
- * @returns mixed
+ * @return mixed
  */
 function decrypt($string_to_decrypt, $key)
 {
@@ -36,7 +36,7 @@ function decrypt($string_to_decrypt, $key)
  * @param string $string_to_encrypt
  * @param mixed  $key
  *
- * @returns string base64 encoded
+ * @return string base64 encoded
  */
 function encrypt($string_to_encrypt, $key)
 {
@@ -80,4 +80,117 @@ function make_unique_id($prefix)
     $return = $prefix . $server_id . $sec . sprintf("%03.0f", $usec);
     usleep(10000);
     return  $return;
+}
+
+/**
+ * Three-layer encryption
+ *
+ * @author LexZEUS
+ * @see    http://lexzeus.tripod.com/
+ *
+ * @param string $text_plain
+ * @param string $key1
+ * @param string $key2
+ * @param string $key3
+ *
+ * @return string
+ */
+function three_layer_encrypt($text_plain, $key1, $key2, $key3)
+{
+    return base64_encode(_3le_keyED(_3le_encrypt(_3le_keyED($text_plain, $key1), $key2), $key3));
+}
+
+/**
+ * Three-layer decryption
+ *
+ * @author LexZEUS
+ * @see    http://lexzeus.tripod.com/
+ *
+ * @param string $text_encrypted
+ * @param string $key1
+ * @param string $key2
+ * @param string $key3
+ *
+ * @return string
+ */
+function three_layer_decrypt($text_encrypted, $key1, $key2, $key3)
+{
+    return _3le_keyED(_3le_decrypt(_3le_keyED(base64_decode($text_encrypted), $key3), $key2), $key1);
+}
+
+/**
+ * Three-layer encryption internal encrypter
+ *
+ * @author LexZEUS
+ * @see    http://lexzeus.tripod.com/
+ *
+ * @param string $txt
+ * @param string $key
+ *
+ * @return string
+ */
+function _3le_encrypt($txt, $key)
+{
+    srand((double) microtime() * 1000000);
+    $encrypt_key = md5(rand(0, 32000));
+    $ctr         = 0;
+    $tmp         = "";
+    for( $i = 0; $i < strlen($txt); $i++ )
+    {
+        if( $ctr == strlen($encrypt_key) ) $ctr = 0;
+        $tmp .= substr($encrypt_key, $ctr, 1) . (substr($txt, $i, 1) ^ substr($encrypt_key, $ctr, 1));
+        $ctr++;
+    }
+    
+    return _3le_keyED($tmp, $key);
+}
+
+/**
+ * Three-layer encryption internal decrypter
+ *
+ * @author LexZEUS
+ * @see    http://lexzeus.tripod.com/
+ *
+ * @param string $txt
+ * @param string $key
+ *
+ * @return string
+ */
+function _3le_decrypt($txt, $key)
+{
+    $txt = _3le_keyED($txt, $key);
+    $tmp = "";
+    for( $i = 0; $i < strlen($txt); $i++ )
+    {
+        $md5 = substr($txt, $i, 1);
+        $i++;
+        $tmp .= (substr($txt, $i, 1) ^ $md5);
+    }
+    
+    return $tmp;
+}
+
+/**
+ * Three-layer encryption internal key transcoder
+ *
+ * @author LexZEUS
+ * @see    http://lexzeus.tripod.com/
+ *
+ * @param string $txt
+ * @param string $encrypt_key
+ *
+ * @return string
+ */
+function _3le_keyED($txt, $encrypt_key)
+{
+    $ctr = 0;
+    $tmp = "";
+    for( $i = 0; $i < strlen($txt); $i++ )
+    {
+        if( $ctr == strlen($encrypt_key) ) $ctr = 0;
+        $tmp .= substr($txt, $i, 1) ^ substr($encrypt_key, $ctr, 1);
+        $ctr++;
+    }
+    
+    return $tmp;
 }
