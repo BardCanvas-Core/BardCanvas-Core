@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.0.3] - 2018-10-13
+
+- Page title tuning.
+
 ## [1.13.0.2] - 2018-09-28
 
 - Added extension points on the account class.
