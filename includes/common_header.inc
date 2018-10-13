@@ -33,7 +33,7 @@ if( ! empty($page_meta_image) && substr($page_meta_image, 0, 4) != "http" ) $pag
 if( ! isset($template->page_extra_metas["og:type"]) )
     $template->page_extra_metas["og:type"] = "<meta property='og:type' content='website'>";
 
-$page_title = $template->layout == "home" ? $settings->get("engine.website_name") : $template->get_page_title();
+$page_title = $template->layout == "home" ? $template->get_page_title(false) : $template->get_page_title();
 $og_url     = empty($template->page_meta_url) ? $config->full_root_url : $template->page_meta_url;
 $og_aux_url = preg_match('/^http:/i', $og_url) ? preg_replace('/^http:/i', 'https:', $og_url) : preg_replace('/^https:/i', 'http:', $og_url);
 ?>

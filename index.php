@@ -10,5 +10,7 @@
 include "config.php";
 include "includes/bootstrap.inc";
 
-$template->set_page_title($language->home_title);
+$title = $settings->get("engine.website_name");
+if( empty($title ) ) $title = $language->home_title;
+$template->set_page_title($title);
 include "{$template->abspath}/home.php";
