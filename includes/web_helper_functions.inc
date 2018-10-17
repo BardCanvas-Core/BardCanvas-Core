@@ -601,8 +601,6 @@ function externalize_urls($text)
 {
     global $config;
     
-    $replacements = array();
-    
     $doc = new DOMDocument();
     @$doc->loadHTML($text);
     
@@ -618,7 +616,7 @@ function externalize_urls($text)
         if( empty($src) ) continue;
         
         if( ! preg_match('/^http:|https:/i', $src) )
-            $replacements[$src] = $config->full_root_url . $src;
+            $tag->setAttribute('src', $config->full_root_url . $src);
     }
     
     $tags = $doc->getElementsByTagName('a');
@@ -628,10 +626,12 @@ function externalize_urls($text)
         if( empty($src) ) continue;
         
         if( ! preg_match('/^http:|https:/i', $src) )
-            $replacements[$src] = $config->full_root_url . $src;
+            $tag->setAttribute('href', $config->full_root_url . $src);
     }
     
-    $text = str_replace(array_keys($replacements), $replacements, $text);
+    $text = $doc->saveHTML();
+    $text = preg_replace('#<!doctype.*>|<html>|<body>|</body>|</html>#i', "", $text);
+    $text = trim($text);
     
     return $text;
 }
