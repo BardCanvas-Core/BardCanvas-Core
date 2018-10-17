@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.0.4] - 2018-10-17
+
+- Reworked URL externalizer on the web helper functions.
+
 ## [1.13.0.3] - 2018-10-13
 
 - Page title tuning.
