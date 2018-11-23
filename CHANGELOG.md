@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.0.5] - 2018-11-22
+
+- Tuning of body attributes related to starting window dimensions.
+- Added saving of homepage URL on account creation.
+- Added memcache check to avoid unwanted warnings.
+
 ## [1.13.0.4] - 2018-10-17
 
 - Reworked URL externalizer on the web helper functions.
