@@ -153,7 +153,7 @@ $og_aux_url = preg_match('/^http:/i', $og_url) ? preg_replace('/^http:/i', 'http
     <!-- Core UI stuff -->
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>-17.css">
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>-4.css">
-    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-31.js"></script>
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-32.js"></script>
     
     <? if( $template->get("include_notification_functions") ): ?>
         <!-- Notifications -->

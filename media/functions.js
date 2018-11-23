@@ -112,10 +112,14 @@ function set_body_metas()
     var height = $(window).height();
     var $body  = $('body');
     
-    $body.attr('data-start-width',   width);
     $body.attr('data-window-width',  width);
-    $body.attr('data-start-height',  height);
     $body.attr('data-window-height', height);
+    
+    if( typeof $body.attr('data-start-width') === 'undefined' )
+        $body.attr('data-start-width',   width);
+    
+    if( typeof $body.attr('data-start-height') === 'undefined' )
+        $body.attr('data-start-height',  height);
     
     $body.attr('data-header-can-be-fixed', height >= 300 ? "true" : "false");
     
