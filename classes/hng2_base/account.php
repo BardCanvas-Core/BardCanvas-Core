@@ -321,6 +321,7 @@ class account extends account_toolbox
                 email         = '".addslashes($this->email)."'          ,
                 alt_email     = '".addslashes($this->alt_email)."'      ,
                 birthdate     = '".addslashes($this->birthdate)."'      ,
+                homepage_url  = '".addslashes($this->homepage_url)."'   ,
                 country       = '".addslashes($this->country)."'        ,
                 level         = '".addslashes($this->level)."'          ,
                 state         = '".addslashes($this->state)."'          ,
