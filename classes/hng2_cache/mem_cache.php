@@ -163,8 +163,12 @@ class mem_cache
         if( ! $this->enabled ) return $keys;
         
         $slabs = $this->server->getextendedstats('slabs');
+        if( empty($slabs) ) return array();
+        
         foreach( $slabs as $serverSlabs )
         {
+            if( empty($serverSlabs) ) continue;
+            
             foreach( $serverSlabs as $slabId => $slabMeta )
             {
                 try
