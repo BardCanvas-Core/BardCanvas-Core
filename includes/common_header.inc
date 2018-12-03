@@ -36,6 +36,8 @@ if( ! isset($template->page_extra_metas["og:type"]) )
 $page_title = $template->layout == "home" ? $template->get_page_title(false) : $template->get_page_title();
 $og_url     = empty($template->page_meta_url) ? $config->full_root_url : $template->page_meta_url;
 $og_aux_url = preg_match('/^http:/i', $og_url) ? preg_replace('/^http:/i', 'https:', $og_url) : preg_replace('/^https:/i', 'http:', $og_url);
+
+if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js_core_function_overrides"] = (object) array();
 ?>
 
     <!-- =================== -->
@@ -153,7 +155,9 @@ $og_aux_url = preg_match('/^http:/i', $og_url) ? preg_replace('/^http:/i', 'http
     <!-- Core UI stuff -->
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/styles~v<?=$config->engine_version?>-17.css">
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>-4.css">
-    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-32.js"></script>
+    
+    <script type="text/javascript"> var $_CORE_FUNCTION_OVERRIDES = JSON.parse('<?= json_encode($config->globals["js_core_function_overrides"]) ?>'); </script>
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-33-7.js"></script>
     
     <? if( $template->get("include_notification_functions") ): ?>
         <!-- Notifications -->

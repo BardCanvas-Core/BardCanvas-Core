@@ -8,24 +8,32 @@
  * @var {string} $_FULL_ROOT_PATH
  */
 
-$(document).ajaxError(function( event, jqxhr, settings, thrownError )
+if( ! $_CORE_FUNCTION_OVERRIDES.disable_global_ajax_error_handler )
 {
-    console.log('>>> AJAX ERROR DETECTED');
-    console.log('>>> URL:      ', settings.url);
-    console.log('>>> jqXHR:    ', jqxhr);
-    console.log('>>> Response: ', jqxhr.status + ' ' + jqxhr.statusText);
-    if( parseInt(jqxhr.status) == 0 ) return;
-    if( parseInt(jqxhr.status) == 200 ) return;
+    $(document).ajaxError(function( event, xhr, settings, thrownError )
+    {
+        console.warn(
+            '>>> AJAX ERROR DETECTED\n' +
+            '>>> URL:      %s\n' +
+            '>>> Response: %s (%s)',
+            settings.url, xhr.status, xhr.statusText
+        );
+        
+        // if( parseInt(xhr.status) === 0 ) return;
+        if( parseInt(xhr.status) === 200 ) return;
+        
+        var title    = $_AJAX_ERROR_DIALOG_TITLE;
+        var contents = $_AJAX_ERROR_CONTENTS.replace(/\n/g, '<br>\n');
+        
+        contents = contents.replace('{$url}',      settings.url);
+        contents = contents.replace('{$response}', xhr.status + ' ' + xhr.statusText);
+        
+        throw_notification(contents, 'warning');
+        $('body').find('.blockUI').remove();
+    });
     
-    var title    = $_AJAX_ERROR_DIALOG_TITLE;
-    var contents = $_AJAX_ERROR_CONTENTS;
-    
-    contents = contents.replace('{$url}',      settings.url);
-    contents = contents.replace('{$response}', jqxhr.status + ' ' + jqxhr.statusText);
-    
-    throw_notification(contents, 'warning');
-    $('body').find('.blockUI').remove();
-});
+    console.log('%cGlobal ajax error handler in place.', 'color: black; background-color: greenyellow;');
+}
 
 function wasuuup()
 {
