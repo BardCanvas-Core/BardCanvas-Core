@@ -47,11 +47,19 @@ if( empty($current_module) || empty($include) ) throw_fake_404();
 
 include $include;
 
-if( $_GET["as_text"] == "true" ) header("Content-Type: text/plain; charset=utf-8");
-else                             header("Content-Type: application/xml; charset=utf-8");
-
 $channel->comments[] = "Channel served by: {$settings->get("engine.website_name")}/{$current_module->name}";
 $channel->comments[] = "Data handle: $handle";
+
+if( strtolower($_GET["format"]) == "json" )
+{
+    $output = array("channel" => $channel);
+    
+    header("Content-Type: application/json; charset=utf-8");
+    die(json_encode($output));
+}
+
+if( $_GET["as_text"] == "true" ) header("Content-Type: text/plain; charset=utf-8");
+else                             header("Content-Type: application/xml; charset=utf-8");
 
 $header = "";
 foreach($channel->comments as $comment) $header .= "<!-- $comment -->\n";
