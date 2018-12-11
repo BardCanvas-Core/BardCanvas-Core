@@ -601,39 +601,34 @@ function externalize_urls($text)
 {
     global $config;
     
-    $doc = new DOMDocument();
-    @$doc->loadHTML($text);
+    if( ! class_exists('phpQuery') )
+        include_once(ROOTPATH . "/lib/phpQuery-onefile.php");
     
-    /**
-     * @var DOMNodeList $tags
-     * @var DOMElement  $tag
-     */
+    $pq = phpQuery::newDocument($text);
     
-    $tags = $doc->getElementsByTagName('img');
-    foreach($tags as $tag)
-    {
-        $src = trim($tag->getAttribute('src'));
-        if( empty($src) ) continue;
+    $pq->find('img')->each(function($element) {
+        global $config;
+        
+        $tag = pq($element);
+        $src = trim($tag->attr('src'));
+        if( empty($src) ) return;
         
         if( ! preg_match('/^http:|https:/i', $src) )
-            $tag->setAttribute('src', $config->full_root_url . $src);
-    }
+            $tag->attr("src", $config->full_root_url . $src);
+    });
     
-    $tags = $doc->getElementsByTagName('a');
-    foreach($tags as $tag)
-    {
-        $src = trim($tag->getAttribute('href'));
-        if( empty($src) ) continue;
+    $pq->find('a')->each(function($element) {
+        global $config;
+        
+        $tag = pq($element);
+        $src = trim($tag->attr('href'));
+        if( empty($src) ) return;
         
         if( ! preg_match('/^http:|https:/i', $src) )
-            $tag->setAttribute('href', $config->full_root_url . $src);
-    }
+            $tag->attr("href", $config->full_root_url . $src);
+    });
     
-    $text = $doc->saveHTML();
-    $text = preg_replace('#<!doctype.*>|<html>|<body>|</body>|</html>#i', "", $text);
-    $text = trim($text);
-    
-    return $text;
+    return $pq->html();
 }
 
 function is_mobile()
