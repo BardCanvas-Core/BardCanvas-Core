@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.1.0] - 2018-12-11
+
+- Added JS function overriding flags on the common header.
+- Tuned global AJAX error handler.
+- Added support for JSON formatted RSS feeds.
+- Re-reworked URL externalizer on the web helper functions due to transcoding issues.
+
 ## [1.13.0.5] - 2018-11-22
 
 - Tuning of body attributes related to starting window dimensions.
