@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.2.0] - 2018-12-16
+
+- Tuned modules & editable prefs caches.
+
 ## [1.13.1.0] - 2018-12-11
 
 - Added JS function overriding flags on the common header.
