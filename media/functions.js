@@ -19,7 +19,7 @@ if( ! $_CORE_FUNCTION_OVERRIDES.disable_global_ajax_error_handler )
             settings.url, xhr.status, xhr.statusText
         );
         
-        // if( parseInt(xhr.status) === 0 ) return;
+        if( parseInt(xhr.status) === 0 ) return;
         if( parseInt(xhr.status) === 200 ) return;
         
         var title    = $_AJAX_ERROR_DIALOG_TITLE;
@@ -105,7 +105,7 @@ function show_discardable_dialog(selector, full_sized)
     
     $(selector).dialog({
         modal:     true,
-        title:     $(selector).attr('title'),
+        title:     title,
         width:     width,
         height:    height,
         maxHeight: $(window).height() - 20,

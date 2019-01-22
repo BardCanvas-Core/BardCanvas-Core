@@ -157,7 +157,7 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/media/admin~v<?=$config->engine_version?>-4.css">
     
     <script type="text/javascript"> var $_CORE_FUNCTION_OVERRIDES = JSON.parse('<?= json_encode($config->globals["js_core_function_overrides"]) ?>'); </script>
-    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-33-7.js"></script>
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/media/functions~v<?=$config->engine_version?>-34.js"></script>
     
     <? if( $template->get("include_notification_functions") ): ?>
         <!-- Notifications -->
