@@ -1173,3 +1173,25 @@ function convert_shortcodes($contents)
     
     return $contents;
 }
+
+function trim_trailing_zeroes($amount, $decimals = 8 )
+{
+    $amount = number_format($amount, $decimals, ".", "");
+    $parts  = explode(".", $amount);
+    
+    if( $parts[1] === "00000000" ) return $parts[0];
+    
+    $digits = str_split($parts[1]);
+    for($i = $decimals - 1; $i >= 0; $i--)
+    {
+        if( $digits[$i] > 0 ) break;
+        
+        array_pop($digits);
+    }
+    
+    $digits = implode("", $digits);
+    
+    if( strlen($digits) > 4 ) return $amount;
+    
+    return $parts[0] . "." . $digits;
+}
