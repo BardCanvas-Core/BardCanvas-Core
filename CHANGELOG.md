@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.2.2] - 2019-01-29
+
+- Addition to text functions.
+
 ## [1.13.2.1] - 2019-01-21
 
 - Tuned JS core functions.
