@@ -1144,6 +1144,8 @@ function convert_shortcodes($contents)
     /** @noinspection PhpUnusedLocalVariableInspection */
     global $modules, $current_module, $config, $account, $settings;
     
+    $contents = __convert_system_shortcodes($contents);
+    
     foreach($modules as $this_module)
     {
         if( empty($this_module->shortcode_handlers) ) continue;
@@ -1167,6 +1169,88 @@ function convert_shortcodes($contents)
                 $attributes = wp_parse_shortcode_attributes($matches[3][$index]);
                 # echo "<pre>" . print_r($attributes, true) . "</pre>";
                 include $file;
+            }
+        }
+    }
+    
+    return $contents;
+}
+
+function __convert_system_shortcodes($contents)
+{
+    $system_shortcodes = array(
+        "fa", "framed_content", "framed_div", "framed_span", "content_frame", "div", "p", "span"
+    );
+    
+    foreach($system_shortcodes as $name)
+    {
+        $pattern = wp_get_shortcode_regex($name);
+        if( ! preg_match_all("@$pattern@", $contents, $matches) ) continue;
+        
+        foreach($matches[0] as $index => $matched_str)
+        {
+            $attributes = wp_parse_shortcode_attributes($matches[3][$index]);
+            
+            $id       = isset($attributes["id"])      ? "id=\"{$attributes["class"]}\""        : "";
+            $class    = isset($attributes["class"])   ? "class=\"{$attributes["class"]}\""     : "";
+            $style    = isset($attributes["style"])   ? "style=\"{$attributes["style"]}\""     : "";
+            $onclick  = isset($attributes["onclick"]) ? "onclick=\"{$attributes["onclick"]}\"" : "";
+            switch( $name )
+            {
+                case "fa":
+                {
+                    if( ! isset($attributes["icon"]) ) break;
+                    
+                    $class = "fa fa-{$attributes["icon"]} {$attributes["class"]}";
+                    
+                    $contents = str_replace($matched_str, "<i $id class=\"$class\" $style $onclick></i>", $contents);
+                    break;
+                }
+                case "framed_content":
+                case "framed_div":
+                {
+                    $class = isset($attributes["class"]) ? $attributes["class"] : "";
+                    if( isset($attributes["state"]) ) $class .= " state_" . $attributes["state"];
+                    
+                    $contents = str_replace(
+                        $matched_str,
+                        "<div class=\"framed_content $class\" $id $style $onclick>{$matches[5][$index]}</div>",
+                        $contents
+                    );
+                    break;
+                }
+                case "framed_span":
+                {
+                    $class = isset($attributes["class"]) ? $attributes["class"] : "";
+                    if( isset($attributes["state"]) ) $class .= " state_" . $attributes["state"];
+                    
+                    $contents = str_replace(
+                        $matched_str,
+                        "<span class=\"framed_content $class\" $id $style $onclick>{$matches[5][$index]}</span>",
+                        $contents
+                    );
+                    break;
+                }
+                case "content_frame":
+                {
+                    $contents = str_replace(
+                        $matched_str,
+                        "<div class=\"content_frame $class\" $id $style $onclick>{$matches[5][$index]}</div>",
+                        $contents
+                    );
+                    break;
+                }
+                case "div":
+                case "p":
+                case "span":
+                {
+                    $contents = str_replace(
+                        $matched_str,
+                        "<$name $id $class $style $onclick>{$matches[5][$index]}</$name>",
+                        $contents
+                    );
+                    break;
+                }
             }
         }
     }
