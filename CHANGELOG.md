@@ -1,6 +1,19 @@
 
 # BardCanvas Core Changelog 
 
+## [1.3.2.3] - 2019-02-06
+
+- Added *system* shortcodes:
+  - `fa` to show a Font Awesome icon, E.G. `[fa icon="info-circle"]`
+  - `framed_content`, `framed_div` to show a framed content div with optional state style,
+    E.G. `[framed_content state="highlight"]Text[/framed_content]`
+  - `framed_span` similar to the previous one, but in a `span` instead of a `div`
+  - `content_frame` to show a framed content div styled according to the actual template,
+    E.G. `[content_frame]Some text [/content_frame]`
+  - `div`, `p` and `span` to show contents wrapped with any of these tags with custom classes and styles,
+    E.G. `[span style="color: blue; font-family: 'Times New Roman, Times, serif'"]Some text[/span]"`
+- Tuned excerpt maker.
+
 ## [1.13.2.2] - 2019-01-29
 
 - Addition to text functions.
