@@ -977,7 +977,8 @@ function make_excerpt_of($string, $length = 30, $with_ellipsis = true)
     #     else                 return trim($string);
     # }
     
-    $excerpt = strip_tags($string);
+    $excerpt = convert_shortcodes($string);
+    $excerpt = strip_tags($excerpt);
     $excerpt = preg_replace('/\s+/', " ", $excerpt);
     $excerpt = trim($excerpt);
     
