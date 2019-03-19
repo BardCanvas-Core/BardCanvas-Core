@@ -285,9 +285,15 @@ class account extends account_toolbox
     {
         global $settings, $mem_cache, $account, $config, $modules;
         
+        $device_cookie_key = "_" . $config->website_key . "_DIC";
         setcookie( $settings->get("engine.user_session_cookie"), "", 0, "/", $config->cookies_domain );
         setcookie( $settings->get("engine.user_online_cookie"),  "", 0, "/", $config->cookies_domain );
-        unset( $_COOKIE[$settings->get("engine.user_session_cookie")], $_COOKIE[$settings->get("engine.user_online_cookie")] );
+        setcookie( $device_cookie_key                         ,  "", 0, "/", $config->cookies_domain );
+        unset(
+            $_COOKIE[$settings->get("engine.user_session_cookie")],
+            $_COOKIE[$settings->get("engine.user_online_cookie")],
+            $_COOKIE[$device_cookie_key]
+        );
         $mem_cache->delete("account:{$account->id_account}");
         
         foreach($modules as $module)
