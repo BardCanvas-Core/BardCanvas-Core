@@ -1,11 +1,11 @@
 
 # BardCanvas Core Changelog 
 
-## [1.3.2.4] - 2019-03-19
+## [1.13.2.4] - 2019-03-19
 
 - Tuned session closing function.
 
-## [1.3.2.3] - 2019-02-06
+## [1.13.2.3] - 2019-02-06
 
 - Added *system* shortcodes:
   - `fa` to show a Font Awesome icon, E.G. `[fa icon="info-circle"]`
