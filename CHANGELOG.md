@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.2.5]
+
+- Added missing treatment in submenu triggers initialization.
+
 ## [1.13.2.4] - 2019-03-19
 
 - Tuned session closing function.
