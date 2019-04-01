@@ -204,6 +204,8 @@ function prepare_submenus()
             event.stopPropagation();
             toggle_dropdown_menu( $self );
         });
+        
+        $this.attr('data-already-processed', true);
     });
 }
 
