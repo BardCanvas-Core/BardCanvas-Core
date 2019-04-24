@@ -599,6 +599,7 @@ function broadcast_mail_between_levels(
 
 function externalize_urls($text)
 {
+    /** @noinspection PhpUnusedLocalVariableInspection */
     global $config;
     
     if( ! class_exists('phpQuery') )
