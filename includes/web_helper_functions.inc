@@ -353,7 +353,7 @@ function autolink_hash_tags($contents, $url_prefix, $url_suffix = "")
     if( empty($list) ) return $contents;
     
     foreach($list as $search => $replace)
-        $contents = str_replace($search, $replace, $contents);
+        $contents = preg_replace("/$search\\b/", $replace, $contents);
     
     return $contents;
 }
