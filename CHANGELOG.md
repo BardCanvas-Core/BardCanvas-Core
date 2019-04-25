@@ -1,7 +1,12 @@
 
 # BardCanvas Core Changelog 
 
-## [1.13.2.5]
+## [1.13.2.6] - 2019-04-25
+
+- Tuned hashtags autolinking function on the web helper.
+- Added missing year on time_today_string helper function for old dates.
+
+## [1.13.2.5] - 2019-03-31
 
 - Added missing treatment in submenu triggers initialization.
 
