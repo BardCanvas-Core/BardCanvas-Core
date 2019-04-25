@@ -195,6 +195,8 @@ function time_today_string($input)
         $prefix = $language->time->today;        # today
     elseif( substr($input, 0, 10) == date("Y-m-d", strtotime("yesterday")) )
         $prefix = $language->time->yesterday;    # yesterday
+    elseif( date("Y") > substr($input, 0, 4) )
+        $prefix = utf8_encode(strftime("%b %e, %G", $timestamp)); # other year
     else
         $prefix = utf8_encode(strftime("%b %e", $timestamp)); # other day
     
