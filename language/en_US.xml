@@ -606,6 +606,21 @@
             <config_callback>toggle_query_backtrace</config_callback>
         </specs>
         
+        <!-- Other -->
+        <specs is_separator="true">Other settings</specs>
+        
+        <specs key="slugs_word_separator">
+            <title>Slugs/permalinks word separation character</title>
+            <description><![CDATA[
+                Specify how words in slugs should be separated.
+            ]]></description>
+            <type>list</type>
+            <options>
+                <option value="">Use_underscores</option>
+                <option value="dashes">Use-dashes</option>
+            </options>
+        </specs>
+        
     </settings_data>
     
     <file_ops>

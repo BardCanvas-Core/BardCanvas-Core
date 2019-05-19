@@ -614,6 +614,21 @@
             <config_callback>toggle_query_backtrace</config_callback>
         </specs>
         
+        <!-- Other -->
+        <specs is_separator="true">Otras configuraciones</specs>
+        
+        <specs key="slugs_word_separator">
+            <title>Separador de palabras en slugs/permalinks</title>
+            <description><![CDATA[
+                Especifica cómo deben separarse las palabras en slugs.
+            ]]></description>
+            <type>list</type>
+            <options>
+                <option value="">Usar_guiones_bajos</option>
+                <option value="dashes">Usar-guiones-normales</option>
+            </options>
+        </specs>
+        
     </settings_data>
     
     <file_ops>

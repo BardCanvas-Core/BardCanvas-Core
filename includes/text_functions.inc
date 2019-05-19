@@ -372,6 +372,8 @@ function remove_filesystem_invalid_chars($filename)
  */
 function wp_sanitize_filename($filename, $to_lower_case = true)
 {
+    global $settings;
+    
     $special_chars = array(
         "…",
         "¿",
@@ -409,7 +411,10 @@ function wp_sanitize_filename($filename, $to_lower_case = true)
     $filename      = preg_replace("#\x{00a0}#siu", ' ', $filename);
     $filename      = str_replace(array('%20', '+'), '-', $filename);
     $filename      = preg_replace('/[\r\n\t -]+/', '-', $filename);
-    $filename      = str_replace("-", "_", $filename);
+    
+    if( $settings->get("engine.slugs_word_separator") != "dashes" )
+        $filename      = str_replace("-", "_", $filename);
+    
     $filename      = trim($filename, '.-_ ');
     $filename      = preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', $filename);
     $filename      = preg_replace("/[^a-zA-Z0-9_\.\-]/", "", $filename);
