@@ -184,7 +184,7 @@ class cli
     {
         $return = $escaped_text;
         
-        $return = htmlspecialchars($return);
+        # $return = htmlspecialchars($return);
         
         foreach(self::$html_foreground_colors as $name => $code)
             $return = str_replace("\033[" . $code . "m", "<span style=\"color: $name;\">", $return);
@@ -192,6 +192,7 @@ class cli
         foreach(self::$html_background_colors as $name => $code)
             $return = str_replace("\033[" . $code . "m", "<span style=\"background-color: $name;\">", $return);
         
+        /** @noinspection HtmlUnknownAttribute */
         $return = preg_replace('/\<span style\="(.*)"\>\<span style\="(.*)"\>/', '<span style="$1 $2">', $return);
         
         $return = str_replace("\033[0m", "</span>", $return);
