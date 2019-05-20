@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.13.3.0] - 2019-05-20
+
+- Added slug word separator selection.
+- Removed conversion function on cli to HTML exporter.
+
 ## [1.13.2.6] - 2019-04-25
 
 - Tuned hashtags autolinking function on the web helper.
