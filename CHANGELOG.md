@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.0.0] - 2019-06-07
+
+- Added IP privacy settings (user-level based).
+
 ## [1.13.3.0] - 2019-05-20
 
 - Added slug word separator selection.
