@@ -621,6 +621,16 @@
             </options>
         </specs>
         
+        <specs key="min_user_level_for_ip_dismissal">
+            <title>Minimum user level to disable IP logging</title>
+            <description><![CDATA[
+                By default, when all users open a session, IPs, hostnames and locations are stored in the
+                device logins table.
+                If you don't want to register such data from users above certain level, specify it here.
+            ]]></description>
+            <type>number</type>
+        </specs>
+        
     </settings_data>
     
     <file_ops>

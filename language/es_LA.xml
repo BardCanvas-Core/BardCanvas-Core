@@ -629,6 +629,17 @@
             </options>
         </specs>
         
+        <specs key="min_user_level_for_ip_dismissal">
+            <title>Nivel mínimo de usuario para evitar registro de IPs</title>
+            <description><![CDATA[
+                De forma predeterminada, se registran las IPs, nombres de host y ubicaciones de todos los
+                usuarios que abren sesión.
+                Si no deseas que se registren dichos datos en usuarios a partir
+                de cierto nivel, especifícalo aquí.
+            ]]></description>
+            <type>number</type>
+        </specs>
+        
     </settings_data>
     
     <file_ops>

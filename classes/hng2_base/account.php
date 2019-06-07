@@ -210,14 +210,28 @@ class account extends account_toolbox
                 0, "/", $config->cookies_domain
             );
             
+            $min_loggin_level = (int) $settings->get("engine.min_user_level_for_ip_dismissal");
+            if( $this->level >= $min_loggin_level )
+            {
+                $ip       = "";
+                $host     = "";
+                $location = "";
+            }
+            else
+            {
+                $ip       = get_remote_address();
+                $host     = addslashes(gethostbyaddr(get_remote_address()));
+                $location = addslashes(forge_geoip_location($ip));
+            }
+            
             $database->exec("
                 insert ignore into account_logins set
                 `id_account` = '$this->id_account',
                 `id_device`  = '$device->id_device',
                 `login_date` = '".date("Y-m-d H:i:s")."',
-                `ip`         = '".get_remote_address()."',
-                `hostname`   = '".addslashes(gethostbyaddr(get_remote_address()))."',
-                `location`   = '".addslashes(forge_geoip_location(get_remote_address()))."'
+                `ip`         = '$ip',
+                `hostname`   = '$host',
+                `location`   = '$location'
             ");
             
             $this->extend_session_cookie($device);
@@ -248,15 +262,29 @@ class account extends account_toolbox
             0, "/", $config->cookies_domain
         );
         
+        $min_loggin_level = (int) $settings->get("engine.min_user_level_for_ip_dismissal");
+        if( $this->level >= $min_loggin_level )
+        {
+            $ip       = "";
+            $host     = "";
+            $location = "";
+        }
+        else
+        {
+            $ip       = get_remote_address();
+            $host     = addslashes(gethostbyaddr(get_remote_address()));
+            $location = addslashes(forge_geoip_location($ip));
+        }
+        
         # Now we insert the record in the logins table
         $database->exec("
             insert into account_logins set
             `id_account` = '$this->id_account',
             `id_device`  = '$device->id_device',
             `login_date` = '$now',
-            `ip`         = '".get_remote_address()."',
-            `hostname`   = '".addslashes(gethostbyaddr(get_remote_address()))."',
-            `location`   = '".addslashes(forge_geoip_location(get_remote_address()))."'
+            `ip`         = '$ip',
+            `hostname`   = '$host',
+            `location`   = '$location'
         ");
         
         # Let's ping the device
