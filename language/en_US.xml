@@ -469,6 +469,14 @@
         <!-- Input and uploads -->
         <specs is_separator="true">Form input and uploads</specs>
         
+        <specs key="recaptcha_public_key">
+            <title>reCAPTCHA site key</title>
+            <description><![CDATA[
+                Public key provided by Google Recaptcha. Used in conjunction with the private key.<br>
+                Leave blank to disable reCAPTCHA functionality.
+            ]]></description>
+            <type>text</type>
+        </specs>
         <specs key="recaptcha_private_key">
             <title>reCAPTCHA secret key</title>
             <description><![CDATA[
@@ -476,14 +484,6 @@
                 creation among other things.<br>
                 Visit <a href="https://www.google.com/recaptcha" target="_blank">Google reCAPTCHA</a> to get your secret/site keypair
                 or leave blank to disable reCAPTCHA functionality.
-            ]]></description>
-            <type>text</type>
-        </specs>
-        <specs key="recaptcha_public_key">
-            <title>reCAPTCHA site key</title>
-            <description><![CDATA[
-                Public key provided by Google Recaptcha. Used in conjunction with the private key.<br>
-                Leave blank to disable reCAPTCHA functionality.
             ]]></description>
             <type>text</type>
         </specs>

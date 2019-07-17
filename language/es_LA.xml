@@ -474,20 +474,20 @@
         <!-- Input and uploads -->
         <specs is_separator="true">Entrada y subidas de archivos</specs>
         
+        <specs key="recaptcha_public_key">
+            <title>Llave de sitio reCAPTCHA</title>
+            <description><![CDATA[
+                Llave pública otorgada por Google Recaptcha. Usada en conjunto con la llave secreta.<br>
+                Dejar en blanco para deshabilitar la funcionalidad (no recomendado).
+            ]]></description>
+            <type>text</type>
+        </specs>
         <specs key="recaptcha_private_key">
             <title>Llave secreta de reCAPTCHA</title>
             <description><![CDATA[
                 Llave secreta otorgada por Google Recaptcha. Usada para proteger el motor de spammers.<br>
                 Visita <a href="https://www.google.com/recaptcha" target="_blank">Google reCAPTCHA</a> para obtener tu par de llaves
                 de forma gratuita o deja este campo en blanco para deshabilitar la funcionalidad (no recomendado).
-            ]]></description>
-            <type>text</type>
-        </specs>
-        <specs key="recaptcha_public_key">
-            <title>Llave de sitio reCAPTCHA</title>
-            <description><![CDATA[
-                Llave pública otorgada por Google Recaptcha. Usada en conjunto con la llave secreta.<br>
-                Dejar en blanco para deshabilitar la funcionalidad (no recomendado).
             ]]></description>
             <type>text</type>
         </specs>
