@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.0.1] - 2019-07-22
+
+- Rearranged reCAPTCHA keys on the settings editor.
+
 ## [1.14.0.0] - 2019-06-07
 
 - Added IP privacy settings (user-level based).
