@@ -76,6 +76,8 @@ function gfuncs_getmakethumbnail(
     
     # Traigamos el tamaño
     list($width, $height, $type) = getimagesize($archivo_original);
+    if( empty($width) || empty($height) )
+        throw new \Exception("Thumbnailer: cannot get image dimensions. File: $archivo_original");
     
     # Calculamos ancho y alto
     if( $dimension_to_use == THUMBNAILER_USE_SMALLEST_CALC_WIDTH )
