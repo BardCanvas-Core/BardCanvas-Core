@@ -887,6 +887,40 @@ reviewing any warnings or errors before attempting to run the setup operations.<
             <?php endif ?>
         </div>
         
+        <div class="row clearfix">
+            <?php if( function_exists("iconv") ): ?>
+                <span class="framed_content inlined pull-right">Enabled</span>
+            <?php else: ?>
+                <span class="framed_content inlined state_highlight pull-right"><i class="fa fa-info-circle"></i> Disabled</span>
+            <?php endif; ?>
+            
+            (optional) iconv
+            
+            <?php if( ! function_exists("iconv") ): ?>
+                <div class="framed_content state_highlight">
+                    <i class="fa fa-info-circle"></i>
+                    Some modules may need <code>iconv</code>. In such case, you'll be notified when needed.
+                </div>
+            <?php endif ?>
+        </div>
+        
+        <div class="row clearfix">
+            <?php if( function_exists("mb_convert_encoding") ): ?>
+                <span class="framed_content inlined pull-right">Enabled</span>
+            <?php else: ?>
+                <span class="framed_content inlined state_highlight pull-right"><i class="fa fa-info-circle"></i> Disabled</span>
+            <?php endif; ?>
+            
+            (optional) Multibyte String
+            
+            <?php if( ! function_exists("mb_convert_encoding") ): ?>
+                <div class="framed_content state_highlight">
+                    <i class="fa fa-info-circle"></i>
+                    Some modules may need <code>mbstring</code>. In such case, you'll be notified when needed.
+                </div>
+            <?php endif ?>
+        </div>
+        
     </div>
 </section>
 
