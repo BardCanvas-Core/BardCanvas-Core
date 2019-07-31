@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.0.3] - 2019-07-30
+
+- Edited robots.txt.
+- Added optional requirements to setup script.
+
 ## [1.14.0.2] - 2019-07-29
 
 - Added check to avoid image forging errors on the graphics management functions file.
