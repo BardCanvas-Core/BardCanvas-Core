@@ -109,7 +109,7 @@ function send_notification($id_account, $type, $contents)
     if($config->globals["engine.notifications_disabled"]) return;
     
     $notifications_dir = "{$config->datafiles_location}/notifications/$id_account";
-    $usec              = end(explode(" ", microtime()));
+    $usec              = end(explode(".", microtime(true)));
     $now               = date("Ymd.His.") . $usec;
     $target_file       = "$notifications_dir/$now.json";
     if( ! is_dir($notifications_dir) )
