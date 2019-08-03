@@ -112,6 +112,7 @@ function send_notification($id_account, $type, $contents)
     $usec              = end(explode(".", microtime(true)));
     $now               = date("Ymd.His.") . $usec;
     $target_file       = "$notifications_dir/$now.json";
+    $sent              = date("Y-m-d H:i:s");
     if( ! is_dir($notifications_dir) )
     {
         @mkdir($notifications_dir, 0777, true);
@@ -119,11 +120,11 @@ function send_notification($id_account, $type, $contents)
     }
     
     $message_contents
-        = "<span data-message-archive='{$id_account}/{$now}'>"
+        = "<span data-message-archive='{$id_account}/{$now}' data-sent='$sent'>"
         . trim($contents)
         . "</span>";
     
-    $contents = json_encode(array("message_type" => $type, "message" => $message_contents));
+    $contents = json_encode(array("message_type" => $type, "message" => $message_contents, "sent" => $sent));
     if( empty($contents) )
     {
         $accounts_repository = new accounts_repository();
@@ -245,6 +246,15 @@ function get_notifications($id_account)
                 @unlink($file);
                 
                 continue;
+            }
+            
+            if( ! empty($contents->sent) )
+            {
+                $sent = time_elapsed_string($contents->sent);
+                $contents->message = "<span style='font-size: 8pt; position: absolute; top: 2px; line-height: normal;'>"
+                                   . "<i class='fa fa-clock-o'></i> $sent"
+                                   . "</span>"
+                                   . "<br>{$contents->message}";
             }
             
             $return["n_$id"] = $contents;
