@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.1.0] - 2019-08-03
+
+- Tuned notifications.
+
 ## [1.14.0.3] - 2019-07-30
 
 - Edited robots.txt.
