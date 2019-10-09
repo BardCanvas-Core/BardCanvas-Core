@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.2.0] - 2019-10-08
+
+- Tuned comments generation.
+- Added capability for full contents output instead of excerpts.
+
 ## [1.14.1.0] - 2019-08-03
 
 - Tuned notifications.
