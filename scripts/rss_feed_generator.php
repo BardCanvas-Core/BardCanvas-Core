@@ -7,7 +7,7 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  *
  * $_GET params:
- * @param handle
+ * @param string handle
  * 
  * @var settings $settings
  */
@@ -66,4 +66,5 @@ foreach($channel->comments as $comment) $header .= "<!-- $comment -->\n";
 
 $xml = $channel->export();
 $xml = str_replace("<channel>\n", "<channel>\n    $header", $xml);
+$xml = str_replace("\n<!--", "\n    <!--", $xml);
 echo $xml;
