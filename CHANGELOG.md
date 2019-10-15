@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.2.0] - 2019-10-15
+
+- Tuned the records browser class.
+
 ## [1.14.2.0] - 2019-10-08
 
 - Tuned comments generation.
