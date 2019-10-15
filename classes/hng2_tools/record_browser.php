@@ -70,22 +70,24 @@ class record_browser
             if( ! is_numeric($_REQUEST["limit"]) ) $_REQUEST["limit"] = $default_limit;
             
             if( $_REQUEST["limit"] != $_COOKIE["{$this->data_vars_prefix}_nav_limit"])
-                setcookie(
-                    "{$this->data_vars_prefix}_nav_limit",
-                    $_REQUEST["limit"],
-                    time() + (86400 * 30),
-                    $config->full_root_path,
-                    $config->cookies_domain
-                );
-    
+                if( ! headers_sent() )
+                    setcookie(
+                        "{$this->data_vars_prefix}_nav_limit",
+                        $_REQUEST["limit"],
+                        time() + (86400 * 30),
+                        $config->full_root_path,
+                        $config->cookies_domain
+                    );
+            
             if( $_REQUEST["order"] != $_COOKIE["{$this->data_vars_prefix}_nav_order"])
-                setcookie(
-                    "{$this->data_vars_prefix}_nav_order",
-                    $_REQUEST["order"],
-                    time() + (86400 * 30),
-                    $config->full_root_path,
-                    $config->cookies_domain
-                );
+                if( ! headers_sent() )
+                    setcookie(
+                        "{$this->data_vars_prefix}_nav_order",
+                        $_REQUEST["order"],
+                        time() + (86400 * 30),
+                        $config->full_root_path,
+                        $config->cookies_domain
+                    );
         }
         
         //foreach($_COOKIE as $key => $val)
