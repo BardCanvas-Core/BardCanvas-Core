@@ -326,31 +326,36 @@ class record_browser
                     $offset_start_point += $pagination_vars["limit"];
                     continue;
                 }
-    
+                
+                $paginate = "{$pagination_function_name}({$offset_start_point})";
                 $disabled = $cpage == $pagination_vars["this_page_number"] ? "disabled" : "";
                 $middle_buttons .= "
-                    <button {$disabled} onclick='{$pagination_function_name}({$offset_start_point})'>{$cpage}</button>
+                    <button {$disabled} onclick='$paginate'>{$cpage}</button>
                 ";
                 $offset_start_point += $pagination_vars["limit"];
             }
         }
+        
+        $prev = "{$pagination_function_name}({$pagination_vars["previous_page"]});";
+        $next = "{$pagination_function_name}({$pagination_vars["next_page"]});";
+        $last = "{$pagination_function_name}({$pagination_vars["last_page"]});";
         
         echo "
             <button {$backward_disabled} onclick='{$pagination_function_name}(0);'>
                 <span class='fa fa-fw fa-step-backward'></span>
             </button>
             
-            <button {$backward_disabled} onclick='{$pagination_function_name}({$pagination_vars["previous_page"]});'>
+            <button {$backward_disabled} onclick='$prev'>
                 <span class='fa fa-fw fa-caret-left'></span>
             </button>
             
             {$middle_buttons}
             
-            <button {$next_disabled} onclick='{$pagination_function_name}({$pagination_vars["next_page"]});'>
+            <button {$next_disabled} onclick='$next'>
                 <span class='fa fa-fw fa-caret-right'></span>
             </button>
             
-            <button {$last_disabled} onclick='{$pagination_function_name}({$pagination_vars["last_page"]});'>
+            <button {$last_disabled} onclick='$last'>
                 <span class='fa fa-fw fa-step-forward'></span>
             </button>
         ";
@@ -422,24 +427,27 @@ class record_browser
                 <span class='fa fa-fw {$icon}'></span> {$added_caption}
             </button>
         ";
-    
+        
+        $func = "{$pagination_function_name}({$pagination_vars["previous_page"]});";
         $icon = empty($override_icon) ? "fa-caret-left" : $override_icon;
         if( $which_button == "previous" ) return "
-            <button {$backward_disabled} onclick='{$pagination_function_name}({$pagination_vars["previous_page"]});'>
+            <button {$backward_disabled} onclick='$func'>
                 <span class='fa fa-fw {$icon}'></span> {$added_caption}
             </button>
         ";
-    
+        
+        $func = "{$pagination_function_name}({$pagination_vars["next_page"]});";
         $icon = empty($override_icon) ? "fa-caret-right" : $override_icon;
         if( $which_button == "next" ) return "
-            <button {$next_disabled} onclick='{$pagination_function_name}({$pagination_vars["next_page"]});'>
+            <button {$next_disabled} onclick='$func'>
                 <span class='fa fa-fw {$icon}'></span> {$added_caption}
             </button>
         ";
-    
+        
+        $func = "{$pagination_function_name}({$pagination_vars["last_page"]});";
         $icon = empty($override_icon) ? "fa-step-forward" : $override_icon;
         if( $which_button == "last" ) return "
-            <button {$last_disabled} onclick='{$pagination_function_name}({$pagination_vars["last_page"]});'>
+            <button {$last_disabled} onclick='$func'>
                 <span class='fa fa-fw {$icon}'></span> {$added_caption}
             </button>
         ";
