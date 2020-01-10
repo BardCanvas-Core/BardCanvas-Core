@@ -23,42 +23,29 @@ include dirname(__FILE__) . "/geoip_functions.inc";
 include dirname(__FILE__) . "/web_helper_functions.inc";
 
 #region SQL injection checks
-if( is_array($_REQUEST) )
+if( ! empty($_GET["s"]) && is_string($_GET["s"]) )
 {
-    function bcbs_array_flatten($array)
+    $hits = preg_match_all('/(select|describe|show)|(distinct)|(from)|(where|like)|(char|cast|ifnull|count)|(union|table|tables|join)|(drop|truncate)/i', $_GET["s"], $matches);
+    
+    if( $hits && $hits >= 3 )
     {
-        $return = array();
-        foreach( $array as $key => $value )
-            if( is_array($value) ) $return = array_merge($return, bcbs_array_flatten($value));
-            else                   $return[$key] = $value;
-        
-        return $return;
-    }
-    $result = bcbs_array_flatten($_REQUEST);
-    foreach($result as $key => $val)
-    {
-        $hits = preg_match_all('/(select|describe|show)|(distinct)|(from)|(where|like)|(char|cast|ifnull|count)|(union|table|tables|join)|(drop|truncate)/i', $val, $matches);
-        
-        if( $hits && $hits >= 3 )
-        {
-            $logdate   = date("Ymd");
-            $logtstamp = date("Y-m-d H:i:s");
-            $logip     = get_user_ip();
-            $loghost   = @gethostbyaddr($logip);
-            $loglocatn = forge_geoip_location($logip);
-            $logfile   = ROOTPATH . "/logs/sql_injection_attempts-$logdate.log";
-            $log_entry = sprintf(
-                "%s - %s (%s, %s) - %s %s\n",
-                $logtstamp,
-                $logip,
-                $loghost,
-                $loglocatn,
-                $_SERVER["REQUEST_METHOD"],
-                $_SERVER["REQUEST_URI"]
-            );
-            file_put_contents($logfile, $log_entry, FILE_APPEND);
-            throw_fake_501();
-        }
+        $logdate   = date("Ymd");
+        $logtstamp = date("Y-m-d H:i:s");
+        $logip     = get_user_ip();
+        $loghost   = @gethostbyaddr($logip);
+        $loglocatn = forge_geoip_location($logip);
+        $logfile   = ROOTPATH . "/logs/sql_injection_attempts-$logdate.log";
+        $log_entry = sprintf(
+            "%s - %s (%s, %s) - %s %s\n",
+            $logtstamp,
+            $logip,
+            $loghost,
+            $loglocatn,
+            $_SERVER["REQUEST_METHOD"],
+            $_SERVER["REQUEST_URI"]
+        );
+        file_put_contents($logfile, $log_entry, FILE_APPEND);
+        throw_fake_501();
     }
 }
 #endregion SQL injection checks
