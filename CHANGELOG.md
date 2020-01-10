@@ -1,6 +1,16 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.0] - 2020-01-09
+
+- Added error 501 thrower to the web helpers.
+- Added SQL injection check on the bootstrap.
+
+## [1.14.2.1] - 2019-10-15
+
+- Added check to avoid warnings on in-page rendering
+- Coding style fixes
+
 ## [1.14.2.0] - 2019-10-15
 
 - Tuned the records browser class.
