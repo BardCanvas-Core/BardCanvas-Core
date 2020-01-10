@@ -50,6 +50,26 @@ function throw_fake_401()
 }
 
 /**
+ * Echoes a fake "501 - Not implemented" error and quits the program.
+ */
+function throw_fake_501()
+{
+    header("Content-Type: text/html; charset=utf-8");
+    header("HTTP/1.0 501 Not implemented");
+    # echo "<pre>\$_SERVER := " . print_r($_SERVER, true) . "</pre>";
+    
+    die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>501 Not implemented</title>
+        </head><body>
+        <h1>Not implemented</h1>
+        <p>You are trying to access a page with invalid or unknown request arguments.</p>
+        <hr>
+        <address>' . trim($_SERVER["SERVER_SIGNATURE"]) . '</address>
+        </body></html>');
+}
+
+/**
  * Detects if the engine is behind a proxy that provides the x-forwarded-for header and get the IP from it or the
  * standard remote address
  *
