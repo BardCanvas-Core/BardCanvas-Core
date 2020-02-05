@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.2] - 2020-02-05
+
+Moved SQL injection from bootstrap to web helper function.
+
 ## [1.14.3.1] - 2020-01-09
 
 - Tuned SQL injection check.
