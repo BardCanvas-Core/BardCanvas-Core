@@ -669,3 +669,61 @@ function is_mobile()
         $_SERVER["HTTP_USER_AGENT"]
     );
 }
+
+/**
+ * Checks if a passed string contains SQL injection code.
+ * If found, an error is thrown.
+ * 
+ * @param string|array $input
+ * 
+ * @throws Exception
+ */
+function check_sql_injection($input)
+{
+    if( is_string($input) ) $input = array($input);
+    
+    static $patt = null;
+    if( is_null($patt) )
+        $patt = '#'
+              . '(select|describe|show)|(distinct)'
+              . '|'
+              . '(from)'
+              . '|'
+              . '(where|like)'
+              . '|'
+              . '(char|cast|ifnull|count|concat|information_schema|information_schema.plugins)'
+              . '|'
+              . '(union|table|tables|join|group)'
+              . '|'
+              . '(drop|truncate)'
+              . '|'
+              . '(/\*|\*/|0x[a-f0-9+])'
+              . '#i';
+    
+    foreach($input as $string)
+    {
+        $string = trim(stripslashes($string));
+        $hits   = preg_match_all($patt, $string, $matches);
+        
+        if( $hits && $hits >= 3 )
+        {
+            $logdate   = date("Ymd");
+            $logtstamp = date("Y-m-d H:i:s");
+            $logip     = get_user_ip();
+            $loghost   = @gethostbyaddr($logip);
+            $loglocatn = forge_geoip_location($logip);
+            $logfile   = ROOTPATH . "/logs/sql_injection_attempts-$logdate.log";
+            $log_entry = sprintf(
+                "%s - %s (%s, %s) - %s %s\n",
+                $logtstamp,
+                $logip,
+                $loghost,
+                $loglocatn,
+                $_SERVER["REQUEST_METHOD"],
+                $_SERVER["REQUEST_URI"]
+            );
+            file_put_contents($logfile, $log_entry, FILE_APPEND);
+            throw new \Exception("SQL injection detected");
+        }
+    }
+}
