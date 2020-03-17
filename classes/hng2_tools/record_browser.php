@@ -32,6 +32,13 @@ class record_browser
         
         if( empty($this->data_vars_prefix) ) throw new \Exception("Data vars empty. Can't build navigation vars.");
         
+        $flatten = function( $array ) {
+            $return = array();
+            array_walk_recursive($array, function ($a) use (&$return) { $return[] = stripslashes($a); });
+            return $return;
+        };
+        check_sql_injection( $flatten($_REQUEST) );
+        
         if( $account->_exists ) return $this->build_vars_in_account_prefs($default_limit, $default_order);
         else                    return $this->build_vars_in_cookies($default_limit, $default_order);
     }
