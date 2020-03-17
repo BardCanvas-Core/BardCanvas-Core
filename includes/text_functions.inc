@@ -991,9 +991,19 @@ function make_excerpt_of($string, $length = 30, $with_ellipsis = true)
     
     if( strlen($excerpt) <= $length ) return $excerpt;
     
-    $excerpt = substr($excerpt, 0, $length - 1);
-    if( stristr($excerpt, " ") !== false) $excerpt = substr($excerpt, 0, strrpos($excerpt, " "));
-    $excerpt = rtrim($excerpt, "-_.:,;");
+    if( function_exists("mb_strimwidth") )
+    {
+        $excerpt = mb_strimwidth($excerpt, 0, $length - 1, "", "utf-8");
+        if( stristr($excerpt, " ") !== false) $excerpt = substr($excerpt, 0, strrpos($excerpt, " "));
+        $excerpt = rtrim($excerpt, "-_.:,;");
+    }
+    else
+    {
+        $excerpt = substr($excerpt, 0, $length - 1);
+        if( stristr($excerpt, " ") !== false) $excerpt = substr($excerpt, 0, strrpos($excerpt, " "));
+        $excerpt = rtrim($excerpt, "-_.:,;");
+    }
+    
     if( $with_ellipsis) $excerpt .= "…";
     
     return $excerpt;
