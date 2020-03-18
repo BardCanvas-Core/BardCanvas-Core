@@ -8,17 +8,24 @@
  */
 
 /**
- * RIJNDAEL_256 decrypter
+ * Decrypt a string, either using the internal 3le crypt or with mcrypt's RIJNDAEL_256
  *
  * @requires mcrypt package
  *
- * @param string $string_to_decrypt
+ * @param string $string_to_decrypt base64 encoded
  * @param string $key
  *
  * @return mixed
  */
 function decrypt($string_to_decrypt, $key)
 {
+    if( substr($string_to_decrypt, 0, 4) == "3le:" )
+    {
+        $string_to_decrypt = substr($string_to_decrypt, 4);
+        
+        return three_layer_decrypt($string_to_decrypt, $key, md5($key), sha1($key));
+    }
+    
     $string_to_decrypt = base64_decode($string_to_decrypt);
     $md5_key           = md5($key);
     $iv                = md5($md5_key);
@@ -29,7 +36,7 @@ function decrypt($string_to_decrypt, $key)
 }
 
 /**
- * RIJNDAEL_256 encrypter
+ * Encrypt a given string using the internal 3 layer crypt
  *
  * @requires mcrypt package
  *
@@ -40,12 +47,14 @@ function decrypt($string_to_decrypt, $key)
  */
 function encrypt($string_to_encrypt, $key)
 {
-    $md5_key = md5($key);
-    $iv      = md5($md5_key);
-    $rtn     = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $md5_key, $string_to_encrypt, MCRYPT_MODE_CBC, $iv);
-    $rtn     = base64_encode($rtn);
+    return "3le:" . three_layer_encrypt($string_to_encrypt, $key, md5($key), sha1($key));
     
-    return ($rtn);
+    // $md5_key = md5($key);
+    // $iv      = md5($md5_key);
+    // $rtn     = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $md5_key, $string_to_encrypt, MCRYPT_MODE_CBC, $iv);
+    // $rtn     = base64_encode($rtn);
+    //
+    // return ($rtn);
 }
 
 /**
