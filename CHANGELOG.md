@@ -1,9 +1,16 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.3] - 2020-03-17
+
+- Added extended UTF trimming support on the excerpts maker.
+- Added SQL injection check on the records browser helper.
+- Added headers_sent check to avoid warning when the records browser is called within a page.
+- Changed encryption functions to begin taking out mcrypt's RIJNDAEL_256.
+
 ## [1.14.3.2] - 2020-02-05
 
-Moved SQL injection from bootstrap to web helper function.
+- Moved SQL injection from bootstrap to web helper function.
 
 ## [1.14.3.1] - 2020-01-09
 
