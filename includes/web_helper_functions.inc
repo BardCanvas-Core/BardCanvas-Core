@@ -662,6 +662,20 @@ function externalize_urls($text)
     return $pq->html();
 }
 
+function is_visitor_a_bot()
+{
+    $botlist = array(
+        "googlebot", "slurp", "msnbot", "mediapartners-google", "yahoo-mmcrawler", "bingbot", "spider", "crawl",
+        "ia_archiver",
+    );
+    
+    foreach($botlist as $this_bot)
+        if(stristr(strtolower($_SERVER["HTTP_USER_AGENT"]), $this_bot) !== false)
+            return true;
+    
+    return false;
+}
+
 function is_mobile()
 {
     return preg_match(
