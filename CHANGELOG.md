@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.4] - 2020-04-04
+
+- Added bot detection function to the web helpers.
+
 ## [1.14.3.3] - 2020-03-17
 
 - Added extended UTF trimming support on the excerpts maker.
