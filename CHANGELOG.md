@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.5] - 2020-04-07
+
+- Tuned IP detection algorithm.
+
 ## [1.14.3.4] - 2020-04-04
 
 - Added bot detection function to the web helpers.
