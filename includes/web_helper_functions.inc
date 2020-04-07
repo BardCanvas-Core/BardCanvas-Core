@@ -70,6 +70,29 @@ function throw_fake_501()
 }
 
 /**
+ * Check if a given ip is in a network
+ * @see https://gist.github.com/tott/7684443
+ *
+ * @param string $ip    IP to check in IPV4 format eg. 127.0.0.1
+ * @param string $range IP/CIDR netmask eg. 127.0.0.0/24, also 127.0.0.1 is accepted and /32 assumed
+ *
+ * @return boolean true if the ip is in this range / false if not.
+ */
+function is_ip_in_range($ip, $range)
+{
+    if( strpos($range, '/') == false ) $range .= '/32';
+    
+    // $range is in IP/CIDR format eg 127.0.0.1/24
+    list($range, $netmask) = explode('/', $range, 2);
+    $range_decimal    = ip2long($range);
+    $ip_decimal       = ip2long($ip);
+    $wildcard_decimal = pow(2, (32 - $netmask)) - 1;
+    $netmask_decimal  = ~$wildcard_decimal;
+    
+    return (($ip_decimal & $netmask_decimal) == ($range_decimal & $netmask_decimal));
+}
+
+/**
  * Detects if the engine is behind a proxy that provides the x-forwarded-for header and get the IP from it or the
  * standard remote address
  *
@@ -77,32 +100,33 @@ function throw_fake_501()
  */
 function get_remote_address()
 {
-    # header("X-Remote-Address: {$_SERVER['REMOTE_ADDR']}");
-    $remoteIP = $_SERVER['REMOTE_ADDR'];
-    if(     strstr($remoteIP, ",") ) $remoteIP = trim(end(explode(",", $remoteIP)));
-    elseif( strstr($remoteIP, " ") ) $remoteIP = trim(end(explode(" ", $remoteIP)));
+    $headers = array();
+    if( function_exists("getallheaders") ) $headers = getallheaders();
     
-    if( ! function_exists("getallheaders") ) return $remoteIP;
+    if(     $headers["CF-Connecting-IP"] ) $input_ip = $headers["CF-Connecting-IP"];
+    elseif( $headers["X-Forwarded-For"]  ) $input_ip = $headers["X-Forwarded-For"];
+    else                                   $input_ip = $_SERVER['REMOTE_ADDR'];
     
-    $headers  = getallheaders();
+    if( strstr($input_ip, ",") === false ) return $input_ip;
     
-    if( $headers["X-Forwarded-For"] )
+    $sel = "";
+    $ips = explode(",", $input_ip);
+    foreach($ips as $ip)
     {
-        $remoteIP = $headers["X-Forwarded-For"];
-        if( strstr($remoteIP, ",") ) $remoteIP = trim(end(explode(",", $remoteIP)));
+        $ip = trim($ip);
         
-        return $remoteIP;
+        if( stristr($ip, ":") !== false ) continue;
+        if( is_ip_in_range($ip, "10.0.0.0/8") ) continue;
+        if( is_ip_in_range($ip, "172.16.0.0/12") ) continue;
+        if( is_ip_in_range($ip, "192.168.0.0/16") ) continue;
+        
+        $sel = $ip;
+        break;
     }
     
-    if( $headers["CF-Connecting-IP"] )
-    {
-        $remoteIP = $headers["CF-Connecting-IP"];
-        if( strstr($remoteIP, ",") ) $remoteIP = trim(end(explode(",", $remoteIP)));
-        
-        return $remoteIP;
-    }
+    if( empty($sel) ) return trim(end($ips));
     
-    return $remoteIP;
+    return $sel;
 }
 
 /**
