@@ -100,12 +100,14 @@ function is_ip_in_range($ip, $range)
  */
 function get_remote_address()
 {
-    $headers = array();
+    $headers = $_SERVER;
     if( function_exists("getallheaders") ) $headers = getallheaders();
     
-    if(     $headers["CF-Connecting-IP"] ) $input_ip = $headers["CF-Connecting-IP"];
-    elseif( $headers["X-Forwarded-For"]  ) $input_ip = $headers["X-Forwarded-For"];
-    else                                   $input_ip = $_SERVER['REMOTE_ADDR'];
+    if(     $headers["CF-Connecting-IP"]      ) $input_ip = $headers["CF-Connecting-IP"];
+    elseif( $headers["HTTP_CF_CONNECTING_IP"] ) $input_ip = $headers["HTTP_CF_CONNECTING_IP"];
+    elseif( $headers["X-Forwarded-For"]       ) $input_ip = $headers["X-Forwarded-For"];
+    elseif( $headers["HTTP_X_FORWARDED_FOR"]  ) $input_ip = $headers["HTTP_X_FORWARDED_FOR"];
+    else                                        $input_ip = $_SERVER['REMOTE_ADDR'];
     
     if( strstr($input_ip, ",") === false ) return $input_ip;
     
