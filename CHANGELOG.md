@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.6] - 2020-04-20
+
+- Tuned IP detection function.
+- Added preset of possibly missing variables to .htaccess sample.
+
 ## [1.14.3.5] - 2020-04-07
 
 - Tuned IP detection algorithm.
