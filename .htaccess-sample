@@ -10,6 +10,10 @@ Options -Indexes
 
 ReWriteEngine On
 
+RewriteRule .* - [E=HTTP_CF_CONNECTING_IP:%{HTTP:CF-Connecting-IP}]
+RewriteRule .* - [E=HTTP_IF_MODIFIED_SINCE:%{HTTP:If-Modified-Since}]
+RewriteRule .* - [E=HTTP_IF_NONE_MATCH:%{HTTP:If-None-Match}]
+
 ##################
 # CUSTOM RULESET #
 ##################################################
