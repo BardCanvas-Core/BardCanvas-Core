@@ -193,8 +193,17 @@ function kill_all_notifications()
 
 ion.sound({
     sounds: [
-        { name: "glass" },      // message
-        { name: "button_tiny" } // default
+        { name: "glass"               }, // message
+        { name: "button_click"        }, // message2
+        { name: "water_droplet_3"     }, // message3
+        { name: "bell_ring"           }, // incoming
+        { name: "water_droplet"       }, // warning
+        { name: "computer_error"      }, // error
+        { name: "borealis_notify"     }, // notify
+        { name: "borealis_question1"  }, // question1
+        { name: "borealis_question2"  }, // question2
+        { name: "borealis_send"       }, // send
+        { name: "button_tiny"         }  // default
     ],
     volume:  1,
     path:    $_FULL_ROOT_PATH + "/lib/ion.sound-3.0.7/sounds/",
@@ -204,7 +213,7 @@ ion.sound({
 /**
  * Plays a notification sound
  * 
- * @param name nothing | message
+ * @param name default, message, message2, message3, incoming, notify, question1, question2, send, warning, error
  */
 function play_notification_sound(name)
 {
@@ -213,10 +222,18 @@ function play_notification_sound(name)
     
     switch(name)
     {
-        case 'message': ion.sound.play("glass");       break;
-        default:        ion.sound.play("button_tiny"); break;
+        case 'message':   ion.sound.play("glass");              break;
+        case 'message2':  ion.sound.play("button_click");       break;
+        case 'message3':  ion.sound.play("water_droplet_3");    break;
+        case 'incoming':  ion.sound.play("bell_ring");          break;
+        case 'warning':   ion.sound.play("water_droplet");      break;
+        case 'error':     ion.sound.play("computer_error");     break;
+        case 'notify':    ion.sound.play("borealis_notify");    break;
+        case 'question1': ion.sound.play("borealis_question1"); break;
+        case 'question2': ion.sound.play("borealis_question2"); break;
+        case 'send':      ion.sound.play("borealis_send");      break;
+        default:          ion.sound.play("button_tiny");        break;
     }
-    
 }
 
 $(document).ready(function()
