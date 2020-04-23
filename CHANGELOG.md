@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.7] - 2020-04-23
+
+- Added notification sounds.
+
 ## [1.14.3.6] - 2020-04-20
 
 - Tuned IP detection function.
