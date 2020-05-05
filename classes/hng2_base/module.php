@@ -100,6 +100,11 @@ class module
     var $shortcode_handlers;
     
     /**
+     * @var \SimpleXMLElement
+     */
+    var $meta;
+    
+    /**
      * Module template
      *
      * @param string $module_info_file
@@ -252,6 +257,7 @@ class module
         $self->widgets              = empty($self->widgets)              ? "" : $self->widgets->asXML();
         $self->tinymce_additions    = empty($self->tinymce_additions)    ? "" : $self->tinymce_additions->asXML();
         $self->shortcode_handlers   = empty($self->shortcode_handlers)   ? "" : $self->shortcode_handlers->asXML();
+        $self->meta                 = empty($self->meta)                 ? "" : $self->meta->asXML();
         
         $self->all_languages = array();
         foreach($this->all_languages as $locale => $language)
@@ -279,6 +285,8 @@ class module
         $this->widgets              = simplexml_load_string($this->widgets);
         $this->tinymce_additions    = simplexml_load_string($this->tinymce_additions);
         $this->shortcode_handlers   = simplexml_load_string($this->shortcode_handlers);
+        
+        $this->meta                 = simplexml_load_string($this->meta);
         
         foreach($this->all_languages as $locale => $language)
             $this->all_languages[$locale] = simplexml_load_string($language);
