@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.8] - 2020-05-05
+
+- Added meta section to module class.
+
 ## [1.14.3.7] - 2020-04-23
 
 - Added notification sounds.
