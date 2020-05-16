@@ -278,7 +278,7 @@ class account extends account_toolbox
         
         # Now we insert the record in the logins table
         $database->exec("
-            insert into account_logins set
+            insert ignore into account_logins set
             `id_account` = '$this->id_account',
             `id_device`  = '$device->id_device',
             `login_date` = '$now',
