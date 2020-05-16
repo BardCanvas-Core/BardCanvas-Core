@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.9] - 2020-05-16
+
+- Added fallback to account login method to avoid fatal error.
+
 ## [1.14.3.8] - 2020-05-05
 
 - Added meta section to module class.
