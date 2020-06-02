@@ -743,11 +743,39 @@ function check_sql_injection($input)
     
     foreach($input as $string)
     {
-        $string = trim(stripslashes($string));
-        $hits   = preg_match_all($patt, $string, $matches);
-        
-        if( $hits && $hits >= 3 )
+        if( is_array($string) )
         {
+            check_sql_injection($string);
+            continue;
+        }
+        
+        $string = trim(stripslashes($string));
+        if( empty($string) ) continue;
+        
+        $hits = preg_match_all($patt, $string, $matches);
+        if( $hits )
+        {
+            $matches_list = array();
+            foreach($matches as $key => $minfo)
+            {
+                $minfo = array_unique($minfo);
+                foreach($minfo as $mkey => $mval)
+                {
+                    $mval = trim($mval);
+                    if( empty($mval) ) continue;
+                    
+                    $matches_list[] = $mval;
+                }
+            }
+            unset($matches_list[0]);
+            array_unique($matches_list);
+            
+            $sanitized = array();
+            foreach($matches_list as $key => $val) if( ! empty($val) ) $sanitized[] = $val;
+            $matches_list = array_unique($sanitized);
+            
+            if( count($matches_list) < 3 ) continue;
+            
             $logdate   = date("Ymd");
             $logtstamp = date("Y-m-d H:i:s");
             $logip     = get_user_ip();
@@ -755,13 +783,14 @@ function check_sql_injection($input)
             $loglocatn = forge_geoip_location($logip);
             $logfile   = ROOTPATH . "/logs/sql_injection_attempts-$logdate.log";
             $log_entry = sprintf(
-                "%s - %s (%s, %s) - %s %s\n",
+                "%s - %s (%s, %s) - %s %s - \"%s\"\n",
                 $logtstamp,
                 $logip,
                 $loghost,
                 $loglocatn,
                 $_SERVER["REQUEST_METHOD"],
-                $_SERVER["REQUEST_URI"]
+                $_SERVER["REQUEST_URI"],
+                implode(", ", $matches_list)
             );
             file_put_contents($logfile, $log_entry, FILE_APPEND);
             throw new \Exception("SQL injection detected");
