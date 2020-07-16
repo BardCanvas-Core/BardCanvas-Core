@@ -993,7 +993,8 @@ function make_excerpt_of($string, $length = 30, $with_ellipsis = true)
     
     if( function_exists("mb_strimwidth") )
     {
-        $excerpt = mb_strimwidth($excerpt, 0, $length - 1, "", "utf-8");
+        $excerpt = @mb_strimwidth($excerpt, 0, $length - 1, "", "utf-8");
+        if( empty($excerpt) ) $excerpt = substr($excerpt, 0, $length - 1);
         if( stristr($excerpt, " ") !== false) $excerpt = substr($excerpt, 0, strrpos($excerpt, " "));
         $excerpt = rtrim($excerpt, "-_.:,;");
     }
