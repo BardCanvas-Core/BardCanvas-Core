@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.10] - 2020-08-08
+
+- Improved SQL injection checker.
+- Added excerpt builder warning fallback.
+- Added a fallback for trailing zeroes trimming function warnings. 
+
 ## [1.14.3.9] - 2020-05-16
 
 - Added fallback to account login method to avoid fatal error.
