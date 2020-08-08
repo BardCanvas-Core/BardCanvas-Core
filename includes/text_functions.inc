@@ -1279,6 +1279,9 @@ function __convert_system_shortcodes($contents)
 
 function trim_trailing_zeroes($amount, $decimals = 8 )
 {
+    $amount = str_replace(",", ".", $amount);
+    if( ! is_numeric($amount) ) return $amount;
+    
     $amount = number_format($amount, $decimals, ".", "");
     $parts  = explode(".", $amount);
     
