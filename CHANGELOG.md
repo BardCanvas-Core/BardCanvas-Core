@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.11] - 2020-08-27
+
+- Bumped ion sound version.
+
 ## [1.14.3.10] - 2020-08-08
 
 - Improved SQL injection checker.
