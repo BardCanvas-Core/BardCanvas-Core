@@ -150,4 +150,32 @@ class settings
         $this->cache->disable_batchmode();
         $this->cache->save();
     }
+    
+    /**
+     * Returns an array of lines stored in a code input representing options.
+     * Skips empty lines and those commented out with a trailing hash symbol.
+     *
+     * @param string $key
+     * @param bool   $forced
+     * 
+     * @return array
+     * @throws \Exception
+     */
+    public function get_lines($key, $forced = false)
+    {
+        $input = $this->get($key, $forced);
+        if( empty($input) ) return array();
+        
+        $return = array();
+        foreach(explode("\n", $input) as $line)
+        {
+            $line = trim($line);
+            if( empty($line) ) continue;
+            if( substr($line, 0, 1) == "#" ) continue;
+            
+            $return[] = $line;
+        }
+        
+        return $return;
+    }
 }
