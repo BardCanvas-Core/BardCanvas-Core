@@ -13,6 +13,7 @@ class cli
 {
     static $encode_to_utf8 = false;
     public static $output_file = "";
+    public static $output_extra = "";
     public static $output_to_file_only = false;
     
     protected static $foreground_colors = array
@@ -171,6 +172,7 @@ class cli
         if( empty(self::$output_file) ) return;
         
         @file_put_contents(self::$output_file, $output, FILE_APPEND);
+        if( ! empty(self::$output_extra) ) @file_put_contents(self::$output_extra, $output, FILE_APPEND);
     }
     
     /**
