@@ -28,7 +28,7 @@ $notifications_return_collection = array(
 
 if( ! $account->_exists ) die( json_encode($notifications_return_collection) );
 
-$notifications_return_collection["notifications"] = get_notifications($account->id_account);
+$notifications_return_collection["notifications"] = get_notifications($account->id_account, 100);
 
 # Extenders
 foreach($modules as $module)

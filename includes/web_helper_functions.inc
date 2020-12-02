@@ -232,10 +232,12 @@ function broadcast_to_moderators($type, $contents)
  * Note: notifications are deleted upon reading!
  *
  * @param string $id_account
+ * @param int    $limit
  *
- * @returns array
+ * @return array
+ * @throws phpmailerException
  */
-function get_notifications($id_account)
+function get_notifications($id_account, $limit = 0)
 {
     global $config, $settings;
     
@@ -246,11 +248,16 @@ function get_notifications($id_account)
     $return            = array();
     if( ! is_dir($notifications_dir) ) return $return;
     
+    $index = 0;
     $files = glob("$notifications_dir/*.json");
     if( count($files) )
     {
+        if( $limit > 0 ) rsort($files);
+        
         foreach( $files as $file )
         {
+            $index++;
+            
             $id = basename($file);
             $id = str_replace(".json", "", $id);
             $id = str_replace(".", "_", $id);
@@ -305,7 +312,11 @@ function get_notifications($id_account)
             }
             
             $return["n_$id"] = $contents;
+            
+            if( $limit > 0 && $index >= $limit ) break;
         }
+        
+        if( $limit > 0 ) krsort($return);
     }
     
     return $return;
