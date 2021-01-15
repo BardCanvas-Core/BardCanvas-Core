@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.12] - 2021-01-14
+
+- Added method to the settings helper class.
+- Extended CLI helper to output to an extra file if specified.
+- Limited the notifications getter to fetch only the last 100.
+
 ## [1.14.3.11] - 2020-08-27
 
 - Bumped ion sound version.
