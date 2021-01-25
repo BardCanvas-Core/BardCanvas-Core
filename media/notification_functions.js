@@ -128,12 +128,14 @@ function stop_notifications_getter()
  *
  * @param {string} message
  * @param {string} message_type alert, success, error, warning, information, confirm
+ * @param {int} autoclose_timeout milliseconds
  */
-function throw_notification(message, message_type)
+function throw_notification(message, message_type, autoclose_timeout)
 {
     if( typeof message_type == 'undefined' ) message_type = $.noty.defaults.type;
+    if( typeof autoclose_timeout === 'undefined' ) autoclose_timeout = false;
     show_notifications_killer();
-    noty({text: message, type: message_type});
+    noty({text: message, type: message_type, timeout: autoclose_timeout});
     play_notification_sound();
 }
 
