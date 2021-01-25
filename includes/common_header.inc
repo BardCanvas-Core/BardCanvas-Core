@@ -126,7 +126,14 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
         $(document).ready(function()
         {
             var clipboard = new Clipboard('.clipboard-copy');
-            clipboard.on('success', function(e) { alert($_CLIPBOARD_COPIED); });
+            clipboard.on('success', function(e) {
+                if(throw_notification)
+                    throw_notification($_CLIPBOARD_COPIED, 'info', 1000);
+                else if(play_notification_sound)
+                    play_notification_sound('question2');
+                else
+                    alert($_CLIPBOARD_COPIED);
+            });
             clipboard.on('error', function(e) {
                 var text = e.text; if( ! text ) text = $(e.trigger).attr('data-clipboard-text');
                 prompt($_CLIPBOARD_UNABLE, text);
@@ -165,7 +172,7 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
         <script type="text/javascript" src="<?= $config->full_root_path ?>/lib/noty-2.3.7/js/noty/packaged/jquery.noty.packaged.min.js"></script>
         <script type="text/javascript" src="<?= $config->full_root_path ?>/lib/noty-2.3.7/js/noty/themes/default.js"></script>
         <script type="text/javascript" src="<?= $config->full_root_path ?>/media/noty_defaults~v<?=$config->engine_version?>.js"></script>
-        <script type="text/javascript" src="<?= $config->full_root_path ?>/media/notification_functions~v<?=$config->engine_version?>-20.js"></script>
+        <script type="text/javascript" src="<?= $config->full_root_path ?>/media/notification_functions~v<?=$config->engine_version?>-21.js"></script>
         <script type="text/javascript"> $.noty.layouts.bottomLeft.css.width = 'auto'; </script>
     <? endif; ?>
     
