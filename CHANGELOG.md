@@ -1,6 +1,14 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.3.13] - 2021-01-25
+
+- Enforced conversion of MP4 and M4V files.
+- Added arguments to force FFMPEG to encode videos using the h.264 codec.
+- Added logging of video conversions.
+- Added auto close param to notifications thrower.
+- Replaced clipboard copy alert with auto-closing notification or sound when available.
+
 ## [1.14.3.12] - 2021-01-14
 
 - Added method to the settings helper class.
