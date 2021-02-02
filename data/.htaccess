@@ -1,5 +1,5 @@
 
-<FilesMatch "\.inc$\.php$|\.sh|\.xml$|\.dat$|\.hidden$">
+<FilesMatch "\.(inc|php|sh|xml|dat|hidden|INC|PHP|SH|XML|DAT|HIDDEN)$">
 deny from all
 </FilesMatch>
 
