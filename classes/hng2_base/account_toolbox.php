@@ -12,6 +12,7 @@ namespace hng2_base;
 use hng2_cache\disk_cache;
 use hng2_modules\messaging\toolbox;
 use hng2_repository\abstract_record;
+use totp;
 
 class account_toolbox extends abstract_record
 {
@@ -367,5 +368,32 @@ class account_toolbox extends abstract_record
         #
         
         return true;
+    }
+    
+    public function has_2fa_enabled()
+    {
+        $this->load_engine_prefs();
+        
+        return ! empty($this->engine_prefs["@accounts:2fa_secret"]);
+    }
+    
+    public function validate_2fa_token($input_token)
+    {
+        global $config;
+        
+        $this->load_engine_prefs();
+        
+        if( empty($input_token) ) return false;
+    
+        $enc_secret = $this->engine_prefs["@accounts:2fa_secret"];
+        if( empty($enc_secret) ) return true;
+    
+        include_once ROOTPATH . "/accounts/2fa/totp.php";
+        static $totp = null;
+        if( is_null($totp) ) $totp = new totp();
+        
+        $raw_secret = three_layer_decrypt($enc_secret, $config->website_key, $this->id_account, $this->creation_date);
+        
+        return $totp->verifyCode($raw_secret, $input_token);
     }
 }
