@@ -145,8 +145,10 @@ function get_user_ip()
  * Send a notification to a user
  *
  * @param string $id_account Target account
- * @param string $type       alert, success, error, warning, information, confirm
+ * @param string $type       = ["alert", "success", "error", "warning", "information", "confirm"][$any]
  * @param string $contents
+ * 
+ * @throws phpmailerException
  */
 function send_notification($id_account, $type, $contents)
 {
