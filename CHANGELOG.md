@@ -1,6 +1,14 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.4.0] - 2021-02-11
+
+- Added option to skip versioning in the disk_cache class.
+- Tuned data directory access restrictions file (.htaccess).
+- Added 2FA support functions to account class.
+- Minor cleanup and code doc additions.
+- Extended account session cookie from 7 to 30 days.
+
 ## [1.14.3.13] - 2021-01-25
 
 - Enforced conversion of MP4 and M4V files.
