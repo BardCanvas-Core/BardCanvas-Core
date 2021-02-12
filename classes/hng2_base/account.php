@@ -299,7 +299,7 @@ class account extends account_toolbox
     {
         global $config, $settings;
     
-        if( $device->_exists ) $session_time = time() + (86400*7);
+        if( $device->_exists ) $session_time = time() + ( 86400 * 30 );
         else                   $session_time = 0;
         
         setcookie(
