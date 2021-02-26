@@ -147,12 +147,10 @@ function get_user_ip()
  * @param string $id_account Target account
  * @param string $type       = ["alert", "success", "error", "warning", "information", "confirm"][$any]
  * @param string $contents
- * 
- * @throws phpmailerException
  */
 function send_notification($id_account, $type, $contents)
 {
-    global $config, $settings;
+    global $config;
     
     if($config->globals["engine.notifications_disabled"]) return;
     
@@ -168,48 +166,35 @@ function send_notification($id_account, $type, $contents)
         @chmod($notifications_dir, 0777);
     }
     
+    $contents = trim($contents);
+    
     $message_contents
         = "<span data-message-archive='{$id_account}/{$now}' data-sent='$sent'>"
         . trim($contents)
         . "</span>";
     
-    $contents = json_encode(array("message_type" => $type, "message" => $message_contents, "sent" => $sent));
-    if( empty($contents) )
+    $json_contents = @json_encode(array("message_type" => $type, "message" => $message_contents, "sent" => $sent));
+    if( strip_tags(trim($contents)) == "" || empty($json_contents) )
     {
-        $accounts_repository = new accounts_repository();
-        $account             = $accounts_repository->get($id_account);
-        $webmaster_mail      = ucwords($settings->get("engine.webmaster_address"));
-        $webmaster_name      = current(explode("@", $webmaster_mail));
-        $recipients          = array($webmaster_name => $webmaster_mail);
-        $subject             = "[{$settings->get("engine.website_name")}/notifications_sender] Malformed notification detected!";
-        $contents            = htmlspecialchars($message_contents);
+        $accounts_repo  = new accounts_repository();
+        $account        = $accounts_repo->get($id_account);
         
         $backtrace = debug_backtrace();
         foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
-        $backtrace = implode("\n                ", $backtrace);
         
-        $body = unindent("
-            <p><b>Error while attempting to send notification for {$account->display_name}</b>!</p>
-            
-            <p>The notification has malformed contents. Please review them
-            and double check with the engine tech support staff about the module that is
-            generating it:</p>
-            
-            <blockquote>{$contents}</blockquote>
-            
-            <p>The notification has wont be delivered.</p>
-            
-            <p><b>Stack Trace:</b></p>
-            <pre>
-                $backtrace
-            </pre>
-        ");
-        send_mail($subject, $body, $recipients);
+        $logdate  = date("Ymd");
+        $logtime  = date("Y-m-d H:i:s");
+        $logentry = "[$logtime] Empty notification for {$account->display_name}. Backtrace:\n";
+        foreach($backtrace as $line) $logentry .= " • $line\n";
+        $logentry .= "\n";
+        @file_put_contents("{$config->logfiles_location}/failed_notifications-{$logdate}.log", $logentry, FILE_APPEND);
+        
+        broadcast_to_moderators("error", "Empty notification registered. Please check the log.");
         
         return;
     }
     
-    @file_put_contents($target_file, $contents);
+    @file_put_contents($target_file, $json_contents);
     @chmod($target_file, 0777);
     usleep(10000);
 }
