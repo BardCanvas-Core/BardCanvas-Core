@@ -766,7 +766,7 @@ function check_sql_injection($input)
                 }
             }
             unset($matches_list[0]);
-            array_unique($matches_list);
+            $matches_list = array_unique($matches_list);
             
             $sanitized = array();
             foreach($matches_list as $key => $val) if( ! empty($val) ) $sanitized[] = $val;
