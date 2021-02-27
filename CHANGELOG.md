@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.4.1] - 2021-02-27
+
+- Tuned empty notifications handling.
+
 ## [1.14.4.0] - 2021-02-11
 
 - Added option to skip versioning in the disk_cache class.
