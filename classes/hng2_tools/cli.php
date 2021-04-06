@@ -36,24 +36,46 @@ class cli
         'white'         => '1;37',
     );
     
+    private static $_html_foreground_reference = '
+        #########################################################
+        # Note: color codes here are the keys on the var below. #
+        #########################################################
+        <span style="color: #000000"> black        </span>
+        <span style="color: #A9A9A9"> dark_gray    </span>
+        <span style="color: #1296BE"> blue         </span>
+        <span style="color: #70d1ff"> light_blue   </span>
+        <span style="color: #0EB16C"> green        </span>
+        <span style="color: #18ffa3"> light_green  </span>
+        <span style="color: #00bfbf"> cyan         </span>
+        <span style="color: #00FFFF"> light_cyan   </span>
+        <span style="color: #E65757"> red          </span>
+        <span style="color: #FF4D4D"> light_red    </span>
+        <span style="color: #FF4DFF"> purple       </span>
+        <span style="color: #FF7DFF"> light_purple </span>
+        <span style="color: #F4A460"> brown        </span>
+        <span style="color: #F8F513"> yellow       </span>
+        <span style="color: #C0C0C0"> light_gray   </span>
+        <span style="color: #FFFFFF"> white        </span>
+    ';
+    
     protected static $html_foreground_colors = array
     (
-        'black'          => '0;30',
-        'gray'           => '1;30',
-        'blue'           => '0;34',
-        'CornflowerBlue' => '1;34',
-        'green'          => '0;32',
-        'lime'           => '1;32',
-        'teal'           => '0;36',
-        'cyan'           => '1;36',
-        'red'            => '0;31',
-        'LightCoral'     => '1;31',
-        'purple'         => '0;35',
-        'magenta'        => '1;35',
-        'brown'          => '0;33',
-        'yellow'         => '1;33',
-        'silver'         => '0;37',
-        'white'          => '1;37',
+        '#000000' => '0;30', # black
+        '#A9A9A9' => '1;30', # dark_gray
+        '#1296BE' => '0;34', # blue
+        '#70d1ff' => '1;34', # light_blue
+        '#0EB16C' => '0;32', # green
+        '#18FFA3' => '1;32', # light_green
+        '#00bfbf' => '0;36', # cyan
+        '#00FFFF' => '1;36', # light_cyan
+        '#E65757' => '0;31', # red
+        '#FF4D4D' => '1;31', # light_red
+        '#FF4DFF' => '0;35', # purple
+        '#FF7DFF' => '1;35', # light_purple
+        '#F4A460' => '0;33', # brown
+        '#F8F513' => '1;33', # yellow
+        '#C0C0C0' => '0;37', # light_gray
+        '#FFFFFF' => '1;37', # white
     );
     
     public static $forecolor_black         = "black";
@@ -84,16 +106,30 @@ class cli
         'light_gray'    => '47',
     );
     
+    private static $_html_background_reference = '
+        #########################################################
+        # Note: color codes here are the keys on the var below. #
+        #########################################################
+        <span style="color: #000000"> black      </span>
+        <span style="color: #FF0000"> red        </span>
+        <span style="color: #008000"> green      </span>
+        <span style="color: #FFFF00"> yellow     </span>
+        <span style="color: #0000FF"> blue       </span>
+        <span style="color: #FF00FF"> magenta    </span>
+        <span style="color: #00FFFF"> cyan       </span>
+        <span style="color: #C0C0C0"> light_gray </span>
+    ';
+    
     protected static $html_background_colors = array
     (
-        'black'         => '40',
-        'red'           => '41',
-        'green'         => '42',
-        'yellow'        => '43',
-        'blue'          => '44',
-        'magenta'       => '45',
-        'cyan'          => '46',
-        'silver'        => '47',
+        '#000000' => '40',
+        '#FF0000' => '41',
+        '#008000' => '42',
+        '#FFFF00' => '43',
+        '#0000FF' => '44',
+        '#FF00FF' => '45',
+        '#00FFFF' => '46',
+        '#C0C0C0' => '47',
     );
     
     public static $backcolor_black         = "black";
