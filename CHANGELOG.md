@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.4.2] - 2021-04-20
+
+- Tuned CLI color scheme.
+
 ## [1.14.4.1] - 2021-02-27
 
 - Tuned empty notifications handling.
