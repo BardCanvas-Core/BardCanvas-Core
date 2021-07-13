@@ -189,6 +189,7 @@ class account_toolbox extends abstract_record
         {
             $this->engine_prefs[$key] = $value;
             $this->engine_prefs_cache->set($key, $value);
+            if( is_numeric($value) ) $value = $value + 0;
             
             $database->exec("
                 insert into account_engine_prefs set
