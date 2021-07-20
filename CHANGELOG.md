@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.4.3] - 2021-07-20
+
+- Added sanitization when setting a numeric value in an engine pref.
+
 ## [1.14.4.2] - 2021-04-20
 
 - Tuned CLI color scheme.
