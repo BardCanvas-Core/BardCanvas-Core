@@ -219,15 +219,53 @@ function toggle_dropdown_menu($trigger)
     var $menu           = $(menu_selector);
     var offset          = $trigger.offset();
     var top             = offset.top + $trigger.height() + 10;
-    var width           = $menu.width();
+    var width           = $menu.outerWidth();
     var window_boundary = $(window).width();
     var left            = offset.left;
-    if( (offset.left + width + 12) > window_boundary ) left = offset.left + $trigger.width() - width + 12;
+    var trigger_width   = $trigger.outerWidth();
     
+    if(
+        $trigger.closest('#menu_holder').length > 0 &&
+        typeof $_CORE_FUNCTION_OVERRIDES.main_menu_submenus_behavior === 'string'
+    ) {
+        var options = $_CORE_FUNCTION_OVERRIDES.main_menu_submenus_behavior.split(',');
+        
+        // Same width as the trigger?
+        if( options.indexOf('width_as_trigger') >= 0 )
+        {
+            if( width < trigger_width )
+            {
+                $menu.css('width', (trigger_width - 4) + 'px');
+                width = trigger_width - 4;
+            }
+        }
+        
+        // Centering over the trigger?
+        if( options.indexOf('centered') >= 0 )
+        {
+            left = offset.left + (trigger_width / 2) - (width / 2);
+        }
+        
+        // Check if we aren't going offscreen
+        if( left + width > window_boundary )
+        {
+            width = left + width - window_boundary - 20;
+            // Recheck centering
+            if( options.indexOf('centered') >= 0 )
+            {
+                left = offset.left + (trigger_width / 2) - (width / 2);
+            }
+        }
+    }
+    
+    if( (offset.left + width + 12) > window_boundary ) left = offset.left + trigger_width - width + 12;
     if( left < 0 ) left = 0;
+    if( offset.left === 0 && left > 0 ) left = 0;
     
     $trigger.toggleClass('submenu_visible');
-    $menu.toggle().css('left', left + 'px').css('top',  top + 'px');
+    $menu.toggle();
+    $menu.css('left', left + 'px').css('top',  top + 'px');
+    
     // TODO: Fix this fucking toggle!
     // $trigger.find('.menu_toggle > span').toggle();
 }
@@ -240,8 +278,11 @@ function hide_dropdown_menus()
         var menu     = $trigger.attr('data-submenu');
         $trigger.toggleClass('submenu_visible', false);
         $(menu).hide();
+        $(menu).css('width', 'unset');
     });
 }
+
+$(window).resize(hide_dropdown_menus);
 
 function check_wrapped_tables()
 {
