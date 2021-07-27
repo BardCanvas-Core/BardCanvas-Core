@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.4.4] - 2021-07-27
+
+- Added JS core function override options for controlling the behavior of submenus on the main menu.
+
 ## [1.14.4.3] - 2021-07-20
 
 - Added sanitization when setting a numeric value in an engine pref.
