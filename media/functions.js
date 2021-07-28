@@ -198,12 +198,32 @@ function prepare_submenus()
         
         if( $this.attr('data-already-processed') ) return;
         
-        $this.click(function(event)
+        if( $this.closest('#header').length !== 0 && $_CORE_FUNCTION_OVERRIDES.main_menu_hover_instead_of_click )
         {
-            var $self = $(this);
-            event.stopPropagation();
-            toggle_dropdown_menu( $self );
-        });
+            $this.mouseenter(function(event)
+            {
+                var $self = $(this);
+                event.stopPropagation();
+                toggle_dropdown_menu( $self );
+            });
+            
+            $this.mouseleave(function(event)
+            {
+                var $self = $(this);
+                event.stopPropagation();
+                var menu_selector = $self.attr('data-submenu');
+                hide_dropdown_menus(menu_selector);
+            });
+        }
+        else
+        {
+            $this.click(function(event)
+            {
+                var $self = $(this);
+                event.stopPropagation();
+                toggle_dropdown_menu( $self );
+            });
+        }
         
         $this.attr('data-already-processed', true);
     });
@@ -279,15 +299,18 @@ function toggle_dropdown_menu($trigger)
     // $trigger.find('.menu_toggle > span').toggle();
 }
 
-function hide_dropdown_menus()
+function hide_dropdown_menus(excepted_selector)
 {
     $('.is_submenu_trigger.submenu_visible').each(function()
     {
         var $trigger = $(this);
         var menu     = $trigger.attr('data-submenu');
-        $trigger.toggleClass('submenu_visible', false);
-        $(menu).hide();
-        $(menu).css('width', 'unset');
+        if( ! (typeof excepted_selector !== 'undefined' && menu === excepted_selector) )
+        {
+            $trigger.toggleClass('submenu_visible', false);
+            $(menu).hide();
+            $(menu).css('width', 'unset');
+        }
     });
 }
 
