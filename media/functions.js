@@ -250,10 +250,19 @@ function toggle_dropdown_menu($trigger)
         if( left + width > window_boundary )
         {
             width = left + width - window_boundary - 20;
-            // Recheck centering
-            if( options.indexOf('centered') >= 0 )
+            if( width <= 0 )
             {
-                left = offset.left + (trigger_width / 2) - (width / 2);
+                $menu.css('width', (trigger_width - 4) + 'px');
+                width = trigger_width - 4;
+                left  = offset.left;
+            }
+            else
+            {
+                // Recheck centering
+                if( options.indexOf('centered') >= 0 )
+                {
+                    left = offset.left + (trigger_width / 2) - (width / 2);
+                }
             }
         }
     }
