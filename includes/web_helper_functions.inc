@@ -478,6 +478,7 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
     global $settings, $modules, $config;
     
     if($config->globals["engine.emails_disabled"]) return "OK";
+    if($settings->get("engine.emails_disabled") == "true") return "OK";
     
     foreach($modules as $module)
     {

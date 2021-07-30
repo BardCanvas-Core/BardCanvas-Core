@@ -376,6 +376,14 @@
             ]]></description>
             <type>email</type>
         </specs>
+        <specs key="emails_disabled" highlight_class="sensitive">
+            <title>Desactivar el envío de correos?</title>
+            <description><![CDATA[
+                Activa esta opción si deseas dejar de enviar correos a cualquiera,
+                incluyendo administradores.
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
         <specs key="mail_sender_smtp_enabled">
             <title>Enviar correo a través de SMTP</title>
             <description><![CDATA[

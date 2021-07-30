@@ -373,6 +373,14 @@
             ]]></description>
             <type>email</type>
         </specs>
+        <specs key="emails_disabled" highlight_class="sensitive">
+            <title>Turn off sending emails?</title>
+            <description><![CDATA[
+                Enable this option if you want to stop sending emails to everyone,
+                including admins.
+            ]]></description>
+            <type>yes/no</type>
+        </specs>
         <specs key="mail_sender_smtp_enabled">
             <title>Send email through SMTP</title>
             <description><![CDATA[
