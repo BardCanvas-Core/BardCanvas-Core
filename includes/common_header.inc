@@ -142,8 +142,12 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
     </script>
     
     <!-- jQuery UI -->
-    <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery-ui-1.10.4.custom.min.js"></script>
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/jquery-ui-themes-1.10.4/<?= $jquery_ui_theme ?>/jquery-ui.css">
+    <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery-ui-1.10.4.custom.min.js"></script>
+    <!--suppress JSPotentiallyInvalidConstructorUsage -->
+    <script type="text/javascript">
+        $(document).ready(function() { $.extend($.ui.dialog.prototype.options, {draggable: false}); });
+    </script>
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery.ui.touch-punch.min.js"></script>
     
     <!-- UI Additions -->
