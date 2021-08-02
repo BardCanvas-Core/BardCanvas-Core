@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.5.0] - 2021-08-01
+
+- Tuned submenu widths and positioning.
+- Added JS core function override option for allowing submenus to go by hovering the trigger on the main menu.
+- Added option to disable the mail sender.
+- Fixed unresponsive dialogs close button on the dialogs title bar.
+
 ## [1.14.4.4] - 2021-07-27
 
 - Added JS core function override options for controlling the behavior of submenus on the main menu.
