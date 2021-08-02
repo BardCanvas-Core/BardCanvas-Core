@@ -148,6 +148,17 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
     <script type="text/javascript">
         $(document).ready(function() { $.extend($.ui.dialog.prototype.options, {draggable: false}); });
     </script>
+    <?
+    $jq_ui_params = $template->get("jquery_ui_extra_options");
+    if( ! empty($jq_ui_params) ): ?>
+        <!--suppress JSPotentiallyInvalidConstructorUsage -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var params = <?= json_encode($jq_ui_params) ?>;
+                $.extend($.ui.dialog.prototype.options, params);
+            });
+        </script>
+    <? endif; ?>
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery.ui.touch-punch.min.js"></script>
     
     <!-- UI Additions -->
