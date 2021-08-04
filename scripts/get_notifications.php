@@ -28,6 +28,22 @@ $notifications_return_collection = array(
 
 if( ! $account->_exists ) die( json_encode($notifications_return_collection) );
 
+# Extenders
+foreach($modules as $module)
+{
+    if( ! isset($module->php_includes->notifications_getter_init) ) continue;
+    
+    foreach($module->php_includes->notifications_getter_init as $getter)
+    {
+        $this_module = $module;
+        $include = ROOTPATH . "/{$module->name}/$getter";
+        
+        if( ! file_exists($include) ) continue;
+        
+        include $include;
+    }
+}
+
 $notifications_return_collection["notifications"] = get_notifications($account->id_account, 100);
 
 # Extenders
