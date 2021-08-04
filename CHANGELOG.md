@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.5.1] - 2021-08-04
+
+- Added extensible jQuery UI dialog defaults via template vars.
+- Added extension point on the notifications getter script.
+
 ## [1.14.5.0] - 2021-08-01
 
 - Tuned submenu widths and positioning.
