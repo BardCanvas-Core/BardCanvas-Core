@@ -211,7 +211,7 @@ class account extends account_toolbox
             );
             
             $min_loggin_level = (int) $settings->get("engine.min_user_level_for_ip_dismissal");
-            if( $this->level >= $min_loggin_level )
+            if( $min_loggin_level > 0 && $this->level >= $min_loggin_level )
             {
                 $ip       = "";
                 $host     = "";
@@ -263,7 +263,7 @@ class account extends account_toolbox
         );
         
         $min_loggin_level = (int) $settings->get("engine.min_user_level_for_ip_dismissal");
-        if( $this->level >= $min_loggin_level )
+        if( $min_loggin_level > 0 && $this->level >= $min_loggin_level )
         {
             $ip       = "";
             $host     = "";
