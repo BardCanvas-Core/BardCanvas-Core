@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.5.3] - 2021-08-29
+
+- Added extension points on the account class.
+
 ## [1.14.5.2] - 2021-08-17
 
 - Added extra check for IP logging dismissal in the `account` class.
