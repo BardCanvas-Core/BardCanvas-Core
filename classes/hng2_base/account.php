@@ -131,7 +131,7 @@ class account extends account_toolbox
      */
     public function load_session()
     {
-        global $config, $settings, $database, $mem_cache;
+        global $config, $settings, $database, $mem_cache, $modules;
         
         if( empty($_COOKIE[$settings->get("engine.user_session_cookie")]) ) return;
         
@@ -224,6 +224,9 @@ class account extends account_toolbox
                 $location = addslashes(forge_geoip_location($ip));
             }
             
+            $config->globals["@accounts:account_id_logging_in"] = $this->id_account;
+            $modules["accounts"]->load_extensions("login", "before_inserting_login_record");
+            
             $database->exec("
                 insert ignore into account_logins set
                 `id_account` = '$this->id_account',
@@ -275,6 +278,9 @@ class account extends account_toolbox
             $host     = addslashes(gethostbyaddr(get_remote_address()));
             $location = addslashes(forge_geoip_location($ip));
         }
+        
+        $config->globals["@accounts:account_id_logging_in"] = $this->id_account;
+        $modules["accounts"]->load_extensions("login", "before_inserting_login_record");
         
         # Now we insert the record in the logins table
         $database->exec("
