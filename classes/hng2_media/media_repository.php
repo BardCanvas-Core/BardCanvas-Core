@@ -758,7 +758,7 @@ class media_repository extends abstract_repository
         if( ! empty($inserts) )
         {
             $database->exec(
-                "insert into media_tags (id_media, tag, date_attached, order_attached) values "
+                "insert ignore into media_tags (id_media, tag, date_attached, order_attached) values "
                 . implode(", ", $inserts)
             );
             $this->last_query = $database->get_last_query();
