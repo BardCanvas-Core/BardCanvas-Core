@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## 1.14.5.4 - 2021-09-13
+
+- Added fallback to avoid duplicate tags exception.
+
 ## [1.14.5.3] - 2021-08-29
 
 - Added extension points on the account class.
