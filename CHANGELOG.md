@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.5.5] - 2021-09-19
+
+- Added checks to the SQL injection checker.
+
 ## 1.14.5.4 - 2021-09-13
 
 - Added fallback to avoid duplicate tags exception.
