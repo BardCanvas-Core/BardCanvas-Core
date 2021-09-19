@@ -653,6 +653,7 @@ function broadcast_mail_between_levels(
     send_mail($subject, $body, $recipients);
 }
 
+/** @noinspection PhpParamsInspection */
 function externalize_urls($text)
 {
     /** @noinspection PhpUnusedLocalVariableInspection */
