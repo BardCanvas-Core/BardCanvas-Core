@@ -725,19 +725,19 @@ function check_sql_injection($input)
     static $patt = null;
     if( is_null($patt) )
         $patt = '#'
-              . '(select|describe|show)|(distinct)'
+              . '(select|describe|show|insert)|(distinct)'
               . '|'
-              . '(from)'
+              . '(from|into)'
               . '|'
               . '(where|like)'
               . '|'
-              . '(char|cast|ifnull|count|concat|information_schema|information_schema.plugins)'
+              . '(char|ascii|cast|ifnull|count|concat|information_schema|information_schema.plugins)'
               . '|'
-              . '(union|table|tables|join|group)'
+              . '(having|union|table|tables|join|group)'
               . '|'
               . '(drop|truncate)'
               . '|'
-              . '(/\*|\*/|0x[a-f0-9+])'
+              . '(/\*|\*/|0x[a-f0-9+]|1=0|1=1|1--)'
               . '#i';
     
     foreach($input as $string)
