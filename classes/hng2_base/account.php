@@ -471,7 +471,7 @@ class account extends account_toolbox
      */
     public function activate($set_user_level = false)
     {
-        global $database, $modules;
+        global $database, $modules, $mem_cache;
         
         $now         = date("Y-m-d H:i:s");
         $this->state = "enabled";
@@ -498,12 +498,14 @@ class account extends account_toolbox
             if( ! empty($module->php_includes->after_activating_account) )
                 include "{$module->abspath}/{$module->php_includes->after_activating_account}";
         
+        $mem_cache->delete("account:{$this->id_account}");
+        
         return $database->exec($query);
     }
     
     public function enable()
     {
-        global $database, $modules;
+        global $database, $modules, $mem_cache;
         
         $now              = date("Y-m-d H:i:s");
         $this->state      = "enabled";
@@ -519,12 +521,14 @@ class account extends account_toolbox
             if( ! empty($module->php_includes->after_enabling_account) )
                 include "{$module->abspath}/{$module->php_includes->after_enabling_account}";
         
+        $mem_cache->delete("account:{$this->id_account}");
+        
         return $database->exec($query);
     }
     
     public function disable()
     {
-        global $database, $modules;
+        global $database, $modules, $mem_cache;
         
         $now              = date("Y-m-d H:i:s");
         $this->state      = "disabled";
@@ -540,6 +544,8 @@ class account extends account_toolbox
             if( ! empty($module->php_includes->after_disabling_account) )
                 include "{$module->abspath}/{$module->php_includes->after_disabling_account}";
         
+        $mem_cache->delete("account:{$this->id_account}");
+            
         return $database->exec($query);
     }
     
@@ -553,7 +559,7 @@ class account extends account_toolbox
      */
     public function set_admin()
     {
-        global $database;
+        global $database, $mem_cache;
         
         $this->_is_admin = true;
         
@@ -564,6 +570,8 @@ class account extends account_toolbox
             where
                 id_account  = '".addslashes($this->id_account)."'
         ";
+        
+        $mem_cache->delete("account:{$this->id_account}");
         
         return $database->exec($query);
     }
@@ -578,7 +586,7 @@ class account extends account_toolbox
      */
     public function unset_admin()
     {
-        global $database;
+        global $database, $mem_cache;
         
         $this->_is_admin = false;
         
@@ -591,12 +599,14 @@ class account extends account_toolbox
                 id_account  = '".addslashes($this->id_account)."'
         ";
         
+        $mem_cache->delete("account:{$this->id_account}");
+        
         return $database->exec($query);
     }
     
     public function set_level($new_level)
     {
-        global $database, $config, $modules;
+        global $database, $config, $modules, $mem_cache;
         
         if( $new_level >= $config::COADMIN_USER_LEVEL )
             $this->_is_admin = true;
@@ -616,12 +626,14 @@ class account extends account_toolbox
             if( ! empty($module->php_includes->after_changing_account_level) )
                 include "{$module->abspath}/{$module->php_includes->after_changing_account_level}";
         
+        $mem_cache->delete("account:{$this->id_account}");
+        
         return $return;
     }
     
     public function set_avatar_from_post()
     {
-        global $messages, $errors, $current_module, $config, $settings;
+        global $messages, $errors, $current_module, $config, $settings, $mem_cache;
         
         if( $_POST["use_gravatar"] == "true" )
         {
@@ -694,13 +706,15 @@ class account extends account_toolbox
             return;
         }
         
+        $mem_cache->delete("account:{$this->id_account}");
+        
         $this->avatar = $new_avatar;
         $messages[]   = $current_module->language->user_account_form->messages->avatar_set_ok;
     }
     
     public function set_banner_from_post()
     {
-        global $messages, $errors, $current_module, $config, $settings;
+        global $messages, $errors, $current_module, $config, $settings, $mem_cache;
         
         if( empty($_FILES["uploaded_profile_banner"]) ) return;
         if( empty($_FILES["uploaded_profile_banner"]["tmp_name"]) ) return;
@@ -759,6 +773,8 @@ class account extends account_toolbox
             
             return;
         }
+        
+        $mem_cache->delete("account:{$this->id_account}");
         
         $this->profile_banner = $new_banner;
         $messages[]           = $current_module->language->user_account_form->messages->banner_set_ok;
