@@ -334,4 +334,21 @@ class accounts_repository extends abstract_repository
         
         return $return;
     }
+    
+    public function add_to_changelog($id_account, $caption, $details = "")
+    {
+        global $database;
+        
+        $date = date("Y-m-d H:i:s");
+        $text = "• [$date] - $caption";
+        if( empty($details) ) $text .= "\n\n";
+        else                  $text .= ":\n$details\n\n";
+        
+        $text = addslashes($text);
+        
+        $database->exec("
+            update account set changelog = concat(changelog, '$text')
+            where id_account = '$id_account'
+        ");
+    }
 }
