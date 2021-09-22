@@ -585,8 +585,8 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
         .    "---------------------------\n"
         ;
     
-    $ip       = get_remote_address();
-    $host     = @gethostbyaddr($ip); if( empty($host) ) $host = $ip;
+    $ip       = get_remote_address(); if( empty($ip) ) $ip = "127.0.0.1";
+    $host     = $ip == "127.0.0.1" ? "localhost" : @gethostbyaddr($ip); if( empty($host) ) $host = $ip;
     $location = forge_geoip_location($ip);
     $agent    = $_SERVER["HTTP_USER_AGENT"]; if( empty($agent) ) $agent = "N/A";
     $logtime  = date("Y-m-d H:i:s");
@@ -594,12 +594,16 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
     $logfile  = "{$config->logfiles_location}/mail_log-$logdate.log";
     $recipsl  = implode(", ", $recipients);
     $excerpt  = make_excerpt_of($body, 80);
+    $bcktrace = debug_backtrace();
+    $invoker  = str_replace(ROOTPATH, "", $bcktrace[1]["file"]) . ":" . $bcktrace[1]["line"];
     $logmsg   = "[$logtime] From {$mail->From} to {$recipsl}:\n"
               . " • Subject:   {$subject}\n"
               . " • Sender IP: {$ip} ({$host})\n"
               . " • Location:  {$location}\n"
               . " • Using:     {$agent}\n"
-              . " • Excerpt:   {$excerpt}\n";
+              . " • Excerpt:   {$excerpt}\n"
+              . " • Invoker:   {$invoker}\n"
+              ;
     
     if( ! $mail->send() )
     {
