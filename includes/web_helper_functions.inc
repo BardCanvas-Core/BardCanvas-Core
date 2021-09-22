@@ -584,8 +584,31 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
         echo "Init complete. Sending now.\n"
         .    "---------------------------\n"
         ;
-    if( ! $mail->send() ) return $mail->ErrorInfo;
     
+    $ip       = get_remote_address();
+    $host     = @gethostbyaddr($ip); if( empty($host) ) $host = $ip;
+    $location = forge_geoip_location($ip);
+    $agent    = $_SERVER["HTTP_USER_AGENT"]; if( empty($agent) ) $agent = "N/A";
+    $logtime  = date("Y-m-d H:i:s");
+    $logdate  = date("Ymd");
+    $logfile  = "{$config->logfiles_location}/mail_log-$logdate.log";
+    $recipsl  = implode(", ", $recipients);
+    $excerpt  = make_excerpt_of($body, 80);
+    $logmsg   = "[$logtime] From {$mail->From} to {$recipsl}:\n"
+              . " • Subject:   {$subject}\n"
+              . " • Sender IP: {$ip} ({$host})\n"
+              . " • Location:  {$location}\n"
+              . " • Using:     {$agent}\n"
+              . " • Excerpt:   {$excerpt}\n";
+    
+    if( ! $mail->send() )
+    {
+        $logmsg .= " ! ERROR:     {$mail->ErrorInfo}\n\n";
+        @file_put_contents($logfile, $logmsg, FILE_APPEND);
+        return $mail->ErrorInfo;
+    }
+    
+    @file_put_contents($logfile, "{$logmsg}\n", FILE_APPEND);
     return "OK";
 }
 
