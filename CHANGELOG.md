@@ -1,6 +1,13 @@
 
 # BardCanvas Core Changelog 
 
+## [1.4.5.6] - 2021-09-22
+
+- Added logging of new devices.
+- Added logging of sent emails.
+- Added changelog addition method to the accounts repository.
+- Improved caching on the account class.
+
 ## [1.14.5.5] - 2021-09-19
 
 - Added checks to the SQL injection checker.
