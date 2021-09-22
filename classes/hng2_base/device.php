@@ -174,6 +174,28 @@ class device
         );
         $mail_body = unindent($mail_body);
         
+        $log_file  = sprintf("{$config->logfiles_location}/account_devices-%s.log", date("Ymd"));
+        $log_entry = unindent(sprintf(
+            "
+            [%s] - New device detected for %s (#%s, @%s):
+             • IP/Host:    %s (%s)
+             • Location:   %s
+             • User agent: %s
+             • Email/s:    %s %s
+            ",
+            date("Y-m-d H:i:s"),
+            $account->display_name,
+            $account->id_account,
+            $account->user_name,
+            $ip,
+            $hostname,
+            $request_location,
+            $_SERVER["HTTP_USER_AGENT"],
+            $account->email,
+            $account->alt_email
+        ));
+        @file_put_contents($log_file, "$log_entry\n\n", FILE_APPEND);
+        
         return send_mail($mail_subject, nl2br($mail_body), $recipients);
     }
     
