@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.4.5.7] - 2021-09-24
+
+- Added sanitization of user agents for device strings.
+
 ## [1.4.5.6] - 2021-09-22
 
 - Added logging of new devices.
