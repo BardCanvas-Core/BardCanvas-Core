@@ -56,7 +56,7 @@ class device
             }
         }
         
-        if( empty($user_agent) ) $user_agent = $_SERVER["HTTP_USER_AGENT"];
+        if( empty($user_agent) ) $user_agent = get_sanitized_user_agent();
         
         if( empty($id_account_or_id_device_or_object) && empty($user_agent) )
         {
@@ -109,7 +109,7 @@ class device
         $this->set_new_id();
         $this->id_account    = $account->id_account;
         $this->device_label  = "N/A";
-        $this->device_header = $_SERVER["HTTP_USER_AGENT"];
+        $this->device_header = get_sanitized_user_agent();
         $this->state         = "unregistered";
     }
     

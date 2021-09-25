@@ -824,3 +824,10 @@ function check_sql_injection($input)
         }
     }
 }
+
+function get_sanitized_user_agent($string = "")
+{
+    if( empty($string) ) $string = $_SERVER["HTTP_USER_AGENT"];
+    
+    return preg_replace('@(/[0-9]+)(\\.?[0-9.]+)@', '\\1', $string);
+}
