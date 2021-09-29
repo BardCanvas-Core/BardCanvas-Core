@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.4.6.0] - 2021-09-29
+
+- Added restricted engine prefs collection to `config` class and helper method.
+- Added db errors log and simplified thrown exceptions.
+
 ## [1.4.5.7] - 2021-09-24
 
 - Added sanitization of user agents for device strings.
