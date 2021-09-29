@@ -77,6 +77,8 @@ class config
         "webm" => "system",
     );
     
+    protected $restricted_engine_prefs = array();
+    
     /**
      * Generic usage.
      * Significant ones:
@@ -299,5 +301,32 @@ class config
             list($type, $manager) = preg_split('/\s*\-\s*/', $line);
             $this->upload_file_types[$type] = $manager;
         }
+    }
+    
+    /**
+     * Add a pattern to the restricted engine prefs collection
+     * 
+     * @param string $pattern PCRE pattern
+     */
+    public function add_to_restricted_engine_prefs($pattern)
+    {
+        $this->restricted_engine_prefs[] = $pattern;
+    }
+    
+    /**
+     * Look for a key in the restricted preferences collection
+     * 
+     * @param string $key
+     * 
+     * @return bool
+     */
+    public function is_engine_pref_restricted($key)
+    {
+        if( empty($this->restricted_engine_prefs) ) return false;
+        
+        foreach($this->restricted_engine_prefs as $pattern)
+            if( preg_match($pattern, $key) ) return true;
+        
+        return false;
     }
 }
