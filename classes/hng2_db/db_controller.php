@@ -111,11 +111,27 @@ class db_controller
             $return     = $db->exec($query);
             $error_info = $db->handler->errorInfo();
             
-            if( ! empty($error_info[2]) ) throw new \Exception(
-                "Error while executing query:\n" .
-                "{$error_info[2]}\n\n" .
-                "Query:\n" . $query
-            );
+            if( ! empty($error_info[2]) )
+            {
+                $logfd   = date("Ymd");
+                $logfl   = "{$config->logfiles_location}/db_errors-{$logfd}.log";
+                $logdt  = date("Y-m-d H:i:s");
+                $logmsg = "[$logdt] Error while executing query:\n\n"
+                        . "{$error_info[2]}\n\n"
+                        . "Query:\n" . $query . "\n\n"
+                        . "Stack trace:\n"
+                ;
+                $backtrace2 = debug_backtrace();
+                foreach($backtrace2 as $backtrace_item2)
+                    $logmsg .= " • " . $backtrace_item2["file"] . ":" . $backtrace_item2["line"] . "\n";
+                $logmsg .= "\n";
+                @file_put_contents($logfl, $logmsg, FILE_APPEND);
+                
+                throw new \Exception(
+                    "Error while executing query:\n" .
+                    "{$error_info[2]}"
+                );
+            }
             
             if( $config->query_tracking_enabled )
                 $this->tracked_queries[] = new tracked_query(
@@ -160,14 +176,23 @@ class db_controller
         
         if( ! empty($error_info[2]) )
         {
-            $backtrace = debug_backtrace();
-            foreach($backtrace as &$backtrace_item) $backtrace_item = $backtrace_item["file"] . ":" . $backtrace_item["line"];
+            $logfd   = date("Ymd");
+            $logfl   = "{$config->logfiles_location}/db_errors-{$logfd}.log";
+            $logdt  = date("Y-m-d H:i:s");
+            $logmsg = "[$logdt] Error while executing query:\n\n"
+                . "{$error_info[2]}\n\n"
+                . "Query:\n" . $query . "\n\n"
+                . "Stack trace:\n"
+            ;
+            $backtrace2 = debug_backtrace();
+            foreach($backtrace2 as $backtrace_item2)
+                $logmsg .= " • " . $backtrace_item2["file"] . ":" . $backtrace_item2["line"] . "\n";
+            $logmsg .= "\n";
+            @file_put_contents($logfl, $logmsg, FILE_APPEND);
             
             throw new \Exception(
                 "Error while executing query:\n" .
-                "{$error_info[2]}\n\n" .
-                "Query:\n" . $query . "\n\n" .
-                "Stack Trace:\n" . implode("\n", $backtrace) . "\n"
+                "{$error_info[2]}"
             );
         }
         
