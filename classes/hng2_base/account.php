@@ -301,10 +301,12 @@ class account extends account_toolbox
                 include "{$module->abspath}/{$module->php_includes->after_opening_session}";
     }
     
-    protected function extend_session_cookie(device $device)
+    protected function extend_session_cookie($device)
     {
         global $config, $settings;
-    
+        
+        if( is_null($device) ) return;
+        
         if( $device->_exists ) $session_time = time() + ( 86400 * 30 );
         else                   $session_time = 0;
         
