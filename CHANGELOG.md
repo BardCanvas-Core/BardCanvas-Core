@@ -1,16 +1,20 @@
 
 # BardCanvas Core Changelog 
 
-## [1.4.6.0] - 2021-09-29
+## [1.14.6.1] - 2021-10-09
+
+- Removed type hinting on session cookie extender method of account function to avoid errors.
+
+## [1.14.6.0] - 2021-09-29
 
 - Added restricted engine prefs collection to `config` class and helper method.
 - Added db errors log and simplified thrown exceptions.
 
-## [1.4.5.7] - 2021-09-24
+## [1.14.5.7] - 2021-09-24
 
 - Added sanitization of user agents for device strings.
 
-## [1.4.5.6] - 2021-09-22
+## [1.14.5.6] - 2021-09-22
 
 - Added logging of new devices.
 - Added logging of sent emails.
