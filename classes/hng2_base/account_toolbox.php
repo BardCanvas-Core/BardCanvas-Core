@@ -195,9 +195,9 @@ class account_toolbox extends abstract_record
                 insert into account_engine_prefs set
                     id_account = '".addslashes($this->id_account)."',
                     `name`     = '$key',
-                    `value`    = '".json_encode($value)."'
+                    `value`    = '".addslashes(json_encode($value))."'
                 on duplicate key update
-                    `value`    = '".json_encode($value)."'
+                    `value`    = '".addslashes(json_encode($value))."'
             ");
         }
     }
