@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.6.2] - 2021-11-16
+
+- Added quotes management on the `set_engine_pref` method of the account toolbox.
+
 ## [1.14.6.1] - 2021-10-09
 
 - Removed type hinting on session cookie extender method of account function to avoid errors.
