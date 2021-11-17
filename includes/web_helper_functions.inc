@@ -748,6 +748,8 @@ function is_mobile()
  */
 function check_sql_injection($input)
 {
+    global $modules;
+    
     if( is_string($input) ) $input = array($input);
     
     static $patt = null;
@@ -802,6 +804,22 @@ function check_sql_injection($input)
             $matches_list = array_unique($sanitized);
             
             if( count($matches_list) < 3 ) continue;
+            
+            # Extenders
+            foreach($modules as $module)
+            {
+                if( ! isset($module->php_includes->sql_injection_prelog) ) continue;
+                
+                foreach($module->php_includes->sql_injection_prelog as $script)
+                {
+                    $this_module = $module;
+                    $include = ROOTPATH . "/{$module->name}/$script";
+                    
+                    if( ! file_exists($include) ) continue;
+                    
+                    include $include;
+                }
+            }
             
             $logdate   = date("Ymd");
             $logtstamp = date("Y-m-d H:i:s");
