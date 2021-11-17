@@ -748,7 +748,7 @@ function is_mobile()
  */
 function check_sql_injection($input)
 {
-    global $modules;
+    global $modules, $config;
     
     if( is_string($input) ) $input = array($input);
     
@@ -806,18 +806,21 @@ function check_sql_injection($input)
             if( count($matches_list) < 3 ) continue;
             
             # Extenders
-            foreach($modules as $module)
+            if( ! $config->globals["@webhelper/no_extensions"] )
             {
-                if( ! isset($module->php_includes->sql_injection_prelog) ) continue;
-                
-                foreach($module->php_includes->sql_injection_prelog as $script)
+                foreach($modules as $module)
                 {
-                    $this_module = $module;
-                    $include = ROOTPATH . "/{$module->name}/$script";
+                    if( ! isset($module->php_includes->sql_injection_prelog) ) continue;
                     
-                    if( ! file_exists($include) ) continue;
-                    
-                    include $include;
+                    foreach($module->php_includes->sql_injection_prelog as $script)
+                    {
+                        $this_module = $module;
+                        $include = ROOTPATH . "/{$module->name}/$script";
+                        
+                        if( ! file_exists($include) ) continue;
+                        
+                        include $include;
+                    }
                 }
             }
             
