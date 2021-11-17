@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.6.3] - 2021-11-17
+
+- Added connection info to the db errors log.
+- Added extension point to the sql injection checker.
+
 ## [1.14.6.2] - 2021-11-16
 
 - Added quotes management on the `set_engine_pref` method of the account toolbox.
