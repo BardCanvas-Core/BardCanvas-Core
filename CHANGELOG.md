@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.6.4] - 2021-11-18
+
+- Added condition to dodge extensions on the SQL injection checker.
+
 ## [1.14.6.3] - 2021-11-17
 
 - Added connection info to the db errors log.
