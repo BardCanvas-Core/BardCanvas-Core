@@ -200,6 +200,18 @@ class db_controller
             foreach($backtrace2 as $backtrace_item2)
                 $logmsg .= " • " . $backtrace_item2["file"] . ":" . $backtrace_item2["line"] . "\n";
             $logmsg .= "\n";
+            
+            $ip   = get_remote_address();
+            $host = @gethostbyaddr($ip); if(empty($host)) $host = $ip;
+            $loc  = forge_geoip_location($ip, true);
+            $isp  = get_geoip_location_data($ip, "isp");
+            $logmsg .= "Connection data:\n"
+                    .  " • IP:       $ip\n"
+                    .  " • Host:     $host\n"
+                    .  " • Location: $loc\n"
+                    .  " • IPS:      $isp\n"
+                    .  "\n";
+            
             @file_put_contents($logfl, $logmsg, FILE_APPEND);
             
             throw new \Exception(
