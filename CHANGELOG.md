@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.1] - 2021-12-10
+
+- Added check for missing `hash_equals` function.
+
 ## [1.14.7.0] - 2021-12-10
 
 - Added support for encrypted settings.
