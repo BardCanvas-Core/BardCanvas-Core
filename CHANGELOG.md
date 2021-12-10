@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.0] - 2021-12-10
+
+- Added support for encrypted settings.
+- Changed encryption method for session cookies.
+- Added option for agressive IP tracking.
+
 ## [1.14.6.5] - 2021-11-23
 
 - Added extra connection info to the db errors log.
