@@ -150,6 +150,9 @@ class account extends account_toolbox
             if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL )
                     $this->_is_admin = true;
             
+            # IP change detection
+            $this->check_last_login_ip();
+            
             return;
         }
         
@@ -181,6 +184,9 @@ class account extends account_toolbox
         # Integration
         $this->assign_from_object($row);
         $this->_exists = true;
+        
+        # IP change detection
+        $this->check_last_login_ip();
         
         # Admin identification
         if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL )
@@ -243,6 +249,31 @@ class account extends account_toolbox
         if( ! is_null($device) ) $device->ping();
     }
     
+    protected function check_last_login_ip()
+    {
+        global $config, $settings;
+        
+        if( $settings->get("modules:accounts.track_last_login_ip") != "true" ) return;
+        
+        $last_login_ip = $this->get_engine_pref("!core:last_login_ip");
+        if( empty($last_login_ip) ) return;
+        
+        $current_ip = get_user_ip();
+        if( empty($current_ip) ) return;
+        
+        $parts = explode(".", $current_ip); array_pop($parts);
+        $current_segment = implode(".", $parts);
+        
+        $parts = explode(".", $last_login_ip); array_pop($parts);
+        $last_login_segment = implode(".", $parts);
+        
+        if( $current_segment != $last_login_segment )
+        {
+            $this->close_session("{$config->full_root_path}/?show_login_form=true");
+            die();
+        }
+    }
+    
     /**
      * Pings the account and sets a cookie with the account id.
      * 
@@ -266,6 +297,12 @@ class account extends account_toolbox
             sys_encrypt( $this->id_account ),
             0, "/", $config->cookies_domain
         );
+        
+        if( $settings->get("modules:accounts.track_last_login_ip") == "true" )
+        {
+            $current_ip = get_user_ip();
+            $this->set_engine_pref("!core:last_login_ip", $current_ip);
+        }
         
         $min_loggin_level = (int) $settings->get("engine.min_user_level_for_ip_dismissal");
         if( $min_loggin_level > 0 && $this->level >= $min_loggin_level )
@@ -319,7 +356,7 @@ class account extends account_toolbox
         );
     }
     
-    public function close_session()
+    public function close_session($redirect_to = "")
     {
         global $settings, $mem_cache, $account, $config, $modules;
         
@@ -337,6 +374,12 @@ class account extends account_toolbox
         foreach($modules as $module)
             if( ! empty($module->php_includes->after_closing_session) )
                 include "{$module->abspath}/{$module->php_includes->after_closing_session}";
+        
+        if( ! empty($redirect_to) )
+        {
+            header("Location: $redirect_to");
+            die();
+        }
     }
     
     /**
