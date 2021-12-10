@@ -42,7 +42,7 @@ class settings
      */
     public function get($name, $forced = false)
     {
-        global $database;
+        global $database, $config;
         
         if( is_bool($forced) )
         {
@@ -54,7 +54,17 @@ class settings
             $forced = false;
         }
         
-        if( $this->cache->exists($name) && $forced === false ) return $this->cache->get($name);
+        if( $this->cache->exists($name) && $forced === false )
+        {
+            $value = $this->cache->get($name);
+            if( substr($value, 0, 7) == "@@s3le:" )
+            {
+                $value = preg_replace("/^@@s3le:/", "", $value);
+                $value = three_layer_decrypt($value, $config->encryption_key, md5($config->encryption_key), sha1($config->encryption_key));
+            }
+            
+            return $value;
+        }
         
         $res = $database->query("select value from settings where name = '$name'");
         
@@ -71,10 +81,18 @@ class settings
             return $default_value;
         }
         
-        $row = $database->fetch_object($res);
-        if( ! $forced ) $this->cache->set($name, $row->value);
+        $row   = $database->fetch_object($res);
+        $value = $row->value;
         
-        return $row->value;
+        if( ! $forced ) $this->cache->set($name, $value);
+        
+        if( substr($value, 0, 7) == "@@s3le:" )
+        {
+            $value = preg_replace("/^@@s3le:/", "", $value);
+            $value = three_layer_decrypt($value, $config->encryption_key, md5($config->encryption_key), sha1($config->encryption_key));
+        }
+        
+        return $value;
     }
     
     private function get_all()
@@ -92,7 +110,13 @@ class settings
     
     public function set($name, $value)
     {
-        global $database;
+        global $database, $config;
+        
+        if( substr($value, 0, 10) == "@@encrypt:" )
+        {
+            $value = preg_replace("/^@@encrypt:/", "", $value);
+            $value = "@@s3le:" . three_layer_encrypt($value, $config->encryption_key, md5($config->encryption_key), sha1($config->encryption_key));
+        }
         
         $this->cache->set($name, $value);
         
