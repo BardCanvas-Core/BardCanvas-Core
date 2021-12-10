@@ -133,12 +133,16 @@ class account extends account_toolbox
     {
         global $config, $settings, $database, $mem_cache, $modules;
         
-        if( empty($_COOKIE[$settings->get("engine.user_session_cookie")]) ) return;
+        $user_session_cookie_key = $settings->get("engine.user_session_cookie");
+        
+        if( empty($_COOKIE[$user_session_cookie_key]) ) return;
         
         $user_session_acccount = decrypt(
-            $_COOKIE[$settings->get("engine.user_session_cookie")],
+            $_COOKIE[$user_session_cookie_key],
             $config->encryption_key
         );
+        
+        if( ! is_numeric($user_session_acccount) ) return;
         
         $cached_row = $mem_cache->get("account:{$user_session_acccount}");
         if( ! empty($cached_row) )
@@ -152,7 +156,7 @@ class account extends account_toolbox
             return;
         }
         
-        $res = $database->query("select * from account where id_account = '".addslashes(trim($user_session_acccount))."'");
+        $res = $database->query("select * from account where id_account = '$user_session_acccount'");
         
         if( ! $res ) return;
         if( $database->num_rows($res) == 0 ) return;
@@ -185,11 +189,13 @@ class account extends account_toolbox
         if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL )
                 $this->_is_admin = true;
         
-        if( isset($_COOKIE[$settings->get("engine.user_online_cookie")]) )
+        $user_online_cookie_key = $settings->get("engine.user_online_cookie");
+        
+        if( isset($_COOKIE[$user_online_cookie_key]) )
         {
             # The "online" session cookie is set, let's check if it corresponds to the same user
             $online_user_cookie = decrypt(
-                $_COOKIE[$settings->get("engine.user_online_cookie")],
+                $_COOKIE[$user_online_cookie_key],
                 $config->encryption_key
             );
     
@@ -199,7 +205,7 @@ class account extends account_toolbox
         {
             # Let's do an auto-login if the "online" cookie is not set
             setcookie(
-                $settings->get("engine.user_online_cookie"),
+                $user_online_cookie_key,
                 encrypt( $this->id_account, $config->encryption_key ),
                 0, "/", $config->cookies_domain
             );
@@ -247,6 +253,8 @@ class account extends account_toolbox
      * Pings the account and sets a cookie with the account id.
      * 
      * @param device $device
+     * 
+     * @throws \Exception
      */
     public function open_session($device)
     {
