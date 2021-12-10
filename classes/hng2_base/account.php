@@ -137,10 +137,7 @@ class account extends account_toolbox
         
         if( empty($_COOKIE[$user_session_cookie_key]) ) return;
         
-        $user_session_acccount = decrypt(
-            $_COOKIE[$user_session_cookie_key],
-            $config->encryption_key
-        );
+        $user_session_acccount = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
         
         if( ! is_numeric($user_session_acccount) ) return;
         
@@ -194,11 +191,8 @@ class account extends account_toolbox
         if( isset($_COOKIE[$user_online_cookie_key]) )
         {
             # The "online" session cookie is set, let's check if it corresponds to the same user
-            $online_user_cookie = decrypt(
-                $_COOKIE[$user_online_cookie_key],
-                $config->encryption_key
-            );
-    
+            $online_user_cookie = sys_decrypt( $_COOKIE[$user_online_cookie_key] );
+            
             if( $online_user_cookie != $this->id_account ) throw_fake_401();
         }
         else
@@ -206,13 +200,13 @@ class account extends account_toolbox
             # Let's do an auto-login if the "online" cookie is not set
             setcookie(
                 $user_online_cookie_key,
-                encrypt( $this->id_account, $config->encryption_key ),
+                sys_encrypt( $this->id_account ),
                 0, "/", $config->cookies_domain
             );
             
             setcookie(
                 $device_cookie_key,
-                encrypt( $device->id_device, $config->encryption_key ),
+                sys_encrypt( $device->id_device ),
                 0, "/", $config->cookies_domain
             );
             
@@ -269,7 +263,7 @@ class account extends account_toolbox
         # Set the online session cookie
         setcookie(
             $settings->get("engine.user_online_cookie"),
-            encrypt( $this->id_account, $config->encryption_key ),
+            sys_encrypt( $this->id_account ),
             0, "/", $config->cookies_domain
         );
         
@@ -320,7 +314,7 @@ class account extends account_toolbox
         
         setcookie(
             $settings->get("engine.user_session_cookie"),
-            encrypt( $this->id_account, $config->encryption_key ),
+            sys_encrypt( $this->id_account ),
             $session_time, "/", $config->cookies_domain
         );
     }

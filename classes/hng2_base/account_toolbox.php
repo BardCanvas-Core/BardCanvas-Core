@@ -265,7 +265,7 @@ class account_toolbox extends abstract_record
         $device_cookie_key = "_" . $config->website_key . "_DIC";
         if( empty($_COOKIE[$device_cookie_key]) ) return;
         
-        $id_device = decrypt( $_COOKIE[$device_cookie_key], $config->encryption_key );
+        $id_device = sys_decrypt( $_COOKIE[$device_cookie_key] );
         $date      = date("Y-m-d H:i:s");
         
         $database->exec("
