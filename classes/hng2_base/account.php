@@ -253,6 +253,9 @@ class account extends account_toolbox
     {
         global $config, $settings;
         
+        /** @var module[] $modules */
+        global $modules;
+        
         if( $settings->get("modules:accounts.track_last_login_ip") != "true" ) return;
         
         $last_login_ip = $this->get_engine_pref("!core:last_login_ip");
@@ -261,17 +264,83 @@ class account extends account_toolbox
         $current_ip = get_user_ip();
         if( empty($current_ip) ) return;
         
+        # Check this IP
+        
         $parts = explode(".", $current_ip); array_pop($parts);
         $current_segment = implode(".", $parts);
+        
+        if( $current_ip == $last_login_ip ) return;
+        
+        # Check this network segmnt
         
         $parts = explode(".", $last_login_ip); array_pop($parts);
         $last_login_segment = implode(".", $parts);
         
-        if( $current_segment != $last_login_segment )
+        if( $current_segment == $last_login_segment ) return;
+        
+        # Check among whitelisted IPs
+    
+        $ips_whitelist = $this->get_engine_pref("@accounts:ips_whitelist");
+        if( ! empty($ips_whitelist) )
         {
-            $this->close_session("{$config->full_root_path}/?show_login_form=true");
-            die();
+            $ip    = $current_ip;
+            $lines = explode("\n", $ips_whitelist);
+            $found = false;
+            foreach($lines as $line)
+            {
+                $listed_ip = trim($line);
+                if( empty($listed_ip) ) continue;
+                if( substr($listed_ip, 0, 1) == "#" ) continue;
+                
+                if( stristr($listed_ip, "*") )
+                {
+                    $pattern = str_replace(".", "\\.", $listed_ip);
+                    $pattern = str_replace("*", ".*",  $pattern);
+                    
+                    if(preg_match("/$pattern/", $ip) )
+                    {
+                        $found = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    if( $ip == $listed_ip )
+                    {
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+            
+            if( $found ) return;
         }
+        
+        # All tests failed
+        
+        $logdate  = date("Ymd");
+        $logfile  = "{$config->logfiles_location}/sessions_closed-$logdate.log";
+        $lognowd  = date("H:i:s");
+        $location = forge_geoip_location($current_ip, true);
+        $isp      = get_geoip_location_data($current_ip, "isp");
+        $agent    = $_SERVER["HTTP_USER_AGENT"];
+        $logmsg   = "[$lognowd] - #{$this->id_account} ({$this->user_name}) Session closed.\n"
+                  . "             Last login IP: $last_login_ip\n"
+                  . "             Current IP:    $current_ip\n"
+                  . "             Location:      $location\n"
+                  . "             ISP:           $isp\n"
+                  . "             User agent:    $agent\n\n"
+        ;
+        @file_put_contents($logfile, $logmsg, FILE_APPEND);
+        
+        $config->globals["@accounts:session_autoclose_account_record"] = $this;
+        $config->globals["@accounts:session_autoclose_last_login_ip"]  = $last_login_ip;
+        $config->globals["@accounts:session_autoclose_this_login_ip"]  = $current_ip;
+        $modules["accounts"]->load_extensions("check_last_login_ip", "before_session_autoclose");
+        
+        setcookie("ip_changed", "true", 0, "/", $config->cookies_domain);
+        $this->close_session("{$config->full_root_path}/?show_login_form=true");
+        die();
     }
     
     /**
