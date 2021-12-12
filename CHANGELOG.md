@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.2] - 2021-12-11
+
+- Tuned IP tracking checks.
+
 ## [1.14.7.1] - 2021-12-10
 
 - Added check for missing `hash_equals` function.
