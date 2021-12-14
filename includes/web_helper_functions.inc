@@ -748,20 +748,22 @@ function is_mobile()
  */
 function check_sql_injection($input)
 {
-    global $modules, $config;
+    global $modules, $config, $DATABASES;
     
     if( is_string($input) ) $input = array($input);
     
     static $patt = null;
     if( is_null($patt) )
         $patt = '#'
-              . '(select|describe|show|insert)|(distinct)'
+              . '(select|union select|describe|show|insert)|(distinct)'
               . '|'
-              . '(from|into)'
+              . '(from|into|sysdate)'
               . '|'
-              . '(where|like)'
+              . '(where|like|case when)'
               . '|'
-              . '(char|ascii|cast|ifnull|count|concat|information_schema|information_schema.plugins)'
+              . '(char|ascii|cast|convert_to|ifnull|count|concat|information_schema|information_schema.plugins|geography_area)'
+              . '|'
+              . "({$DATABASES[0]['db']}|\\.account|\\.settings|\\.account_devices|\\.account_engine_prefs)"
               . '|'
               . '(having|union|table|tables|join|group)'
               . '|'
