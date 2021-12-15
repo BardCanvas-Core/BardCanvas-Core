@@ -111,12 +111,12 @@ function get_remote_address()
     
     if( strstr($input_ip, ",") === false )
     {
-        if( ! filter_var($input_ip, FILTER_VALIDATE_IP) ) return "255.255.255.255";
+        if( ! filter_var($input_ip, FILTER_VALIDATE_IP) ) return "";
         
         return $input_ip;
     }
     
-    $sel = "255.255.255.255";
+    $sel = "";
     $ips = explode(",", $input_ip);
     foreach($ips as $ip)
     {
@@ -134,7 +134,7 @@ function get_remote_address()
     
     if( empty($sel) ) $sel = trim(end($ips));
     
-    if( ! filter_var($sel, FILTER_VALIDATE_IP) ) return "255.255.255.255";
+    if( ! filter_var($sel, FILTER_VALIDATE_IP) ) return "";
     
     return $sel;
 }
