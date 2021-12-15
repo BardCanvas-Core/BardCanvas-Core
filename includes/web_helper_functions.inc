@@ -765,6 +765,8 @@ function check_sql_injection($input)
               . '|'
               . "({$DATABASES[0]['db']}|\\.account|\\.settings|\\.account_devices|\\.account_engine_prefs)"
               . '|'
+              . '(security_blacklisted_country_hits|security_emails_blacklist|security_failed_logins|security_hosts_blacklist|security_hosts_whitelist|security_ips_blacklist|security_ips_whitelist)'
+              . '|'
               . '(having|union|table|tables|join|group)'
               . '|'
               . '(drop|truncate)'
