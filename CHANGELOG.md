@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.4] - 2021-12-15
+
+- Added debug info to DB errors log.
+- Tuned SQL injection patterns.
+- Added checks to the user IP getter.
+
 ## [1.14.7.3] - 2021-12-13
 
 - Tuned SQL injection patterns.
