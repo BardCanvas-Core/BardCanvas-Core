@@ -109,15 +109,21 @@ function get_remote_address()
     elseif( $headers["HTTP_X_FORWARDED_FOR"]  ) $input_ip = $headers["HTTP_X_FORWARDED_FOR"];
     else                                        $input_ip = $_SERVER['REMOTE_ADDR'];
     
-    if( strstr($input_ip, ",") === false ) return $input_ip;
+    if( strstr($input_ip, ",") === false )
+    {
+        if( ! filter_var($input_ip, FILTER_VALIDATE_IP) ) return "255.255.255.255";
+        
+        return $input_ip;
+    }
     
-    $sel = "";
+    $sel = "255.255.255.255";
     $ips = explode(",", $input_ip);
     foreach($ips as $ip)
     {
         $ip = trim($ip);
         
         if( stristr($ip, ":") !== false ) continue;
+        if( ! filter_var($ip, FILTER_VALIDATE_IP) ) continue;
         if( is_ip_in_range($ip, "10.0.0.0/8") ) continue;
         if( is_ip_in_range($ip, "172.16.0.0/12") ) continue;
         if( is_ip_in_range($ip, "192.168.0.0/16") ) continue;
@@ -126,7 +132,9 @@ function get_remote_address()
         break;
     }
     
-    if( empty($sel) ) return trim(end($ips));
+    if( empty($sel) ) $sel = trim(end($ips));
+    
+    if( ! filter_var($sel, FILTER_VALIDATE_IP) ) return "255.255.255.255";
     
     return $sel;
 }
