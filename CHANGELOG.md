@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.17.7.5] - 2021-12-15
+
+- Added checks to the user IP getter.
+
 ## [1.14.7.4] - 2021-12-15
 
 - Added debug info to DB errors log.
