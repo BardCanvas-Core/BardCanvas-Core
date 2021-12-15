@@ -135,6 +135,7 @@ class db_controller
                         .  " • Host:     $host\n"
                         .  " • Location: $loc\n"
                         .  " • IPS:      $isp\n"
+                        .  " • QueryStr: {$_SERVER["QUERY_STRING"]}\n"
                         .  "\n";
                 
                 @file_put_contents($logfl, $logmsg, FILE_APPEND);
@@ -210,6 +211,7 @@ class db_controller
                     .  " • Host:     $host\n"
                     .  " • Location: $loc\n"
                     .  " • IPS:      $isp\n"
+                    .  " • QueryStr: {$_SERVER["QUERY_STRING"]}\n"
                     .  "\n";
             
             @file_put_contents($logfl, $logmsg, FILE_APPEND);
