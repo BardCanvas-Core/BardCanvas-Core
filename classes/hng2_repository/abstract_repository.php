@@ -62,6 +62,11 @@ abstract class abstract_repository
     {
         global $database;
         
+        if( ! empty($limit)  && ! is_numeric($limit)  ) return array();
+        if( ! empty($offset) && ! is_numeric($offset) ) return array();
+        if( is_numeric($limit)  && $limit  < 0 ) return array();
+        if( is_numeric($offset) && $offset < 0 ) return array();
+        
         $query_where = "";
         if( ! empty($where) ) $query_where = "where " . $this->convert_where($where);
         
