@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.17.7.6] - 2021-12-15
+
+- Input sanitization on the `find` method on the abstract repository class.
+
 ## [1.17.7.5] - 2021-12-15
 
 - Added checks to the user IP getter.
