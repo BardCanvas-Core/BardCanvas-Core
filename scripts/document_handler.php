@@ -7,13 +7,16 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  * 
  * $_GET params:
- * @param handle
+ * @param string $handle
  */
 
 use hng2_base\module;
 
 include "../config.php";
 include "../includes/bootstrap.inc";
+
+$handle = trim(stripslashes($_GET["handle"]));
+if( preg_match('#[^a-z0-9._/-]#i', $handle) ) throw_fake_501();
 
 /** @var module[] $modules */
 foreach($modules as $module)
