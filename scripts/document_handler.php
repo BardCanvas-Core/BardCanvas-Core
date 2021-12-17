@@ -16,7 +16,7 @@ include "../config.php";
 include "../includes/bootstrap.inc";
 
 $handle = trim(stripslashes($_GET["handle"]));
-if( preg_match('#[^a-z0-9._/-]#i', $handle) ) throw_fake_501();
+if( preg_match('#[^a-z0-9.:,;_/-]#i', $handle) ) throw_fake_501();
 
 /** @var module[] $modules */
 foreach($modules as $module)
