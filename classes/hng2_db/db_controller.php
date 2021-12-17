@@ -136,6 +136,7 @@ class db_controller
                         .  " • Location: $loc\n"
                         .  " • IPS:      $isp\n"
                         .  " • QueryStr: {$_SERVER["QUERY_STRING"]}\n"
+                        .  " • Referer:  {$_SERVER["HTTP_REFERER"]}\n"
                         .  "\n";
                 
                 @file_put_contents($logfl, $logmsg, FILE_APPEND);
@@ -212,6 +213,7 @@ class db_controller
                     .  " • Location: $loc\n"
                     .  " • IPS:      $isp\n"
                     .  " • QueryStr: {$_SERVER["QUERY_STRING"]}\n"
+                    .  " • Referer:  {$_SERVER["HTTP_REFERER"]}\n"
                     .  "\n";
             
             @file_put_contents($logfl, $logmsg, FILE_APPEND);
