@@ -1,7 +1,11 @@
 
 # BardCanvas Core Changelog 
 
-## [1.14.7.7]
+## [1.14.7.8] - 2021-12-17
+
+- Tuned filtering on the document handler.
+
+## [1.14.7.7] - 2021-12-17
 
 - Input sanitization on the document handler.
 - Added debug info on the DB controller error handler.
