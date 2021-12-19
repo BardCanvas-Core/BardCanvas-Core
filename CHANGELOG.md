@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.9] - 2021-12-18
+
+- Tuned SQL injection patterns.
+
 ## [1.14.7.8] - 2021-12-17
 
 - Tuned filtering on the document handler.
