@@ -769,7 +769,9 @@ function check_sql_injection($input)
               . '|'
               . '(where|like|case when)'
               . '|'
-              . '(char|ascii|cast|convert_to|ifnull|count|concat|information_schema|information_schema.plugins|geography_area)'
+              . '(char|ascii|cast|convert_to|ifnull|count|concat)'
+              . '|'
+              . '(information_schema|information_schema.plugins|geography_area)'
               . '|'
               . "({$DATABASES[0]['db']}|\\.account|\\.settings|\\.account_devices|\\.account_engine_prefs)"
               . '|'
@@ -777,7 +779,11 @@ function check_sql_injection($input)
               . '|'
               . '(having|union|table|tables|join|group)'
               . '|'
-              . '(drop|truncate)'
+              . '(drop|truncate|delete from)'
+              . '|'
+              . '(perl -e)'
+              . '|'
+              . '(gethostbyname|nslookup|shell_exec)'
               . '|'
               . '(/\*|\*/|0x[a-f0-9+]|1=0|1=1|1--)'
               . '#i';
