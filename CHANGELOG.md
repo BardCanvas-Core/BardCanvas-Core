@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.10] - 2021-12-27
+
+- Tuned SQL injection patterns.
+- Added extension points on the DB controller.
+- Added SQL injection check over cookies on the modules loader.
+
 ## [1.14.7.9] - 2021-12-18
 
 - Tuned SQL injection patterns.
