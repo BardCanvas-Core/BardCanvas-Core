@@ -783,7 +783,7 @@ function check_sql_injection($input)
               . '|'
               . '(perl -e)'
               . '|'
-              . '(gethostbyname|nslookup|shell_exec)'
+              . '(gethostbyname|nslookup|shell_exec|pg_sleep)'
               . '|'
               . '(/\*|\*/|0x[a-f0-9+]|1=0|1=1|1--)'
               . '#i';
