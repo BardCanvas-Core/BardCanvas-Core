@@ -133,6 +133,19 @@ foreach($modules as $module)
     if( ! empty($module->php_includes->bootstrap) )
         include "{$module->abspath}/{$module->php_includes->bootstrap}";
 
+# SQL injection attempts over cookies
+if( ! empty($_COOKIE) && is_array($_COOKIE) )
+{
+    try
+    {
+        check_sql_injection($_COOKIE);
+    }
+    catch(\Exception $e)
+    {
+        throw_fake_501();
+    }
+}
+
 # Current module forge
 $current_module = null;
 $script_dir     = dirname($_SERVER["SCRIPT_FILENAME"]) . "/";
