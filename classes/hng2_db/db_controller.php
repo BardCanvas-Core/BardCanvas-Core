@@ -87,7 +87,7 @@ class db_controller
      */
     public function exec($query)
     {
-        global $config;
+        global $config, $modules;
         
         $return = 0;
         $this->last_query = $query;
@@ -104,8 +104,6 @@ class db_controller
             if( is_null($db->handler) ) $db->connect();
             
             $query_start = $config->query_tracking_enabled ? microtime(true) : 0;
-    
-            /** @noinspection PhpUnusedLocalVariableInspection */
             $error_info = array();
             
             $return     = $db->exec($query);
@@ -113,6 +111,10 @@ class db_controller
             
             if( ! empty($error_info[2]) )
             {
+                foreach($modules as $this_module)
+                    if( ! empty($this_module->php_includes->before_logging_db_error) )
+                        include "{$this_module->abspath}/{$this_module->php_includes->before_logging_db_error}";
+                
                 $logfd   = date("Ymd");
                 $logfl   = "{$config->logfiles_location}/db_errors-{$logfd}.log";
                 $logdt  = date("Y-m-d H:i:s");
@@ -140,6 +142,10 @@ class db_controller
                         .  "\n";
                 
                 @file_put_contents($logfl, $logmsg, FILE_APPEND);
+                
+                foreach($modules as $this_module)
+                    if( ! empty($this_module->php_includes->after_logging_db_error) )
+                        include "{$this_module->abspath}/{$this_module->php_includes->after_logging_db_error}";
                 
                 throw new \Exception(
                     "Error while executing query:\n" .
@@ -171,7 +177,7 @@ class db_controller
      */
     public function query($query)
     {
-        global $config;
+        global $config, $modules;
         
         $this->last_query = $query;
         $this->set_current_read_db();
@@ -190,6 +196,10 @@ class db_controller
         
         if( ! empty($error_info[2]) )
         {
+            foreach($modules as $this_module)
+                if( ! empty($this_module->php_includes->before_logging_db_error) )
+                    include "{$this_module->abspath}/{$this_module->php_includes->before_logging_db_error}";
+            
             $logfd   = date("Ymd");
             $logfl   = "{$config->logfiles_location}/db_errors-{$logfd}.log";
             $logdt  = date("Y-m-d H:i:s");
@@ -217,6 +227,10 @@ class db_controller
                     .  "\n";
             
             @file_put_contents($logfl, $logmsg, FILE_APPEND);
+            
+            foreach($modules as $this_module)
+                if( ! empty($this_module->php_includes->after_logging_db_error) )
+                    include "{$this_module->abspath}/{$this_module->php_includes->after_logging_db_error}";
             
             throw new \Exception(
                 "Error while executing query:\n" .
