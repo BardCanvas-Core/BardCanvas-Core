@@ -93,21 +93,78 @@ function is_ip_in_range($ip, $range)
 }
 
 /**
- * Detects if the engine is behind a proxy that provides the x-forwarded-for header and get the IP from it or the
- * standard remote address
+ * Detects if the engine is behind a proxy and get the IP from it or the standard remote address
  *
  * @returns string
  */
 function get_remote_address()
 {
-    $headers = $_SERVER;
+    global $settings;
+    
+    $headers = array();
     if( function_exists("getallheaders") ) $headers = getallheaders();
     
-    if(     $headers["CF-Connecting-IP"]      ) $input_ip = $headers["CF-Connecting-IP"];
-    elseif( $headers["HTTP_CF_CONNECTING_IP"] ) $input_ip = $headers["HTTP_CF_CONNECTING_IP"];
-    elseif( $headers["X-Forwarded-For"]       ) $input_ip = $headers["X-Forwarded-For"];
-    elseif( $headers["HTTP_X_FORWARDED_FOR"]  ) $input_ip = $headers["HTTP_X_FORWARDED_FOR"];
-    else                                        $input_ip = $_SERVER['REMOTE_ADDR'];
+    $real_ip = $_SERVER["REMOTE_ADDR"];
+    if( $headers["CF-Connecting-IP"] || $headers["HTTP_CF_CONNECTING_IP"] )
+    {
+        if( stristr($real_ip, ":") !== false ) return $real_ip;
+        
+        $input_ip = $real_ip;
+        $user_ip  = $headers["CF-Connecting-IP"];
+        if( empty($user_ip) ) $user_ip = $headers["HTTP_CF_CONNECTING_IP"];
+        if( ! empty($user_ip) )
+        {
+            # Note: Cloudflare ranges list updated as of April 8, 2021
+            #       Source: https://www.cloudflare.com/ips/
+            $cloudflare_ranges = explode("\n", unindent("
+                173.245.48.0/20
+                103.21.244.0/22
+                103.22.200.0/22
+                103.31.4.0/22
+                141.101.64.0/18
+                108.162.192.0/18
+                190.93.240.0/20
+                188.114.96.0/20
+                197.234.240.0/22
+                198.41.128.0/17
+                162.158.0.0/15
+                104.16.0.0/13
+                104.24.0.0/14
+                172.64.0.0/13
+                131.0.72.0/22
+            "));
+            foreach($cloudflare_ranges as $cf_range)
+            {
+                if( is_ip_in_range($real_ip, $cf_range) )
+                {
+                    $input_ip = $user_ip;
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        $input_ip = $headers["X-Forwarded-For"];
+        if( empty($input_ip) ) $input_ip = $headers["HTTP_X_FORWARDED_FOR"];
+        if( empty($input_ip) )
+        {
+            $input_ip = $real_ip;
+        }
+        else
+        {
+            $proxy_ips = $settings->get_lines("engine.valid_proxys");
+            if( ! empty($proxy_ips) )
+                if( ! in_array($real_ip, $proxy_ips) )
+                    $input_ip = $real_ip;
+        }
+    }
+    
+    // if(     $headers["CF-Connecting-IP"]      ) $input_ip = $headers["CF-Connecting-IP"];
+    // elseif( $headers["HTTP_CF_CONNECTING_IP"] ) $input_ip = $headers["HTTP_CF_CONNECTING_IP"];
+    // elseif( $headers["X-Forwarded-For"]       ) $input_ip = $headers["X-Forwarded-For"];
+    // elseif( $headers["HTTP_X_FORWARDED_FOR"]  ) $input_ip = $headers["HTTP_X_FORWARDED_FOR"];
+    // else                                        $input_ip = $_SERVER['REMOTE_ADDR'];
     
     if( strstr($input_ip, ",") === false )
     {
@@ -121,7 +178,6 @@ function get_remote_address()
     foreach($ips as $ip)
     {
         $ip = trim($ip);
-        
         if( stristr($ip, ":") !== false ) continue;
         if( ! filter_var($ip, FILTER_VALIDATE_IP) ) continue;
         if( is_ip_in_range($ip, "10.0.0.0/8") ) continue;

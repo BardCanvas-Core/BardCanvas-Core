@@ -578,6 +578,18 @@
             <type>text</type>
         </specs>
         
+        <!-- Connection -->
+        <specs is_separator="true">Connection</specs>
+        <specs key="valid_proxys">
+            <title>Ips de proxys válidos</title>
+            <description><![CDATA[
+                Se estás usando proxys personalizados al frente del sitio web (no CloudFlare)
+                y quieres que se obtenga el encabezado <code>X-Forwarded-For</code> apropiado,
+                especifica aquí todas las direcciones IP, una por línea.
+            ]]></description>
+            <type>code</type>
+        </specs>
+        
         <!-- Debug -->
         <specs is_separator="true">Depuración</specs>
         

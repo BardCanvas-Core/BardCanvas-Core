@@ -571,6 +571,18 @@
             <type>text</type>
         </specs>
         
+        <!-- Connection -->
+        <specs is_separator="true">Connection</specs>
+        <specs key="valid_proxys">
+            <title>Valid proxy IPs</title>
+            <description><![CDATA[
+                If you are using custom proxys on front of the website (other than CloudFlare)
+                and you want to grab the proper <code>X-Forwarded-For</code> headers,
+                type all IP addresses here, one per line.
+            ]]></description>
+            <type>code</type>
+        </specs>
+        
         <!-- Debug -->
         <specs is_separator="true">Debugging</specs>
         
