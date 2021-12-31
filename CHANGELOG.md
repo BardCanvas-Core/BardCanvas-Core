@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.11] - 2021-12-31
+
+- Enhanced IP detection algorithm.
+
 ## [1.14.7.10] - 2021-12-27
 
 - Tuned SQL injection patterns.
