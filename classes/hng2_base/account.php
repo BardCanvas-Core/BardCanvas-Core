@@ -266,20 +266,30 @@ class account extends account_toolbox
         
         # Check this IP
         
-        $parts = explode(".", $current_ip); array_pop($parts);
-        $current_segment = implode(".", $parts);
-        
         if( $current_ip == $last_login_ip ) return;
         
-        # Check this network segmnt
+        # Check this seg (first 3 octets)
+        
+        $parts = explode(".", $current_ip); array_pop($parts);
+        $current_segment = implode(".", $parts);
         
         $parts = explode(".", $last_login_ip); array_pop($parts);
         $last_login_segment = implode(".", $parts);
         
         if( $current_segment == $last_login_segment ) return;
         
+        # Check this subnet (first 2 octets)
+        
+        $parts = explode(".", $current_ip); array_pop($parts); array_pop($parts);
+        $current_network = implode(".", $parts);
+        
+        $parts = explode(".", $last_login_ip); array_pop($parts); array_pop($parts);
+        $last_login_network = implode(".", $parts);
+        
+        if( $current_network == $last_login_network ) return;
+        
         # Check among whitelisted IPs
-    
+        
         $ips_whitelist = $this->get_engine_pref("@accounts:ips_whitelist");
         if( ! empty($ips_whitelist) )
         {
