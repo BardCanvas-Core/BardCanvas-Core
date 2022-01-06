@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.12] - 2022-01-05
+
+- Tuned IP change checks on the `account` class.
+
 ## [1.14.7.11] - 2021-12-31
 
 - Enhanced IP detection algorithm.
