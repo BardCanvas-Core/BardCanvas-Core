@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.13] - 2022-01-07
+
+- Added updatable keys to the engine prefs saver on the account toolbox.
+
 ## [1.14.7.12] - 2022-01-05
 
 - Tuned IP change checks on the `account` class.
