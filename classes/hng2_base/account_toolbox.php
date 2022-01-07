@@ -200,6 +200,18 @@ class account_toolbox extends abstract_record
                     `value`    = '".addslashes(json_encode($value))."'
             ");
         }
+        
+        $updateable_keys = array(
+            "granted_admin_to_modules",
+            "@accounts:2fa_settings",
+            "@accounts:ips_whitelist",
+        );
+        if( in_array($key, $updateable_keys) ) $database->exec("
+            update account set
+                    last_update = '".date("Y-m-d H:i:s")."'
+                where
+                    id_account  = '".addslashes($this->id_account)."'
+        ");
     }
     
     /**
