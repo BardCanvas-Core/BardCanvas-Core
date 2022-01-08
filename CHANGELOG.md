@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.15] - 2022-01-08
+
+- Added SLQ injection prechecks on the bootstrap.
+- Tuned protection of data directory.
+- Added protection to logs directory.
+
 ## [1.14.7.14] - 2022-01-07
 
 - Tuned the IP detection algorithm.
