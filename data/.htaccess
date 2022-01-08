@@ -1,5 +1,5 @@
 
-<FilesMatch "\.(inc|php|sh|xml|dat|hidden|INC|PHP|SH|XML|DAT|HIDDEN)$">
+<FilesMatch "\.(log|inc|php|sh|pl|cgi|xml|dat|hidden|INC|PHP|SH|PL|CGI|XML|DAT|HIDDEN)$">
 deny from all
 </FilesMatch>
 
