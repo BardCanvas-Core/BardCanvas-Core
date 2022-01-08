@@ -22,6 +22,16 @@ include dirname(__FILE__) . "/text_functions.inc";
 include dirname(__FILE__) . "/geoip_functions.inc";
 include dirname(__FILE__) . "/web_helper_functions.inc";
 
+# Prechecks
+$sqli_pchecks = array();
+if( isset($_SERVER["HTTP_USER_AGENT"]) && ! empty($_SERVER["HTTP_USER_AGENT"]) ) $sqli_pchecks[] = $_SERVER["HTTP_USER_AGENT"];
+if( isset($_SERVER["HTTP_REFERER"])    && ! empty($_SERVER["HTTP_REFERER"]) )    $sqli_pchecks[] = $_SERVER["HTTP_REFERER"];
+if( ! empty($sqli_pchecks) )
+{
+    try{ check_sql_injection($sqli_pchecks); }
+    catch(\Exception $e) {throw_fake_501(); }
+}
+
 # Inits
 $config       = new config();
 $database     = new db_controller();
