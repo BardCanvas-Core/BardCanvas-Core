@@ -124,45 +124,17 @@ function get_remote_address()
         131.0.72.0/22
     "));
     
-    $real_ip = $_SERVER["REMOTE_ADDR"];
-    if( $headers["CF-Connecting-IP"] || $headers["HTTP_CF_CONNECTING_IP"] || $_SERVER["HTTP_CF_CONNECTING_IP"] )
-    {
-        if( stristr($real_ip, ":") !== false ) return $real_ip;
-        
-        $input_ip = $real_ip;
-        $user_ip  = $headers["CF-Connecting-IP"];
-        if( empty($user_ip) ) $user_ip = $headers["HTTP_CF_CONNECTING_IP"];
-        if( empty($user_ip) ) $user_ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
-        if( ! empty($user_ip) )
-        {
-            foreach($cloudflare_ranges as $cf_range)
-            {
-                if( is_ip_in_range($real_ip, $cf_range) )
-                {
-                    $input_ip = $user_ip;
-                    break;
-                }
-            }
-        }
-    }
-    else
-    {
-        $input_ip = $headers["X-Forwarded-For"];
-        if( empty($input_ip) ) $input_ip = $headers["HTTP_X_FORWARDED_FOR"];
-        if( empty($input_ip) ) $input_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-        if( empty($input_ip) ) $input_ip = $real_ip;
-    }
+    $input_ip = $headers["CF-Connecting-IP"];
+    if( empty($input_ip) ) $input_ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+    if( empty($input_ip) ) $input_ip = $headers["X-Forwarded-For"];
+    if( empty($input_ip) ) $input_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+    if( empty($input_ip) ) $input_ip = $_SERVER["REMOTE_ADDR"];
     
-    if( strstr($input_ip, ",") === false )
-    {
-        if( ! filter_var($input_ip, FILTER_VALIDATE_IP) ) return "";
-        
-        return $input_ip;
-    }
+    if( stristr($input_ip, ":") !== false ) return "";
     
-    $sel = "";
-    $ips = explode(",", $input_ip);
-    foreach($ips as $ip)
+    $input_ips = explode(",", $input_ip);
+    $final_ips = array();
+    foreach($input_ips as $ip)
     {
         $ip = trim($ip);
         if( stristr($ip, ":") !== false ) continue;
@@ -178,15 +150,11 @@ function get_remote_address()
             if( is_ip_in_range($ip, $px_range) )
                 continue 2;
         
-        $sel = $ip;
+        $final_ips[] = $ip;
         break;
     }
     
-    if( empty($sel) ) $sel = trim(end($ips));
-    
-    if( ! filter_var($sel, FILTER_VALIDATE_IP) ) return "";
-    
-    return $sel;
+    return array_pop($final_ips);
 }
 
 /**
