@@ -146,12 +146,12 @@ function get_remote_address()
         $checking_ranges = $cloudflare_ranges;
         $proxy_ranges    = $settings->get_lines("engine.valid_proxys");
         if( ! empty($proxy_ranges) ) $checking_ranges = array_merge($cloudflare_ranges, $proxy_ranges);
+        
         foreach($checking_ranges as $px_range)
             if( is_ip_in_range($ip, $px_range) )
                 continue 2;
         
         $final_ips[] = $ip;
-        break;
     }
     
     return array_pop($final_ips);
