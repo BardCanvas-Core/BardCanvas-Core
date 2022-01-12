@@ -24,8 +24,10 @@ include dirname(__FILE__) . "/web_helper_functions.inc";
 
 # Prechecks
 $sqli_pchecks = array();
-if( isset($_SERVER["HTTP_USER_AGENT"]) && ! empty($_SERVER["HTTP_USER_AGENT"]) ) $sqli_pchecks[] = $_SERVER["HTTP_USER_AGENT"];
-if( isset($_SERVER["HTTP_REFERER"])    && ! empty($_SERVER["HTTP_REFERER"]) )    $sqli_pchecks[] = $_SERVER["HTTP_REFERER"];
+if( isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && ! empty($_SERVER["HTTP_CF_CONNECTING_IP"]) ) $sqli_pchecks[] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+if( isset($_SERVER["HTTP_X_FORWARDED_FOR"])  && ! empty($_SERVER["HTTP_X_FORWARDED_FOR"]) )  $sqli_pchecks[] = $_SERVER["HTTP_X_FORWARDED_FOR"];
+if( isset($_SERVER["HTTP_USER_AGENT"])       && ! empty($_SERVER["HTTP_USER_AGENT"]) )       $sqli_pchecks[] = $_SERVER["HTTP_USER_AGENT"];
+if( isset($_SERVER["HTTP_REFERER"])          && ! empty($_SERVER["HTTP_REFERER"]) )          $sqli_pchecks[] = $_SERVER["HTTP_REFERER"];
 if( ! empty($sqli_pchecks) )
 {
     try{ check_sql_injection($sqli_pchecks); }
