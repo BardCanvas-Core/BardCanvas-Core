@@ -143,13 +143,16 @@ function get_remote_address()
         if( is_ip_in_range($ip, "172.16.0.0/12") ) continue;
         if( is_ip_in_range($ip, "192.168.0.0/16") ) continue;
         
-        $checking_ranges = $cloudflare_ranges;
-        $proxy_ranges    = $settings->get_lines("engine.valid_proxys");
-        if( ! empty($proxy_ranges) ) $checking_ranges = array_merge($cloudflare_ranges, $proxy_ranges);
-        
-        foreach($checking_ranges as $px_range)
-            if( is_ip_in_range($ip, $px_range) )
-                continue 2;
+        if( ! empty($settings) )
+        {
+            $checking_ranges = $cloudflare_ranges;
+            $proxy_ranges    = $settings->get_lines("engine.valid_proxys");
+            if( ! empty($proxy_ranges) ) $checking_ranges = array_merge($cloudflare_ranges, $proxy_ranges);
+            
+            foreach($checking_ranges as $px_range)
+                if( is_ip_in_range($ip, $px_range) )
+                    continue 2;
+        }
         
         $final_ips[] = $ip;
     }
@@ -842,7 +845,7 @@ function check_sql_injection($input)
             if( count($matches_list) < 3 ) continue;
             
             # Extenders
-            if( ! $config->globals["@webhelper/no_extensions"] )
+            if( ! $config->globals["@webhelper/no_extensions"] && is_array($modules) )
             {
                 foreach($modules as $module)
                 {
