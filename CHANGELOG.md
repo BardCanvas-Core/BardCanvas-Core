@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.19] - 2022-01-16
+
+- Tuned the IP detection algorithm.
+
 ## [1.14.7.18] - 2022-01-12
 
 - Added pre-bootstrap checks.
