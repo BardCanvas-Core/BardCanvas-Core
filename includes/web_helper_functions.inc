@@ -124,13 +124,50 @@ function get_remote_address()
         131.0.72.0/22
     "));
     
+    $valid_proxy_ranges = array();
+    if( ! empty($settings) ) $valid_proxy_ranges = $settings->get_lines("engine.valid_proxys");
+    
+    $real_ip  = $_SERVER["REMOTE_ADDR"];
     $input_ip = $headers["CF-Connecting-IP"];
     if( empty($input_ip) ) $input_ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
     if( empty($input_ip) ) $input_ip = $headers["X-Forwarded-For"];
     if( empty($input_ip) ) $input_ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
     if( empty($input_ip) ) $input_ip = $_SERVER["REMOTE_ADDR"];
     
-    if( stristr($input_ip, ":") !== false ) return "";
+    if( $headers["CF-Connecting-IP"] || $_SERVER["HTTP_CF_CONNECTING_IP"] )
+    {
+        $is_valid_proxy = false;
+        
+        $checking_ranges = $cloudflare_ranges;
+        if( ! empty($valid_proxy_ranges) ) $checking_ranges = array_merge($cloudflare_ranges, $valid_proxy_ranges);
+        
+        foreach($checking_ranges as $range)
+        {
+            if( is_ip_in_range($real_ip, $range) )
+            {
+                $is_valid_proxy = true;
+                break;
+            }
+        }
+        
+        if( ! $is_valid_proxy ) return $real_ip;
+    }
+    elseif( ($headers["X-Forwarded-For"] || $_SERVER["HTTP_X_FORWARDED_FOR"]) && ! empty($valid_proxy_ranges) )
+    {
+        $is_valid_proxy = false;
+        foreach($valid_proxy_ranges as $range)
+        {
+            if( is_ip_in_range($real_ip, $range) )
+            {
+                $is_valid_proxy = true;
+                break;
+            }
+        }
+        
+        if( ! $is_valid_proxy ) return $real_ip;
+    }
+    
+    if( stristr($input_ip, ":") !== false ) return $real_ip;
     
     $input_ips = explode(",", $input_ip);
     $final_ips = array();
@@ -143,19 +180,23 @@ function get_remote_address()
         if( is_ip_in_range($ip, "172.16.0.0/12") ) continue;
         if( is_ip_in_range($ip, "192.168.0.0/16") ) continue;
         
-        if( ! empty($settings) )
+        $checking_ranges = $cloudflare_ranges;
+        if( ! empty($valid_proxy_ranges) ) $checking_ranges = array_merge($cloudflare_ranges, $valid_proxy_ranges);
+        
+        $add_to_finals = true;
+        foreach($checking_ranges as $px_range)
         {
-            $checking_ranges = $cloudflare_ranges;
-            $proxy_ranges    = $settings->get_lines("engine.valid_proxys");
-            if( ! empty($proxy_ranges) ) $checking_ranges = array_merge($cloudflare_ranges, $proxy_ranges);
-            
-            foreach($checking_ranges as $px_range)
-                if( is_ip_in_range($ip, $px_range) )
-                    continue 2;
+            if( is_ip_in_range($ip, $px_range) )
+            {
+                $add_to_finals = false;
+                break;
+            }
         }
         
-        $final_ips[] = $ip;
+        if( $add_to_finals ) $final_ips[] = $ip;
     }
+    
+    if( empty($final_ips) ) return $real_ip;
     
     return array_pop($final_ips);
 }
