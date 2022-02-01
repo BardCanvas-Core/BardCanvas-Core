@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.20] - 2022-02-01
+
+- Left strict IP change checks to admin accounts only.
+
 ## [1.14.7.19] - 2022-01-16
 
 - Tuned the IP detection algorithm.
