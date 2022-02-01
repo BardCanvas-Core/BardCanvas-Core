@@ -151,7 +151,7 @@ class account extends account_toolbox
                     $this->_is_admin = true;
             
             # IP change detection
-            $this->check_last_login_ip();
+            if( $this->_is_admin ) $this->check_last_login_ip();
             
             return;
         }
@@ -185,12 +185,12 @@ class account extends account_toolbox
         $this->assign_from_object($row);
         $this->_exists = true;
         
-        # IP change detection
-        $this->check_last_login_ip();
-        
         # Admin identification
         if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL )
                 $this->_is_admin = true;
+        
+        # IP change detection
+        if( $this->_is_admin ) $this->check_last_login_ip();
         
         $user_online_cookie_key = $settings->get("engine.user_online_cookie");
         
@@ -203,13 +203,12 @@ class account extends account_toolbox
         }
         else
         {
-            # Let's do an auto-login if the "online" cookie is not set
+            # Let's do an auto-login
             setcookie(
                 $user_online_cookie_key,
                 sys_encrypt( $this->id_account ),
                 0, "/", $config->cookies_domain
             );
-            
             setcookie(
                 $device_cookie_key,
                 sys_encrypt( $device->id_device ),
@@ -249,6 +248,13 @@ class account extends account_toolbox
         if( ! is_null($device) ) $device->ping();
     }
     
+    /**
+     * Checks if the user IP has changed. Normally used after a session being opened from a cookie
+     * (user_session set, user_online unset).
+     * 
+     * @return void
+     * @throws \Exception
+     */
     protected function check_last_login_ip()
     {
         global $config, $settings;
@@ -268,25 +274,29 @@ class account extends account_toolbox
         
         if( $current_ip == $last_login_ip ) return;
         
-        # Check this seg (first 3 octets)
-        
-        $parts = explode(".", $current_ip); array_pop($parts);
-        $current_segment = implode(".", $parts);
-        
-        $parts = explode(".", $last_login_ip); array_pop($parts);
-        $last_login_segment = implode(".", $parts);
-        
-        if( $current_segment == $last_login_segment ) return;
-        
-        # Check this subnet (first 2 octets)
-        
-        $parts = explode(".", $current_ip); array_pop($parts); array_pop($parts);
-        $current_network = implode(".", $parts);
-        
-        $parts = explode(".", $last_login_ip); array_pop($parts); array_pop($parts);
-        $last_login_network = implode(".", $parts);
-        
-        if( $current_network == $last_login_network ) return;
+        # Checks for regular users - admins are enforced to strict IPs or whitelist.
+        if( ! $this->_is_admin )
+        {
+            # Check this seg (first 3 octets)
+            
+            $parts = explode(".", $current_ip); array_pop($parts);
+            $current_segment = implode(".", $parts);
+            
+            $parts = explode(".", $last_login_ip); array_pop($parts);
+            $last_login_segment = implode(".", $parts);
+            
+            if( $current_segment == $last_login_segment ) return;
+            
+            # Check this subnet (first 2 octets)
+            
+            $parts = explode(".", $current_ip); array_pop($parts); array_pop($parts);
+            $current_network = implode(".", $parts);
+            
+            $parts = explode(".", $last_login_ip); array_pop($parts); array_pop($parts);
+            $last_login_network = implode(".", $parts);
+            
+            if( $current_network == $last_login_network ) return;
+        }
         
         # Check among whitelisted IPs
         
@@ -326,7 +336,7 @@ class account extends account_toolbox
             if( $found ) return;
         }
         
-        # All tests failed
+        # All tests failed - all stop.
         
         $logdate  = date("Ymd");
         $logfile  = "{$config->logfiles_location}/sessions_closed-$logdate.log";
