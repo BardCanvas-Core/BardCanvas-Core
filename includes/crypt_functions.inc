@@ -67,7 +67,7 @@ function sys_encrypt($plaintext)
 {
     global $config;
     
-    $secret_key = $config->encryption_key;
+    $secret_key = defined("SYSENCRYPT_CUSTOM_KEY") ? SYSENCRYPT_CUSTOM_KEY : $config->encryption_key;
     $cipher     = "AES-128-CBC";
     
     $key   = openssl_digest($secret_key, 'SHA256', TRUE);
@@ -119,7 +119,7 @@ function sys_decrypt($ciphertext)
 {
     global $config;
     
-    $secret_key = $config->encryption_key;
+    $secret_key = defined("SYSENCRYPT_CUSTOM_KEY") ? SYSENCRYPT_CUSTOM_KEY : $config->encryption_key;
     $cipher     = "AES-128-CBC";
     
     $c     = base64_decode($ciphertext);
