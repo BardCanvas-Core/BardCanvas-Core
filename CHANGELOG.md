@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.7.21] - 2022-02-24
+
+- Added support for custom system encryption key.
+
 ## [1.14.7.20] - 2022-02-01
 
 - Left strict IP change checks to admin accounts only.
