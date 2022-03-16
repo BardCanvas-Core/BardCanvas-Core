@@ -128,13 +128,13 @@ class device
         $token        = encrypt( $this->id_account."\t".$this->id_device."\t".$limit, $config->encryption_key );
         $token_url    = "{$config->full_root_url}/confirm_device?token=".urlencode($token);
         $ip           = get_remote_address();
-        $hostname     = gethostbyaddr(get_remote_address());
+        $hostname     = @gethostbyaddr($ip);
         $fecha_envio  = date("Y-m-d H:i:s");
         
         $recipients = array($account->display_name => $account->email);
         if( ! empty($account->alt_email) ) $recipients["$account->display_name (2)"] = $account->alt_email;
         
-        $request_location = forge_geoip_location($ip);
+        $request_location = get_geoip_disclosable_location($ip);
         
         # header("X-Auth-Token: $token_url");
         
@@ -174,6 +174,7 @@ class device
         );
         $mail_body = unindent($mail_body);
         
+        $location  = get_geoip_location_with_isp($ip);
         $log_file  = sprintf("{$config->logfiles_location}/account_devices-%s.log", date("Ymd"));
         $log_entry = unindent(sprintf(
             "
@@ -189,7 +190,7 @@ class device
             $account->user_name,
             $ip,
             $hostname,
-            $request_location,
+            $location,
             $_SERVER["HTTP_USER_AGENT"],
             $account->email,
             $account->alt_email

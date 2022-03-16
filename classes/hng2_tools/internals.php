@@ -29,9 +29,9 @@ class internals
                 = "<span class='framed_content inlined'>" 
                 . get_user_ip() 
                 . "</span> <span class='framed_content inlined'>"
-                . gethostbyaddr(get_user_ip())
+                . @gethostbyaddr(get_user_ip())
                 . "</span> <span class='framed_content inlined'>"
-                . forge_geoip_location()
+                . get_geoip_location_with_isp()
                 . "</span> <span class='framed_content inlined'>"
                 . ($account->_exists ? "{$account->display_name} (#{$account->id_account})" : "Guest")
                 . "</span>"

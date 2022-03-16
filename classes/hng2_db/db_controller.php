@@ -130,8 +130,8 @@ class db_controller
                 
                 $ip   = get_remote_address();
                 $host = @gethostbyaddr($ip); if(empty($host)) $host = $ip;
-                $loc  = forge_geoip_location($ip, true);
-                $isp  = get_geoip_location_data($ip, "isp");
+                $loc  = get_geoip_location($ip);
+                $isp  = get_geoip_isp($ip);
                 $logmsg .= "Connection data:\n"
                         .  " • IP:       $ip\n"
                         .  " • Host:     $host\n"
@@ -215,8 +215,8 @@ class db_controller
             
             $ip   = get_remote_address();
             $host = @gethostbyaddr($ip); if(empty($host)) $host = $ip;
-            $loc  = forge_geoip_location($ip, true);
-            $isp  = get_geoip_location_data($ip, "isp");
+            $loc  = get_geoip_location($ip);
+            $isp  = get_geoip_isp($ip);
             $logmsg .= "Connection data:\n"
                     .  " • IP:       $ip\n"
                     .  " • Host:     $host\n"

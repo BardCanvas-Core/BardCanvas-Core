@@ -653,8 +653,8 @@ class media_repository extends abstract_repository
             if( ! $fake_file_upload )
             {
                 $item->creation_ip       = get_remote_address();
-                $item->creation_host     = gethostbyaddr($item->creation_ip);
-                $item->creation_location = forge_geoip_location($item->creation_ip);
+                $item->creation_host     = @gethostbyaddr($item->creation_ip);
+                $item->creation_location = get_geoip_location_with_isp($item->creation_ip);
             }
         }
         

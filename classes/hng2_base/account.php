@@ -225,8 +225,8 @@ class account extends account_toolbox
             else
             {
                 $ip       = get_remote_address();
-                $host     = addslashes(gethostbyaddr(get_remote_address()));
-                $location = addslashes(forge_geoip_location($ip));
+                $host     = addslashes(@gethostbyaddr($ip));
+                $location = addslashes(get_geoip_location_with_isp($ip));
             }
             
             $config->globals["@accounts:account_id_logging_in"] = $this->id_account;
@@ -341,8 +341,8 @@ class account extends account_toolbox
         $logdate  = date("Ymd");
         $logfile  = "{$config->logfiles_location}/sessions_closed-$logdate.log";
         $lognowd  = date("H:i:s");
-        $location = forge_geoip_location($current_ip, true);
-        $isp      = get_geoip_location_data($current_ip, "isp");
+        $location = get_geoip_location($current_ip);
+        $isp      = get_geoip_isp($current_ip);
         $agent    = $_SERVER["HTTP_USER_AGENT"];
         $logmsg   = "[$lognowd] - #{$this->id_account} ({$this->user_name}) Session closed.\n"
                   . "             Last login IP: $last_login_ip\n"
@@ -403,8 +403,8 @@ class account extends account_toolbox
         else
         {
             $ip       = get_remote_address();
-            $host     = addslashes(gethostbyaddr(get_remote_address()));
-            $location = addslashes(forge_geoip_location($ip));
+            $host     = addslashes(@gethostbyaddr($ip));
+            $location = addslashes(get_geoip_location_with_isp($ip));
         }
         
         $config->globals["@accounts:account_id_logging_in"] = $this->id_account;
@@ -482,7 +482,7 @@ class account extends account_toolbox
         if( ! $this->_exists )
         {
             $address = get_remote_address();
-            if( ! empty($address) ) $address .= "; " . gethostbyaddr($address);
+            if( ! empty($address) ) $address .= "; " . @gethostbyaddr($address);
             
             $this->creation_host    = $address;
             $this->creation_date    =
@@ -565,13 +565,13 @@ class account extends account_toolbox
         $token        = encrypt( $this->id_account."\t".$limit, $config->encryption_key );
         $token_url    = "{$config->full_root_url}/confirm_account?token=".urlencode($token);
         $ip           = get_remote_address();
-        $hostname     = gethostbyaddr(get_remote_address());
+        $hostname     = @gethostbyaddr($ip);
         $fecha_envio  = date("Y-m-d H:i:s");
         
         $recipients = array($this->display_name => $this->email);
         if( ! empty($this->alt_email) ) $recipients["$this->display_name (2)"] = $this->alt_email;
         
-        $request_location = forge_geoip_location($ip);
+        $request_location = get_geoip_disclosable_location($ip);
         
         $mail_subject = replace_escaped_vars(
             $current_module->language->email_templates->confirm_account->subject,

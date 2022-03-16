@@ -657,7 +657,7 @@ function send_mail($subject, $body, $recipients, $sender = null, $attachments = 
     
     $ip       = get_remote_address(); if( empty($ip) ) $ip = "127.0.0.1";
     $host     = $ip == "127.0.0.1" ? "localhost" : @gethostbyaddr($ip); if( empty($host) ) $host = $ip;
-    $location = forge_geoip_location($ip);
+    $location = get_geoip_location_with_isp($ip);
     $agent    = $_SERVER["HTTP_USER_AGENT"]; if( empty($agent) ) $agent = "N/A";
     $logtime  = date("Y-m-d H:i:s");
     $logdate  = date("Ymd");
@@ -908,7 +908,7 @@ function check_sql_injection($input)
             $logtstamp = date("Y-m-d H:i:s");
             $logip     = get_user_ip();
             $loghost   = @gethostbyaddr($logip);
-            $loglocatn = forge_geoip_location($logip);
+            $loglocatn = get_geoip_location_with_isp($logip);
             $logfile   = ROOTPATH . "/logs/sql_injection_attempts-$logdate.log";
             $log_entry = sprintf(
                 "%s - %s (%s, %s) - %s %s - \"%s\"\n",

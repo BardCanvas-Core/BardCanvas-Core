@@ -99,7 +99,7 @@ abstract class abstract_video_manager extends abstract_item_manager
         
         $ip   = get_remote_address();
         $host = @gethostbyaddr($ip);
-        $loc  = forge_geoip_location($ip);
+        $loc  = get_geoip_location_with_isp($ip);
         $now  = date("Y-m-d H:i:s");
         $logd = date("Ymd");
         $logf = "{$config->logfiles_location}/video_conversions_log-{$logd}.log";
@@ -157,7 +157,7 @@ abstract class abstract_video_manager extends abstract_item_manager
         
         $ip   = get_remote_address();
         $host = @gethostbyaddr($ip);
-        $loc  = forge_geoip_location($ip);
+        $loc  = get_geoip_location_with_isp($ip);
         $snm  = basename($source);
         $now  = date("Y-m-d H:i:s");
         $logd = date("Ymd");
