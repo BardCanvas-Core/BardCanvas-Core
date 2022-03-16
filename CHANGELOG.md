@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.8.0]
+
+- Added support for IPinfo.io
+- Refactored IP Geolocation functions.
+
 ## [1.14.7.21] - 2022-02-24
 
 - Added support for custom system encryption key.
