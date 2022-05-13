@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.8.1]
+
+- Added option to include password on account creation email.
+
 ## [1.14.8.0]
 
 - Added support for IPinfo.io
