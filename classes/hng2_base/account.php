@@ -606,7 +606,9 @@ class account extends account_toolbox
                 $request_location,
                 $_SERVER["HTTP_USER_AGENT"],
                 $this->user_name,
-                $current_module->language->password_encrypted
+                $config->globals["@accounts:show_raw_password_in_confirmation_email"]
+                    ? $this->_raw_password
+                    : $current_module->language->password_encrypted
             )
         );
         $mail_body = unindent($mail_body);
