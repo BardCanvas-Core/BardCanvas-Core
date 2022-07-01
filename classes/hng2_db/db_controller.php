@@ -111,41 +111,44 @@ class db_controller
             
             if( ! empty($error_info[2]) )
             {
-                foreach($modules as $this_module)
-                    if( ! empty($this_module->php_includes->before_logging_db_error) )
-                        include "{$this_module->abspath}/{$this_module->php_includes->before_logging_db_error}";
-                
-                $logfd   = date("Ymd");
-                $logfl   = "{$config->logfiles_location}/db_errors-{$logfd}.log";
-                $logdt  = date("Y-m-d H:i:s");
-                $logmsg = "[$logdt] Error while executing query:\n\n"
-                        . "{$error_info[2]}\n\n"
-                        . "Query:\n" . htmlspecialchars($query) . "\n\n"
-                        . "Stack trace:\n"
-                ;
-                $backtrace2 = debug_backtrace();
-                foreach($backtrace2 as $backtrace_item2)
-                    $logmsg .= " • " . $backtrace_item2["file"] . ":" . $backtrace_item2["line"] . "\n";
-                $logmsg .= "\n";
-                
-                $ip   = get_remote_address();
-                $host = @gethostbyaddr($ip); if(empty($host)) $host = $ip;
-                $loc  = get_geoip_location($ip);
-                $isp  = get_geoip_isp($ip);
-                $logmsg .= "Connection data:\n"
-                        .  " • IP:       $ip\n"
-                        .  " • Host:     $host\n"
-                        .  " • Location: $loc\n"
-                        .  " • IPS:      $isp\n"
-                        .  " • QueryStr: {$_SERVER["QUERY_STRING"]}\n"
-                        .  " • Referer:  {$_SERVER["HTTP_REFERER"]}\n"
-                        .  "\n";
-                
-                @file_put_contents($logfl, $logmsg, FILE_APPEND);
-                
-                foreach($modules as $this_module)
-                    if( ! empty($this_module->php_includes->after_logging_db_error) )
-                        include "{$this_module->abspath}/{$this_module->php_includes->after_logging_db_error}";
+                if( $config->globals["@db_controller:no_error_processing"] !== true )
+                {
+                    foreach($modules as $this_module)
+                        if( ! empty($this_module->php_includes->before_logging_db_error) )
+                            include "{$this_module->abspath}/{$this_module->php_includes->before_logging_db_error}";
+                    
+                    $logfd  = date("Ymd");
+                    $logfl  = "{$config->logfiles_location}/db_errors-{$logfd}.log";
+                    $logdt  = date("Y-m-d H:i:s");
+                    $logmsg = "[$logdt] Error while executing query:\n\n"
+                            . "{$error_info[2]}\n\n"
+                            . "Query:\n" . htmlspecialchars($query) . "\n\n"
+                            . "Stack trace:\n"
+                    ;
+                    $backtrace2 = debug_backtrace();
+                    foreach($backtrace2 as $backtrace_item2)
+                        $logmsg .= " • " . $backtrace_item2["file"] . ":" . $backtrace_item2["line"] . "\n";
+                    $logmsg .= "\n";
+                    
+                    $ip   = get_remote_address();
+                    $host = @gethostbyaddr($ip); if(empty($host)) $host = $ip;
+                    $loc  = get_geoip_location($ip);
+                    $isp  = get_geoip_isp($ip);
+                    $logmsg .= "Connection data:\n"
+                            .  " • IP:       $ip\n"
+                            .  " • Host:     $host\n"
+                            .  " • Location: $loc\n"
+                            .  " • IPS:      $isp\n"
+                            .  " • QueryStr: {$_SERVER["QUERY_STRING"]}\n"
+                            .  " • Referer:  {$_SERVER["HTTP_REFERER"]}\n"
+                            .  "\n";
+                    
+                    @file_put_contents($logfl, $logmsg, FILE_APPEND);
+                    
+                    foreach($modules as $this_module)
+                        if( ! empty($this_module->php_includes->after_logging_db_error) )
+                            include "{$this_module->abspath}/{$this_module->php_includes->after_logging_db_error}";
+                }
                 
                 throw new \Exception(
                     "Error while executing query:\n" .
