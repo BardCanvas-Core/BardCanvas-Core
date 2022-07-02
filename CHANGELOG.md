@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.8.2]
+
+- Added flag for error processing on the database controller.
+
 ## [1.14.8.1]
 
 - Added option to include password on account creation email.
