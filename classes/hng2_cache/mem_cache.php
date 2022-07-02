@@ -5,18 +5,18 @@ class mem_cache
 {
     protected $data = array();
     
-    private $var_prefix;
+    protected $var_prefix;
     
-    private $suffix;
+    protected $suffix;
     
     /**
      * @var \Memcache()
      */
-    private $server;
+    protected $server;
     
-    private $cache_hits = array();
+    protected $cache_hits = array();
     
-    private $enabled = true;
+    protected $enabled = true;
     
     public function __construct($var_prefix = "")
     {
@@ -85,7 +85,7 @@ class mem_cache
      *
      * @return mixed|null
      */
-    public function get($key, $raw_key = false)
+    public function get($key, $raw_key = false, $forced = false)
     {
         global $config;
         
@@ -93,7 +93,9 @@ class mem_cache
         
         if( $raw_key === false ) $key = $this->var_prefix . $key . "~v" . $this->suffix;
         
-        if( isset($this->data[$key]) ) return $this->data[$key];
+        if( ! $forced )
+            if( isset($this->data[$key]) )
+                return $this->data[$key];
         
         $value = $this->server->get($key);
         if( $value === false ) $value = null;
