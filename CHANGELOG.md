@@ -1,15 +1,19 @@
 
 # BardCanvas Core Changelog 
 
-## [1.14.8.2]
+## [1.14.8.3] - 2022-07-01
+
+- Some adjustments to `mem_cache` class.
+
+## [1.14.8.2] - 2022-07-01
 
 - Added flag for error processing on the database controller.
 
-## [1.14.8.1]
+## [1.14.8.1] - 2022-05-13
 
 - Added option to include password on account creation email.
 
-## [1.14.8.0]
+## [1.14.8.0] - 2022-03-16
 
 - Added support for IPinfo.io
 - Refactored IP Geolocation functions.
