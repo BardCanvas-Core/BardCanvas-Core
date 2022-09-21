@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.8.4] - 2022-09-20
+
+- Switched default encryption cypher.
+- Added tokenized cookies for session control.
+
 ## [1.14.8.3] - 2022-07-01
 
 - Some adjustments to `mem_cache` class.
