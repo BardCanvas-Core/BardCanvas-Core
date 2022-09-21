@@ -25,6 +25,12 @@ function decrypt($string_to_decrypt, $key)
         
         return three_layer_decrypt($string_to_decrypt, $key, md5($key), sha1($key));
     }
+    elseif( substr($string_to_decrypt, 0, 4) == "sys." )
+    {
+        $string_to_decrypt = substr($string_to_decrypt, 4);
+        
+        return sys_decrypt($string_to_decrypt);
+    }
     
     $string_to_decrypt = base64_decode($string_to_decrypt);
     $md5_key           = md5($key);
@@ -47,7 +53,8 @@ function decrypt($string_to_decrypt, $key)
  */
 function encrypt($string_to_encrypt, $key)
 {
-    return "3le:" . three_layer_encrypt($string_to_encrypt, $key, md5($key), sha1($key));
+    return "sys." . sys_encrypt($string_to_encrypt);
+    # return "3le:" . three_layer_encrypt($string_to_encrypt, $key, md5($key), sha1($key));
     
     // $md5_key = md5($key);
     // $iv      = md5($md5_key);
