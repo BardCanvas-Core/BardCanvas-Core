@@ -137,8 +137,13 @@ class account extends account_toolbox
         
         if( empty($_COOKIE[$user_session_cookie_key]) ) return;
         
-        $user_session_acccount = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
+        $raw_cookied_token = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
+        if( empty($raw_cookied_token) ) return;
         
+        $cached_token = $mem_cache->get("@!ust_{$raw_cookied_token}");
+        if( empty($cached_token) ) return;
+        
+        $user_session_acccount = sys_decrypt($cached_token);
         if( ! is_numeric($user_session_acccount) ) return;
         
         $cached_row = $mem_cache->get("account:{$user_session_acccount}");
@@ -197,21 +202,32 @@ class account extends account_toolbox
         if( isset($_COOKIE[$user_online_cookie_key]) )
         {
             # The "online" session cookie is set, let's check if it corresponds to the same user
-            $online_user_cookie = sys_decrypt( $_COOKIE[$user_online_cookie_key] );
+            $raw_cookied_token = sys_decrypt( $_COOKIE[$user_online_cookie_key] );
+            if( empty($raw_cookied_token) ) throw_fake_401();
             
-            if( $online_user_cookie != $this->id_account ) throw_fake_401();
+            $cached_token = $mem_cache->get("@!uot_{$raw_cookied_token}");
+            if( empty($cached_token) ) throw_fake_401();
+            
+            $tokenized_user_id = sys_decrypt( $cached_token );
+            if( $tokenized_user_id != $this->id_account ) throw_fake_401();
         }
         else
         {
             # Let's do an auto-login
+    
+            $session_token = $this->build_session_token();
+            $mem_cache->set("@!uot_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 3));
             setcookie(
                 $user_online_cookie_key,
-                sys_encrypt( $this->id_account ),
+                sys_encrypt( $session_token ),
                 0, "/", $config->cookies_domain
             );
+            
+            $session_token = $this->build_session_token();
+            $mem_cache->set("@!udt_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 3));
             setcookie(
                 $device_cookie_key,
-                sys_encrypt( $device->id_device ),
+                sys_encrypt( $session_token ),
                 0, "/", $config->cookies_domain
             );
             
@@ -372,7 +388,7 @@ class account extends account_toolbox
      */
     public function open_session($device)
     {
-        global $config, $settings, $database, $modules;
+        global $config, $settings, $database, $modules, $mem_cache;
         
         # Inits
         $now = date("Y-m-d H:i:s");
@@ -380,10 +396,14 @@ class account extends account_toolbox
         # First we set the cookie
         $this->extend_session_cookie($device);
         
+        # Set a token for the user
+        $session_token = $this->build_session_token();
+        $mem_cache->set("@!uot_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 3));
+        
         # Set the online session cookie
         setcookie(
             $settings->get("engine.user_online_cookie"),
-            sys_encrypt( $this->id_account ),
+            sys_encrypt( $session_token ),
             0, "/", $config->cookies_domain
         );
         
@@ -431,16 +451,19 @@ class account extends account_toolbox
     
     protected function extend_session_cookie($device)
     {
-        global $config, $settings;
+        global $config, $settings, $mem_cache;
         
         if( is_null($device) ) return;
         
         if( $device->_exists ) $session_time = time() + ( 86400 * 30 );
         else                   $session_time = 0;
         
+        $session_token = $this->build_session_token();
+        $mem_cache->set("@!ust_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 30));
+        
         setcookie(
             $settings->get("engine.user_session_cookie"),
-            sys_encrypt( $this->id_account ),
+            sys_encrypt( $session_token ),
             $session_time, "/", $config->cookies_domain
         );
     }
@@ -449,7 +472,16 @@ class account extends account_toolbox
     {
         global $settings, $mem_cache, $account, $config, $modules;
         
+        $ust = $_COOKIE[$settings->get("engine.user_session_cookie")];
+        if( ! empty($ust) ) $mem_cache->delete("@!ust_{$ust}");
+        
+        $uot = $_COOKIE[$settings->get("engine.user_online_cookie")];
+        if( ! empty($uot) ) $mem_cache->delete("@!uot_{$uot}");
+        
         $device_cookie_key = "_" . $config->website_key . "_DIC";
+        $udt = $_COOKIE[$device_cookie_key];
+        if( ! empty($udt) ) $mem_cache->delete("@!udt_{$udt}");
+        
         setcookie( $settings->get("engine.user_session_cookie"), "", 0, "/", $config->cookies_domain );
         setcookie( $settings->get("engine.user_online_cookie"),  "", 0, "/", $config->cookies_domain );
         setcookie( $device_cookie_key                         ,  "", 0, "/", $config->cookies_domain );
@@ -933,5 +965,12 @@ class account extends account_toolbox
         
         $this->profile_banner = $new_banner;
         $messages[]           = $current_module->language->user_account_form->messages->banner_set_ok;
+    }
+    
+    protected function build_session_token()
+    {
+        $time = microtime(true);
+        $rand = mt_rand(1000000000,9999999999);
+        return sha1("{$this->id_account},{$this->creation_date},{$time},{$rand}");
     }
 }
