@@ -932,3 +932,22 @@ function get_sanitized_user_agent($string = "")
     
     return preg_replace('@(/[0-9]+)(\\.?[0-9.]+)@', '\\1', $string);
 }
+
+function has_injected_scripts($input)
+{
+    $input = html_entity_decode($input);
+    $input = trim(stripslashes($input));
+    
+    if( stristr($input, "<script") ) return true;
+    if( stristr($input, "<style") ) return true;
+    if( stristr($input, "<form") ) return true;
+    if( stristr($input, "<input") ) return true;
+    if( stristr($input, "<iframe") ) return true;
+    if( stristr($input, "<!--") ) return true;
+    if( stristr($input, "-->") ) return true;
+    if( preg_match('/on[a-z]+=/', $input) ) return true;
+    if( preg_match('/url\(\s|.+\)/', $input) ) return true;
+    if( stristr($input, "data:") ) return true;
+    
+    return false;
+}
