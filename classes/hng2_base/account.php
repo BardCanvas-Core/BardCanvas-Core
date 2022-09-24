@@ -973,4 +973,40 @@ class account extends account_toolbox
         $rand = mt_rand(1000000000,9999999999);
         return sha1("{$this->id_account},{$this->creation_date},{$time},{$rand}");
     }
+    
+    public function set_expirable_token($prefix, $ttl_mins = 5)
+    {
+        global $mem_cache, $account;
+        
+        $time  = date("Y-m-d H:i:s", strtotime("now + 3 minutes"));
+        $rand  = mt_rand(1000000000,9999999999);
+        $token = sys_encrypt("{$this->id_account},{$this->creation_date},{$rand},{$time}");
+        
+        $mem_key = "{$prefix}:csrf_token.{$account->id_account}";
+        $mem_cache->set($mem_key, $token, 0, 60 * $ttl_mins);
+    }
+    
+    public function is_expirable_token_valid($prefix)
+    {
+        global $mem_cache, $account;
+        
+        $mem_key = "{$prefix}:csrf_token.{$account->id_account}";
+        $token   = $mem_cache->get($mem_key);
+        
+        if( empty($token) ) return false;
+        
+        $token = sys_decrypt($token);
+        if( ! is_string($token) ) return false;
+        
+        list($tida, $tacd, $trnd, $texp) = explode(",", $token);
+        if( ! is_numeric($tida) || empty($tida) || empty($tacd) || empty($trnd) || empty($texp) )
+            return false;
+        
+        try { new \DateTime($texp); }
+        catch(\Exception $e) { return false; }
+        
+        if(date("Y-m-d H:i:s") > $texp) return false;
+        
+        return true;
+    }
 }
