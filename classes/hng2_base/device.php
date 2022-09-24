@@ -43,8 +43,9 @@ class device
         
         if( ! empty($id_account_or_id_device_or_object) && empty($user_agent) )
         {
+            $id_device = $id_account_or_id_device_or_object + 0;
             $res = $database->query("
-                select * from account_devices where id_device = '$id_account_or_id_device_or_object'
+                select * from account_devices where id_device = '$id_device'
             ");
             if( $database->num_rows($res) > 0 )
             {
@@ -57,6 +58,7 @@ class device
         }
         
         if( empty($user_agent) ) $user_agent = get_sanitized_user_agent();
+        else                     $user_agent = addslashes(trim(strip_tags(stripslashes($user_agent))));
         
         if( empty($id_account_or_id_device_or_object) && empty($user_agent) )
         {
@@ -65,8 +67,7 @@ class device
             return $this;
         }
         
-        $id_account = addslashes(trim(stripslashes($id_account_or_id_device_or_object)));
-        $user_agent = addslashes(trim(stripslashes($user_agent)));
+        $id_account = $id_account_or_id_device_or_object + 0;
         
         $res = $database->query("
             select * from account_devices where id_account = '$id_account' and device_header = '$user_agent'
