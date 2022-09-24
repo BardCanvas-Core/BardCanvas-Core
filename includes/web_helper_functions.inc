@@ -938,6 +938,8 @@ function has_injected_scripts($input)
     $input = html_entity_decode($input);
     $input = trim(stripslashes($input));
     
+    if( empty($input) ) return false;
+    
     if( stristr($input, "<script") ) return true;
     if( stristr($input, "<style") ) return true;
     if( stristr($input, "<form") ) return true;
