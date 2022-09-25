@@ -214,13 +214,15 @@ class account extends account_toolbox
         else
         {
             # Let's do an auto-login
-    
+            
             $session_token = $this->build_session_token();
             $mem_cache->set("@!uot_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 3));
             setcookie(
                 $user_online_cookie_key,
                 sys_encrypt( $session_token ),
-                0, "/", $config->cookies_domain
+                0, "/", $config->cookies_domain,
+                (bool) $_SERVER["HTTPS"],
+                true
             );
             
             $session_token = $this->build_session_token();
@@ -228,7 +230,9 @@ class account extends account_toolbox
             setcookie(
                 $device_cookie_key,
                 sys_encrypt( $session_token ),
-                0, "/", $config->cookies_domain
+                0, "/", $config->cookies_domain,
+                (bool) $_SERVER["HTTPS"],
+                true
             );
             
             $min_loggin_level = (int) $settings->get("engine.min_user_level_for_ip_dismissal");
@@ -404,7 +408,9 @@ class account extends account_toolbox
         setcookie(
             $settings->get("engine.user_online_cookie"),
             sys_encrypt( $session_token ),
-            0, "/", $config->cookies_domain
+            0, "/", $config->cookies_domain,
+            (bool) $_SERVER["HTTPS"],
+            true
         );
         
         if( $settings->get("modules:accounts.track_last_login_ip") == "true" )
@@ -464,7 +470,9 @@ class account extends account_toolbox
         setcookie(
             $settings->get("engine.user_session_cookie"),
             sys_encrypt( $session_token ),
-            $session_time, "/", $config->cookies_domain
+            $session_time, "/", $config->cookies_domain,
+            (bool) $_SERVER["HTTPS"],
+            true
         );
     }
     
