@@ -941,6 +941,7 @@ function has_injected_scripts($input)
     if( empty($input) ) return false;
     
     if( stristr($input, "<script") ) return true;
+    if( stristr($input, "<link") ) return true;
     if( stristr($input, "<style") ) return true;
     if( stristr($input, "<form") ) return true;
     if( stristr($input, "<input") ) return true;
