@@ -92,6 +92,17 @@ if($_GET["go"] == "true")
             </body></html>");
     }
     
+    $res = $db->query("show tables like 'settings'");
+    if( $res->rowCount() > 0 )
+    {
+        die("<!DOCTYPE html>
+            <html><head><title>{$bundle_name} Setup</title></head><body>
+                <h1>Already installed</h1>
+                <p>Your {$bundle_name} installation is already installed and configured. There's no need to run this script again.</p>
+                <p><a href='index.php'>Click here to open the home page</a></p>
+            </body></html>");
+    }
+    
     $db->exec("
         CREATE TABLE IF NOT EXISTS `settings` (
           
@@ -130,7 +141,7 @@ if($_GET["go"] == "true")
     ");
     
     $db->exec("
-        CREATE TABLE `account` (
+        CREATE TABLE IF NOT EXISTS `account` (
           `id_account`      bigint unsigned not null default 0,
           `user_name`       VARCHAR(64) NOT NULL DEFAULT '',
           `password`        VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'MD5 hash of password',
@@ -215,7 +226,7 @@ if($_GET["go"] == "true")
     ");
     
     $db->exec("
-        CREATE TABLE `countries` (
+        CREATE TABLE IF NOT EXISTS `countries` (
           `name`    varchar(50) NOT NULL default '',
           `alpha_2` varchar(2) NOT NULL default '',
           `alpha_3` varchar(3) NOT NULL default '',
@@ -226,7 +237,7 @@ if($_GET["go"] == "true")
     ");
     
     $db->exec("
-        INSERT INTO `countries` (`name`, `alpha_2`, `alpha_3`) VALUES
+        INSERT IGNORE INTO `countries` (`name`, `alpha_2`, `alpha_3`) VALUES
         ('Afghanistan', 'af', 'afg'),
         ('Aland Islands', 'ax', 'ala'),
         ('Albania', 'al', 'alb'),
@@ -477,7 +488,7 @@ if($_GET["go"] == "true")
         ('Zambia', 'zm', 'zmb'),
         ('Zimbabwe', 'zw', 'zwe')
     ");
-        
+    
     if( ! empty($ffmpeg_path) )
         $db->exec("insert ignore into settings set value = '$ffmpeg_path' , name = 'engine.ffmpeg_path'");
     
