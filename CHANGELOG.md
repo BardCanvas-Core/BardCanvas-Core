@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.8.6] - 2022-09-26
+
+- Refactored session control to allow usage without memcached.
+
 ## [1.14.8.5] - 2022-09-24
 
 - Added setup checks to avoid throwing warnings when invoked after initial run.
