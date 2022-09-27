@@ -16,7 +16,7 @@ class mem_cache
     
     protected $cache_hits = array();
     
-    protected $enabled = true;
+    public $enabled = true;
     
     public function __construct($var_prefix = "")
     {

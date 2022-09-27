@@ -140,7 +140,7 @@ class account extends account_toolbox
         $raw_cookied_token = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
         if( empty($raw_cookied_token) ) return;
         
-        $cached_token = $mem_cache->get("@!ust_{$raw_cookied_token}");
+        $cached_token = $this->get_session_token("@!ust_{$raw_cookied_token}");
         if( empty($cached_token) ) return;
         
         $user_session_acccount = sys_decrypt($cached_token);
@@ -205,7 +205,7 @@ class account extends account_toolbox
             $raw_cookied_token = sys_decrypt( $_COOKIE[$user_online_cookie_key] );
             if( empty($raw_cookied_token) ) throw_fake_401();
             
-            $cached_token = $mem_cache->get("@!uot_{$raw_cookied_token}");
+            $cached_token = $this->get_session_token("@!uot_{$raw_cookied_token}");
             if( empty($cached_token) ) throw_fake_401();
             
             $tokenized_user_id = sys_decrypt( $cached_token );
@@ -216,7 +216,7 @@ class account extends account_toolbox
             # Let's do an auto-login
             
             $session_token = $this->build_session_token();
-            $mem_cache->set("@!uot_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 3));
+            $this->set_session_token("@!uot_{$session_token}", sys_encrypt($this->id_account), time() + (86400 * 3));
             setcookie(
                 $user_online_cookie_key,
                 sys_encrypt( $session_token ),
@@ -226,7 +226,7 @@ class account extends account_toolbox
             );
             
             $session_token = $this->build_session_token();
-            $mem_cache->set("@!udt_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 3));
+            $this->set_session_token("@!udt_{$session_token}", sys_encrypt($this->id_account), time() + (86400 * 3));
             setcookie(
                 $device_cookie_key,
                 sys_encrypt( $session_token ),
@@ -384,6 +384,7 @@ class account extends account_toolbox
     }
     
     /**
+     * Login process.
      * Pings the account and sets a cookie with the account id.
      * 
      * @param device $device
@@ -392,17 +393,17 @@ class account extends account_toolbox
      */
     public function open_session($device)
     {
-        global $config, $settings, $database, $modules, $mem_cache;
+        global $config, $settings, $database, $modules;
         
         # Inits
         $now = date("Y-m-d H:i:s");
         
-        # First we set the cookie
+        # First we set the cookie for the saved session
         $this->extend_session_cookie($device);
         
-        # Set a token for the user
+        # Set an online flag for the user
         $session_token = $this->build_session_token();
-        $mem_cache->set("@!uot_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 3));
+        $this->set_session_token("@!uot_{$session_token}", sys_encrypt($this->id_account), time() + (86400 * 3));
         
         # Set the online session cookie
         setcookie(
@@ -457,7 +458,7 @@ class account extends account_toolbox
     
     protected function extend_session_cookie($device)
     {
-        global $config, $settings, $mem_cache;
+        global $config, $settings;
         
         if( is_null($device) ) return;
         
@@ -465,7 +466,7 @@ class account extends account_toolbox
         else                   $session_time = 0;
         
         $session_token = $this->build_session_token();
-        $mem_cache->set("@!ust_{$session_token}", sys_encrypt($this->id_account), 0, time() + (86400 * 30));
+        $this->set_session_token("@!ust_{$session_token}", sys_encrypt($this->id_account), time() + (86400 * 30));
         
         setcookie(
             $settings->get("engine.user_session_cookie"),
@@ -481,14 +482,14 @@ class account extends account_toolbox
         global $settings, $mem_cache, $account, $config, $modules;
         
         $ust = $_COOKIE[$settings->get("engine.user_session_cookie")];
-        if( ! empty($ust) ) $mem_cache->delete("@!ust_{$ust}");
+        if( ! empty($ust) ) $this->delete_session_token("@!ust_{$ust}");
         
         $uot = $_COOKIE[$settings->get("engine.user_online_cookie")];
-        if( ! empty($uot) ) $mem_cache->delete("@!uot_{$uot}");
+        if( ! empty($uot) ) $this->delete_session_token("@!uot_{$uot}");
         
         $device_cookie_key = "_" . $config->website_key . "_DIC";
         $udt = $_COOKIE[$device_cookie_key];
-        if( ! empty($udt) ) $mem_cache->delete("@!udt_{$udt}");
+        if( ! empty($udt) ) $this->delete_session_token("@!udt_{$udt}");
         
         setcookie( $settings->get("engine.user_session_cookie"), "", 0, "/", $config->cookies_domain );
         setcookie( $settings->get("engine.user_online_cookie"),  "", 0, "/", $config->cookies_domain );
@@ -1016,5 +1017,79 @@ class account extends account_toolbox
         if(date("Y-m-d H:i:s") > $texp) return false;
         
         return true;
+    }
+    
+    /**
+     * @param string $key
+     * @param mixed  $val
+     * @param int    $expiration
+     * 
+     * @return void
+     */
+    protected function set_session_token($key, $val, $expiration)
+    {
+        global $mem_cache, $config;
+        
+        if( $mem_cache->enabled )
+        {
+            $mem_cache->set($key, $val, 0, $expiration);
+            return;
+        }
+    
+        $path = "{$config->datafiles_location}/cache/sessions";
+        if( ! is_dir($path) )
+            if( ! @mkdir($path, 0777, true) )
+                die("Unable to create sessions cache directory. Please check that the data/cache directory is writable.");
+        
+        $key = sha1($key);
+        if( ! @file_put_contents("{$path}/{$key}.dat", serialize($val)) )
+            die("Unable save session data file. Please check that the data/cache/sessions directory exists and it is writable.");
+        
+        if( ! @file_put_contents("{$path}/{$key}_exp.dat", $expiration) )
+            die("Unable save session expiration info. Please check that the data/cache/sessions directory exists and it is writable.");
+    }
+    
+    /**
+     * @param string $key
+     * 
+     * @return mixed|null
+     */
+    protected function get_session_token($key)
+    {
+        global $mem_cache, $config;
+        
+        if( $mem_cache->enabled ) return $mem_cache->get($key);
+        
+        $key  = sha1($key);
+        $data_file = "{$config->datafiles_location}/cache/sessions/{$key}.dat";
+        $exp_file  = "{$config->datafiles_location}/cache/sessions/{$key}_exp.dat";
+        if( ! file_exists($data_file) ) return null;
+        if( ! file_exists($exp_file) )  return null;
+        
+        $expiration = @file_get_contents($exp_file);
+        if( time() >= $expiration )
+        {
+            @unlink($data_file);
+            @unlink($exp_file);
+            return null;
+        }
+        
+        $res = file_get_contents($data_file);
+        return unserialize($res);
+    }
+    
+    protected function delete_session_token($key)
+    {
+        global $mem_cache, $config;
+        
+        if( $mem_cache->enabled )
+        {
+            $mem_cache->delete($key);
+            return;
+        }
+        
+        $key  = sha1($key);
+        $file = "{$config->datafiles_location}/cache/sessions/{$key}.dat";
+        if( file_exists($file) ) @unlink($file);
     }
 }
