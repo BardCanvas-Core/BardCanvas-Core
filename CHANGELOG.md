@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.0] - 2022-09-28
+
+- Strengthened session control.
+
 ## [1.14.8.7] - 2022-09-27
 
 - Fixed params issue in encryption function.
