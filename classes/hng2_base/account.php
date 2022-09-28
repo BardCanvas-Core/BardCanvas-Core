@@ -472,6 +472,7 @@ class account extends account_toolbox
         if( $device->_exists ) $session_time = time() + (86400 * 7);
         else                   $session_time = 0;
         
+        $prev_stoken   = sys_decrypt($_COOKIE[$user_session_cookie_key]);
         $session_token = $this->build_session_token();
         $encrypted_id  = sys_encrypt($this->id_account);
         $this->set_session_token("@!ust_{$session_token}", $encrypted_id, time() + (86400 * 7));
@@ -482,6 +483,7 @@ class account extends account_toolbox
             (bool) $_SERVER["HTTPS"],
             true
         );
+        $this->set_session_token("@!ust_{$prev_stoken}", $encrypted_id, time() + 60);
         
         $session_token = $this->build_session_token();
         $this->set_session_token("@!uot_{$session_token}", $encrypted_id, time() + 60);
