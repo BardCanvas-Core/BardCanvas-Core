@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.1] - 2022-09-28
+
+- Improved device management in session internals.
+
 ## [1.14.9.0] - 2022-09-28
 
 - Strengthened session control.
