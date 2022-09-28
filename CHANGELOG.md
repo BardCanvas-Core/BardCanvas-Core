@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.8.7] - 2022-09-27
+
+- Fixed params issue in encryption function.
+
 ## [1.14.8.6] - 2022-09-26
 
 - Refactored session control to allow usage without memcached.
