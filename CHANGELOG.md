@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.2] - 2022-09-28
+
+- Added treatment of empty values on system encryption/decryption functions.
+- Added cleanup of previous session vars in memcache during session renewal.
+- Added missing decryption of session cookies on logout.
+
 ## [1.14.9.1] - 2022-09-28
 
 - Improved device management in session internals.
