@@ -29,7 +29,7 @@ function decrypt($string_to_decrypt, $key)
     {
         $string_to_decrypt = substr($string_to_decrypt, 4);
         
-        return sys_decrypt($string_to_decrypt);
+        return sys_decrypt($string_to_decrypt, $key);
     }
     
     $string_to_decrypt = base64_decode($string_to_decrypt);
@@ -53,7 +53,7 @@ function decrypt($string_to_decrypt, $key)
  */
 function encrypt($string_to_encrypt, $key)
 {
-    return "sys." . sys_encrypt($string_to_encrypt);
+    return "sys." . sys_encrypt($string_to_encrypt, $key);
     # return "3le:" . three_layer_encrypt($string_to_encrypt, $key, md5($key), sha1($key));
     
     // $md5_key = md5($key);
@@ -66,15 +66,17 @@ function encrypt($string_to_encrypt, $key)
 
 /**
  * @param string $plaintext
+ * @param string $key
  * @see   https://stackoverflow.com/a/69072517/4571493
  * 
  * @return string
  */
-function sys_encrypt($plaintext)
+function sys_encrypt($plaintext, $key = "")
 {
     global $config;
     
-    $secret_key = defined("SYSENCRYPT_CUSTOM_KEY") ? SYSENCRYPT_CUSTOM_KEY : $config->encryption_key;
+    if( $key ) $secret_key = $key;
+    else       $secret_key = defined("SYSENCRYPT_CUSTOM_KEY") ? SYSENCRYPT_CUSTOM_KEY : $config->encryption_key;
     $cipher     = "AES-128-CBC";
     
     $key   = openssl_digest($secret_key, 'SHA256', TRUE);
@@ -117,16 +119,18 @@ if ( ! function_exists('hash_equals') )
 }
 
 /**
- * @param $ciphertext
+ * @param string $ciphertext
+ * @param string $key
  * @see   https://stackoverflow.com/a/69072517/4571493
  * 
  * @return string
  */
-function sys_decrypt($ciphertext)
+function sys_decrypt($ciphertext, $key = "")
 {
     global $config;
     
-    $secret_key = defined("SYSENCRYPT_CUSTOM_KEY") ? SYSENCRYPT_CUSTOM_KEY : $config->encryption_key;
+    if( $key ) $secret_key = $key;
+    else       $secret_key = defined("SYSENCRYPT_CUSTOM_KEY") ? SYSENCRYPT_CUSTOM_KEY : $config->encryption_key;
     $cipher     = "AES-128-CBC";
     
     $c     = base64_decode($ciphertext);
