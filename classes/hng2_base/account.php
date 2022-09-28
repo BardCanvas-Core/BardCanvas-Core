@@ -176,9 +176,6 @@ class account extends account_toolbox
             }
         }
         
-        if( $user_online_account_id > 0 && $user_saved_account_id > 0 && $user_online_account_id != $user_saved_account_id)
-            throw_fake_401();
-        
         # Impersonation attempt
         if( $user_online_account_id > 0 && $user_saved_account_id > 0 && $user_online_account_id != $user_saved_account_id)
             throw_fake_401();
@@ -205,7 +202,7 @@ class account extends account_toolbox
             $mem_cache->set("account:{$user_session_acccount}", $row, 0, 600);
         }
         
-        # Device identification
+        # Device identification/preload
         $device_cookie_key = "_" . $config->website_key . "_DIC";
         if( empty($_COOKIE[$device_cookie_key]) )
         {
@@ -214,15 +211,31 @@ class account extends account_toolbox
         else
         {
             $udi = sys_decrypt($_COOKIE[$device_cookie_key]);
-            if( empty($udi) ) return;
-            
-            $cached_token = $this->get_session_token("@!udi_{$udi}");
-            if( empty($cached_token) ) return;
-            
-            $device_id = sys_decrypt($cached_token);
-            if( ! is_numeric($device_id) ) return;
-            
-            $device = new device($device_id);
+            if( empty($udi) )
+            {
+                $device = new device($this->id_account);
+            }
+            else
+            {
+                $cached_token = $this->get_session_token("@!udi_{$udi}");
+                if( empty($cached_token) )
+                {
+                    $device = new device($this->id_account);
+                }
+                else
+                {
+                    $device_id = sys_decrypt($cached_token);
+                    if( ! is_numeric($device_id) )
+                    {
+                        $device = new device($this->id_account);
+                    }
+                    else
+                    {
+                        $device = new device($device_id);
+                        if( $device->id_account != $this->id_account ) throw_fake_401();
+                    }
+                }
+            }
         }
         if( ! $device->_exists               ) return;
         if( $device->state == "disabled"     ) return;
