@@ -75,6 +75,8 @@ function sys_encrypt($plaintext, $key = "")
 {
     global $config;
     
+    if( empty($plaintext) ) return "";
+    
     if( $key ) $secret_key = $key;
     else       $secret_key = defined("SYSENCRYPT_CUSTOM_KEY") ? SYSENCRYPT_CUSTOM_KEY : $config->encryption_key;
     $cipher     = "AES-128-CBC";
@@ -128,6 +130,8 @@ if ( ! function_exists('hash_equals') )
 function sys_decrypt($ciphertext, $key = "")
 {
     global $config;
+    
+    if( empty($ciphertext) ) return "";
     
     if( $key ) $secret_key = $key;
     else       $secret_key = defined("SYSENCRYPT_CUSTOM_KEY") ? SYSENCRYPT_CUSTOM_KEY : $config->encryption_key;
