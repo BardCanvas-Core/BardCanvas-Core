@@ -133,107 +133,111 @@ class account extends account_toolbox
     {
         global $config, $settings, $database, $mem_cache, $modules;
         
+        $user_online_cookie_key  = $settings->get("engine.user_online_cookie");
         $user_session_cookie_key = $settings->get("engine.user_session_cookie");
+        $user_online_account_id  = 0;
+        $user_saved_account_id   = 0;
         
-        if( empty($_COOKIE[$user_session_cookie_key]) ) return;
+        $do_autologin = false;
+        if( isset($_COOKIE[$user_online_cookie_key]) )
+        {
+            # The "online" session cookie is set, so session is loaded from there
+            $raw_cookied_token = sys_decrypt( $_COOKIE[$user_online_cookie_key] );
+            if( empty($raw_cookied_token) ) return;
+            
+            $cached_token = $this->get_session_token("@!uot_{$raw_cookied_token}");
+            if( empty($cached_token) ) return;
+            
+            $user_online_account_id = sys_decrypt( $cached_token );
+            if( ! is_numeric($user_online_account_id) ) return;
+            
+            $user_session_acccount = $user_online_account_id;
+        }
+    
+        if( isset($_COOKIE[$user_session_cookie_key]) )
+        {
+            $raw_cookied_token = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
+            if( ! empty($raw_cookied_token) )
+            {
+                $cached_token = $this->get_session_token("@!ust_{$raw_cookied_token}");
+                if( ! empty($cached_token) )
+                {
+                    $user_saved_account_id = sys_decrypt($cached_token);
+                    if( ! is_numeric($user_saved_account_id) )
+                    {
+                        $user_saved_account_id = 0;
+                    }
+                    else
+                    {
+                        $user_session_acccount = $user_saved_account_id;
+                        $do_autologin = true;
+                    }
+                }
+            }
+        }
         
-        $raw_cookied_token = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
-        if( empty($raw_cookied_token) ) return;
+        if( $user_online_account_id > 0 && $user_saved_account_id > 0 && $user_online_account_id != $user_saved_account_id)
+            throw_fake_401();
         
-        $cached_token = $this->get_session_token("@!ust_{$raw_cookied_token}");
-        if( empty($cached_token) ) return;
+        # Impersonation attempt
+        if( $user_online_account_id > 0 && $user_saved_account_id > 0 && $user_online_account_id != $user_saved_account_id)
+            throw_fake_401();
         
-        $user_session_acccount = sys_decrypt($cached_token);
-        if( ! is_numeric($user_session_acccount) ) return;
-        
+        # Preload if cached
         $cached_row = $mem_cache->get("account:{$user_session_acccount}");
         if( ! empty($cached_row) )
         {
             $this->assign_from_object($cached_row);
             $this->_exists = true;
-            
-            if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL )
-                    $this->_is_admin = true;
-            
-            # IP change detection
-            if( $this->_is_admin ) $this->check_last_login_ip();
-            
-            return;
         }
-        
-        $res = $database->query("select * from account where id_account = '$user_session_acccount'");
-        
-        if( ! $res ) return;
-        if( $database->num_rows($res) == 0 ) return;
-        
-        # Record loading
-        $row = $database->fetch_object($res);
-        $mem_cache->set("account:{$user_session_acccount}", $row, 0, 600);
-        
-        # Validation
-        if($row->state != "enabled") return;
+        else
+        {
+            $res = $database->query("select * from account where id_account = '$user_session_acccount'");
+            if( ! $res ) return;
+            if( $database->num_rows($res) == 0 ) return;
+            
+            # Record loading
+            $row = $database->fetch_object($res);
+            if($row->state != "enabled") return;
+            
+            $this->_exists = true;
+            $this->assign_from_object($row);
+            $mem_cache->set("account:{$user_session_acccount}", $row, 0, 600);
+        }
         
         # Device identification
         $device_cookie_key = "_" . $config->website_key . "_DIC";
-        
-        $device = null;
         if( empty($_COOKIE[$device_cookie_key]) )
         {
-            $device = new device($row->id_account);
-            if( ! $device->_exists               ) return;
-            if( $device->state == "disabled"     ) return;
-            if( $device->state == "deleted"      ) return;
-            if( $device->state == "unregistered" ) $this->_is_locked = true;
+            $device = new device($this->id_account);
         }
+        else
+        {
+            $udi = sys_decrypt($_COOKIE[$device_cookie_key]);
+            if( empty($udi) ) return;
+            
+            $cached_token = $this->get_session_token("@!udi_{$udi}");
+            if( empty($cached_token) ) return;
+            
+            $device_id = sys_decrypt($cached_token);
+            if( ! is_numeric($device_id) ) return;
+            
+            $device = new device($device_id);
+        }
+        if( ! $device->_exists               ) return;
+        if( $device->state == "disabled"     ) return;
+        if( $device->state == "deleted"      ) return;
+        if( $device->state == "unregistered" ) $this->_is_locked = true;
         
-        # Integration
-        $this->assign_from_object($row);
-        $this->_exists = true;
-        
-        # Admin identification
-        if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL )
-                $this->_is_admin = true;
+        if( ! $this->_is_locked && $this->level >= config::COADMIN_USER_LEVEL ) $this->_is_admin = true;
         
         # IP change detection
         if( $this->_is_admin ) $this->check_last_login_ip();
         
-        $user_online_cookie_key = $settings->get("engine.user_online_cookie");
-        
-        if( isset($_COOKIE[$user_online_cookie_key]) )
-        {
-            # The "online" session cookie is set, let's check if it corresponds to the same user
-            $raw_cookied_token = sys_decrypt( $_COOKIE[$user_online_cookie_key] );
-            if( empty($raw_cookied_token) ) throw_fake_401();
-            
-            $cached_token = $this->get_session_token("@!uot_{$raw_cookied_token}");
-            if( empty($cached_token) ) throw_fake_401();
-            
-            $tokenized_user_id = sys_decrypt( $cached_token );
-            if( $tokenized_user_id != $this->id_account ) throw_fake_401();
-        }
-        else
+        # Autologin execution
+        if( $do_autologin )
         {
             # Let's do an auto-login
-            
-            $session_token = $this->build_session_token();
-            $this->set_session_token("@!uot_{$session_token}", sys_encrypt($this->id_account), time() + (86400 * 3));
-            setcookie(
-                $user_online_cookie_key,
-                sys_encrypt( $session_token ),
-                0, "/", $config->cookies_domain,
-                (bool) $_SERVER["HTTPS"],
-                true
-            );
-            
-            $session_token = $this->build_session_token();
-            $this->set_session_token("@!udt_{$session_token}", sys_encrypt($this->id_account), time() + (86400 * 3));
-            setcookie(
-                $device_cookie_key,
-                sys_encrypt( $session_token ),
-                0, "/", $config->cookies_domain,
-                (bool) $_SERVER["HTTPS"],
-                true
-            );
             
             $min_loggin_level = (int) $settings->get("engine.min_user_level_for_ip_dismissal");
             if( $min_loggin_level > 0 && $this->level >= $min_loggin_level )
@@ -261,11 +265,10 @@ class account extends account_toolbox
                 `hostname`   = '$host',
                 `location`   = '$location'
             ");
-            
-            $this->extend_session_cookie($device);
         }
         
-        if( ! is_null($device) ) $device->ping();
+        $this->extend_session_cookie($device);
+        $device->ping();
     }
     
     /**
@@ -398,21 +401,8 @@ class account extends account_toolbox
         # Inits
         $now = date("Y-m-d H:i:s");
         
-        # First we set the cookie for the saved session
+        # Let's set all the cookies and tokens
         $this->extend_session_cookie($device);
-        
-        # Set an online flag for the user
-        $session_token = $this->build_session_token();
-        $this->set_session_token("@!uot_{$session_token}", sys_encrypt($this->id_account), time() + (86400 * 3));
-        
-        # Set the online session cookie
-        setcookie(
-            $settings->get("engine.user_online_cookie"),
-            sys_encrypt( $session_token ),
-            0, "/", $config->cookies_domain,
-            (bool) $_SERVER["HTTPS"],
-            true
-        );
         
         if( $settings->get("modules:accounts.track_last_login_ip") == "true" )
         {
@@ -462,16 +452,41 @@ class account extends account_toolbox
         
         if( is_null($device) ) return;
         
-        if( $device->_exists ) $session_time = time() + ( 86400 * 30 );
+        $user_session_cookie_key = $settings->get("engine.user_session_cookie");
+        $user_online_cookie_key  = $settings->get("engine.user_online_cookie");
+        $device_cookie_key       = "_" . $config->website_key . "_DIC";
+        
+        if( $device->_exists ) $session_time = time() + (86400 * 7);
         else                   $session_time = 0;
         
         $session_token = $this->build_session_token();
-        $this->set_session_token("@!ust_{$session_token}", sys_encrypt($this->id_account), time() + (86400 * 30));
-        
+        $encrypted_id  = sys_encrypt($this->id_account);
+        $this->set_session_token("@!ust_{$session_token}", $encrypted_id, time() + (86400 * 7));
         setcookie(
-            $settings->get("engine.user_session_cookie"),
+            $user_session_cookie_key,
             sys_encrypt( $session_token ),
             $session_time, "/", $config->cookies_domain,
+            (bool) $_SERVER["HTTPS"],
+            true
+        );
+        
+        $session_token = $this->build_session_token();
+        $this->set_session_token("@!uot_{$session_token}", $encrypted_id, time() + 60);
+        setcookie(
+            $user_online_cookie_key,
+            sys_encrypt( $session_token ),
+            0, "/", $config->cookies_domain,
+            (bool) $_SERVER["HTTPS"],
+            true
+        );
+        
+        $session_token = $this->build_session_token();
+        $encrypted_did = sys_encrypt($device->id_device);
+        $this->set_session_token("@!udi_{$session_token}", $encrypted_did, time() + 60);
+        setcookie(
+            $device_cookie_key,
+            sys_encrypt( $session_token ),
+            0, "/", $config->cookies_domain,
             (bool) $_SERVER["HTTPS"],
             true
         );
@@ -481,22 +496,25 @@ class account extends account_toolbox
     {
         global $settings, $mem_cache, $account, $config, $modules;
         
-        $ust = $_COOKIE[$settings->get("engine.user_session_cookie")];
+        $user_session_cookie_key = $settings->get("engine.user_session_cookie");
+        $user_online_cookie_key  = $settings->get("engine.user_online_cookie");
+        $device_cookie_key       = "_" . $config->website_key . "_DIC";
+        
+        $ust = $_COOKIE[$user_session_cookie_key];
         if( ! empty($ust) ) $this->delete_session_token("@!ust_{$ust}");
         
-        $uot = $_COOKIE[$settings->get("engine.user_online_cookie")];
+        $uot = $_COOKIE[$user_online_cookie_key];
         if( ! empty($uot) ) $this->delete_session_token("@!uot_{$uot}");
         
-        $device_cookie_key = "_" . $config->website_key . "_DIC";
-        $udt = $_COOKIE[$device_cookie_key];
-        if( ! empty($udt) ) $this->delete_session_token("@!udt_{$udt}");
+        $udi = $_COOKIE[$device_cookie_key];
+        if( ! empty($udi) ) $this->delete_session_token("@!udi_{$udi}");
         
-        setcookie( $settings->get("engine.user_session_cookie"), "", 0, "/", $config->cookies_domain );
-        setcookie( $settings->get("engine.user_online_cookie"),  "", 0, "/", $config->cookies_domain );
-        setcookie( $device_cookie_key                         ,  "", 0, "/", $config->cookies_domain );
+        setcookie( $user_session_cookie_key, "", 0, "/", $config->cookies_domain );
+        setcookie( $user_online_cookie_key,  "", 0, "/", $config->cookies_domain );
+        setcookie( $device_cookie_key,   "", 0, "/", $config->cookies_domain );
         unset(
-            $_COOKIE[$settings->get("engine.user_session_cookie")],
-            $_COOKIE[$settings->get("engine.user_online_cookie")],
+            $_COOKIE[$user_session_cookie_key],
+            $_COOKIE[$user_online_cookie_key],
             $_COOKIE[$device_cookie_key]
         );
         $mem_cache->delete("account:{$account->id_account}");

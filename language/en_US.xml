@@ -473,6 +473,13 @@
             ]]></description>
             <type>text</type>
         </specs>
+        <specs key="session_cookie_vars_upgraded_to_v2" disabled="true">
+            <title>Session cookie vars upgraded to v2</title>
+            <description><![CDATA[
+                Internal flag, read only.
+            ]]></description>
+            <type>boolean</type>
+        </specs>
         
         <!-- Input and uploads -->
         <specs is_separator="true">Form input and uploads</specs>

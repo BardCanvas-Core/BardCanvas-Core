@@ -478,6 +478,13 @@
             ]]></description>
             <type>text</type>
         </specs>
+        <specs key="session_cookie_vars_upgraded_to_v2" disabled="true">
+            <title>Variables de cookie de sesión actualizadas a v2</title>
+            <description><![CDATA[
+                Bandera interna, sólo lectura.
+            ]]></description>
+            <type>boolean</type>
+        </specs>
         
         <!-- Input and uploads -->
         <specs is_separator="true">Entrada y subidas de archivos</specs>

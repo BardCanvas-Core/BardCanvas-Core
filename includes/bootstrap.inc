@@ -121,6 +121,15 @@ $modules = array();
 include dirname(__FILE__) . "/modules_autoloader.inc";
 load_tinymce_addons();
 
+if( $settings->get("engine.session_cookie_vars_upgraded_to_v2") != "true" )
+{
+    $user_online_cookie  = $settings->get("engine.user_online_cookie");
+    $user_session_cookie = $settings->get("engine.user_session_cookie");
+    $settings->set("engine.user_online_cookie",                 $user_online_cookie  . "_v2");
+    $settings->set("engine.user_session_cookie",                $user_session_cookie . "_v2");
+    $settings->set("engine.session_cookie_vars_upgraded_to_v2", "true");
+}
+
 $template->build_includes();
 
 $account = new account();
