@@ -515,13 +515,13 @@ class account extends account_toolbox
         $user_online_cookie_key  = $settings->get("engine.user_online_cookie");
         $device_cookie_key       = "_" . $config->website_key . "_DIC";
         
-        $ust = $_COOKIE[$user_session_cookie_key];
+        $ust = sys_decrypt($_COOKIE[$user_session_cookie_key]);
         if( ! empty($ust) ) $this->delete_session_token("@!ust_{$ust}");
         
-        $uot = $_COOKIE[$user_online_cookie_key];
+        $uot = sys_decrypt($_COOKIE[$user_online_cookie_key]);
         if( ! empty($uot) ) $this->delete_session_token("@!uot_{$uot}");
         
-        $udi = $_COOKIE[$device_cookie_key];
+        $udi = sys_decrypt($_COOKIE[$device_cookie_key]);
         if( ! empty($udi) ) $this->delete_session_token("@!udi_{$udi}");
         
         setcookie( $user_session_cookie_key, "", 0, "/", $config->cookies_domain );
