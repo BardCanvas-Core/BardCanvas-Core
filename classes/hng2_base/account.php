@@ -137,23 +137,31 @@ class account extends account_toolbox
         $user_session_cookie_key = $settings->get("engine.user_session_cookie");
         $user_online_account_id  = 0;
         $user_saved_account_id   = 0;
+        $user_session_acccount   = 0;
         
         $do_autologin = false;
         if( isset($_COOKIE[$user_online_cookie_key]) )
         {
             # The "online" session cookie is set, so session is loaded from there
             $raw_cookied_token = sys_decrypt( $_COOKIE[$user_online_cookie_key] );
-            if( empty($raw_cookied_token) ) return;
-            
-            $cached_token = $this->get_session_token("@!uot_{$raw_cookied_token}");
-            if( empty($cached_token) ) return;
-            
-            $user_online_account_id = sys_decrypt( $cached_token );
-            if( ! is_numeric($user_online_account_id) ) return;
-            
-            $user_session_acccount = $user_online_account_id;
+            if( ! empty($raw_cookied_token) )
+            {
+                $cached_token = $this->get_session_token("@!uot_{$raw_cookied_token}");
+                if( ! empty($cached_token) )
+                {
+                    $user_online_account_id = sys_decrypt( $cached_token );
+                    if( ! is_numeric($user_online_account_id) )
+                    {
+                        $user_online_account_id = 0;
+                    }
+                    else
+                    {
+                        $user_session_acccount = $user_online_account_id;
+                    }
+                }
+            }
         }
-    
+        
         if( isset($_COOKIE[$user_session_cookie_key]) )
         {
             $raw_cookied_token = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
