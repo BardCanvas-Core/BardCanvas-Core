@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.3] - 2022-09-28
+
+- Fixed online session cookie behavior that didn't recognize saved data.
+
 ## [1.14.9.2] - 2022-09-28
 
 - Added treatment of empty values on system encryption/decryption functions.
