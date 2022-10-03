@@ -945,11 +945,14 @@ function has_injected_scripts($input)
     if( stristr($input, "<style") ) return true;
     if( stristr($input, "<form") ) return true;
     if( stristr($input, "<input") ) return true;
+    if( stristr($input, "<button") ) return true;
+    if( stristr($input, "<select") ) return true;
+    if( stristr($input, "<layer") ) return true;
     if( stristr($input, "<iframe") ) return true;
     if( stristr($input, "<!--") ) return true;
     if( stristr($input, "-->") ) return true;
-    if( preg_match('/on[a-z]+=/', $input) ) return true;
-    if( preg_match('/url\(\s|.+\)/', $input) ) return true;
+    if( preg_match('/on[a-z]+=/i', $input) ) return true;
+    if( preg_match('@url\(\s*[\'"]?(https?|mailto|ftp|data)://.+[\'"]?\s*\)@', $input) ) return true;
     if( stristr($input, "data:") ) return true;
     
     return false;
