@@ -847,7 +847,7 @@ function check_sql_injection($input)
               . '|'
               . '(gethostbyname|nslookup|shell_exec|pg_sleep)'
               . '|'
-              . '(/\*|\*/|0x[a-f0-9+]|1=0|1=1|1--)'
+              . '(/\*|\*/|0x0[a-f0-8]|0x1[a-f0-9]|1=0|1=1|1--)'
               . '#i';
     
     foreach($input as $string)
