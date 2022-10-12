@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.5] - 2022-10-12
+
+- Tuned SQL injection patterns.
+
 ## [1.14.9.4] - 2022-10-02
 
 - Patterns tunning on the scripts injection checker.
