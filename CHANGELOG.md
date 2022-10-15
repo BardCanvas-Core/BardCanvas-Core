@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.6] - 2022-10-14
+
+- Added error 500 thrower.
+
 ## [1.14.9.5] - 2022-10-12
 
 - Tuned SQL injection patterns.
