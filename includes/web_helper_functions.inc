@@ -70,6 +70,26 @@ function throw_fake_501()
 }
 
 /**
+ * Echoes a fake "500 - Internal server error" error and quits the program.
+ */
+function throw_fake_500()
+{
+    header("Content-Type: text/html; charset=utf-8");
+    header("HTTP/1.0 501 Not implemented");
+    # echo "<pre>\$_SERVER := " . print_r($_SERVER, true) . "</pre>";
+    
+    die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>500 Internal server error</title>
+        </head><body>
+        <h1>Internal server error</h1>
+        <p>There was a problem processing your request.</p>
+        <hr>
+        <address>' . trim($_SERVER["SERVER_SIGNATURE"]) . '</address>
+        </body></html>');
+}
+
+/**
  * Check if a given ip is in a network
  * @see https://gist.github.com/tott/7684443
  *
