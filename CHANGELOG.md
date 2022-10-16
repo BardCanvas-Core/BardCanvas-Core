@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.7] - 2022-10-16
+
+- Tuned session management.
+
 ## [1.14.9.6] - 2022-10-14
 
 - Added error 500 thrower.
