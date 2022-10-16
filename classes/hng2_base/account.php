@@ -207,7 +207,7 @@ class account extends account_toolbox
             
             $this->_exists = true;
             $this->assign_from_object($row);
-            $mem_cache->set("account:{$user_session_acccount}", $row, 0, 600);
+            $mem_cache->set("account:{$user_session_acccount}", $row, 0, time() + (86400 * 8));
         }
         
         # Device identification/preload
@@ -469,7 +469,7 @@ class account extends account_toolbox
     
     protected function extend_session_cookie($device)
     {
-        global $config, $settings;
+        global $config, $settings, $mem_cache;
         
         if( is_null($device) ) return;
         
@@ -492,6 +492,7 @@ class account extends account_toolbox
             true
         );
         $this->set_session_token("@!ust_{$prev_stoken}", $encrypted_id, time() + 60);
+        $mem_cache->set("account:{$this->id_account}", $this, 0, time() + (86400 * 8));
         
         $session_token = $this->build_session_token();
         $this->set_session_token("@!uot_{$session_token}", $encrypted_id, time() + 60);
@@ -534,7 +535,7 @@ class account extends account_toolbox
         
         setcookie( $user_session_cookie_key, "", 0, "/", $config->cookies_domain );
         setcookie( $user_online_cookie_key,  "", 0, "/", $config->cookies_domain );
-        setcookie( $device_cookie_key,   "", 0, "/", $config->cookies_domain );
+        setcookie( $device_cookie_key,       "", 0, "/", $config->cookies_domain );
         unset(
             $_COOKIE[$user_session_cookie_key],
             $_COOKIE[$user_online_cookie_key],
