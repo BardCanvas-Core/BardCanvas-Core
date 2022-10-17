@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.9] - 2022-10-17
+
+- Optimized memory probing on the memory exhausting protection snippet.
+
 ## [1.14.9.8] - 2022-10-17
 
 - Added memory exhausting protection on the database class.
