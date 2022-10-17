@@ -24,7 +24,7 @@ download the BardCanvas bundle from [bardcanvas.com/download](https://bardcanvas
 
 # Version
 
-Current version is **1.14.9.7**, released on October 16, 2022.
+Current version is **1.14.9.8**, released on October 17, 2022.
 
 Please check the changelog [here](CHANGELOG.md).
 

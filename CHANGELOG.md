@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.8] - 2022-10-17
+
+- Added memory exhausting protection on the database class.
+- Fixed an issue in session management that caused excessive entries in the logins table.
+
 ## [1.14.9.7] - 2022-10-16
 
 - Tuned session management.
