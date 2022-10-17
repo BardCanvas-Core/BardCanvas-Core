@@ -276,15 +276,19 @@ class db_controller
         
         $return = @$res->fetchObject();
         
-        $memory_limit = ini_get('memory_limit');
-        if( preg_match('/^(\d+)(.)$/', $memory_limit, $matches) )
+        static $memory_limit = null;
+        if( is_null($memory_limit) )
         {
-            if(      $matches[2] == 'M' ) $memory_limit = $matches[1] * 1024 * 1024;
-            else if( $matches[2] == 'K' ) $memory_limit = $matches[1] * 1024;
+            $memory_limit = ini_get('memory_limit');
+            if( preg_match('/^(\d+)(.)$/', $memory_limit, $matches) )
+            {
+                if(      $matches[2] == 'M' ) $memory_limit = $matches[1] * 1024 * 1024;
+                else if( $matches[2] == 'K' ) $memory_limit = $matches[1] * 1024;
+            }
         }
         
         $used = memory_get_usage(true);
-        if( $used >= ($memory_limit - 1024) )
+        if( $used >= ($memory_limit - (1024 * 16)) )
         {
             $rows   = $this->num_rows($res);
             $logfd  = date("Ymd");
