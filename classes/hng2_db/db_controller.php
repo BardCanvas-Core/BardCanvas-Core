@@ -272,7 +272,50 @@ class db_controller
      */
     public function fetch_object(\PDOStatement $res)
     {
-        return $res->fetchObject();
+        global $config;
+        
+        $return = @$res->fetchObject();
+        
+        $memory_limit = ini_get('memory_limit');
+        if( preg_match('/^(\d+)(.)$/', $memory_limit, $matches) )
+        {
+            if(      $matches[2] == 'M' ) $memory_limit = $matches[1] * 1024 * 1024;
+            else if( $matches[2] == 'K' ) $memory_limit = $matches[1] * 1024;
+        }
+        
+        $used = memory_get_usage(true);
+        if( $used >= ($memory_limit - 1024) )
+        {
+            $rows   = $this->num_rows($res);
+            $logfd  = date("Ymd");
+            $logfl  = "{$config->logfiles_location}/db_errors-{$logfd}.log";
+            $logdt  = date("Y-m-d H:i:s");
+            $logmsg = "[$logdt] Memory of $memory_limit bytes exhausted when attempting to fetch a row from a {$rows} rows result set.\n\n"
+                    . $this->last_query . "\n\n";
+            $backtrace2 = debug_backtrace();
+            foreach($backtrace2 as $backtrace_item2)
+                $logmsg .= " • " . $backtrace_item2["file"] . ":" . $backtrace_item2["line"] . "\n";
+            $logmsg .= "\n";
+            
+            $ip   = get_remote_address();
+            $host = @gethostbyaddr($ip); if(empty($host)) $host = $ip;
+            $loc  = get_geoip_location($ip);
+            $isp  = get_geoip_isp($ip);
+            $logmsg .= "Connection data:\n"
+                    .  " • IP:       $ip\n"
+                    .  " • Host:     $host\n"
+                    .  " • Location: $loc\n"
+                    .  " • IPS:      $isp\n"
+                    .  " • QueryStr: {$_SERVER["QUERY_STRING"]}\n"
+                    .  " • Referer:  {$_SERVER["HTTP_REFERER"]}\n"
+                    .  "\n";
+           
+            @file_put_contents($logfl, $logmsg, FILE_APPEND);
+            
+            throw new \Exception("Error when fetching result set: memory exhausted.");
+        }
+        
+        return $return;
     }
     
     private function set_current_read_db()
