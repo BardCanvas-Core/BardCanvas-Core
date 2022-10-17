@@ -162,23 +162,26 @@ class account extends account_toolbox
             }
         }
         
-        if( isset($_COOKIE[$user_session_cookie_key]) )
+        if( empty($user_session_acccount) )
         {
-            $raw_cookied_token = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
-            if( ! empty($raw_cookied_token) )
+            if( isset($_COOKIE[$user_session_cookie_key]) )
             {
-                $cached_token = $this->get_session_token("@!ust_{$raw_cookied_token}");
-                if( ! empty($cached_token) )
+                $raw_cookied_token = sys_decrypt( $_COOKIE[$user_session_cookie_key] );
+                if( ! empty($raw_cookied_token) )
                 {
-                    $user_saved_account_id = sys_decrypt($cached_token);
-                    if( ! is_numeric($user_saved_account_id) )
+                    $cached_token = $this->get_session_token("@!ust_{$raw_cookied_token}");
+                    if( ! empty($cached_token) )
                     {
-                        $user_saved_account_id = 0;
-                    }
-                    else
-                    {
-                        $user_session_acccount = $user_saved_account_id;
-                        $do_autologin = true;
+                        $user_saved_account_id = sys_decrypt($cached_token);
+                        if( ! is_numeric($user_saved_account_id) )
+                        {
+                            $user_saved_account_id = 0;
+                        }
+                        else
+                        {
+                            $user_session_acccount = $user_saved_account_id;
+                            $do_autologin = true;
+                        }
                     }
                 }
             }
