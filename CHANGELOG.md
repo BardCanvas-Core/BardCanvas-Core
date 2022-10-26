@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.10] - 2022-10-26
+
+- Fixed path issue in the abstract video manager constructor.
+
 ## [1.14.9.9] - 2022-10-17
 
 - Optimized memory probing on the memory exhausting protection snippet.
