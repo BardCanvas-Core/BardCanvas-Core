@@ -40,7 +40,7 @@ abstract class abstract_video_manager extends abstract_item_manager
             $this->mime_type  = "";
             
             if( function_exists("mime_content_type") )
-                $this->mime_type = mime_content_type($this->file_name);
+                $this->mime_type = mime_content_type($this->file_path);
             
             if( empty($this->mime_type) )
             {
