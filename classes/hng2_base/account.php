@@ -494,11 +494,11 @@ class account extends account_toolbox
             (bool) $_SERVER["HTTPS"],
             true
         );
-        $this->set_session_token("@!ust_{$prev_stoken}", $encrypted_id, time() + 60);
+        $this->set_session_token("@!ust_{$prev_stoken}", $encrypted_id, time() + 300);
         $mem_cache->set("account:{$this->id_account}", $this, 0, time() + (86400 * 8));
         
         $session_token = $this->build_session_token();
-        $this->set_session_token("@!uot_{$session_token}", $encrypted_id, time() + 60);
+        $this->set_session_token("@!uot_{$session_token}", $encrypted_id, time() + 300);
         setcookie(
             $user_online_cookie_key,
             sys_encrypt( $session_token ),
@@ -509,7 +509,7 @@ class account extends account_toolbox
         
         $session_token = $this->build_session_token();
         $encrypted_did = sys_encrypt($device->id_device);
-        $this->set_session_token("@!udi_{$session_token}", $encrypted_did, time() + 60);
+        $this->set_session_token("@!udi_{$session_token}", $encrypted_did, time() + 300);
         setcookie(
             $device_cookie_key,
             sys_encrypt( $session_token ),
