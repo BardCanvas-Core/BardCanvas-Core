@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.11] - 2022-11-03
+
+- Increased session token expiration time.
+
 ## [1.14.9.10] - 2022-10-26
 
 - Fixed path issue in the abstract video manager constructor.
