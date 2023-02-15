@@ -971,7 +971,11 @@ function has_injected_scripts($input)
     if( stristr($input, "<iframe") ) return true;
     if( stristr($input, "<!--") ) return true;
     if( stristr($input, "-->") ) return true;
-    if( preg_match('/on[a-z]+=/i', $input) ) return true;
+    if( stristr($input, "javascript:") ) return true;
+    if( preg_match('/on(hover|click|dblclick)=/i', $input) ) return true;
+    if( preg_match('/onmouse(down|move|out|over|up|wheel)|onwheel=/i', $input) ) return true;
+    if( preg_match('/key(down|up|press)=/i', $input) ) return true;
+    if( preg_match('/on(focus|blur|submit|copy|cut|paste)=/i', $input) ) return true;
     if( preg_match('@url\(\s*[\'"]?(https?|mailto|ftp|data)://.+[\'"]?\s*\)@', $input) ) return true;
     if( stristr($input, "data:") ) return true;
     
