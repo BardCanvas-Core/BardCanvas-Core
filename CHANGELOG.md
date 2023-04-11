@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.12] - 2023-04-10
+
+- Tuned injected scripts checker.
+
 ## [1.14.9.11] - 2022-11-03
 
 - Increased session token expiration time.
