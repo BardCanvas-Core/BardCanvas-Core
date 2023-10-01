@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.13] - 2023-09-30
+
+- Tuning of the abstract DB record class.
+
 ## [1.14.9.12] - 2023-04-10
 
 - Tuned injected scripts checker.
