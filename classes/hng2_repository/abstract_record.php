@@ -18,7 +18,7 @@ abstract class abstract_record
     
     protected function set_from_object($object_or_array)
     {
-        if( is_array($object_or_array) ) $object_or_array = (array) $object_or_array;
+        if( empty($object_or_array) ) return;
         
         foreach( $object_or_array as $key => $val ) $this->{$key} = $val;
     }
