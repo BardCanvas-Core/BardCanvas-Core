@@ -68,17 +68,101 @@ function get_geoip_location_data($ip, $what = "country_code")
 {
     if( empty($ip) ) $ip = get_remote_address();
     
+    $use_legacy_geoip = true;
     if( defined("IPINFOIO_TOKEN") )
     {
         $record = __ipinfoio_get_all($ip);
         if( is_null($record) ) return "";
+        
+        $use_legacy_geoip = false;
         
         $region       = $record["region"];
         $region_name  = $record["region_name"];
         $country_code = $record["country_code"];
         $isp          = $record["isp"];
     }
-    else
+    else if( defined("GEOIP2_PHAR") && is_file(GEOIP2_PHAR) && defined("GEOIP2_HOME") && is_dir(GEOIP2_HOME) )
+    {
+        $use_legacy_geoip = false;
+        
+        include_once(GEOIP2_PHAR);
+        
+        $countryDbReader = null;
+        $cityDbReader    = null;
+        $ispDbReader     = null;
+        try
+        {
+            /** @noinspection PhpUndefinedClassInspection */
+            /** @noinspection PhpUndefinedNamespaceInspection */
+            $countryDbReader = new GeoIp2\Database\Reader(GEOIP2_HOME . '/GeoIP2-Country.mmdb');
+            
+            /** @noinspection PhpUndefinedClassInspection */
+            /** @noinspection PhpUndefinedNamespaceInspection */
+            $cityDbReader = new GeoIp2\Database\Reader(GEOIP2_HOME . 'GeoIP2-City.mmdb');
+            
+            /** @noinspection PhpUndefinedClassInspection */
+            /** @noinspection PhpUndefinedNamespaceInspection */
+            $ispDbReader = new GeoIp2\Database\Reader(GEOIP2_HOME . 'GeoIP2-ISP.mmdb');
+        }
+        catch(\Exception $e) {}
+        
+        $record = array(
+            "country_code" => "",
+            "country_name" => "",
+            "region"       => "",
+            "region_name"  => "",
+            "city"         => "",
+            "isp"          => "",
+        );
+        
+        if( $cityDbReader )
+        {
+            $tmp = null;
+            try
+            {
+                $tmp = $cityDbReader->city($ip);
+            }
+            catch(\Exception $e) {}
+            
+            if( ! is_null($tmp) )
+            {
+                $record["country_code"] = $tmp->country->isoCode;
+                $record["country_name"] = $tmp->country->name;
+                $record["region"]       = $tmp->mostSpecificSubdivision->isoCode;
+                $record["region_name"]  = $tmp->mostSpecificSubdivision->name;
+                $record["city"]         = $tmp->city->name;
+            }
+        }
+        else if( $countryDbReader )
+        {
+            $tmp = null;
+            try
+            {
+                $tmp = $countryDbReader->country($ip);
+            }
+            catch(\Exception $e) {}
+            
+            if( ! is_null($tmp) )
+            {
+                $record["country_code"] = $tmp->country->isoCode;
+                $record["country_name"] = $tmp->country->name;
+            }
+        }
+        
+        if( $ispDbReader )
+        {
+            $tmp = null;
+            try
+            {
+                $tmp = $ispDbReader->isp($ip);
+            }
+            catch(\Exception $e) {}
+            
+            if( ! is_null($tmp) ) $record["isp"] = $tmp->isp;
+        }
+    }
+    
+    if( $use_legacy_geoip )
     {
         if( ! function_exists("geoip_record_by_name") ) return "";
         
