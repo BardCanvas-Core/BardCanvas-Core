@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.14] - 2024-03-18
+
+- Added support for GeoIP v2.
+
 ## [1.14.9.13] - 2023-09-30
 
 - Tuning of the abstract DB record class.
