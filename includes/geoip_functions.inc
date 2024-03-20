@@ -7,6 +7,10 @@
  * @author     Alejandro Caballero - lava.caballero@gmail.com
  */
 
+/** @noinspection PhpUndefinedClassInspection */
+/** @noinspection PhpUndefinedNamespaceInspection */
+use GeoIp2\Database\Reader;
+
 /**
  * Forging of country, state, city info
  *
@@ -85,35 +89,18 @@ function get_geoip_location_data($ip, $what = "country_code")
     {
         $use_legacy_geoip = false;
         
-        include_once(GEOIP2_PHAR);
+        require_once(GEOIP2_PHAR);
         
         $countryDbReader = null;
         $cityDbReader    = null;
         $ispDbReader     = null;
         try
         {
-            /** @noinspection PhpUndefinedClassInspection */
-            /** @noinspection PhpUndefinedNamespaceInspection */
-            $countryDbReader = new GeoIp2\Database\Reader(GEOIP2_HOME . '/GeoIP2-Country.mmdb');
-            
-            /** @noinspection PhpUndefinedClassInspection */
-            /** @noinspection PhpUndefinedNamespaceInspection */
-            $cityDbReader = new GeoIp2\Database\Reader(GEOIP2_HOME . 'GeoIP2-City.mmdb');
-            
-            /** @noinspection PhpUndefinedClassInspection */
-            /** @noinspection PhpUndefinedNamespaceInspection */
-            $ispDbReader = new GeoIp2\Database\Reader(GEOIP2_HOME . 'GeoIP2-ISP.mmdb');
+            $countryDbReader = new Reader(GEOIP2_HOME . '/GeoIP2-Country.mmdb');
+            $cityDbReader    = new Reader(GEOIP2_HOME . '/GeoIP2-City.mmdb');
+            $ispDbReader     = new Reader(GEOIP2_HOME . '/GeoIP2-ISP.mmdb');
         }
         catch(\Exception $e) {}
-        
-        $record = array(
-            "country_code" => "",
-            "country_name" => "",
-            "region"       => "",
-            "region_name"  => "",
-            "city"         => "",
-            "isp"          => "",
-        );
         
         if( $cityDbReader )
         {
@@ -126,11 +113,11 @@ function get_geoip_location_data($ip, $what = "country_code")
             
             if( ! is_null($tmp) )
             {
-                $record["country_code"] = $tmp->country->isoCode;
-                $record["country_name"] = $tmp->country->name;
-                $record["region"]       = $tmp->mostSpecificSubdivision->isoCode;
-                $record["region_name"]  = $tmp->mostSpecificSubdivision->name;
-                $record["city"]         = $tmp->city->name;
+                $country_code = $tmp->country->isoCode;
+                $country_name = $tmp->country->name;
+                $region       = $tmp->mostSpecificSubdivision->isoCode;
+                $region_name  = $tmp->mostSpecificSubdivision->name;
+                $city         = $tmp->city->name;
             }
         }
         else if( $countryDbReader )
@@ -144,8 +131,8 @@ function get_geoip_location_data($ip, $what = "country_code")
             
             if( ! is_null($tmp) )
             {
-                $record["country_code"] = $tmp->country->isoCode;
-                $record["country_name"] = $tmp->country->name;
+                $country_code = $tmp->country->isoCode;
+                $country_name = $tmp->country->name;
             }
         }
         
@@ -158,7 +145,7 @@ function get_geoip_location_data($ip, $what = "country_code")
             }
             catch(\Exception $e) {}
             
-            if( ! is_null($tmp) ) $record["isp"] = $tmp->isp;
+            if( ! is_null($tmp) ) $isp = $tmp->isp;
         }
     }
     
@@ -170,14 +157,20 @@ function get_geoip_location_data($ip, $what = "country_code")
         $region       = $record["region"];
         $country_code = $record["country_code"];
         $region_name  = @geoip_region_name_by_code($country_code, $region);
+        $country_name = $record["country_name"];
+        $city         = $record["city"];
         
         $isp = "";
         if( function_exists("geoip_isp_by_name") )     $isp = @geoip_isp_by_name($ip);
         elseif( function_exists("geoip_org_by_name") ) $isp = @geoip_org_by_name($ip);
+        
+        $country_name = utf8_encode($country_name);
+        $region       = utf8_encode($region);
+        $region_name  = utf8_encode($region_name);
+        $city         = utf8_encode($city);
+        $isp          = utf8_encode($isp);
+        
     }
-    
-    $country_name = $record["country_name"];
-    $city         = $record["city"];
     
     if( empty($city) )         $city         = "n/a";
     if( empty($region) )       $region       = "n/a";
@@ -185,12 +178,12 @@ function get_geoip_location_data($ip, $what = "country_code")
     if( empty($country_name) ) $country_name = "n/a";
     if( empty($isp) )          $isp          = "n/a";
     
-    if( $what == "country_code" ) return utf8_encode($country_code);
-    if( $what == "country_name" ) return utf8_encode($country_name);
-    if( $what == "region" )       return utf8_encode($region);
-    if( $what == "region_name" )  return utf8_encode($region_name);
-    if( $what == "city" )         return utf8_encode($city);
-    if( $what == "isp" )          return utf8_encode($isp);
+    if( $what == "country_code" ) return $country_code;
+    if( $what == "country_name" ) return $country_name;
+    if( $what == "region" )       return $region;
+    if( $what == "region_name" )  return $region_name;
+    if( $what == "city" )         return $city;
+    if( $what == "isp" )          return $isp;
     
     return "";
 }
