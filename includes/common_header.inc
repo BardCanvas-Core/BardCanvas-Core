@@ -164,7 +164,16 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
     <!-- UI Additions -->
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery.blockUI.js"></script>
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery.form.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/font-awesome-4.7.0/css/font-awesome.css">
+    <? if( $template->get("use_latest_fontawesome") ): ?>
+        <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/fontawesome-free-6.5.1-web/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/fontawesome-free-6.5.1-web/css/v4-shims.min.css">
+        <style type="text/css">
+            .pull-left  { float: left; }
+            .pull-right { float: right; }
+        </style>
+    <? else: ?>
+        <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/font-awesome-4.7.0/css/font-awesome.css">
+    <? endif; ?>
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/emojione-2.2.5/css/emojione-awesome.css">
     <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/prettyPhoto_compressed_3.1.6/css/prettyPhoto.css">
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/prettyPhoto_compressed_3.1.6/js/jquery.prettyPhoto.js"></script>
