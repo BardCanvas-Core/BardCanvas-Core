@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.16] - 2024-03-23
+
+- Added support for inclusion of the latest FontAwesome version.
+- Added support for custom CSS version as injected by the template.
+
 ## [1.14.9.15] - 2024-03-19
 
 - Tuned support for GeoIP v2.
