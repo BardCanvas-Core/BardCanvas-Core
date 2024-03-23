@@ -84,6 +84,7 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
         var $_CURRENT_USER_IS_ADMIN   = <?= $account->_is_admin ? "true" : "false" ?>;
         var $_CURRENT_USER_IS_MOD     = <?= $account->level >= config::MODERATOR_USER_LEVEL ? "true" : "false" ?>;
         var $_TEMPLATE_URL            = '<?= $template->url ?>';
+        var $_TEMPLATE_CSS_VERSION    = '<?= $template->get("css_version") ?>';
         var $_SCRIPTS_VERSION         = '<?= $config->scripts_version ?>';
         var $_ENGINE_VERSION          = '<?= $config->engine_version ?>';
         var $_IS_MOBILE               = <?= is_mobile() ? "true" : "false" ?>;
@@ -91,6 +92,8 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
         var $_SILENT_NOTIFICATIONS    = '<?= $account->engine_prefs["!core:silent_notifications"] ?>' == 'true';
         var $_AJAX_ERROR_DIALOG_TITLE = '<?= trim($language->errors->ajax->title) ?>';
         var $_AJAX_ERROR_CONTENTS     = '<?= str_replace(array("\r", "\n"), "\\n", addslashes(unindent($language->errors->ajax->info))) ?>';
+        
+        if( $_TEMPLATE_CSS_VERSION === '' ) $_TEMPLATE_CSS_VERSION = 1;
         
         var $_MAIN_MENU_AUTO_COLLAPSE_WIDTH = parseInt('<?= (int) $settings->get("engine.main_menu_auto_collapse_width", 700) ?>');
         
@@ -104,8 +107,8 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
         
         var tinymce_default_css_files = [
             $_FULL_ROOT_PATH  + '/media/styles~v' + $_ENGINE_VERSION + 'tmce-17.css',
-            $_TEMPLATE_URL    + '/media/styles~v' + $_ENGINE_VERSION + 'tmce-1.css',
-            $_TEMPLATE_URL    + '/media/post_styles~v' + $_ENGINE_VERSION + 'tmce-1.css'
+            $_TEMPLATE_URL    + '/media/styles~v' + $_ENGINE_VERSION + 'tmce-' + $_TEMPLATE_CSS_VERSION + '.css',
+            $_TEMPLATE_URL    + '/media/post_styles~v' + $_ENGINE_VERSION + 'tmce-' + $_TEMPLATE_CSS_VERSION + '.css'
         ];
         var tinymce_custom_plugins = [];
         var tinymce_custom_toolbar_buttons = [];
