@@ -348,6 +348,18 @@
             ]]></description>
             <type>number</type>
         </specs>
+        <specs key="use_latest_fontawesome">
+            <title>FontAwesome version</title>
+            <description><![CDATA[
+                Select which FontAwesome version sould the system use.<br>
+                Defaults to automatic - v4.7 or latest (v6+) if the template supports it.
+            ]]></description>
+            <type>list</type>
+            <options>
+                <option value="">Automatic</option>
+                <option value="true">Latest (v6+)</option>
+            </options>
+        </specs>
         
         <!-- Email -->
         <specs is_separator="true">Email</specs>

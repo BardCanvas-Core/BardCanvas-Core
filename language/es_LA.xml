@@ -351,6 +351,18 @@
             ]]></description>
             <type>number</type>
         </specs>
+        <specs key="use_latest_fontawesome">
+            <title>Versión de FontAwesome</title>
+            <description><![CDATA[
+                Selecciona qué versión de FontAwesome debe usarse a nivel sistema.<br>
+                Por defecto, se selecciona de forma automática: v4.7 o la última (v6+) si la plantilla la soporta.
+            ]]></description>
+            <type>list</type>
+            <options>
+                <option value="">Automática</option>
+                <option value="true">Última (v6+)</option>
+            </options>
+        </specs>
         
         <!-- Email -->
         <specs is_separator="true">Correo</specs>
