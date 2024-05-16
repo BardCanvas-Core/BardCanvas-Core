@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.17] - 2024-05-15
+
+- Added definition of FontAwesome version to use at system level on the settings editor.
+
 ## [1.14.9.16] - 2024-03-23
 
 - Added support for inclusion of the latest FontAwesome version.
