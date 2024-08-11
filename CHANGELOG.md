@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.18] - 2024-08-11
+
+- Added font family selector to the full Tinymce editor.
+
 ## [1.14.9.17] - 2024-05-15
 
 - Added definition of FontAwesome version to use at system level on the settings editor.
