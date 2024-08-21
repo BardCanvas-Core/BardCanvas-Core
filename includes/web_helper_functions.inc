@@ -905,6 +905,8 @@ function check_sql_injection($input)
             
             if( count($matches_list) < 3 ) continue;
             
+            $config->globals["!sql_injection.matches_list"] = $matches_list;
+            
             # Extenders
             if( ! $config->globals["@webhelper/no_extensions"] && is_array($modules) )
             {
