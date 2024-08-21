@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.19] - 2024-08-20
+
+- Added exportable hits collection to the SQL injection detector.
+
 ## [1.14.9.18] - 2024-08-11
 
 - Added font family selector to the full Tinymce editor.
