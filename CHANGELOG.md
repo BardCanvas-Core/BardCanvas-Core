@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.20] - 2024-08-29
+
+- Added identity protection settings.
+
 ## [1.14.9.19] - 2024-08-20
 
 - Added exportable hits collection to the SQL injection detector.
