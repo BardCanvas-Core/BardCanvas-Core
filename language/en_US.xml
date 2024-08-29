@@ -219,6 +219,19 @@
             <type>text</type>
         </specs>
         
+        <specs key="valid_hostnames">
+            <title>Valid hostnames</title>
+            <description><![CDATA[
+                In order to protect this website from identity theft through DNS
+                (I.E. some domain pointing to this server's IP address),
+                please type the <u>valid</u> hostnames, one per line,
+                to check against the HOST header sent by the browser.<br>
+                <i class="fa fa-info-circle"></i> <b>Note:</b>
+                this check is executed in the <i>bootstrap</i>, after the basic initialization of the engine.
+            ]]></description>
+            <type>code</type>
+        </specs>
+        
         <!-- Meta tags -->
         <specs is_separator="true">Meta tags</specs>
         <specs key="meta_description">

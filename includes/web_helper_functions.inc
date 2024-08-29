@@ -10,6 +10,26 @@ use hng2_base\accounts_repository;
 use hng2_base\config;
 
 /**
+ * Echoes a fake "403 - Forbidden" error and quits the program.
+ */
+function throw_fake_403()
+{
+    header("Content-Type: text/html; charset=utf-8");
+    header("HTTP/1.0 403 Forbidden");
+    # echo "<pre>\$_SERVER := " . print_r($_SERVER, true) . "</pre>";
+    
+    die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+        <html><head>
+        <title>403 Forbidden</title>
+        </head><body>
+        <h1>Forbidden</h1>
+        <p>Access denied to ' . $_SERVER["REQUEST_URI"] . '</p>
+        <hr>
+        <address>' . trim($_SERVER["SERVER_SIGNATURE"]) . '</address>
+        </body></html>');
+}
+
+/**
  * Echoes a fake "404 - Not found" error and quits the program.
  */
 function throw_fake_404()

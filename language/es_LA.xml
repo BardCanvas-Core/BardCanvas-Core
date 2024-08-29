@@ -220,6 +220,19 @@
             <type>text</type>
         </specs>
         
+        <specs key="valid_hostnames">
+            <title>Valid hostnames</title>
+            <description><![CDATA[
+                Para proteger este sitio web de robo de identidad vía DNS
+                (P.E. algún dominio ajeno apuntando hacia la dirección IP de este servidor),
+                escribe a continuación los nombres de host <u>válidos</u>, uno por línea,
+                para checar contra el encabezado HOST enviado por el navegador.<br>
+                <i class="fa fa-info-circle"></i> <b>Nota:</b>
+                este chequeo es realizado en el <i>bootstrap</i>, tras la inicialización básica del motor.
+            ]]></description>
+            <type>code</type>
+        </specs>
+        
         <!-- Meta tags -->
         <specs is_separator="true">Meta tags</specs>
         <specs key="meta_description">

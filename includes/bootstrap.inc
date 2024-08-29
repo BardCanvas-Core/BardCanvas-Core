@@ -31,7 +31,7 @@ if( isset($_SERVER["HTTP_REFERER"])          && ! empty($_SERVER["HTTP_REFERER"]
 if( ! empty($sqli_pchecks) )
 {
     try{ check_sql_injection($sqli_pchecks); }
-    catch(\Exception $e) {throw_fake_501(); }
+    catch(\Exception $e) { throw_fake_501(); }
 }
 
 # Inits
@@ -43,6 +43,19 @@ $settings     = new settings();
 $config->fill_user_levels();
 $config->set_metering_toggles();
 $config->fill_upload_types();
+
+# Website name theft protection
+$hostname     = strtolower($_SERVER["HTTP_HOST"]);
+$valid_hosts  = $settings->get_lines("engine.valid_hostnames");
+if( $hostname
+    && $_SERVER["REMOTE_ADDR"]
+    && $_SERVER["REQUEST_METHOD"]
+    && $_SERVER["REQUEST_URI"]
+    && $_SERVER["SERVER_PROTOCOL"]
+    && $_SERVER["DOCUMENT_ROOT"]
+    && ! empty($valid_hosts) 
+    && ! in_array($hostname, $valid_hosts) )
+        throw_fake_403();
 
 # Engine Language loader
 $language_cookie_val  = "";
