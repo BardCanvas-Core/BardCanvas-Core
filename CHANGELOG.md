@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.22] - 2024-10-17
+
+- Version bump.
+
 ## [1.14.9.20] - 2024-08-29
 
 - Added identity protection settings.
