@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.23] - 2025-01-04
+
+- Added mitigation for disguised PHP file uploads.
+
 ## [1.14.9.22] - 2024-10-17
 
 - Version bump.
