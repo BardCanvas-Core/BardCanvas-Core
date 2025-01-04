@@ -57,6 +57,64 @@ if( $hostname
     && ! in_array($hostname, $valid_hosts) )
         throw_fake_403();
 
+# Disguised PHP uploads
+if( ! empty($_FILES) && is_array($_FILES) )
+{
+    $lpatt = '/\.php|\.inc|\.sh|\.pl|\.cgi/i';
+    foreach($_FILES as $key => $vals)
+    {
+        $name = $vals["name"];
+        if( is_string($name) && preg_match($lpatt, $name) )
+        {
+            @unlink($vals["tmp_name"]);
+            $lip   = get_user_ip();
+            $lhost = @gethostbyaddr($lip);
+            $lgeo  = forge_geoip_location($lip);
+            $ltime = date("Ymd");
+            $lfile = "{$config->logfiles_location}/disguised_php_uploads-{$ltime}.log";
+            $ldate = date("Y-m-d H:i:s");
+            $luri  = $_SERVER["REQUEST_URI"];
+            $lagnt = $_SERVER["HTTP_USER_AGENT"];
+            $lmsg  = unindent("
+                         [$ldate]
+                         $lip - $lhost - $lgeo
+                         > $name
+                         ~ $luri
+                         ~ $lagnt
+                     ");
+            @file_put_contents($lfile, "$lmsg\n\n", FILE_APPEND);
+            throw_fake_401();
+        }
+        else if( is_array($name) )
+        {
+            foreach($name as $key2 => $val)
+            {
+                if( is_string($val) && preg_match($lpatt, $val) )
+                {
+                    @unlink($vals["tmp_name"][$key2]);
+                    $lip   = get_user_ip();
+                    $lhost = @gethostbyaddr($lip);
+                    $lgeo  = forge_geoip_location($lip);
+                    $ltime = date("Ymd");
+                    $lfile = "{$config->logfiles_location}/disguised_php_uploads-{$ltime}.log";
+                    $ldate = date("Y-m-d H:i:s");
+                    $luri  = $_SERVER["REQUEST_URI"];
+                    $lagnt = $_SERVER["HTTP_USER_AGENT"];
+                    $lmsg  = unindent("
+                                 [$ldate]
+                                 $lip - $lhost - $lgeo
+                                 > $name
+                                 ~ $luri
+                                 ~ $lagnt
+                             ");
+                    @file_put_contents($lfile, "$lmsg\n\n", FILE_APPEND);
+                    throw_fake_401();
+                }
+            }
+        }
+    }
+}
+
 # Engine Language loader
 $language_cookie_val  = "";
 $set_account_language = false;
