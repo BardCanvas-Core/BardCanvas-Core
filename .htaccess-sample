@@ -28,9 +28,15 @@ RewriteRule .* - [E=HTTP_IF_NONE_MATCH:%{HTTP:If-None-Match}]
 # These rules are hardcoded and must go above editable tiers #
 ##############################################################
 
+# Anti-WP
+RewriteCond %{REQUEST_URI} wp-includes|wp-content|wp-admin|wp-config|wp-mail [NC]
+RewriteRule .* - [F,L]
+
+# Anti-CLI
+RewriteCond %{REQUEST_URI} cli/.*\.php|cli_.*\.php [NC]
+RewriteRule .* - [F,L]
+
 # Login helpers
-RewriteRule ^wp-admin/$  index.php?show_login_form=true  [R,L]
-RewriteRule ^wp-admin$   index.php?show_login_form=true  [R,L]
 RewriteRule ^admin/$     index.php?show_login_form=true  [R,L]
 RewriteRule ^admin$      index.php?show_login_form=true  [R,L]
 RewriteRule ^login/$     index.php?show_login_form=true  [R,L]
