@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.24] - 2025-01-06
+
+- Tuned `.htaccess` sample.
+
 ## [1.14.9.23] - 2025-01-04
 
 - Added mitigation for disguised PHP file uploads.
