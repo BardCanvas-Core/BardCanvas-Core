@@ -29,7 +29,7 @@ RewriteRule .* - [E=HTTP_IF_NONE_MATCH:%{HTTP:If-None-Match}]
 ##############################################################
 
 # Anti-WP
-RewriteCond %{REQUEST_URI} wp-includes|wp-content|wp-admin|wp-config|wp-mail [NC]
+RewriteCond %{REQUEST_URI} wp-includes|wp-content|wp-admin|wp-config|wp-mail|wp-json [NC]
 RewriteRule .* - [F,L]
 
 # Anti-CLI
