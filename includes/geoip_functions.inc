@@ -73,6 +73,7 @@ function get_geoip_location_data($ip, $what = "country_code")
     if( empty($ip) ) $ip = get_remote_address();
     
     $use_legacy_geoip = true;
+    $geoip2_unphared  = ROOTPATH . "/lib/geoip2-php";
     if( defined("IPINFOIO_TOKEN") )
     {
         $record = __ipinfoio_get_all($ip);
@@ -85,67 +86,89 @@ function get_geoip_location_data($ip, $what = "country_code")
         $country_code = $record["country_code"];
         $isp          = $record["isp"];
     }
-    else if( defined("GEOIP2_PHAR") && is_file(GEOIP2_PHAR) && defined("GEOIP2_HOME") && is_dir(GEOIP2_HOME) )
-    {
+    else if(
+        defined("GEOIP2_HOME") && is_dir(GEOIP2_HOME) && (
+            ( defined("GEOIP2_PHAR") && is_file(GEOIP2_PHAR) )
+            ||
+            is_dir($geoip2_unphared)
+        )
+    ) {
         $use_legacy_geoip = false;
         
-        require_once(GEOIP2_PHAR);
-        
-        $countryDbReader = null;
-        $cityDbReader    = null;
-        $ispDbReader     = null;
-        try
+        if( is_dir($geoip2_unphared) )
         {
-            $countryDbReader = new Reader(GEOIP2_HOME . '/GeoIP2-Country.mmdb');
-            $cityDbReader    = new Reader(GEOIP2_HOME . '/GeoIP2-City.mmdb');
-            $ispDbReader     = new Reader(GEOIP2_HOME . '/GeoIP2-ISP.mmdb');
+            if(     version_compare(PHP_VERSION, "7.2", ">=") ) require_once "{$geoip2_unphared}/7.2/vendor/autoload.php";
+            elseif( version_compare(PHP_VERSION, "5.6", ">=") ) require_once "{$geoip2_unphared}/5.6/vendor/autoload.php";
+            elseif( version_compare(PHP_VERSION, "5.3", ">=") ) require_once "{$geoip2_unphared}/5.3/vendor/autoload.php";
+            else $use_legacy_geoip = true;
         }
-        catch(\Exception $e) {}
-        
-        if( $cityDbReader )
+        else if( defined("GEOIP2_PHAR") )
         {
-            $tmp = null;
+            require_once(GEOIP2_PHAR);
+        }
+        else
+        {
+            $use_legacy_geoip = true;
+        }
+        
+        if( ! $use_legacy_geoip )
+        {
+            $countryDbReader = null;
+            $cityDbReader    = null;
+            $ispDbReader     = null;
             try
             {
-                $tmp = $cityDbReader->city($ip);
+                $countryDbReader = new Reader(GEOIP2_HOME . '/GeoIP2-Country.mmdb');
+                $cityDbReader    = new Reader(GEOIP2_HOME . '/GeoIP2-City.mmdb');
+                $ispDbReader     = new Reader(GEOIP2_HOME . '/GeoIP2-ISP.mmdb');
             }
             catch(\Exception $e) {}
             
-            if( ! is_null($tmp) )
+            if( $cityDbReader )
             {
-                $country_code = $tmp->country->isoCode;
-                $country_name = $tmp->country->name;
-                $region       = $tmp->mostSpecificSubdivision->isoCode;
-                $region_name  = $tmp->mostSpecificSubdivision->name;
-                $city         = $tmp->city->name;
+                $tmp = null;
+                try
+                {
+                    $tmp = $cityDbReader->city($ip);
+                }
+                catch(\Exception $e) {}
+                
+                if( ! is_null($tmp) )
+                {
+                    $country_code = $tmp->country->isoCode;
+                    $country_name = $tmp->country->name;
+                    $region       = $tmp->mostSpecificSubdivision->isoCode;
+                    $region_name  = $tmp->mostSpecificSubdivision->name;
+                    $city         = $tmp->city->name;
+                }
             }
-        }
-        else if( $countryDbReader )
-        {
-            $tmp = null;
-            try
+            else if( $countryDbReader )
             {
-                $tmp = $countryDbReader->country($ip);
+                $tmp = null;
+                try
+                {
+                    $tmp = $countryDbReader->country($ip);
+                }
+                catch(\Exception $e) {}
+                
+                if( ! is_null($tmp) )
+                {
+                    $country_code = $tmp->country->isoCode;
+                    $country_name = $tmp->country->name;
+                }
             }
-            catch(\Exception $e) {}
             
-            if( ! is_null($tmp) )
+            if( $ispDbReader )
             {
-                $country_code = $tmp->country->isoCode;
-                $country_name = $tmp->country->name;
+                $tmp = null;
+                try
+                {
+                    $tmp = $ispDbReader->isp($ip);
+                }
+                catch(\Exception $e) {}
+                
+                if( ! is_null($tmp) ) $isp = $tmp->isp;
             }
-        }
-        
-        if( $ispDbReader )
-        {
-            $tmp = null;
-            try
-            {
-                $tmp = $ispDbReader->isp($ip);
-            }
-            catch(\Exception $e) {}
-            
-            if( ! is_null($tmp) ) $isp = $tmp->isp;
         }
     }
     
