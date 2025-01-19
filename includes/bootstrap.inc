@@ -73,7 +73,7 @@ if( ! empty($_FILES) && is_array($_FILES) )
             $ltime = date("Ymd");
             $lfile = "{$config->logfiles_location}/disguised_php_uploads-{$ltime}.log";
             $ldate = date("Y-m-d H:i:s");
-            $luri  = $_SERVER["REQUEST_URI"];
+            $luri  = $_SERVER["REQUEST_METHOD"] . " " . $_SERVER["REQUEST_URI"];
             $lagnt = $_SERVER["HTTP_USER_AGENT"];
             $lmsg  = unindent("
                          [$ldate]
@@ -83,7 +83,7 @@ if( ! empty($_FILES) && is_array($_FILES) )
                          ~ $lagnt
                      ");
             @file_put_contents($lfile, "$lmsg\n\n", FILE_APPEND);
-            throw_fake_401();
+            throw_fake_501();
         }
         else if( is_array($name) )
         {
@@ -98,7 +98,7 @@ if( ! empty($_FILES) && is_array($_FILES) )
                     $ltime = date("Ymd");
                     $lfile = "{$config->logfiles_location}/disguised_php_uploads-{$ltime}.log";
                     $ldate = date("Y-m-d H:i:s");
-                    $luri  = $_SERVER["REQUEST_URI"];
+                    $luri  = $_SERVER["REQUEST_METHOD"] . " " . $_SERVER["REQUEST_URI"];
                     $lagnt = $_SERVER["HTTP_USER_AGENT"];
                     $lmsg  = unindent("
                                  [$ldate]
@@ -108,7 +108,7 @@ if( ! empty($_FILES) && is_array($_FILES) )
                                  ~ $lagnt
                              ");
                     @file_put_contents($lfile, "$lmsg\n\n", FILE_APPEND);
-                    throw_fake_401();
+                    throw_fake_501();
                 }
             }
         }
