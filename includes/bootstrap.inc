@@ -60,7 +60,7 @@ if( $hostname
 # Disguised PHP uploads
 if( ! empty($_FILES) && is_array($_FILES) )
 {
-    $lpatt = '/\.php|\.inc|\.sh|\.pl|\.cgi/i';
+    $lpatt = '/\.php[0-9]*|\.phar|\.inc|\.sh|\.pl|\.cgi/i';
     foreach($_FILES as $key => $vals)
     {
         $name = $vals["name"];
@@ -76,8 +76,8 @@ if( ! empty($_FILES) && is_array($_FILES) )
             $luri  = $_SERVER["REQUEST_METHOD"] . " " . $_SERVER["REQUEST_URI"];
             $lagnt = $_SERVER["HTTP_USER_AGENT"];
             $lmsg  = unindent("
-                         [$ldate]
-                         $lip - $lhost - $lgeo
+                         [$ldate] At system bootstrap (filename check, single)
+                         * $lip - $lhost - $lgeo
                          > $name
                          ~ $luri
                          ~ $lagnt
@@ -87,9 +87,9 @@ if( ! empty($_FILES) && is_array($_FILES) )
         }
         else if( is_array($name) )
         {
-            foreach($name as $key2 => $val)
+            foreach($name as $key2 => $val2)
             {
-                if( is_string($val) && preg_match($lpatt, $val) )
+                if( is_string($val2) && preg_match($lpatt, $val2) )
                 {
                     @unlink($vals["tmp_name"][$key2]);
                     $lip   = get_user_ip();
@@ -101,9 +101,9 @@ if( ! empty($_FILES) && is_array($_FILES) )
                     $luri  = $_SERVER["REQUEST_METHOD"] . " " . $_SERVER["REQUEST_URI"];
                     $lagnt = $_SERVER["HTTP_USER_AGENT"];
                     $lmsg  = unindent("
-                                 [$ldate]
-                                 $lip - $lhost - $lgeo
-                                 > $name
+                                 [$ldate] ~ At system bootstrap (filename check, multiple)
+                                 > $lip - $lhost - $lgeo
+                                 > $val2
                                  ~ $luri
                                  ~ $lagnt
                              ");
