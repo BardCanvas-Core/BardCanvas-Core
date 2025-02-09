@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.26] - 2025-02-09
+
+- Tuned disguised PHP uploads checking algo.
+
 ## [1.14.9.25] - 2025-01-23
 
 - Added support to GeoIP2 through library update.
