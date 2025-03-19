@@ -521,7 +521,7 @@ class account extends account_toolbox
     
     public function close_session($redirect_to = "")
     {
-        global $settings, $mem_cache, $account, $config, $modules;
+        global $settings, $mem_cache, $config, $modules;
         
         $user_session_cookie_key = $settings->get("engine.user_session_cookie");
         $user_online_cookie_key  = $settings->get("engine.user_online_cookie");
@@ -544,11 +544,15 @@ class account extends account_toolbox
             $_COOKIE[$user_online_cookie_key],
             $_COOKIE[$device_cookie_key]
         );
-        $mem_cache->delete("account:{$account->id_account}");
+        $mem_cache->delete("account:{$this->id_account}");
         
         foreach($modules as $module)
             if( ! empty($module->php_includes->after_closing_session) )
                 include "{$module->abspath}/{$module->php_includes->after_closing_session}";
+        
+        $dir  = substr($this->user_name, 0, 3);
+        $patt = "{$config->datafiles_location}/cache/account_prefs/{$dir}/{$this->user_name}~v*.dat";
+        foreach(glob($patt) as $file) @unlink($file);
         
         if( ! empty($redirect_to) )
         {
