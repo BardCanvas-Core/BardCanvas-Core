@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.27] - 2025-03-19
+
+- Purged complementary data on the session closing algorithm.
+
 ## [1.14.9.26] - 2025-02-09
 
 - Tuned disguised PHP uploads checking algo.
