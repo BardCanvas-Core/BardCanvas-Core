@@ -121,6 +121,7 @@ $set_account_language = false;
 if( ! empty($_REQUEST["lang"]) )
 {
     $specified_language = trim(stripslashes($_REQUEST["lang"]));
+    if( preg_match("/[^a-zA-Z0-9_-]/", $specified_language) ) $specified_language = "en_US";
     if( file_exists(ROOTPATH . "/language/{$specified_language}.xml") )
     {
         $language_cookie_val  = $specified_language;
@@ -133,6 +134,7 @@ if( ! empty($_REQUEST["lang"]) )
 if( empty($language_cookie_val) )
 {
     $specified_language = trim(stripslashes($_COOKIE[$config->language_cookie_var]));
+    if( preg_match("/[^a-zA-Z0-9_-]/", $specified_language) ) $specified_language = "en_US";
     if( file_exists(ROOTPATH . "/language/{$specified_language}.xml") )
         $language_cookie_val = $specified_language;
 }
