@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.28] - 2025-05-19
+
+- Added check over manually selected language.
+
 ## [1.14.9.27] - 2025-03-19
 
 - Purged complementary data on the session closing algorithm.
