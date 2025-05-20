@@ -148,7 +148,17 @@ if( empty($language_cookie_val) )
     
     $set_account_language = true;
 }
-$language = simplexml_load_file( ROOTPATH . "/language/".$_COOKIE[$config->language_cookie_var].".xml" );
+
+$language_cookie_val = $_COOKIE[$config->language_cookie_var];
+if( preg_match("/[^a-zA-Z0-9_-]/", $language_cookie_val) ) $language_cookie_val = $_COOKIE[$config->language_cookie_var] = "en_US";
+$lfile = ROOTPATH . "/language/".$language_cookie_val.".xml";
+if( ! is_file($lfile) )
+{
+    $language_cookie_val = $_COOKIE[$config->language_cookie_var] = "en_US";
+    $lfile = ROOTPATH . "/language/".$language_cookie_val.".xml";
+}
+
+$language = simplexml_load_file($lfile);
 header("Content-language: {$language->info->iso}");
 
 # All languages and locales construction
