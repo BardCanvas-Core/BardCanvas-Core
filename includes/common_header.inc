@@ -169,8 +169,8 @@ if( empty($config->globals["js_core_function_overrides"]) ) $config->globals["js
     <script type="text/javascript"          src="<?= $config->full_root_path ?>/lib/jquery.form.min.js"></script>
     <? if( $settings->get("engine.use_latest_fontawesome") == "true" ) $template->set("use_latest_fontawesome", true); 
        if( $template->get("use_latest_fontawesome") ): ?>
-        <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/fontawesome-free-6.5.1-web/css/all.min.css">
-        <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/fontawesome-free-6.5.1-web/css/v4-shims.min.css">
+        <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/fontawesome-free-6.7.2-web/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="<?= $config->full_root_path ?>/lib/fontawesome-free-6.7.2-web/css/v4-shims.min.css">
         <style type="text/css">
             .pull-left  { float: left; }
             .pull-right { float: right; }
