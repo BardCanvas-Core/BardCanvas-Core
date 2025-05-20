@@ -56,21 +56,16 @@ class channel
         $atom->addAttribute("rel", "self");
         $atom->addAttribute("type", "application/rss+xml");
         
-        if( ! empty($this->title)        ) $node->addChild("title", $this->title);
-        if( ! empty($this->link)         ) $node->addChild("link",  $this->link);
-        if( ! empty($this->description)  ) $node->addChild("description",  $this->description);
+        if( ! empty($this->title)        ) $node->addChild("title",       preg_replace('/[\n\s]+/', ' ', $this->title));
+        if( ! empty($this->link)         ) $node->addChild("link",        $this->link);
+        if( ! empty($this->description)  ) $node->addChild("description", preg_replace('/[\n\s]+/', ' ', $this->description));
         
         if( count($this->items) > 0 )
         {
             foreach($this->items as $item)
             {
                 if( ! empty($item->description) )
-                {
-                    $item->description = str_replace("\r\n", "\n", $item->description);
-                    $item->description = str_replace("\n\n", "\n", $item->description);
-                    $item->description = trim(wordwrap($item->description, 70));
-                    $item->description = str_replace("\n", "\n        ", $item->description);
-                }
+                    $item->description = preg_replace('/[\n\s]+/', ' ', $item->description);
                 
                 $item->add_to($node);
             }
