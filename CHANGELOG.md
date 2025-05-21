@@ -1,6 +1,12 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.29] - 2025-05-20
+
+- Tuned CSS generator.
+- Updated FontAwesome version.
+- Added check for selected language coming through cookie.
+
 ## [1.14.9.28] - 2025-05-19
 
 - Added check over manually selected language.
