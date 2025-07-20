@@ -23,6 +23,15 @@ include dirname(__FILE__) . "/geoip_functions.inc";
 include dirname(__FILE__) . "/web_helper_functions.inc";
 
 # Prechecks
+if( isset($_COOKIE['PHPSESSID']) )
+{
+    if( strlen($_COOKIE['PHPSESSID']) > 64 || preg_match('/[^a-z0-9,-_]/i', $_COOKIE['PHPSESSID']) )
+    {
+        setcookie("PHPSESSID", "", time() - 1, "/", "", true, true);
+        unset( $_COOKIE['PHPSESSID'] ) ;
+        throw_fake_501();
+    }
+}
 $sqli_pchecks = array();
 if( isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && ! empty($_SERVER["HTTP_CF_CONNECTING_IP"]) ) $sqli_pchecks[] = $_SERVER["HTTP_CF_CONNECTING_IP"];
 if( isset($_SERVER["HTTP_X_FORWARDED_FOR"])  && ! empty($_SERVER["HTTP_X_FORWARDED_FOR"]) )  $sqli_pchecks[] = $_SERVER["HTTP_X_FORWARDED_FOR"];
