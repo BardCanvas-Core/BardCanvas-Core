@@ -12,101 +12,96 @@ use hng2_base\config;
 /**
  * Echoes a fake "403 - Forbidden" error and quits the program.
  */
-function throw_fake_403()
+function throw_fake_403($message = "")
 {
+    if( empty($message) ) $message = "Access denied to {$_SERVER["REQUEST_URI"]}";
+    
     header("Content-Type: text/html; charset=utf-8");
     header("HTTP/1.0 403 Forbidden");
-    # echo "<pre>\$_SERVER := " . print_r($_SERVER, true) . "</pre>";
     
-    die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    die("<!DOCTYPE HTML>
         <html><head>
         <title>403 Forbidden</title>
         </head><body>
         <h1>Forbidden</h1>
-        <p>Access denied to ' . $_SERVER["REQUEST_URI"] . '</p>
-        <hr>
-        <address>' . trim($_SERVER["SERVER_SIGNATURE"]) . '</address>
-        </body></html>');
+        <p>{$message}</p>
+        </body></html>");
 }
 
 /**
  * Echoes a fake "404 - Not found" error and quits the program.
  */
-function throw_fake_404()
+function throw_fake_404($message = "")
 {
+    if( empty($message) ) $message = "The requested URL {$_SERVER["REQUEST_URI"]} was not found on this server.";
+    
     header("Content-Type: text/html; charset=utf-8");
     header("HTTP/1.0 404 Not Found");
-    # echo "<pre>\$_SERVER := " . print_r($_SERVER, true) . "</pre>";
     
-    die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    die("<!DOCTYPE HTML>
         <html><head>
         <title>404 Not Found</title>
         </head><body>
         <h1>Not Found</h1>
-        <p>The requested URL ' . $_SERVER["REQUEST_URI"] . ' was not found on this server.</p>
-        <hr>
-        <address>' . trim($_SERVER["SERVER_SIGNATURE"]) . '</address>
-        </body></html>');
+        <p>{$message}</p>
+        </body></html>");
 }
 
 /**
  * Echoes a fake "401 - Unauthorized" error and quits the program.
  */
-function throw_fake_401()
+function throw_fake_401($message = "")
 {
+    if( empty($message) ) $message = "You are trying to access a page using an invalid login method.";
+    
     header("Content-Type: text/html; charset=utf-8");
     header("HTTP/1.0 401 Unauthorized");
-    # echo "<pre>\$_SERVER := " . print_r($_SERVER, true) . "</pre>";
     
-    die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    die("<!DOCTYPE HTML>
         <html><head>
         <title>401 Unauthorized</title>
         </head><body>
         <h1>Unauthorized</h1>
-        <p>You are trying to access a page using an invalid login method.</p>
-        <hr>
-        <address>' . trim($_SERVER["SERVER_SIGNATURE"]) . '</address>
-        </body></html>');
+        <p>{$message}</p>
+        </body></html>");
 }
 
 /**
  * Echoes a fake "501 - Not implemented" error and quits the program.
  */
-function throw_fake_501()
+function throw_fake_501($message = "")
 {
-    header("Content-Type: text/html; charset=utf-8");
-    header("HTTP/1.0 501 Not implemented");
-    # echo "<pre>\$_SERVER := " . print_r($_SERVER, true) . "</pre>";
+    if( empty($message) ) $message = "You are trying to access a page with invalid or unknown request arguments.";
     
-    die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    header("Content-Type: text/html; charset=utf-8");
+    header("HTTP/1.0 501 Not implemented: $message");
+    
+    die("<!DOCTYPE HTML>
         <html><head>
         <title>501 Not implemented</title>
         </head><body>
         <h1>Not implemented</h1>
-        <p>You are trying to access a page with invalid or unknown request arguments.</p>
-        <hr>
-        <address>' . trim($_SERVER["SERVER_SIGNATURE"]) . '</address>
-        </body></html>');
+        <p>{$message}</p>
+        </body></html>");
 }
 
 /**
  * Echoes a fake "500 - Internal server error" error and quits the program.
  */
-function throw_fake_500()
+function throw_fake_500($message = "")
 {
-    header("Content-Type: text/html; charset=utf-8");
-    header("HTTP/1.0 501 Not implemented");
-    # echo "<pre>\$_SERVER := " . print_r($_SERVER, true) . "</pre>";
+    if( empty($message) ) $message = "There was a problem processing your request.";
     
-    die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    header("Content-Type: text/html; charset=utf-8");
+    header("HTTP/1.0 500 Internal server error: $message");
+    
+    die("<!DOCTYPE HTML>
         <html><head>
         <title>500 Internal server error</title>
         </head><body>
         <h1>Internal server error</h1>
-        <p>There was a problem processing your request.</p>
-        <hr>
-        <address>' . trim($_SERVER["SERVER_SIGNATURE"]) . '</address>
-        </body></html>');
+        <p>{$message}</p>
+        </body></html>");
 }
 
 /**
