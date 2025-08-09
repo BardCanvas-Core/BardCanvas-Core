@@ -1,6 +1,11 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.30] - 2025-08-08
+
+- Added check against PHP session cookie attacks.
+- Added support for custom messages in «fake» HTTP response pages.
+
 ## [1.14.9.29] - 2025-05-20
 
 - Tuned CSS generator.
