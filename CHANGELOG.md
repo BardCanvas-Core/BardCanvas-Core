@@ -1,6 +1,10 @@
 
 # BardCanvas Core Changelog 
 
+## [1.14.9.31] - 2025-11-04
+
+- Tuned session injection check.
+
 ## [1.14.9.30] - 2025-08-08
 
 - Added check against PHP session cookie attacks.
