@@ -23,9 +23,11 @@ include dirname(__FILE__) . "/geoip_functions.inc";
 include dirname(__FILE__) . "/web_helper_functions.inc";
 
 # Prechecks
-if( isset($_COOKIE['PHPSESSID']) )
+$sid = $_REQUEST["PHPSESSID"];
+if( empty($sid) ) $sid = $_COOKIE['PHPSESSID'];
+if( ! empty($sid) )
 {
-    if( strlen($_COOKIE['PHPSESSID']) > 64 || preg_match('/[^a-z0-9,-_]/i', $_COOKIE['PHPSESSID']) )
+    if( strlen($sid) > 64 || preg_match('/[^a-z0-9,-_]/i', $sid) )
     {
         setcookie("PHPSESSID", "", time() - 1, "/", "", true, true);
         unset( $_COOKIE['PHPSESSID'] ) ;
